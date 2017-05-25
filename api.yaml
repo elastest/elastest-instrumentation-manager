@@ -1,0 +1,159 @@
+swagger: '2.0'
+info:
+  version: '1.0.0'
+  title: ElasTest Instrumentation Manager
+  description: RESTful API specification for the ElasTest Instrumentation Manager (EIM)
+  termsOfService: TBD
+  contact:
+    name: David Rojo (ATOS)
+    email: david.rojoa@atos.net
+  license:
+    name: TBD
+externalDocs:
+  description: "Instrumentation Manager document"
+  url: "https://docs.google.com/document/d/1sQzBBbECmd_o-yQigiHI3FAASN62VTDfJ7jdpzzfzNE/edit"
+host: elastest.io
+basePath: /api
+schemes:
+  - "http"
+  - "https"
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /agents:
+    get:
+      summary: "Retrieve all agents"
+      description: "A client retrieves all agents"
+      operationId: "getAgents"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "events"
+        description: "Events to be published"
+        required: true
+        schema:
+           $ref: "#/definitions/Agent"
+      responses:
+        default:
+          description: "Unexpected error"
+        200:
+          description: "Information successfully retrieved"
+  /agent/{agentId}:
+    get:
+      summary: "Retrieve a agent"
+      description: "A client retrieves a agent"
+      operationId: "getAgent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "agentId"
+        in: "path"
+        description: "Id of agent to return"
+        required: true
+        type: "string"
+      responses:
+        default:
+          description: "Unexpected error"
+        200:
+          description: "Agent info retrieved successfully"
+    put:
+      summary: "update a agent"
+      description: "A client updates a agent"
+      operationId: "putAgent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "agentId"
+        in: "path"
+        description: "Id of agent to return"
+        required: true
+        type: "string"
+      responses:
+        default:
+          description: "Unexpected error"
+        200:
+          description: "Information successfully retrieved"
+    delete:
+      summary: "Delete a agent"
+      description: "A client delete a agent"
+      operationId: "deleteAgent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "agentId"
+        in: "path"
+        description: "Id of agent to delete"
+        required: true
+        type: "string"
+      responses:
+        default:
+          description: "Unexpected error"
+        200:
+          description: "Agent successfully deleted"
+  /agent:
+    post:
+      summary: "Register an agent"
+      description: "A client registers an agent"
+      operationId: "postAgent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "events"
+        description: "Events to be published"
+        required: true
+        schema:
+           $ref: "#/definitions/Agent"
+      responses:
+        default:
+          description: "Unexpected error"
+        200:
+          description: "Agent created successfully"
+  /agent/{agentId}/{actionId}:
+    post:
+      summary: "Submit an action agent"
+      description: "A client submit an action to agent"
+      operationId: "postAction"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "agentId"
+        in: "path"
+        description: "Id of agent to return"
+        required: true
+        type: "string"
+      - name: "actionId"
+        in: "path"
+        description: "Id of action to apply"
+        required: true
+        type: "string"
+      responses:
+        default:
+          description: "Unexpected error"
+        200:
+          description: "Action sent retrieved successfully"
+definitions:
+  Agent:
+    type: "object"
+    properties:
+      agentId:
+        type: "string"
+      status:
+        type: "string"
+      host:
+        type: "string"
