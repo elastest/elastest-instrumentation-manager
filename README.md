@@ -5,7 +5,7 @@ Copyright © 2017-2019 [ElasTest]. Licensed under [Apache 2.0 License].
 elastest-monitoring-service (ems)
 ==============================
 
-ElasTest Monitoring Service.
+ElasTest Instrumentation Manager.
 
 # What is ElasTest
 
