@@ -11,25 +11,27 @@
  */
 
 
-package io.swagger.client.model;
+package io.swagger.model;
 
 import java.util.Objects;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import javax.validation.constraints.*;
 
 /**
  * Agent
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2017-06-09T07:40:36.769-04:00")
-public class Agent {
-  @SerializedName("agentId")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2017-06-23T09:46:23.390Z")
+public class Agent   {
+  @JsonProperty("agentId")
   private String agentId = null;
 
-  @SerializedName("status")
+  @JsonProperty("status")
   private String status = null;
 
-  @SerializedName("host")
+  @JsonProperty("host")
   private String host = null;
 
   public Agent agentId(String agentId) {
@@ -41,7 +43,8 @@ public class Agent {
    * Get agentId
    * @return agentId
   **/
-  @ApiModelProperty(example = "null", value = "")
+  @JsonProperty("agentId")
+  @ApiModelProperty(value = "")
   public String getAgentId() {
     return agentId;
   }
@@ -59,7 +62,8 @@ public class Agent {
    * Get status
    * @return status
   **/
-  @ApiModelProperty(example = "null", value = "")
+  @JsonProperty("status")
+  @ApiModelProperty(value = "")
   public String getStatus() {
     return status;
   }
@@ -77,7 +81,8 @@ public class Agent {
    * Get host
    * @return host
   **/
-  @ApiModelProperty(example = "null", value = "")
+  @JsonProperty("host")
+  @ApiModelProperty(value = "")
   public String getHost() {
     return host;
   }
@@ -129,6 +134,5 @@ public class Agent {
     }
     return o.toString().replace("\n", "\n    ");
   }
-  
 }
 
