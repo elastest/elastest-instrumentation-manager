@@ -1,3 +1,16 @@
+/**
+ * Copyright (c) 2017 Atos
+ * This program and the accompanying materials
+ * are made available under the terms of the Apache License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Contributors:
+ *    @author David Rojo Antona (Atos)
+ *    
+ * Developed in the context of ElasTest EU project http://elastest.io 
+ */
+
 package io.swagger.api.impl;
 
 import io.swagger.api.*;
@@ -20,6 +33,6 @@ public class AgentsApiServiceImpl extends AgentsApiService {
     @Override
     public Response getAgents(Events events, SecurityContext securityContext) throws NotFoundException {
         // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "This method will return the existing agents")).build();
     }
 }
