@@ -9,9 +9,6 @@ info:
     email: david.rojoa@atos.net
   license:
     name: TBD
-externalDocs:
-  description: "Instrumentation Manager document"
-  url: "https://docs.google.com/document/d/1sQzBBbECmd_o-yQigiHI3FAASN62VTDfJ7jdpzzfzNE/edit"
 host: elastest.io
 basePath: /api
 schemes:
