@@ -1,0 +1,12 @@
+---
+#This playbook copy the ssh pub key in the .ssh directory of the elastest user in sut hosts
+- name: ssh
+  hosts: targethosts
+  remote_user: root
+
+  tasks:
+          - name: Set authorized key took from file
+            authorized_key:
+                    user: elastest
+                    state: present
+                    key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
