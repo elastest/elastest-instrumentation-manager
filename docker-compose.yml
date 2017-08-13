@@ -2,7 +2,8 @@ version: '2'
 
 services:
         elasticsearch:
-                image: dev/my-elasticsearch-v1
+                # image: dev/my-elasticsearch-v1
+                image: elastest/eim-elasticsearch
                 ports:
                         - "9200:9200"
                         - "9300:9300"
@@ -10,7 +11,8 @@ services:
                 networks:
                         - elastest
         logstash:
-                image: dev/my-logstash-v1
+                # image: dev/my-logstash-v1
+                image: elastest/eim-logstash 
                 #volumes:
                 #        - ./logstash-docker/logstash.conf:/logstash/logstash.conf
                 ports:
@@ -24,7 +26,8 @@ services:
                         - elastest
 
         kibana:
-                image: dev/my-kibana-v1
+                # image: dev/my-kibana-v1
+                image: elastest/eim-kibana
                 ports: 
                         - "5601:5601"
                 depends_on:
@@ -36,7 +39,8 @@ services:
                         - elastest
 
         sut:
-                image: dev/my-sut-v1_1
+                # image: dev/my-sut-v1_1
+                image: elastest/eim-sut
                 volumes:
                         - static-content:/tmp/ssh
                 depends_on:
@@ -48,7 +52,8 @@ services:
                         - elastest
 
         eim:
-                image: dev/my-eim-v1_1
+                # image: dev/my-eim-v1_1
+                image: elastest/eim
                 volumes:
                         - static-content:/tmp/ssh 
                 depends_on:
