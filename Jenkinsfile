@@ -1,7 +1,7 @@
 node('docker') {
     stage "Container Prep"
         echo("The node is up")
-        def mycontainer = docker.image('elastest/docker-in-docker:latest')
+        def mycontainer = docker.image('elastest/docker-siblings-env:latest')
         mycontainer.pull()
         mycontainer.inside("-u jenkins -v /var/run/docker.sock:/var/run/docker.sock:rw") {
 
@@ -51,6 +51,6 @@ node('docker') {
 				kibana_image.push()
 				sut_image.push()
 				eim_image.push()
-                }   
+                	}   
         }   
 }
