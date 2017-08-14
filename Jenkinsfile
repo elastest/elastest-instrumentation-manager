@@ -1,7 +1,7 @@
 node('docker') {
     stage "Container Prep"
         echo("The node is up")
-        def mycontainer = docker.image('elastest/docker-in-docker:latest')
+        def mycontainer = docker.image('elastest/docker-compose-py-siblings:latest')
         mycontainer.pull()
         mycontainer.inside("-u jenkins -v /var/run/docker.sock:/var/run/docker.sock:rw") {
 
@@ -35,6 +35,9 @@ node('docker') {
                         echo ("building eim..")
                         def eim_image = docker.build("elastest/eim:0.1","./eim")
 
+		stage "Execute docker compose"
+                 	echo ("running docker compose..")
+                	sh 'docker-compose -f docker-compose.yml up -d --build'
 //            stage "Run image"
 //                myimage.run()
 
@@ -51,6 +54,6 @@ node('docker') {
 				kibana_image.push()
 				sut_image.push()
 				eim_image.push()
-                }   
+                	}   
         }   
 }

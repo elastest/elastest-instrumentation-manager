@@ -62,6 +62,8 @@ COPY ansible/ssh/run-ssh.sh /var/ansible/ssh
 COPY ansible/beats/run-beats.sh /var/ansible/beats
 COPY ansible/beats/ansible-beats-master/playbook-beats-output-logstash.yml /var/ansible/beats/ansible-beats-master
 
+COPY elastest-eim/target/elastest-instrumentation-manager-0.0.1-SNAPSHOT.war /var/lib/tomcat7/webapps/eim.war
+
 RUN find /var/ansible/ssh/run-ssh.sh -type f -exec chmod 755 {} \; &&\
 	find /var/ansible/beats/run-beats.sh -type f -exec chmod 755 {} \;
 # tomcat7 is executed as root
@@ -70,3 +72,4 @@ RUN find /var/ansible/ssh/run-ssh.sh -type f -exec chmod 755 {} \; &&\
 # start tomcat7
 #RUN echo "service tomcat7 start" >> /etc/bash.bashrc
 CMD /bin/bash
+# CMD ["catalina.sh","run"]
