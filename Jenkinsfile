@@ -35,6 +35,9 @@ node('docker') {
                         echo ("building eim..")
                         def eim_image = docker.build("elastest/eim:0.1","./eim")
 
+		stage "Execute docker compose"
+                 	echo ("running docker compose..")
+                	sh 'docker-compose -f docker-compose.yml up -d --build'
 //            stage "Run image"
 //                myimage.run()
 
