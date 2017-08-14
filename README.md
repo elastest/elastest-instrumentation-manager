@@ -1,4 +1,5 @@
 [![License badge](https://img.shields.io/badge/license-Apache2-green.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Documentation badge](https://img.shields.io/badge/docs-latest-brightgreen.svg)](http://elastest.io/docs/)
 [![Build Status](https://ci.elastest.io/jenkins/buildStatus/icon?job=elastest-instrumentation-manager/elastest-eim)](https://ci.elastest.io/jenkins/job/elastest-instrumentation-manager/elastest-eim)
 
 [![][ElasTest Logo]][ElasTest]
