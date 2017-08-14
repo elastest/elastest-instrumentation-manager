@@ -59,7 +59,7 @@ public class AgentApiServiceImpl extends AgentApiService {
         	//String cmd = "ansible-playbook /var/ansible/beats/ansible-beats-master/playbook-beats-output-logstash.yml --extra-vars \"ansible_become_pass=elastest\"";
         	String cmd = "/var/ansible/beats/run-beats.sh";
 //        	System.out.println("Command to execute: " + cmd);
-        	logger.info("Command to execute: " + cmd);
+        	logger.info("Command to execute: " + cmd); 
         	try { 
                 p = Runtime.getRuntime().exec(cmd);
                 BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
