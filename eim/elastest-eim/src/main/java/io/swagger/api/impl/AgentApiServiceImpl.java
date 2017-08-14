@@ -58,9 +58,9 @@ public class AgentApiServiceImpl extends AgentApiService {
         	Process p;
         	//String cmd = "ansible-playbook /var/ansible/beats/ansible-beats-master/playbook-beats-output-logstash.yml --extra-vars \"ansible_become_pass=elastest\"";
         	String cmd = "/var/ansible/beats/run-beats.sh";
-        	System.out.println("Command to execute: " + cmd);
-        	logger.info("Command to execute: " + cmd);
-        	try {
+//        	System.out.println("Command to execute: " + cmd);
+        	logger.info("Command to execute: " + cmd); 
+        	try { 
                 p = Runtime.getRuntime().exec(cmd);
                 BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
                 
@@ -69,13 +69,13 @@ public class AgentApiServiceImpl extends AgentApiService {
                 PrintWriter writer = new PrintWriter(logFile);
                 
                 while ((s = br.readLine()) != null){
-                	System.out.println(s);
+//                	System.out.println(s);
                 	logger.info(s);
                 	writer.println(s);
                 }                
                 p.waitFor();
                 resultCode = p.exitValue();
-                System.out.println ("exit: " + resultCode);
+//                System.out.println ("exit: " + resultCode);
                 logger.info("exit: " + resultCode);
                 writer.println("Result code: " + resultCode);
                 writer.close();
@@ -83,8 +83,8 @@ public class AgentApiServiceImpl extends AgentApiService {
             } catch (Exception e) {
             	logger.error("ERROR: " + e.getLocalizedMessage());
             	logger.error(e.getStackTrace());
-            	System.out.println("ERROR: " + e.getLocalizedMessage());
-            	System.out.println(e.getStackTrace());
+//            	System.out.println("ERROR: " + e.getLocalizedMessage());
+//            	System.out.println(e.getStackTrace());
             	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + resultCode + " " + e.getLocalizedMessage())).build();
             }
     		return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "Result of the execution has been: " + resultCode)).build();
@@ -108,13 +108,13 @@ public class AgentApiServiceImpl extends AgentApiService {
             PrintWriter writer = new PrintWriter(logFile);
             
             while ((s = br.readLine()) != null){
-            	System.out.println(s);
+//            	System.out.println(s);
             	logger.info(s);
             	writer.println(s);
             }                
             p.waitFor();
             resultCode = p.exitValue();
-            System.out.println ("exit: " + resultCode);
+//            System.out.println ("exit: " + resultCode);
             logger.info("exit: " + resultCode);
             writer.println("Result code: " + resultCode);
             writer.close();
@@ -122,8 +122,8 @@ public class AgentApiServiceImpl extends AgentApiService {
         } catch (Exception e) {
         	logger.error("ERROR: " + e.getLocalizedMessage());
         	logger.error(e.getStackTrace());
-        	System.out.println("ERROR: " + e.getLocalizedMessage());
-        	System.out.println(e.getStackTrace());
+//        	System.out.println("ERROR: " + e.getLocalizedMessage());
+//        	System.out.println(e.getStackTrace());
         	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + resultCode + " " + e.getLocalizedMessage())).build();
         }
     	
