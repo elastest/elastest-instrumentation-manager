@@ -60,7 +60,7 @@ public class AgentApiServiceImpl extends AgentApiService {
         	String cmd = "/var/ansible/beats/run-beats.sh";
 //        	System.out.println("Command to execute: " + cmd);
         	logger.info("Command to execute: " + cmd);
-        	try {
+        	try { 
                 p = Runtime.getRuntime().exec(cmd);
                 BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
                 
