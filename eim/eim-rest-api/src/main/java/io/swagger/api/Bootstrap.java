@@ -43,7 +43,8 @@ public class Bootstrap extends HttpServlet {
 
     ServletContext context = config.getServletContext();
     Swagger swagger = new Swagger().info(info);
-    Properties.load(config.getServletContext().getResourceAsStream("/WEB-INF/bootstrap.properties"));
+    String propertiesFile = "/WEB-INF/bootstrap.properties";
+    Properties.load(config.getServletContext().getResourceAsStream(propertiesFile), propertiesFile);
     new SwaggerContextService().withServletConfig(config).updateSwagger(swagger);
   }
 }

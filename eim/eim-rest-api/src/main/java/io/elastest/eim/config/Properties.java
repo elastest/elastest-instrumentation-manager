@@ -25,7 +25,7 @@ public class Properties {
 	
 	private static java.util.Properties properties = new java.util.Properties();
 	
-	public static void load(InputStream propertiesFile){
+	public static void load(InputStream propertiesFile, String filePath){
 		try {
 			properties.load((propertiesFile));
 		} catch (IOException e1) {
@@ -33,24 +33,17 @@ public class Properties {
 			e1.printStackTrace();
 			logger.error(e1.getMessage());
 		}
-		Enumeration<?> e = properties.propertyNames();
-		while (e.hasMoreElements()) {
-			String key = (String) e.nextElement();
-			String value = properties.getProperty(key);
-			System.out.println("Key : " + key + ", Value : " + value);
-		}
+		logger.info("Properties loaded from " + filePath);
+//		Enumeration<?> e = properties.propertyNames();
+//		while (e.hasMoreElements()) {
+//			String key = (String) e.nextElement();
+//			String value = properties.getProperty(key);
+//			System.out.println("Key : " + key + ", Value : " + value);
+//		}
 	}
 	
-	public static String getFirstProp(){
-		String res = "not worked";
-		Enumeration<?> e = properties.propertyNames();
-		while (e.hasMoreElements()) {
-			String key = (String) e.nextElement();
-			String value = properties.getProperty(key);
-			logger.info("message returned -->  " + "Key : " + key + ", Value : " + value);
-			return "Key : " + key + ", Value : " + value;
-		}
-		return res;
+	public static String getValue(String key){
+		return properties.getProperty(key);
 	}
 	
 }
