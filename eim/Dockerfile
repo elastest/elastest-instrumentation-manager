@@ -4,9 +4,9 @@ FROM williamyeh/ansible:ubuntu14.04-onbuild
 RUN \
 	apt-get update && apt-get -y upgrade && \
 	apt-get install -y software-properties-common && \
-	apt-get install wget && \
-	apt-get install unzip && \
-	apt-get install vim && \
+	apt-get install -y wget && \
+	apt-get install -y unzip && \
+	apt-get install -y vim && \
 	# install default jdk
 	apt-get -y install default-jdk && apt-get clean && \
 	update-alternatives --display java && \
