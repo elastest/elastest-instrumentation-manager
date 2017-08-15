@@ -22,5 +22,5 @@ public class AgentApiServiceFactory {
 
     public static AgentApiService getAgentApi() {
         return service;
-    }
+    } 
 }

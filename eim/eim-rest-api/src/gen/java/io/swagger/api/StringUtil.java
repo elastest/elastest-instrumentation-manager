@@ -11,9 +11,9 @@
  * Developed in the context of ElasTest EU project http://elastest.io 
  */
 
-
+ 
 package io.swagger.api;
-
+ 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2017-08-15T11:10:32.030+02:00")
 public class StringUtil {
   /**

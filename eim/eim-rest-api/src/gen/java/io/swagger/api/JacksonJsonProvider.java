@@ -10,7 +10,7 @@
  *    
  * Developed in the context of ElasTest EU project http://elastest.io 
  */
-
+  
 
 package io.swagger.api;
 

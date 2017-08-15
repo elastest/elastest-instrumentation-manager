@@ -8,7 +8,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <description> This artifact contains the Elastest Instrumentation Manager REST API project, part of the Elastest platform </description>
   <url>https://github.com/elastest/elastest-instrumentation-manager</url>
-
+ 
   <licenses>
     <license>
       <name>Unlicense</name>

@@ -24,4 +24,4 @@ public class PublickeyApiServiceFactory {
     public static PublickeyApiService getPublickeyApi() {
         return service;
     }
-}
+} 

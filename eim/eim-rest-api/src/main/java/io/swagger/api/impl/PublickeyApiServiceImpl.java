@@ -28,7 +28,7 @@ import org.apache.log4j.Logger;
 
 import io.swagger.api.ApiResponseMessage;
 import io.swagger.api.NotFoundException;
-import io.swagger.api.PublickeyApiService;
+import io.swagger.api.PublickeyApiService; 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2017-08-15T11:10:32.030+02:00")
 public class PublickeyApiServiceImpl extends PublickeyApiService {
    

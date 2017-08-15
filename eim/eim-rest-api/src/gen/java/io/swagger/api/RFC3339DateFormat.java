@@ -11,7 +11,7 @@
  * Developed in the context of ElasTest EU project http://elastest.io 
  */
 
-
+ 
 package io.swagger.api;
 
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
