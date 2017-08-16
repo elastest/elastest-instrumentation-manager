@@ -134,14 +134,14 @@ public class AgentRepository {
 	}
 	
 	
-	public AgentFull setMonitored(String agentId){
+	public AgentFull setMonitored(String agentId, boolean monitored){
 		AgentFull agent = getAgentByIpAgentId(agentId);
 		if (agent != null){
-			agent.setMonitored(true);
+			agent.setMonitored(monitored);
 			
 			 //Preparing to insert new field
 	        BasicDBObject updateMonitored = new BasicDBObject();
-	        updateMonitored.append("$set", new BasicDBObject().append("monitored", true));
+	        updateMonitored.append("$set", new BasicDBObject().append("monitored", monitored));
 	 
 	        //Find the register with the specified ID
 	        BasicDBObject searchById = new BasicDBObject();
@@ -192,6 +192,8 @@ public class AgentRepository {
         }
         else {
         	return false;
-        }    }
+        }    
 	}
+	
+	
 }

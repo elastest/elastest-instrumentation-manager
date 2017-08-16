@@ -5,28 +5,28 @@ import org.apache.log4j.Logger;
 import io.elastest.eim.utils.TemplateUtils;
 import io.swagger.model.AgentFull;
 
-public class SshTemplateManager {
+public class BeatsTemplateManager {
 
-	private static Logger logger = Logger.getLogger(SshTemplateManager.class);
+private static Logger logger = Logger.getLogger(BeatsTemplateManager.class);
 	
 	String executionDate = "";
 	
 	private AgentFull agent;
 	
-	public SshTemplateManager(AgentFull agent, String executionDate) {
+	public BeatsTemplateManager(AgentFull agent, String executionDate) {
 		this.agent = agent;
 		this.executionDate = executionDate;
 	}
 	
 	public int execute() {
-		logger.info("Preparing the execution of SSH playbook for agent " + agent.getAgentId());
+		logger.info("Preparing the execution of beat playbook for agent " + agent.getAgentId());
 		//generate files for execution: playbook and script
-		String generatedPlaybookPath = TemplateUtils.generatePlaybook("ssh", executionDate, agent);
+		String generatedPlaybookPath = TemplateUtils.generatePlaybook("beats", executionDate, agent);
 		if (generatedPlaybookPath != "") {
-			String generatedScriptPath = TemplateUtils.generateScript("ssh", executionDate, agent, generatedPlaybookPath);	
+			String generatedScriptPath = TemplateUtils.generateScript("beats", executionDate, agent, generatedPlaybookPath);	
 			if (generatedScriptPath != null) {
 				//execute generated files
-				return TemplateUtils.executeScript("ssh", generatedScriptPath, executionDate, agent);
+				return TemplateUtils.executeScript("beats", generatedScriptPath, executionDate, agent);
 			}
 			else {
 				logger.error("ERROR generating script for execution for agent " + agent.getAgentId( )+ ". Check logs please");
@@ -39,9 +39,5 @@ public class SshTemplateManager {
 		}		
 		//TODO move template to history execution path
 	}
-	
-	
-	
-	
 	
 }

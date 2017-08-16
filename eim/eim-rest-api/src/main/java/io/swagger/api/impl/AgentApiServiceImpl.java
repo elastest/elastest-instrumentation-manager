@@ -31,10 +31,11 @@ import javax.ws.rs.core.SecurityContext;
 import org.apache.log4j.Logger;
 
 import io.elastest.eim.database.AgentRepository;
+import io.elastest.eim.templates.BeatsTemplateManager;
 import io.elastest.eim.templates.SshTemplateManager;
 import io.elastest.eim.utils.FileTextUtils;
 import io.swagger.api.AgentApiService;
-import io.swagger.api.ApiResponseMessage; 
+import io.swagger.api.ApiResponseMessage;
 import io.swagger.api.NotFoundException;
 import io.swagger.model.AgentFull;
 import io.swagger.model.Host;
@@ -75,14 +76,51 @@ public class AgentApiServiceImpl extends AgentApiService {
         }
     }
     @Override
-    public Response postAction(String agentId, String actionId, SecurityContext securityContext) throws NotFoundException {
-        // do some magic!
+    public Response postAction(String agentId, String actionId, SecurityContext securityContext) throws NotFoundException {    	
     	
-    	AgentFull agent = agentDb.setMonitored(agentId);
-    	logger.info("iAgent " + agent.getAgentId() + " monitored succesfully");
-        return Response.ok().entity(agent).build();
+    	if (actionId.equals("monitor")){
+	    	//verify that agent exists in database and it is not monitored
+	    	AgentFull agent = agentDb.getAgentByIpAgentId(agentId);
+	    	if (agent == null) {
+	    		//agent not exists in db
+	    		logger.error("No exists any agent in the system with agentId " + agentId);
+	    		return Response.status(Response.Status.NOT_FOUND).entity("No exists any agent in the system with agentId " + agentId).build();
+	    	}
+	    	else if (agent != null && agent.isMonitored()) {
+	    		logger.error("Agent " + agentId + " is already monitored");
+	    		return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Agent " + agentId + " is already monitored").build();
+	    	}
+	    	else {
+	        	//exits and it is not monitored --> launch process
+	    		
+	    		int status = -1;
+	    		//beats installation
+	    		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+	            String executionDate = sdf.format(timestamp);
+	            BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate);
+	            
+	            status = beatsTemplateManager.execute();
+	            if (status == 0) {
+	            	logger.info("Successful execution for the beats script generated to agent " + agent.getAgentId());
+	            	//set host as monitored in db    	
+		        	agent = agentDb.setMonitored(agentId, true);
+		        	logger.info("iAgent " + agent.getAgentId() + " monitored succesfully");
+		          	return Response.ok().entity(agent).build();
+	            }
+	            else {
+	            	
+	            	logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
+	            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
+	            }		
+	    	}
+    	} 
+    	else {
+    		return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "This method will execute the action " + actionId +  "!")).build();
+    	}    	
         
     }
+    
+    
     @Override
     public Response postAgent(Host body, SecurityContext securityContext) throws NotFoundException {
         

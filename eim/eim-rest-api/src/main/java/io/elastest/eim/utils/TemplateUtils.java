@@ -39,8 +39,29 @@ public class TemplateUtils {
 				return "";
 			}			
 		}
-		else if (type.equalsIgnoreCase("beats")) {
-			return "";
+		else if (type.equalsIgnoreCase("beats")) {			
+
+			String playbookTemplatePath = Properties.getValue("templates.beats.playbookPath") + 
+					Properties.getValue("templates.beats.playbook");
+			String playbookToExecutePath = Properties.getValue("templates.beats.playbookPath") + 
+					Properties.getValue("templates.beats.execution_playbook_prefix") + agent.getAgentId() + 
+					"-" + executionDate + ".yml";
+			String jokerTemplates = Properties.getValue("templates.playbook.joker");
+			
+			try {
+				//Generate the execution playbook
+				FileTextUtils.copyFile(playbookTemplatePath, playbookToExecutePath);
+				logger.info("Generated successfully the SSH playbook for agent" + agent.getAgentId() + ": " + playbookToExecutePath);
+				//Fill the playbook with the agentId of the agent
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerTemplates, agent.getAgentId());
+				logger.info("Modified successfully the generated SSH playbook for agent " + agent.getAgentId() + ". Ready to execute!");
+				return playbookToExecutePath;				
+			} catch (IOException e) {
+				logger.error("ERROR while triying to generate SSH playbook for agent " + agent.getAgentId() + " with execution date: " + executionDate);
+				e.printStackTrace();
+				return "";
+			}		
+			
 		}
 		return "";
 		 
@@ -76,8 +97,31 @@ public class TemplateUtils {
 		}
 		else if (type.equalsIgnoreCase("beats")) {
 			
-			//take in account that this book is executed by elastest user, password needed in command
-			return "";
+			
+			String scriptTemplatePath = Properties.getValue("templates.beats.executionPath") + 
+					Properties.getValue("templates.beats.launcher");
+			String scriptToExecutePath = Properties.getValue("templates.beats.executionPath") + 
+					Properties.getValue("templates.beats.execution_launcher_prefix") + agent.getAgentId() +"-" + executionDate + ".sh";
+			String jokerTemplates = Properties.getValue("templates.script.joker");
+			
+			try {
+				//Generate the execution playbook
+				FileTextUtils.copyFile(scriptTemplatePath, scriptToExecutePath);
+				logger.info("Generated successfully the Beats script for agent" + agent.getAgentId() + ": " + scriptToExecutePath);
+				//Fill the playbook with the agentId of the agent and the command necessary to be able to execute the playbook
+				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerTemplates, playbookPath + 
+						"  --extra-vars \"ansible_become_pass= " +  Properties.getValue("user.elastest.password")+"\"");
+				//set the file as executable
+				FileTextUtils.setAsExecutable(scriptToExecutePath);
+				logger.info("Modified successfully the generated Beats script for agent " + agent.getAgentId() + ". Ready to execute!");
+				return scriptToExecutePath;
+				
+			} catch (IOException e) {
+				logger.error("ERROR while triying to generate Beats script for agent " + agent.getAgentId() + " with execution date: " + executionDate);
+				e.printStackTrace();
+				return "";
+			}	
+			
 		}
 		return "";
 			 
