@@ -37,7 +37,7 @@ public class AgentRepository {
 	public AgentRepository(){
 		MongoClient mongoClient = new MongoClient( 
 				Properties.getValue("mongoDB.host"), 
-				Integer.parseInt(Properties.getValue("mongoDB.value")));
+				Integer.parseInt(Properties.getValue("mongoDB.port")));
 		DB db = mongoClient.getDB("eim");
 		collection = db.getCollection("agent");
 	}
