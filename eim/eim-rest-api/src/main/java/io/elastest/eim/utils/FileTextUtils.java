@@ -14,14 +14,32 @@
 
 package io.elastest.eim.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.PosixFilePermission;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
+
+import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+
+import io.swagger.api.ApiResponseMessage;
 
 
 public class FileTextUtils {
@@ -63,5 +81,92 @@ public class FileTextUtils {
 		}
 		return false;
 	}
+	
+	public static void copyFile(String source, String destination) throws IOException {
+		Path sourcePath      = Paths.get(source);
+		Path destinationPath = Paths.get(destination);
+		
+		logger.info("Copying files...");
+		logger.info("Source: " + source);
+		logger.info("Destination: " + destination);
+		Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+		logger.info("Copy of files successfull");
+	}
+	
+	public static void replaceTextInFile(String filePath, String textToFind, String replaceText) throws IOException {
+		List<String> newLines = new ArrayList<>();
+		for (String line : Files.readAllLines(Paths.get(filePath), StandardCharsets.UTF_8)) {
+		    if (line.contains(textToFind)) {
+		       newLines.add(line.replace(textToFind, replaceText));
+		       logger.info(textToFind + " found in the file. Replacing it by " + replaceText);
+		    } else {
+		       newLines.add(line);
+		    }
+		}
+		logger.info("Updating with new content the file " + filePath);
+		Files.write(Paths.get(filePath), newLines, StandardCharsets.UTF_8);
+		logger.info("File " + filePath + " updated");
+	}
+	
+	public static void setAsExecutable(String filePath) throws IOException {
+		
+		//using PosixFilePermission to set file permissions 755
+        Set<PosixFilePermission> perms = new HashSet<PosixFilePermission>();
+        //add owners permission
+        perms.add(PosixFilePermission.OWNER_READ);
+        perms.add(PosixFilePermission.OWNER_WRITE);
+        perms.add(PosixFilePermission.OWNER_EXECUTE);
+        //add group permissions
+        perms.add(PosixFilePermission.GROUP_READ);
+        perms.add(PosixFilePermission.GROUP_EXECUTE);
+        //add others permissions
+        perms.add(PosixFilePermission.OTHERS_READ);
+        perms.add(PosixFilePermission.OTHERS_EXECUTE);
+        
+        Files.setPosixFilePermissions(Paths.get(filePath), perms);
+        logger.info("Modified as executable " + filePath);
+		
+	}
+	
+	/**
+	 * Delete the given agentId form ansible.cfg file /etc/ansible/hosts
+	 * 
+	 * Example:
+	 * localhost
+	 * [agent1]
+	 * 1.2.3.4
+	 * 
+	 * after the execution of the method:
+	 * 
+	 * localhost
+	 * 
+	 * remove the line where appears the agentId and the following one
+	 * 
+	 * @param ansibleCfgPath
+	 * @param agentId
+	 * @throws IOException 
+	 */
+	public static void removeAgentFromAnsibleCfg(String ansibleCfgPath, String agentId) throws IOException {
+
+		List<String> newLines = new ArrayList<>();
+		boolean addNextLine = true;
+		for (String line : Files.readAllLines(Paths.get(ansibleCfgPath), StandardCharsets.UTF_8)) {
+			if (line.contains("[" + agentId + "]")) {
+				//this line is not added and flag to order that next line do not be added is activated
+				addNextLine = false;
+				logger.info(agentId + " found in the file. Removing it... ");
+			} 
+			else if (!addNextLine){
+				addNextLine = true;
+			}
+			else {
+				newLines.add(line);
+			}
+		}
+		logger.info("Updating with new content the file " + ansibleCfgPath);
+		Files.write(Paths.get(ansibleCfgPath), newLines, StandardCharsets.UTF_8);
+		logger.info("File " + ansibleCfgPath + " updated");	
+	}
+	
 	
 }

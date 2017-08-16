@@ -181,4 +181,17 @@ public class AgentRepository {
         }
 		return agents;
 	}
+	
+	public boolean deleteAgent(String agentId) {
+		logger.info("Deleting agent from DB, host with agentId = " + agentId);
+        getAgentTable().remove(new BasicDBObject().append("agentId", agentId));
+        
+        //Verify that the element has been deleted
+        if (getAgentByIpAgentId(agentId) == null) {
+        	return true;
+        }
+        else {
+        	return false;
+        }    }
+	}
 }
