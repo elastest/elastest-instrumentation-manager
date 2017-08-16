@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.0.0'
+  version: 1.0.0
   title: ElasTest Instrumentation Manager
   description: RESTful API specification for the ElasTest Instrumentation Manager (EIM)
   termsOfService: TBD
@@ -8,149 +8,249 @@ info:
     name: David Rojo (ATOS)
     email: david.rojoa@atos.net
   license:
-    name: TBD
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 host: elastest.io
 basePath: /api
 schemes:
-  - "http"
-  - "https"
+  - http
+  - https
 consumes:
   - application/json
 produces:
   - application/json
 paths:
-  /agents:
+  /publickey:
     get:
-      summary: "Retrieve all agents"
-      description: "A client retrieves all agents"
-      operationId: "getAgents"
+      tags:
+        - Publickey
+      summary: Retrieve public key
+      description: A client retrieves the public key
+      operationId: getPublickey
       consumes:
-      - "application/json"
+        - application/json
       produces:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "events"
-        description: "Events to be published"
-        required: true
-        schema:
-           $ref: "#/definitions/Agent"
+        - application/json
       responses:
-        default:
-          description: "Unexpected error"
-        200:
-          description: "Information successfully retrieved"
-  /agent/{agentId}:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/Publickey'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/agent/{agentId}':
     get:
-      summary: "Retrieve a agent"
-      description: "A client retrieves a agent"
-      operationId: "getAgent"
+      tags:
+        - Agent
+      summary: Retrieve a agent
+      description: Returns the agent with the given ID. Returns all its details.
+      operationId: getAgentByID
       consumes:
-      - "application/json"
+        - application/json
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - name: "agentId"
-        in: "path"
-        description: "Id of agent to return"
-        required: true
-        type: "string"
+        - name: agentId
+          in: path
+          description: ID of agent
+          required: true
+          type: string
       responses:
-        default:
-          description: "Unexpected error"
-        200:
-          description: "Agent info retrieved successfully"
-    put:
-      summary: "update a agent"
-      description: "A client updates a agent"
-      operationId: "putAgent"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "agentId"
-        in: "path"
-        description: "Id of agent to return"
-        required: true
-        type: "string"
-      responses:
-        default:
-          description: "Unexpected error"
-        200:
-          description: "Information successfully retrieved"
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/AgentFull'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Network not found
+          schema:
+            $ref: '#/definitions/AgentFull'
     delete:
-      summary: "Delete a agent"
-      description: "A client delete a agent"
-      operationId: "deleteAgent"
+      tags:
+        - Agent
+      summary: Delete a agent
+      description: A client delete a agent
+      operationId: deleteAgentByID
       consumes:
-      - "application/json"
+        - application/json
       produces:
-      - "application/json"
+        - '*/*'
       parameters:
-      - name: "agentId"
-        in: "path"
-        description: "Id of agent to delete"
-        required: true
-        type: "string"
+        - name: agentId
+          in: path
+          description: Id of agent to delete
+          required: true
+          type: string
       responses:
-        default:
-          description: "Unexpected error"
-        200:
-          description: "Agent successfully deleted"
+        '200':
+          description: Network deleted successfully
+          schema:
+            type: string
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          schema:
+            type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Network not found
+          schema:
+            type: string
   /agent:
-    post:
-      summary: "Register an agent"
-      description: "A client registers an agent"
-      operationId: "postAgent"
+    get:
+      tags:
+        - Agent
+      summary: Returns all existing agents
+      description: Returns all agents with all details
+      operationId: getAllAgents
       consumes:
-      - "application/json"
+        - application/json
       produces:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "events"
-        description: "Events to be published"
-        required: true
-        schema:
-           $ref: "#/definitions/Agent"
+        - application/json
       responses:
-        default:
-          description: "Unexpected error"
-        200:
-          description: "Agent created successfully"
-  /agent/{agentId}/{actionId}:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/AgentFull'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
     post:
-      summary: "Submit an action agent"
-      description: "A client submit an action to agent"
-      operationId: "postAction"
+      tags:
+        - Agent
+      summary: Register an agent
+      description: A client registers an agent
+      operationId: postAgent
       consumes:
-      - "application/json"
+        - application/json
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - name: "agentId"
-        in: "path"
-        description: "Id of agent to return"
-        required: true
-        type: "string"
-      - name: "actionId"
-        in: "path"
-        description: "Id of action to apply"
-        required: true
-        type: "string"
+        - in: body
+          name: body
+          description: Definition of an agent that is going to be created
+          required: true
+          schema:
+            $ref: '#/definitions/Host'
       responses:
-        default:
-          description: "Unexpected error"
-        200:
-          description: "Action sent retrieved successfully"
+        '200':
+          description: Agent creation OK
+          schema:
+            $ref: '#/definitions/Agent'
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Agent'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/agent/{agentId}/{actionId}':
+    post:
+      tags:
+        - Agent
+      summary: Submit an action ti an agent
+      description: A client submit an action to an agent
+      operationId: postAction
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: agentId
+          in: path
+          description: Id of agent to that receives the action
+          required: true
+          type: string
+        - name: actionId
+          in: path
+          description: action to apply
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Action applied OK
+          schema:
+            $ref: '#/definitions/AgentFull'
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/AgentFull'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Agent not found
+          schema:
+            $ref: '#/definitions/AgentFull'
 definitions:
+  Publickey:
+    type: object
+    required:
+      - publickey
+    properties:
+      publickey:
+        type: string
+        example: >-
+          ssh-rsa
+          AAAAB3NzaC1yc2EAAAADAQABAAABAQCp9ujzo4XgfcFFHZqqHvf25PP/TSAP89pxSx9sqsNsY7EPOMTpQVpYRuooaJQk7pwr8SzHJkWA2KzNcfs1hneIsfWPqhDmeDliwm3cFIrPQ3juFaoD03eRzS36F+qKyN8og5PxSCPSBtDdvdn0gvTA9j1IXQJ4oeUIxr3s8dIJiYpKY3wQeJTVCRQNGHZWrnjgSZ0YCH0wiEpUAT4mfUWmpjSyVmH8q2l2REuJbgVy5rQ7sMqaf/BvbAiKgqLYDOrcGQNjGj6in1Fuwj9vPvhyvRaNrkfj2NuA5RFN+2wPbYyClxEurFJWsD/GEHNKnd/0X88ubhZ89sIEiUYL8KB
+          root@0b83a3aa4d3a
+    description: This entity defines the publickey of EIM.
   Agent:
-    type: "object"
+    type: object
+    required:
+      - agentId
+      - host
     properties:
       agentId:
-        type: "string"
-      status:
-        type: "string"
+        type: string
       host:
-        type: "string"
+        type: string
+    description: This entity defines an agent.
+  Host:
+    type: object
+    required:
+      - address
+    properties:
+      address:
+        type: string
+        example: 172.19.0.4
+    description: This entity defines a host
+  AgentFull:
+    type: object
+    required:
+      - agentId
+      - host
+      - monitored
+    properties:
+      agentId:
+        type: string
+        example: 541
+      host:
+        type: string
+        example: 172.19.0.4
+      monitored:
+        type: boolean
+        example: true
+    description: This entity defines an agent with all information available.
