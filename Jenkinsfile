@@ -11,9 +11,9 @@ node('docker') {
                 	echo ("Starting tests")
                 	echo ("(No tests yet)")
 
-		stage "Build elastest-eim"
-			echo ("Build elastest-eim")
-			sh 'cd ./eim/elastest-eim; mvn clean package -DskipTests;'
+		stage "Build eim-rest-api"
+			echo ("Build eim-rest-api")
+			sh 'cd ./eim/eim-rest-api; mvn clean package -DskipTests;'
 
 		stage "Build Elasticsearch image - Package"
 	                echo ("building elasticsearch..")
