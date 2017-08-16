@@ -20,9 +20,11 @@ RUN \
 	# do not check host key
 	echo "host_key_checking = False" >> /etc/ansible/ansible.cfg && \
 	# add sut to ansible hosts, inside targethosts group
-	printf "[targethosts]\nsut\n" >> /etc/ansible/hosts && \
+#	printf "[targethosts]\nsut\n" >> /etc/ansible/hosts && \
 	# folder for logs
 	mkdir -p /var/log/eim && \
+	# folder to store executed playbooks
+	mkdir -p /var/log/executed_playbooks && \
 	# folder for beats
 	mkdir -p /var/ansible/ssh && \
         mkdir -p /var/ansible/beats/ansible-beats-master && \
@@ -35,20 +37,23 @@ RUN \
 	echo "echo -e 'y\n' | ssh-keygen -q -t rsa -N '' -f /root/.ssh/id_rsa 1> /dev/null" >> /etc/bash.bashrc && \
 #	echo "ssh-keygen -q -t rsa -N '' -f /root/.ssh/id_rsa" >> /etc/bash.bashrc && \ 
 	# copy generated public key
-	echo "cp /root/.ssh/id_rsa.pub /tmp/ssh" >> /etc/bash.bashrc
+	echo "cp /root/.ssh/id_rsa.pub /tmp/ssh" >> /etc/bash.bashrc && \
+	echo "** Welcome to ElasTest Instrumentation Manager (EIM) **"
+
 
 # open default tomcat port
 EXPOSE 8080
 
-COPY ansible/ssh/playbook-ssh.yml  /var/ansible/ssh
-COPY ansible/ssh/run-ssh.sh /var/ansible/ssh
-COPY ansible/beats/run-beats.sh /var/ansible/beats
-COPY ansible/beats/ansible-beats-master/playbook-beats-output-logstash.yml /var/ansible/beats/ansible-beats-master
+COPY ansible/ssh/playbook-ssh-template.yml  /var/ansible/ssh
+COPY ansible/ssh/run-ssh-template.sh /var/ansible/ssh
+COPY ansible/beats/run-beats-template.sh /var/ansible/beats
+COPY ansible/beats/ansible-beats-master/playbook-beats-output-logstash-template.yml /var/ansible/beats/ansible-beats-master
 
 COPY elastest-eim/target/elastest-instrumentation-manager-0.0.1-SNAPSHOT.war /var/lib/tomcat7/webapps/eim.war
+COPY eim-rest-api/target/eim-rest-api-0.0.1-SNAPSHOT.war /var/lib/tomcat7/webapps/eim-rest.war
 
-RUN find /var/ansible/ssh/run-ssh.sh -type f -exec chmod 755 {} \; &&\
-	find /var/ansible/beats/run-beats.sh -type f -exec chmod 755 {} \;
+#RUN find /var/ansible/ssh/run-ssh.sh -type f -exec chmod 755 {} \; &&\
+#	find /var/ansible/beats/run-beats.sh -type f -exec chmod 755 {} \;
 
 # start tomcat7
 ADD run.sh /root/run.sh
