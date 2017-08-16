@@ -1,3 +1,3 @@
 #! /bin/bash
 
-ansible-playbook /var/ansible/ssh/##playbook-name##
+ansible-playbook ##playbook-path##
