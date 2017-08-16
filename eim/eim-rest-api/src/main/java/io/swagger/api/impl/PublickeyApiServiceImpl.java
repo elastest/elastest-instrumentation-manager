@@ -16,7 +16,6 @@ package io.swagger.api.impl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 import javax.ws.rs.core.Response;
@@ -33,9 +32,7 @@ import io.swagger.model.Publickey;
 public class PublickeyApiServiceImpl extends PublickeyApiService {
    
 	private static Logger logger = Logger.getLogger(PublickeyApiServiceImpl.class);
-	
-	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd-HH.mm.ss");
-	
+		
 	@Override
     public Response getPublickey(SecurityContext securityContext) throws NotFoundException {
 		int resultCode = -1;
@@ -61,35 +58,6 @@ public class PublickeyApiServiceImpl extends PublickeyApiService {
 		    e.printStackTrace();
 		    return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Check logs please. Result of the execution has been: " + resultCode + " " + e.getLocalizedMessage())).build();
 		}
-		
-//		String s;
-//    	Process p;
-//    	String publickey = "";
-//		try { 
-//            p = Runtime.getRuntime().exec(cmd);
-//            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-//            
-//            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-//            File logFile = new File("/var/log/eim/publickey_" + sdf.format(timestamp) + ".log");
-//            PrintWriter writer = new PrintWriter(logFile);
-//            
-//            while ((s = br.readLine()) != null){
-////            	System.out.println(s);
-//            	logger.info(s);
-//            	writer.println(s);
-//            	publickey += s;
-//            }                
-//            p.waitFor();
-//            resultCode = p.exitValue();
-//            logger.info("exit: " + resultCode);
-//            writer.println("Result code: " + resultCode);
-//            writer.close();
-//            p.destroy();
-//        } catch (Exception e) {
-//        	logger.error("ERROR: " + e.getLocalizedMessage());
-//        	logger.error(e.getStackTrace());
-//        	return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + resultCode + " " + e.getLocalizedMessage())).build();
-//        }
     	if (resultCode == 0){
     		return Response.ok().entity(pubkeyResponse).build();
     	}

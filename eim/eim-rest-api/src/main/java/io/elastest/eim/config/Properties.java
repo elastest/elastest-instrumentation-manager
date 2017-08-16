@@ -15,7 +15,6 @@ package io.elastest.eim.config;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Enumeration;
 
 import org.apache.log4j.Logger;
 
