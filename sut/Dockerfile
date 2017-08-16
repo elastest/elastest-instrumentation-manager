@@ -4,6 +4,7 @@ RUN \
 	apt-get update && \
 	apt-get -y install apt-transport-https && \
 	apt-get -y install openssh-server && \
+	apt-get -y install vim && \
         useradd -ms /bin/bash elastest && \
 	usermod -aG sudo elastest && \
 	echo "elastest:elastest" | chpasswd && \
