@@ -66,4 +66,4 @@ The ElasTest Instrumentation Manager Platform is divide in three parts:
 
 In the next diagram, you can to see the ElasTest Instrumentation Manager Components Architecture.
 
-![ElasTest TORM Arquitecture](images/docker_environment_eim_r2.jpg.png)
+![ElasTest Instrumentation Manager Arquitecture](images/docker_environment_eim_r2.jpg)
