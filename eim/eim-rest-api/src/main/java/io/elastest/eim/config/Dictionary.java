@@ -6,7 +6,6 @@ public class Dictionary {
 	//PROPERTIES
 	
 	public static String PROPERTY_MONGODB_HOST = "mongoDB.host";
-	public static String PROPERTY_MONGODB_PORT = "mongoDB.port";
 	
 	public static String PROPERTY_PUBLICKEY_LOCATION = "publickey.location";
 	public static String PROPERTY_TEMPLATES_SSH_PLAYBOOK = "templates.ssh.playbook";
