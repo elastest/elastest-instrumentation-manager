@@ -47,9 +47,10 @@ services:
                         - elastest
 
         sut:
-                image: elastest/eim-sut:0.1
-                volumes:
-                        - static-content:/tmp/ssh
+                #image: elastest/eim-sut:0.1
+                image: dev/sut-v3
+                #                volumes:
+                        #                        - static-content:/tmp/ssh
                 depends_on:
                         - kibana
                 stdin_open: true
@@ -59,9 +60,10 @@ services:
                         - elastest
 
         eim:
-                image: elastest/eim:0.1
-                volumes:
-                        - static-content:/tmp/ssh 
+                #image: elastest/eim:0.1
+                image: dev/eim-v3
+                # volumes:
+                #       - static-content:/tmp/ssh 
                 depends_on:
                         - sut
                         - mongo
@@ -77,8 +79,8 @@ services:
                 networks:
                         - elastest
 
-volumes:
-        static-content:
+                          #volumes:
+        #        static-content:
 
 networks:
         elastest:

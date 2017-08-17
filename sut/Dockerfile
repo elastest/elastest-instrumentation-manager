@@ -10,10 +10,11 @@ RUN \
 	echo "elastest:elastest" | chpasswd && \
 	mkdir -p /var/run/sshd && \
 	mkdir -p /root/.ssh && \
-	mkdir -p /tmp/ssh && \
-	echo "service ssh start" >> /etc/bash.bashrc && \
+##	mkdir -p /tmp/ssh && \
+	echo "service ssh start" >> /etc/bash.bashrc 
+## && \
 #	printf "if [[ $EUID -eq 0 ]]; then\ncp /tmp/ssh/id_rsa.pub /root/.ssh/authorized_keys\nfi\n" >> /etc/bash.bashrc
-	echo "cp /tmp/ssh/id_rsa.pub /root/.ssh/authorized_keys 1> /dev/null" >> /etc/bash.bashrc
+##	echo "cp /tmp/ssh/id_rsa.pub /root/.ssh/authorized_keys 1> /dev/null" >> /etc/bash.bashrc
 
 EXPOSE 22
 

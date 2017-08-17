@@ -1,5 +1,6 @@
 #!/bin/bash
 
+ssh-keygen -q -t rsa -N '' -f /root/.ssh/id_rsa
 /etc/init.d/tomcat7 start
 
 # The container will run as long as the script is running, that's why

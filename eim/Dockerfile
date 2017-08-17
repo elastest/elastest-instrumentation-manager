@@ -33,11 +33,12 @@ RUN \
 	# tomcat7 is executed as root
 	sed -i 's/=tomcat7/=root/g' /etc/default/tomcat7 && \
 	# generate ssh keys
-	mkdir -p /tmp/ssh && \
-	echo "echo -e 'y\n' | ssh-keygen -q -t rsa -N '' -f /root/.ssh/id_rsa 1> /dev/null" >> /etc/bash.bashrc && \
+#	mkdir -p /tmp/ssh && \
+#	echo "echo -e 'y\n' | ssh-keygen -q -t rsa -N '' -f /root/.ssh/id_rsa 1> /dev/null" >> /etc/bash.bashrc && \
 #	echo "ssh-keygen -q -t rsa -N '' -f /root/.ssh/id_rsa" >> /etc/bash.bashrc && \ 
 	# copy generated public key
-	echo "cp /root/.ssh/id_rsa.pub /tmp/ssh" >> /etc/bash.bashrc
+#	echo "cp /root/.ssh/id_rsa.pub /tmp/ssh" >> /etc/bash.bashrc
+	mkdir -p /root/.ssh/
 
 # open default tomcat port
 EXPOSE 8080
