@@ -56,10 +56,7 @@ If you do not have git installed, you can also download the zip file from GithHu
 - `docker-compose -p eim up `
 - To stop EIM press `Ctrl+C` in the shell
 
-
-## Development documentation
-
-### Arquitecture
+## Architecture
 The ElasTest Instrumentation Manager Platform is divided in two parts:
 - EIM Server Application.
 - EIM Platform Services.
@@ -67,6 +64,8 @@ The ElasTest Instrumentation Manager Platform is divided in two parts:
 In the next diagram, you can to see the ElasTest Instrumentation Manager Components Architecture.
 
 ![ElasTest Instrumentation Manager Arquitecture](images/docker_environment_eim_r2.jpg)
+
+> **Note:** Take in account that when the environment are launched from docker-compose command, the SuT host does not have Beats installed and the EIM does not have any agent registered
 
 #### EIM Server Application.
 This application is the EIM backend that provides a REST API in order to interact the EIM with the ElasTest Instrumentation Agents deployed in the SuT. It is a Java Application developed with [JAX-RS](https://github.com/jax-rs), that uses [Ansible](https://www.ansible.com/) to automate tasks, in the current version: register Instrumentation Agents and deploy Beats software over a given SuT
