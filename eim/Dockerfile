@@ -47,7 +47,7 @@ COPY ansible/ssh/run-ssh-template.sh /var/ansible/ssh
 COPY ansible/beats/run-beats-template.sh /var/ansible/beats
 COPY ansible/beats/ansible-beats-master/playbook-beats-output-logstash-template.yml /var/ansible/beats/ansible-beats-master
 
-COPY elastest-eim/target/elastest-instrumentation-manager-0.0.1-SNAPSHOT.war /var/lib/tomcat7/webapps/eim.war
+#COPY elastest-eim/target/elastest-instrumentation-manager-0.0.1-SNAPSHOT.war /var/lib/tomcat7/webapps/eim.war
 COPY eim-rest-api/target/eim-rest-api-0.0.1-SNAPSHOT.war /var/lib/tomcat7/webapps/eim.war
 
 #RUN find /var/ansible/ssh/run-ssh.sh -type f -exec chmod 755 {} \; &&\
