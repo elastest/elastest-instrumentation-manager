@@ -47,8 +47,8 @@ services:
                         - elastest
 
         sut:
-                #image: elastest/eim-sut:0.1
-                image: dev/sut-v3
+                image: elastest/eim-sut:0.1
+                #image: dev/sut-v3
 #                volumes:
 #                        - static-content:/tmp/ssh
                 depends_on:
