@@ -69,6 +69,39 @@ You may obtain a copy of the License at
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
+Contribution policy
+-------------------
+
+You can contribute to the ElasTest community through bug-reports, bug-fixes,
+new code or new documentation. For contributing to the ElasTest community,
+you can use GitHub, providing full information about your contribution and its
+value. In your contributions, you must comply with the following guidelines
+
+* You must specify the specific contents of your contribution either through a
+  detailed bug description, through a pull-request or through a patch.
+* You must specify the licensing restrictions of the code you contribute.
+* For newly created code to be incorporated in the ElasTest code-base, you
+  must accept ElasTest to own the code copyright, so that its open source
+  nature is guaranteed.
+* You must justify appropriately the need and value of your contribution. The
+  ElasTest project has no obligations in relation to accepting contributions
+  from third parties.
+* The ElasTest project leaders have the right of asking for further
+  explanations, tests or validations of any code contributed to the community
+  before it being incorporated into the ElasTest code-base. You must be ready
+  to addressing all these kind of concerns before having your code approved.
+
+Support
+-------
+
+The ElasTest project provides community support through the [ElasTest Public
+Mailing List] and through [StackOverflow] using the tag *elastest*.
+
+
+<p align="center">
+  <img src="http://elastest.io/images/logos_elastest/ue_logo-small.png"><br>
+  Funded by the European Union
+</p>
 
 [Apache 2.0 License]: http://www.apache.org/licenses/LICENSE-2.0
 [ElasTest]: http://elastest.io/
