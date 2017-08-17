@@ -8,7 +8,7 @@ Copyright © 2017-2019 [Atos Spain]. Licensed under [Apache 2.0 License].
 
 elastest-instrumentation-manager (eim)
 ==============================
-The ElasTest Instrumentation Manager (EIM) component controls and orchestrates the Instrumentation Agents that are deployed in [ElasTest] platform. These agents instrument the operating system kernel of the SuT (Software under test) host instances. Thanks to it, the agent is capable of exposing two types of capabilities: 
+The ElasTest Instrumentation Manager (EIM) component controls and orchestrates the Instrumentation Agents that are deployed in [ElasTest] platform. These agents will instrument the operating system kernel of the SuT (Software under test) host instances. Thanks to it, the agent will be capable of exposing two types of capabilities: 
 1) Controllability, through which the agent can force custom behaviours on the host’s network, CPU utilization, memory consumption, process lifecycle management or system shutdown, etc.
 2) Observability, through which the Agent collects all information relevant for testing or monitoring purposes (e.g. energy consumption, resources utilization, etc.)
 
