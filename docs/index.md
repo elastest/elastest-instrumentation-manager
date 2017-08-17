@@ -60,10 +60,22 @@ If you do not have git installed, you can also download the zip file from GithHu
 ## Development documentation
 
 ### Arquitecture
-The ElasTest Instrumentation Manager Platform is divide in three parts:
+The ElasTest Instrumentation Manager Platform is divided in two parts:
 - EIM Server Application.
 - EIM Platform Services.
 
 In the next diagram, you can to see the ElasTest Instrumentation Manager Components Architecture.
 
 ![ElasTest Instrumentation Manager Arquitecture](images/docker_environment_eim_r2.jpg)
+
+#### EIM Server Application.
+This application is the EIM backend that provides a REST API in order to interact the EIM with the ElasTest Instrumentation Agents deployed in the SuT. It is a Java Application developed with [JAX-RS](https://github.com/jax-rs), that uses [Ansible](https://www.ansible.com/) to automate tasks, in the current version: register Instrumentation Agents and deploy Beats software over a given SuT
+
+#### EIM Platform Services.
+EIM uses several external components to implement the features it offers:
+
+- **[Mongo DB:](https://www.mongodb.com/)** The Database System that uses the EIM to store the persistent data, necessary to manage the Agents.
+- **[Elasticsearch:](https://www.elastic.co/products/elasticsearch)** As indicated on its website *"is a distributed, RESTful search and analytics engine capable of solving a growing number of use cases. As the heart of the Elastic Stack, it centrally stores your data "*.
+- **[Logstash:](https://www.elastic.co/products/logstash)** As indicated on its website *"It is a server-side data processing pipeline that ingests data from a multitude of sources simultaneously, transforms it, and then sends it to your favorite *stash*"*. EIM uses it to gather and parse logs and metrics produced in the SuT where Beats are deployed. The logs and metrics are sent to Elasticsearch.
+- **[Kibana:](https://www.elastic.co/products/kibana)** As indicated on its website *"Kibana lets you visualize your Elasticsearch data and navigate the Elastic Stack *". EIM uses it to visualize the data collected from Beats from SuT.
+- **SuT:** In order to provide something to test with, a ubuntu14.04 container is provided to interact with EIM Server Application.
