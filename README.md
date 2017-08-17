@@ -12,7 +12,7 @@ elastest-instrumentation-manager (eim)
 The ElasTest Instrumentation Manager (EIM) component controls and orchestrates the Instrumentation Agents that are deployed in ElasTest platform. These agents instrument the operating system kernel of the SuT (Software under test) host instances. Thanks to it, the agent is capable of exposing observability, through which the Agent collects all information relevant for testing or monitoring purposes (e.g. energy consumption, resources utilization, etc.) 
 
 ## Prerequisites
-It is mandatory to have the current software installed to be able to run the project:
+It is mandatory to have the following software installed to be able to run the project:
 - Docker Compose: https://docs.docker.com/compose/install/
 - Git: https://www.atlassian.com/git/tutorials/install-git
 
@@ -34,13 +34,25 @@ You can start this image using docker-compose. It will start the following:
 - A Logstash instance
 - A Kibana instance
 - A SuT instance (ubuntu14.04 based system used by EIM to actuate)
-- A Elastest Instrumentation Manager instance (web tool for monitoring and administering the Elasticsearch cluster )
+- A Elastest Instrumentation Manager instance (component to manage the Instrumentation Agents over the ElasTest platform)
 
 ### Launch environment
     docker-compose up
 
 Please note that it will take some time (in the order of several seconds - depending on your system) for all the services to be fully available.
    
+## Adding new Instrumentation Agent
+### Prerequisites 
+   - Ubuntu 14.04
+   - SSH server running
+   - elastest user created
+## Installing Beats in SuT host
+The EIM is able to deploy the following beats using the Instrumentation agents created in SuT:
+- packetbeat
+- filebeat
+- topbeat
+
+
 # What is ElasTest
 
 This repository is part of [ElasTest], which is an open source elastic platform
