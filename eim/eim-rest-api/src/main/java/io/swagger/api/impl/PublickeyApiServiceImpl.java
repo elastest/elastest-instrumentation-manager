@@ -38,8 +38,10 @@ public class PublickeyApiServiceImpl extends PublickeyApiService {
     public Response getPublickey(SecurityContext securityContext) throws NotFoundException {
 		int resultCode = -1;
 		String publickeyfile = Properties.getValue(Dictionary.PROPERTY_PUBLICKEY_LOCATION);
+				
+		//get ssh key
 		Publickey pubkeyResponse = null;
-		String cmd = "more /root/.ssh/id_rsa.pub";
+//		String cmd = "more /root/.ssh/id_rsa.pub";
 		logger.info("Getting the publickey from " + publickeyfile); 
 		String pubkey = "";
 		try {
