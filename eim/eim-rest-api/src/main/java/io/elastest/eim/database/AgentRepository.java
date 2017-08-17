@@ -25,6 +25,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 
+import io.elastest.eim.config.Dictionary;
 import io.elastest.eim.config.Properties;
 import io.swagger.model.AgentFull;
 
@@ -36,8 +37,8 @@ public class AgentRepository {
 	
 	public AgentRepository(){
 		MongoClient mongoClient = new MongoClient( 
-				Properties.getValue("mongoDB.host"), 
-				Integer.parseInt(Properties.getValue("mongoDB.port")));
+				Properties.getValue(Dictionary.PROPERTY_MONGODB_HOST), 
+				Integer.parseInt(Dictionary.PROPERTY_MONGODB_PORT));
 		DB db = mongoClient.getDB("eim");
 		collection = db.getCollection("agent");
 	}

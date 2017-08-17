@@ -21,6 +21,7 @@ import java.io.PrintWriter;
 
 import org.apache.log4j.Logger;
 
+import io.elastest.eim.config.Dictionary;
 import io.elastest.eim.config.Properties;
 import io.swagger.model.AgentFull;
 
@@ -31,12 +32,12 @@ public class TemplateUtils {
 	public static String generatePlaybook(String type, String executionDate, AgentFull agent) {
 		if (type.equalsIgnoreCase("ssh")) {
 			
-			String playbookTemplatePath = Properties.getValue("templates.ssh.executionPath") + 
-					Properties.getValue("templates.ssh.playbook");
-			String playbookToExecutePath = Properties.getValue("templates.ssh.executionPath") + 
-					Properties.getValue("templates.ssh.execution_playbook_prefix") + agent.getAgentId() + 
+			String playbookTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_PLAYBOOK);
+			String playbookToExecutePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTION_PLAYBOOK_PREFIX) + agent.getAgentId() + 
 					"-" + executionDate + ".yml";
-			String jokerTemplates = Properties.getValue("templates.playbook.joker");
+			String jokerTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_PLAYBOOK_JOKER);
 			
 			try {
 				//Generate the execution playbook
@@ -54,12 +55,12 @@ public class TemplateUtils {
 		}
 		else if (type.equalsIgnoreCase("beats")) {			
 
-			String playbookTemplatePath = Properties.getValue("templates.beats.playbookPath") + 
-					Properties.getValue("templates.beats.playbook");
-			String playbookToExecutePath = Properties.getValue("templates.beats.playbookPath") + 
-					Properties.getValue("templates.beats.execution_playbook_prefix") + agent.getAgentId() + 
+			String playbookTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_PLAYBOOKPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_PLAYBOOK);
+			String playbookToExecutePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_PLAYBOOKPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_EXECUTION_PLAYBOOK_PREFIX) + agent.getAgentId() + 
 					"-" + executionDate + ".yml";
-			String jokerTemplates = Properties.getValue("templates.playbook.joker");
+			String jokerTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_PLAYBOOK_JOKER);
 			
 			try {
 				//Generate the execution playbook
@@ -84,11 +85,11 @@ public class TemplateUtils {
 	public static String generateScript(String type, String executionDate, AgentFull agent, String playbookPath) {
 		if (type.equalsIgnoreCase("ssh")) {
 			
-			String scriptTemplatePath = Properties.getValue("templates.ssh.executionPath") + 
-					Properties.getValue("templates.ssh.launcher");
-			String scriptToExecutePath = Properties.getValue("templates.ssh.executionPath") + 
-					Properties.getValue("templates.ssh.execution_launcher_prefix") + agent.getAgentId() +"-" + executionDate + ".sh";
-			String jokerTemplates = Properties.getValue("templates.script.joker");
+			String scriptTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_LAUNCHER);
+			String scriptToExecutePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTION_LAUNCHER_PREFIX) + agent.getAgentId() +"-" + executionDate + ".sh";
+			String jokerTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER);
 			
 			try {
 				//Generate the execution playbook
@@ -111,11 +112,11 @@ public class TemplateUtils {
 		else if (type.equalsIgnoreCase("beats")) {
 			
 			
-			String scriptTemplatePath = Properties.getValue("templates.beats.executionPath") + 
-					Properties.getValue("templates.beats.launcher");
-			String scriptToExecutePath = Properties.getValue("templates.beats.executionPath") + 
-					Properties.getValue("templates.beats.execution_launcher_prefix") + agent.getAgentId() +"-" + executionDate + ".sh";
-			String jokerTemplates = Properties.getValue("templates.script.joker");
+			String scriptTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_EXECUTIONPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_LAUNCHER);
+			String scriptToExecutePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_EXECUTIONPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_EXECUTION_LAUNCHER_PREFIX) + agent.getAgentId() +"-" + executionDate + ".sh";
+			String jokerTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER);
 			
 			try {
 				//Generate the execution playbook
@@ -145,13 +146,13 @@ public class TemplateUtils {
 		int resultCode = -1;
 		String logFilePath = "";
 		if (type.equalsIgnoreCase("ssh")) { 
-			logFilePath = Properties.getValue("execution.logs.path") + 
-					Properties.getValue("execution.logs.ssh.prefix") + 
+			logFilePath = Properties.getValue(Dictionary.PROPERTY_EXECUTION_LOGS_PATH) + 
+					Properties.getValue(Dictionary.PROPERTY_EXECUTION_LOGS_SSH_PREFIX) + 
 					agent.getAgentId() +"_" + executionDate + ".log";
 		}
 		else if (type.equalsIgnoreCase("beats")) {
-			logFilePath = Properties.getValue("execution.logs.path") + 
-					Properties.getValue("execution.logs.beats.prefix") + 
+			logFilePath = Properties.getValue(Dictionary.PROPERTY_EXECUTION_LOGS_PATH) + 
+					Properties.getValue(Dictionary.PROPERTY_EXECUTION_LOGS_BEATS_PREFIX) + 
 					agent.getAgentId() +"_" + executionDate + ".log";
 		}
 		else {

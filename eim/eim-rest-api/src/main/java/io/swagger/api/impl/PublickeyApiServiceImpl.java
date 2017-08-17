@@ -23,6 +23,7 @@ import javax.ws.rs.core.SecurityContext;
 
 import org.apache.log4j.Logger;
 
+import io.elastest.eim.config.Dictionary;
 import io.elastest.eim.config.Properties;
 import io.swagger.api.ApiResponseMessage;
 import io.swagger.api.NotFoundException;
@@ -36,7 +37,7 @@ public class PublickeyApiServiceImpl extends PublickeyApiService {
 	@Override
     public Response getPublickey(SecurityContext securityContext) throws NotFoundException {
 		int resultCode = -1;
-		String publickeyfile = Properties.getValue("publickey.location");
+		String publickeyfile = Properties.getValue(Dictionary.PROPERTY_PUBLICKEY_LOCATION);
 		Publickey pubkeyResponse = null;
 		String cmd = "more /root/.ssh/id_rsa.pub";
 		logger.info("Getting the publickey from " + publickeyfile); 
