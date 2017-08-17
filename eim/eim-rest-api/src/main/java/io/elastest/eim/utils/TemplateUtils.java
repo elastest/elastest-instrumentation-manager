@@ -121,9 +121,8 @@ public class TemplateUtils {
 				//Generate the execution playbook
 				FileTextUtils.copyFile(scriptTemplatePath, scriptToExecutePath);
 				logger.info("Generated successfully the Beats script for agent" + agent.getAgentId() + ": " + scriptToExecutePath);
-				//Fill the playbook with the agentId of the agent and the command necessary to be able to execute the playbook
-				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerTemplates, playbookPath + 
-						"  --extra-vars \"ansible_become_pass= " +  Properties.getValue("user.elastest.password")+"\"");
+				
+				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerTemplates, playbookPath);
 				//set the file as executable
 				FileTextUtils.setAsExecutable(scriptToExecutePath);
 				logger.info("Modified successfully the generated Beats script for agent " + agent.getAgentId() + ". Ready to execute!");
