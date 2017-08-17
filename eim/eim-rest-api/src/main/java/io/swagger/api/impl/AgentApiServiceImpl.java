@@ -14,12 +14,10 @@
 
 package io.swagger.api.impl;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -50,8 +48,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 	
     @Override
     public Response deleteAgentByID(String agentId, SecurityContext securityContext) throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "This method will delete agent")).build();
     }
     @Override
     public Response getAgentByID(String agentId, SecurityContext securityContext) throws NotFoundException {
@@ -62,11 +59,11 @@ public class AgentApiServiceImpl extends AgentApiService {
         else {
         	return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "it has not been possible to retrieve info, check logs please!")).build();
         }
-//        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
     }
+    
+    
     @Override
     public Response getAllAgents(SecurityContext securityContext) throws NotFoundException {
-        // do some magic!
     	List<AgentFull> agents = agentDb.findAll();
         if (agents != null){
     		return Response.ok().entity(agents).build();
@@ -178,7 +175,6 @@ public class AgentApiServiceImpl extends AgentApiService {
 		    	return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Check logs please!")).build();
 			}
     	}
-    	
-//    		return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
     }
+    
 }
