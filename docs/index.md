@@ -104,7 +104,7 @@ B. SSH server up and running:
 1. Log into EIM's container: `docker ps -a eim_eim_1 /bin/bash`
 2. Connect to SuT host with SSH command: `ssh -oStrictHostKeyChecking=no root@<sut_ip_address>`. If this command is not executed, the EIM will not be able to connect with SuT because of host key issue.
 3. Get the SSH public key from EIM using the REST API call doing a `GET` to `http://localhost:8080/eim/api/publickey`. Get the SSH public key and paste it, inside `/root/.ssh/authorized_keys` file in SuT.
-4. Using the REST API call execute a `POST`to `http://localhost:8080/eim/agent` and sending as body request the information about new host:
+4. Using the REST API execute a `POST`to `http://localhost:8080/eim/agent` and sending as body request the information about new host:
 `{"address": "172.21.0.6"}`
 5. If everything works fine, the information about new agent is returned:
 `{"agentId":"iagent1","host":"172.21.0.6","monitored":false}`
@@ -113,9 +113,18 @@ B. SSH server up and running:
 8. Check that the new agent is created in mongoDB database `eim` in table `agent`. For this task, [Robomongo](https://robomongo.org/) is a good choice. The database connection details is `http://localhost:27017/`
     
 ### Deploy Beats over the SuT
-The EIM is able to deploy the following beats using the Instrumentation agents created in SuT:
-- packetbeat
-- filebeat
-- topbeat
+The EIM is able to deploy the following Beats using the Instrumentation agents created in SuT:
+- [Packetbeat](https://www.elastic.co/products/beats/packetbeat)
+- [Filebeat](https://www.elastic.co/products/beats/filebeat)
+- [Topbeat](https://www.elastic.co/products/beats/topbeat)
 
-### Get Instrumentation Agents from EIM
+#### Step by step 
+1. The agent must be registered on EIM (previous feature)
+2. Using the REST API execute a `POST`to `http://localhost:8080/eim/agent/<agentId>/monitor`
+3. If everything works fine, the information about new agent is returned:
+`{"agentId":"iagent1","host":"172.21.0.6","monitored":true}`
+> **Note:** Using the data from previous example
+4. Log file available: `/var/log/eim` with this format `/var/log/eim/beats_<agentId>_<execution_date>`
+5. Files executed available in `/var/ansible/beats`
+6. Check that Beats data are received by Logstash (in the shell that appears the messages of all containers deployed)
+7. Check that Beats data can be also shown in kibana(http://localhost:5601/app/kibana)
