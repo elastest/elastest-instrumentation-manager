@@ -10,8 +10,10 @@ Before you start using ElasTest, you need to know the following terms:
 ## Features
 The version 0.1 of the EIM, provides the following features:
 
-- Register Instrumentation Agents. 
+- Register new Instrumentation Agent. 
 - Deploy [Beats](https://www.elastic.co/products/beats) software over the SuT.  
+
+>**Note:** All tests has been done using ubuntu14.04 as operating system.
 
 ## How to run
 To start using EIM, you need to follow the next steps. Several of these steps, are specific for Windows or Linux Operating Systems.
@@ -68,7 +70,7 @@ In the next diagram, you can to see the ElasTest Instrumentation Manager Compone
 > **Note:** Take in account that when the environment are launched from docker-compose command, the SuT host does not have Beats installed and the EIM does not have any agent registered
 
 #### EIM Server Application.
-This application is the EIM backend that provides a REST API in order to interact the EIM with the ElasTest Instrumentation Agents deployed in the SuT. It is a Java Application developed with [JAX-RS](https://github.com/jax-rs), that uses [Ansible](https://www.ansible.com/) to automate tasks, in the current version: register Instrumentation Agents and deploy Beats software over a given SuT
+This application is the EIM backend that provides a REST API in order to interact the EIM with the ElasTest Instrumentation Agents deployed in the SuT. It is a Java Application developed with [JAX-RS](https://github.com/jax-rs), that uses [Ansible](https://www.ansible.com/) to automate tasks, in the current version: register new Instrumentation Agents and deploy Beats software over a given SuT
 
 #### EIM Platform Services.
 EIM uses several external components to implement the features it offers:
@@ -78,3 +80,38 @@ EIM uses several external components to implement the features it offers:
 - **[Logstash:](https://www.elastic.co/products/logstash)** As indicated on its website *"It is a server-side data processing pipeline that ingests data from a multitude of sources simultaneously, transforms it, and then sends it to your favorite *stash*"*. EIM uses it to gather and parse logs and metrics produced in the SuT where Beats are deployed. The logs and metrics are sent to Elasticsearch.
 - **[Kibana:](https://www.elastic.co/products/kibana)** As indicated on its website *"Kibana lets you visualize your Elasticsearch data and navigate the Elastic Stack *". EIM uses it to visualize the data collected from Beats from SuT.
 - **SuT:** In order to provide something to test with, a ubuntu14.04 container is provided to interact with EIM Server Application.
+
+## Basic usage
+
+Let's go into detail with all the available features that EIM can be done
+
+### Register new Instrumentation Agent
+EIM is able to register new Instrumentation Agent received from REST API exposed, to do this, the SuT host that will be added must have the SSH public key of the EIM in `/root/.ssh/authorized_keys` file, in order that *elastest* user can execute actions in this Sut host.
+
+#### SuT Prerequisites
+A. *elastest* user created with *elastest* password:
+- create the user: `useradd -ms /bin/bash elastest`
+- add the user to sudo group: `usermod -aG sudo elastest`
+- set elastest as password: `echo "elastest:elastest" | chpasswd`
+
+B. SSH server up and running:
+- install SSH server: `apt-get -y install openssh-server && apt-get -y install apt-transport-https`
+- start service: `service ssh start`
+
+#### Step by step 
+1. Log into EIM's container: `docker ps -a eim_eim_1 /bin/bash`
+2. Connect to SuT host with SSH command: `ssh -oStrictHostKeyChecking=no root@<sut_ip_address>`. If this command is not executed, the EIM will not be able to connect with SuT because of host key issue.
+3. Get the SSH public key from EIM using the REST API call: ``
+(get access as superuser)    Install [Docker Toolbox for windows](https://docs.docker.com/toolbox/toolbox_install_windows/).
+Start Boo2docker Virtual Machine from Virtual Box GUI and connect via ssh. Execute `docker-machine ssh` from power shell or any terminal emulator. 
+2.  Install [Docker Compose](https://docs.docker.com/compose/install/.) on the Virtual Machine Boot2docker created by Docker Toolbox installation. 
+    - `sudo -i` (get access as superuser)    
+    - ``curl -L https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docke``
+    
+### Deploy Beats over the SuT
+The EIM is able to deploy the following beats using the Instrumentation agents created in SuT:
+- packetbeat
+- filebeat
+- topbeat
+
+### Get Instrumentation Agents from EIM
