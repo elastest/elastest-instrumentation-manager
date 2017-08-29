@@ -120,7 +120,7 @@ The EIM is able to deploy the following Beats using the Instrumentation agents c
 
 #### Step by step 
 1. The agent must be registered on EIM (previous feature)
-2. Using the REST API execute a `POST`to `http://localhost:8080/eim/agent/<agentId>/monitor`. The operation will can take 10 minutes to finish, so be patient and wait the result please.
+2. Using the REST API execute a `POST`to `http://localhost:8080/eim/agent/<agentId>/monitor`. The installation time depends of the number of packets to download and install, and also the bandwith and the latency to repositories.
 3. If everything works fine, the information about new agent is returned:
 `{"agentId":"iagent1","host":"172.21.0.6","monitored":true}`
 > **Note:** Using the data from previous example
