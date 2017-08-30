@@ -140,7 +140,7 @@ Then, install the following development tools:
 - [Maven 3.5.0](https://maven.apache.org/download.cgi)
 - [Eclipse IDE](https://eclipse.org/ide/) or similar for Java development.
 
-Last, clone the repositorie in a local folder (for example, `/git`):
+Last, clone the repository in a local folder (for example, `/git`):
 
 ```
 cd /git
