@@ -58,29 +58,6 @@ If you do not have git installed, you can also download the zip file from GithHu
 - `docker-compose -p eim up `
 - To stop EIM press `Ctrl+C` in the shell
 
-## Architecture
-The ElasTest Instrumentation Manager Platform is divided in two parts:
-- EIM Server Application.
-- EIM Platform Services.
-
-In the next diagram, you can to see the ElasTest Instrumentation Manager Components Architecture.
-
-![ElasTest Instrumentation Manager Arquitecture](images/docker_environment_eim_r2.jpg)
-
-> **Note:** Take in account that when the environment are launched from docker-compose command, the SuT host does not have Beats installed and the EIM does not have any agent registered
-
-#### EIM Server Application.
-This application is the EIM backend that provides a REST API in order to interact the EIM with the ElasTest Instrumentation Agents deployed in the SuT. It is a Java Application developed with [JAX-RS](https://github.com/jax-rs), that uses [Ansible](https://www.ansible.com/) to automate tasks, in the current version: register new Instrumentation Agents and deploy Beats software over a given SuT
-
-#### EIM Platform Services.
-EIM uses several external components to implement the features it offers:
-
-- **[Mongo DB:](https://www.mongodb.com/)** The Database System that uses the EIM to store the persistent data, necessary to manage the Agents.
-- **[Elasticsearch:](https://www.elastic.co/products/elasticsearch)** As indicated on its website *"is a distributed, RESTful search and analytics engine capable of solving a growing number of use cases. As the heart of the Elastic Stack, it centrally stores your data "*.
-- **[Logstash:](https://www.elastic.co/products/logstash)** As indicated on its website *"It is a server-side data processing pipeline that ingests data from a multitude of sources simultaneously, transforms it, and then sends it to your favorite *stash*"*. EIM uses it to gather and parse logs and metrics produced in the SuT where Beats are deployed. The logs and metrics are sent to Elasticsearch.
-- **[Kibana:](https://www.elastic.co/products/kibana)** As indicated on its website *"Kibana lets you visualize your Elasticsearch data and navigate the Elastic Stack *". EIM uses it to visualize the data collected from Beats from SuT.
-- **SuT:** In order to provide something to test with, a ubuntu14.04 container is provided to interact with EIM Server Application.
-
 ## Basic usage
 
 Let's go into detail with all the available features that EIM can be done
@@ -128,3 +105,48 @@ The EIM is able to deploy the following Beats using the Instrumentation agents c
 5. Files executed available in `/var/ansible/beats`
 6. Check that Beats data are received by Logstash (in the shell that appears the messages of all containers deployed)
 7. Check that Beats data can be also shown in kibana(http://localhost:5601/app/kibana)
+
+## Development documentation
+
+### Architecture
+The ElasTest Instrumentation Manager Platform is divided in two parts:
+- EIM Server Application.
+- EIM Platform Services.
+
+In the next diagram, you can to see the ElasTest Instrumentation Manager Components Architecture.
+
+![ElasTest Instrumentation Manager Arquitecture](images/docker_environment_eim_r2.jpg)
+
+> **Note:** Take in account that when the environment are launched from docker-compose command, the SuT host does not have Beats installed and the EIM does not have any agent registered
+
+#### EIM Server Application.
+This application is the EIM backend that provides a REST API in order to interact the EIM with the ElasTest Instrumentation Agents deployed in the SuT. It is a Java Application developed with [JAX-RS](https://github.com/jax-rs), that uses [Ansible](https://www.ansible.com/) to automate tasks, in the current version: register new Instrumentation Agents and deploy Beats software over a given SuT
+
+#### EIM Platform Services.
+EIM uses several external components to implement the features it offers:
+
+- **[Mongo DB:](https://www.mongodb.com/)** The Database System that uses the EIM to store the persistent data, necessary to manage the Agents.
+- **[Elasticsearch:](https://www.elastic.co/products/elasticsearch)** As indicated on its website *"is a distributed, RESTful search and analytics engine capable of solving a growing number of use cases. As the heart of the Elastic Stack, it centrally stores your data "*.
+- **[Logstash:](https://www.elastic.co/products/logstash)** As indicated on its website *"It is a server-side data processing pipeline that ingests data from a multitude of sources simultaneously, transforms it, and then sends it to your favorite *stash*"*. EIM uses it to gather and parse logs and metrics produced in the SuT where Beats are deployed. The logs and metrics are sent to Elasticsearch.
+- **[Kibana:](https://www.elastic.co/products/kibana)** As indicated on its website *"Kibana lets you visualize your Elasticsearch data and navigate the Elastic Stack *". EIM uses it to visualize the data collected from Beats from SuT.
+- **SuT:** In order to provide something to test with, a ubuntu14.04 container is provided to interact with EIM Server Application.
+
+### Prepare development environment
+
+First, be sure you can execute EIM in production as specified in section [How to run].
+
+Then, install the following development tools:
+- [Java JDK 7](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html)
+- [Maven 3.5.0](https://maven.apache.org/download.cgi)
+- [Eclipse IDE](https://eclipse.org/ide/) or similar for Java development.
+
+Last, clone the repositorie in a local folder (for example, `/git`):
+
+```
+cd /git
+git clone https://github.com/elastest/elastest-instrumentation-manager
+```
+
+> **Note:** In windows, only folders within `C:\Users\` can be used inside Docker VM. If you clone the git repository outside of `C:\Users\`, then you need to share git folder with the VM in VirtualBox interface following [these instructions](http://support.divio.com/local-development/docker/how-to-use-a-directory-outside-cusers-with-docker-toolbox-on-windows).
+
+
