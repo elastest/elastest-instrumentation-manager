@@ -78,7 +78,7 @@ B. SSH server up and running:
 - start service: `service ssh start`
 
 #### Step by step 
-1. Log into EIM's container: `docker ps -a eim_eim_1 /bin/bash`
+1. Log into EIM's container: `docker exec -it eim_eim_1 /bin/bash`
 2. Connect to SuT host with SSH command: `ssh -oStrictHostKeyChecking=no root@<sut_ip_address>`. If this command is not executed, the EIM will not be able to connect with SuT because of host key issue.
 3. Get the SSH public key from EIM using the REST API call doing a `GET` to `http://localhost:8080/eim/api/publickey`. Get the SSH public key and paste it, inside `/root/.ssh/authorized_keys` file in SuT.
 4. Using the REST API execute a `POST`to `http://localhost:8080/eim/agent` and sending as body request the information about new host:
