@@ -79,7 +79,7 @@ B. SSH server up and running:
 
 #### Step by step 
 1. Log into EIM's container: `docker exec -it eim_eim_1 /bin/bash`
-2. Connect to SuT host with SSH command: `ssh -oStrictHostKeyChecking=no root@<sut_ip_address>`. If this command is not executed, the EIM will not be able to connect with SuT because of host key issue.
+2. Connect to SuT host with SSH command: `ssh -oStrictHostKeyChecking=no root@<sut_ip_address>`. If this command is not executed, the EIM will not be able to connect with SuT because of host key issue. The main point of this command is that the message `Warning: Permanently added <sut_ip> (ECDSA) to the list of known hosts` appears, we do not have to connect to the EIM, just cancel de request pressing `Ctrl+C` in the shell.
 3. Get the SSH public key from EIM using the REST API call doing a `GET` to `http://localhost:8080/eim/api/publickey`. Get the SSH public key and paste it, inside `/root/.ssh/authorized_keys` file in SuT.
 4. Using the REST API execute a `POST`to `http://localhost:8080/eim/api/agent` and sending as body request the information about new host:
 `{"address": "172.21.0.6"}`. The call to the API must has as headers: `Accept: application/json, Content-Type: application/json`
