@@ -81,7 +81,7 @@ B. SSH server up and running:
 1. Log into EIM's container: `docker exec -it eim_eim_1 /bin/bash`
 2. Connect to SuT host with SSH command: `ssh -oStrictHostKeyChecking=no root@<sut_ip_address>`. If this command is not executed, the EIM will not be able to connect with SuT because of host key issue.
 3. Get the SSH public key from EIM using the REST API call doing a `GET` to `http://localhost:8080/eim/api/publickey`. Get the SSH public key and paste it, inside `/root/.ssh/authorized_keys` file in SuT.
-4. Using the REST API execute a `POST`to `http://localhost:8080/eim/agent` and sending as body request the information about new host:
+4. Using the REST API execute a `POST`to `http://localhost:8080/eim/api/agent` and sending as body request the information about new host:
 `{"address": "172.21.0.6"}`
 5. If everything works fine, the information about new agent is returned:
 `{"agentId":"iagent1","host":"172.21.0.6","monitored":false}`
@@ -97,7 +97,7 @@ The EIM is able to deploy the following Beats using the Instrumentation agents c
 
 #### Step by step 
 1. The agent must be registered on EIM (previous feature)
-2. Using the REST API execute a `POST`to `http://localhost:8080/eim/agent/<agentId>/monitor`. The installation time depends of the number of packets to download and install, and also the bandwith and the latency to repositories.
+2. Using the REST API execute a `POST`to `http://localhost:8080/eim/api/agent/<agentId>/monitor`. The installation time depends of the number of packets to download and install, and also the bandwith and the latency to repositories.
 3. If everything works fine, the information about new agent is returned:
 `{"agentId":"iagent1","host":"172.21.0.6","monitored":true}`
 > **Note:** Using the data from previous example
