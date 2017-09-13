@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+        mongo:
+                image: mvertes/alpine-mongo
+                expose: 
+                        - 27017
+                ports: 
+                        - "27017:27017"
+                hostname: mongo 
+                stdin_open: true
+                tty: true
+                networks:
+                        - elastest
+
+        eim:
+                image: elastest/eim:0.1
+                depends_on:
+                        - sut
+                        - mongo
+                links:
+                        - mongo
+                stdin_open: true
+                tty: true
+                expose:
+                        - 8080
+                ports:
+                        - "8080:8080" 
+                networks:
+                        - elastest
+
+networks:
+        elastest:
+                driver: bridge
