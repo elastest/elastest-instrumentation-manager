@@ -12,24 +12,20 @@ services:
                 tty: true
                 networks:
                         - elastest
-        eim:
                 image: elastest/eim:0.1
-                # volumes:
-                #       - static-content:/tmp/ssh 
                 depends_on:
                         - mongo
                 links:
                         - mongo
                 stdin_open: true
                 tty: true
+                expose:
+                        - 8080
                 ports:
                         - "8081:8080" 
-                #hostname: eim
                 networks:
                         - elastest
 
-
 networks:
         elastest:
-                # external: true
                 driver: bridge
