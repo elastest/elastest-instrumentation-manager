@@ -12,6 +12,7 @@ services:
                 tty: true
                 networks:
                         - elastest
+        eim:
                 image: elastest/eim:0.1
                 depends_on:
                         - mongo
