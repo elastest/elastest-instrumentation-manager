@@ -25,10 +25,10 @@ services:
                         - ET_EDM_MYSQL_HOST=edm-mysql
                         - ET_EDM_MYSQL_PORT=3306
                         - ET_EDM_ELASTICSEARCH_API=http://edm-elasticsearch:9200/
-                        - ET_EDM_API=http://edm:37001/
-                        - ET_EPM_API=http://epm:37001/
-                        - ET_ETM_API=http://etm:37001/
-                        - ET_ESM_API=http://esm:37001/
+                        - ET_EDM_API=http://edm:37003/
+                        - ET_EPM_API=http://epm:37002/
+                        - ET_ETM_API=http://etm:37006/
+                        - ET_ESM_API=http://esm:37005/
                 expose:
                         - 8080
                 ports:
