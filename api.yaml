@@ -230,11 +230,11 @@ definitions:
     description: This entity defines an agent.
   Host:
    type: object
-    required:
+   required:
       - address
       - user
       - private_key
-    properties:
+   properties:
       address:
         type: string
         example: 172.19.0.4
