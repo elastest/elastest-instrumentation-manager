@@ -38,6 +38,12 @@ public class Host   {
   @JsonProperty("address")
   private String address = null;
 
+  @JsonProperty("user")
+  private String user = null;
+
+  @JsonProperty("private_key")
+  private String privateKey = null;
+  
   public Host address(String address) {
     this.address = address;
     return this;
@@ -58,6 +64,45 @@ public class Host   {
     this.address = address;
   }
 
+  public Host user(String user) {
+	    this.user = user;
+	    return this;
+	  }
+
+	  /**
+	   * Get user
+	   * @return user
+	   **/
+	  @JsonProperty("user")
+	  @ApiModelProperty(example = "root", required = true, value = "")
+	  @NotNull
+	  public String getUser() {
+	    return user;
+	  }
+
+	  public void setUser(String user) {
+	    this.user = user;
+	  }
+
+	  public Host privateKey(String privateKey) {
+	    this.privateKey = privateKey;
+	    return this;
+	  }
+
+	  /**
+	   * Get privateKey
+	   * @return privateKey
+	   **/
+	  @JsonProperty("private_key")
+	  @ApiModelProperty(example = "-----BEGIN RSA PRIVATE KEY----- MIIEowIBAAKCAQEA6gMhsrpGOrl32UXceDM01kaoxtiQ5B527QLrL0h26GQWfqzG RXcRMTq8anxUyPyXyY1AXuKJbaq9wHpOL3l5w1pT1EGYv7x+py+MGG1NkY4lprAQ c3p8CslHlau3Ac0EL+bQUDfyrxFOGJFjfVxJYb94FfjlQNgCAwxX9F+VvF9c1/Be I5vjujGytcKrccZz1f71VgKF2WqdCmFj9gaEm09Vq9Mr3vHaQJpSfsbI2JBdtLNS UAWZGwXO9wOdlv3eL64oAwoUSOI8o7gjnHUN9xhO89BS56HiAIOVcRiTcZcK2rtL iI5qciu7n1zASGmDRwI6mhbXVufv96KHnrhuRQIDAQABAoIBAQDIkbSRRnypGovx aqJjV6hCu78u5zGQg9f0nprLJPXdiuOI4TbzFPFkW25gan4U4gKK2olAijO2DjCi x3E52YkWedX9x9dPBxUa4HLYAN8KEWaN7ru67lFgwVGco9ewMHMVR2RmTP2xNUjV X8+BA9dVc1FOq8x6fmmDCVJdfouNLh+Dka6oy//TL+dzOhYvzZ+kYiUjVO4LUnia yW5/OSC8U23AuoTfzZQ79i8d8rsLNNeIaQ/UlyEa+beO5AK+B+b+RLC8U4Tz0W9f EBY1ERXwZbT6NYjoN4d36vfQ9HhAhlYeS7b/75UdECwWk9M9z5sUh1s+U2XDMfSJ F8OyBMRlAoGBAPdIatuq1A8y3H3/184qH1KK750MU2Ziwomv03d1Bi6d8VOL45Rq cguEyYh334baQsva0UKhpkHF3f83x6PK/kjgp03CVzLUnv+XVKbpHpTy+Z/S7jYL fIWgaC/0+NTAJVEsMjJREqvDF+rYnzX3vOoQ8BMlgceKr0It878NqSWXAoGBAPJC 9FVo1LKhB4GsN3OT+Uufk04lK0I6IDnCOn9OuFF68t61JclsEyyuA3a6jVMOlmeO ZhmzPEgWWD3j40P2CK85+0twPwEyGE0hLGBezusqd+eg2MPGgBWICuGXP78uSj/x dXRLryYYb8kSGpLYCZ4nzvfj3VtsIdHRvTMooZ6DAoGAHN1lK9MbAdMsDcEpjbU5 BseVBL4FljP9BVly08TjPdnN67SukgqC2XlclQN5IiKkHWujdaWs5IyWR05ZjXMK j7M5lEgVKafMD4W4qesYWMasAM38ZG6e0HJS9xYfXaY4NOt1yI3SIh6Z0h4LJ5+N e70SaQm9xm8X2h/HDgwoLG0CgYB2MK4NQSCLqT4FSGShMW7tMwPlmwKYw8zXAOgT Fe+caNQ2TMALnXtZT+gGs4qhG7vK99Dd9vCQ5r3UK+rDTDP+cNYlfrRuO+dZMbb5 qSdf2Y835OP710rDtmRAnM6P0eCNg5pey1G+zysyOG/YdidzDk7N51Al+wIg4Cdi 3w7CSwKBgEdJQI9TyL7eNU4eVpAeCmy7cJ94inDsRPIEGyisO+z0cJfl9JRfPSGn IdWKdL53JCcWSmo6xQ4NcUcZWlIPUjuhQAyB1pOhkMGSUiUmjrVc5w6Ch8wfF7b6 O8xWtZamHHPYTN++RhRVp9AYV8/CSpYwxafiZz5V2h3t/Ipu/x9U -----END RSA PRIVATE KEY-----", required = true, value = "")
+	  @NotNull
+	  public String getPrivateKey() {
+	    return privateKey;
+	  }
+
+	  public void setPrivateKey(String privateKey) {
+	    this.privateKey = privateKey;
+	  }
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -68,7 +113,9 @@ public class Host   {
       return false;
     }
     Host host = (Host) o;
-    return Objects.equals(this.address, host.address);
+    return Objects.equals(this.address, host.address) &&
+            Objects.equals(this.user, host.user) &&
+            Objects.equals(this.privateKey, host.privateKey);
   }
 
   @Override
@@ -83,6 +130,8 @@ public class Host   {
     sb.append("class Host {\n");
     
     sb.append("    address: ").append(toIndentedString(address)).append("\n");
+    sb.append("    user: ").append(toIndentedString(user)).append("\n");
+    sb.append("    privateKey: ").append(toIndentedString(privateKey)).append("\n");
     sb.append("}");
     return sb.toString();
   }
