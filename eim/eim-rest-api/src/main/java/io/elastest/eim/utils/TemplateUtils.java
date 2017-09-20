@@ -82,21 +82,24 @@ public class TemplateUtils {
 	}
 	
 	
-	public static String generateScript(String type, String executionDate, AgentFull agent, String playbookPath) {
+	public static String generateScript(String type, String executionDate, AgentFull agent, String playbookPath, String ansibleCfgFilePath) {
 		if (type.equalsIgnoreCase("ssh")) {
 			
 			String scriptTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
 					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_LAUNCHER);
 			String scriptToExecutePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
 					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTION_LAUNCHER_PREFIX) + agent.getAgentId() +"-" + executionDate + ".sh";
-			String jokerTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER);
+			String jokerPlaybookTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER_PLAYBOOK);
+			String jokerCfgFileTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER_CONFIG);
 			
 			try {
 				//Generate the execution playbook
 				FileTextUtils.copyFile(scriptTemplatePath, scriptToExecutePath);
 				logger.info("Generated successfully the SSH script for agent" + agent.getAgentId() + ": " + scriptToExecutePath);
 				//Fill the playbook with the agentId of the agent
-				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerTemplates, playbookPath);
+				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerPlaybookTemplates, playbookPath);
+				//Fill the playbook with the specific ansible config file of the agent
+				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerCfgFileTemplates, ansibleCfgFilePath);
 				//set the file as executable
 				FileTextUtils.setAsExecutable(scriptToExecutePath);
 				logger.info("Modified successfully the generated SSH script for agent " + agent.getAgentId() + ". Ready to execute!");
@@ -116,7 +119,7 @@ public class TemplateUtils {
 					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_LAUNCHER);
 			String scriptToExecutePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_EXECUTIONPATH) + 
 					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_EXECUTION_LAUNCHER_PREFIX) + agent.getAgentId() +"-" + executionDate + ".sh";
-			String jokerTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER);
+			String jokerTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER_PLAYBOOK);
 			
 			try {
 				//Generate the execution playbook

@@ -23,13 +23,14 @@ public class SshTemplateManager {
 
 	private static Logger logger = Logger.getLogger(SshTemplateManager.class);
 	
-	String executionDate = "";
-	
+	private String executionDate = "";
 	private AgentFull agent;
+	private String cfgFilePath = "";
 	
-	public SshTemplateManager(AgentFull agent, String executionDate) {
+	public SshTemplateManager(AgentFull agent, String executionDate, String cfgFilePath) {
 		this.agent = agent;
 		this.executionDate = executionDate;
+		this.cfgFilePath = cfgFilePath;
 	}
 	
 	public int execute() {
@@ -37,7 +38,7 @@ public class SshTemplateManager {
 		//generate files for execution: playbook and script
 		String generatedPlaybookPath = TemplateUtils.generatePlaybook("ssh", executionDate, agent);
 		if (generatedPlaybookPath != "") {
-			String generatedScriptPath = TemplateUtils.generateScript("ssh", executionDate, agent, generatedPlaybookPath);	
+			String generatedScriptPath = TemplateUtils.generateScript("ssh", executionDate, agent, generatedPlaybookPath, cfgFilePath);	
 			if (generatedScriptPath != null) {
 				//execute generated files
 				return TemplateUtils.executeScript("ssh", generatedScriptPath, executionDate, agent);

@@ -115,4 +115,18 @@ public class AgentApi  {
     throws NotFoundException {
         return delegate.putAgent(agentId,securityContext);
     }
+    
+//    @GET
+//    @Path("/publickey")
+//    @Consumes({ "application/json" })
+//    @Produces({ "application/json" })
+//    @io.swagger.annotations.ApiOperation(value = "Retrieve public key", notes = "A client retrieves public key", response = void.class, tags={  })
+//    @io.swagger.annotations.ApiResponses(value = { 
+//        @io.swagger.annotations.ApiResponse(code = 200, message = "Publickey retrieved successfully", response = void.class),
+//        
+//        @io.swagger.annotations.ApiResponse(code = 200, message = "Unexpected error", response = void.class) })
+//    public Response getPublickey(@Context SecurityContext securityContext)
+//    throws NotFoundException {
+//        return delegate.getPublickey(securityContext);
+//    }
 }

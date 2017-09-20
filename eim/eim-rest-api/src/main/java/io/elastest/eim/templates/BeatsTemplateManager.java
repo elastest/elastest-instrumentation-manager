@@ -36,7 +36,7 @@ private static Logger logger = Logger.getLogger(BeatsTemplateManager.class);
 		//generate files for execution: playbook and script
 		String generatedPlaybookPath = TemplateUtils.generatePlaybook("beats", executionDate, agent);
 		if (generatedPlaybookPath != "") {
-			String generatedScriptPath = TemplateUtils.generateScript("beats", executionDate, agent, generatedPlaybookPath);	
+			String generatedScriptPath = TemplateUtils.generateScript("beats", executionDate, agent, generatedPlaybookPath, "");	
 			if (generatedScriptPath != null) {
 				//execute generated files
 				return TemplateUtils.executeScript("beats", generatedScriptPath, executionDate, agent);
