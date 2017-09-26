@@ -152,6 +152,9 @@ public class AgentApiServiceImpl extends AgentApiService {
 			        	keyPrintWriter.println(body.getPrivateKey());
 			        	keyPrintWriter.close();
 			        	
+			        	//set the privileges to the private key in order that the file is read only
+			        	FileTextUtils.setAsReadOnly(privateKeyPath);
+			        	
 			        	//write ansible cfg file for the host
 			        	String ansibleFileCfgPath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
 			        			Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_HOSTS_FOLDER) +

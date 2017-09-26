@@ -169,4 +169,15 @@ public class FileTextUtils {
 	}
 	
 	
+	public static void setAsReadOnly(String filePath) throws IOException {
+		
+		//using PosixFilePermission to set file permissions 755
+        Set<PosixFilePermission> perms = new HashSet<PosixFilePermission>();
+        //add owners permission
+        perms.add(PosixFilePermission.OWNER_READ);
+        
+        Files.setPosixFilePermissions(Paths.get(filePath), perms);
+        logger.info("Modified as readOnly by owner: " + filePath);
+		
+	}
 }
