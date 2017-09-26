@@ -10,6 +10,7 @@ public class Dictionary {
 	public static String PROPERTY_PUBLICKEY_LOCATION = "publickey.location";
 	public static String PROPERTY_TEMPLATES_SSH_PLAYBOOK = "templates.ssh.playbook";
 	public static String PROPERTY_TEMPLATES_PLAYBOOK_JOKER = "templates.playbook.joker";
+	public static String PROPERTY_TEMPLATES_USER_JOKER = "templates.user.joker";
 	public static String PROPERTY_TEMPLATES_SCRIPT_JOKER_PLAYBOOK = "templates.script.joker.playbook";
 	public static String PROPERTY_TEMPLATES_SCRIPT_JOKER_CONFIG = "templates.script.joker.config";
 	public static String PROPERTY_TEMPLATES_SSH_EXECUTION_PLAYBOOK_PREFIX = "templates.ssh.execution_playbook_prefix";

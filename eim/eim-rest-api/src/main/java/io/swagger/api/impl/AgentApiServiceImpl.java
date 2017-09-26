@@ -173,7 +173,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 			        		            
 			            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 			            String executionDate = sdf.format(timestamp);
-			            SshTemplateManager sshTemplateManager = new SshTemplateManager(agent, executionDate, ansibleFileCfgPath);
+			            SshTemplateManager sshTemplateManager = new SshTemplateManager(agent, executionDate, ansibleFileCfgPath, body.getUser());
 			            status = sshTemplateManager.execute();
 			            if (status == 0) {
 			            	logger.info("Successful execution for the script generated to agent " + agent.getAgentId());

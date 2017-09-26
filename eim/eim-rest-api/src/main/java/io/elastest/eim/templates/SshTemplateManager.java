@@ -26,17 +26,19 @@ public class SshTemplateManager {
 	private String executionDate = "";
 	private AgentFull agent;
 	private String cfgFilePath = "";
+	private String user = "";
 	
-	public SshTemplateManager(AgentFull agent, String executionDate, String cfgFilePath) {
+	public SshTemplateManager(AgentFull agent, String executionDate, String cfgFilePath, String user) {
 		this.agent = agent;
 		this.executionDate = executionDate;
 		this.cfgFilePath = cfgFilePath;
+		this.user = user;
 	}
 	
 	public int execute() {
 		logger.info("Preparing the execution of SSH playbook for agent " + agent.getAgentId());
 		//generate files for execution: playbook and script
-		String generatedPlaybookPath = TemplateUtils.generatePlaybook("ssh", executionDate, agent);
+		String generatedPlaybookPath = TemplateUtils.generatePlaybook("ssh", executionDate, agent, user);
 		if (generatedPlaybookPath != "") {
 			String generatedScriptPath = TemplateUtils.generateScript("ssh", executionDate, agent, generatedPlaybookPath, cfgFilePath);	
 			if (generatedScriptPath != null) {
