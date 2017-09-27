@@ -234,6 +234,8 @@ definitions:
       - address
       - user
       - private_key
+      - logstash_ip
+      - logstash_port
    properties:
       address:
         type: string
@@ -243,39 +245,21 @@ definitions:
         example: root
       private_key:
         type: string
-        example: -----BEGIN RSA PRIVATE KEY-----
-          MIIEowIBAAKCAQEA6gMhsrpGOrl32UXceDM01kaoxtiQ5B527QLrL0h26GQWfqzG
-          RXcRMTq8anxUyPyXyY1AXuKJbaq9wHpOL3l5w1pT1EGYv7x+py+MGG1NkY4lprAQ
-          c3p8CslHlau3Ac0EL+bQUDfyrxFOGJFjfVxJYb94FfjlQNgCAwxX9F+VvF9c1/Be
-          I5vjujGytcKrccZz1f71VgKF2WqdCmFj9gaEm09Vq9Mr3vHaQJpSfsbI2JBdtLNS
-          UAWZGwXO9wOdlv3eL64oAwoUSOI8o7gjnHUN9xhO89BS56HiAIOVcRiTcZcK2rtL
-          iI5qciu7n1zASGmDRwI6mhbXVufv96KHnrhuRQIDAQABAoIBAQDIkbSRRnypGovx
-          aqJjV6hCu78u5zGQg9f0nprLJPXdiuOI4TbzFPFkW25gan4U4gKK2olAijO2DjCi
-          x3E52YkWedX9x9dPBxUa4HLYAN8KEWaN7ru67lFgwVGco9ewMHMVR2RmTP2xNUjV
-          X8+BA9dVc1FOq8x6fmmDCVJdfouNLh+Dka6oy//TL+dzOhYvzZ+kYiUjVO4LUnia
-          yW5/OSC8U23AuoTfzZQ79i8d8rsLNNeIaQ/UlyEa+beO5AK+B+b+RLC8U4Tz0W9f
-          EBY1ERXwZbT6NYjoN4d36vfQ9HhAhlYeS7b/75UdECwWk9M9z5sUh1s+U2XDMfSJ
-          F8OyBMRlAoGBAPdIatuq1A8y3H3/184qH1KK750MU2Ziwomv03d1Bi6d8VOL45Rq
-          cguEyYh334baQsva0UKhpkHF3f83x6PK/kjgp03CVzLUnv+XVKbpHpTy+Z/S7jYL
-          fIWgaC/0+NTAJVEsMjJREqvDF+rYnzX3vOoQ8BMlgceKr0It878NqSWXAoGBAPJC
-          9FVo1LKhB4GsN3OT+Uufk04lK0I6IDnCOn9OuFF68t61JclsEyyuA3a6jVMOlmeO
-          ZhmzPEgWWD3j40P2CK85+0twPwEyGE0hLGBezusqd+eg2MPGgBWICuGXP78uSj/x
-          dXRLryYYb8kSGpLYCZ4nzvfj3VtsIdHRvTMooZ6DAoGAHN1lK9MbAdMsDcEpjbU5
-          BseVBL4FljP9BVly08TjPdnN67SukgqC2XlclQN5IiKkHWujdaWs5IyWR05ZjXMK
-          j7M5lEgVKafMD4W4qesYWMasAM38ZG6e0HJS9xYfXaY4NOt1yI3SIh6Z0h4LJ5+N
-          e70SaQm9xm8X2h/HDgwoLG0CgYB2MK4NQSCLqT4FSGShMW7tMwPlmwKYw8zXAOgT
-          Fe+caNQ2TMALnXtZT+gGs4qhG7vK99Dd9vCQ5r3UK+rDTDP+cNYlfrRuO+dZMbb5
-          qSdf2Y835OP710rDtmRAnM6P0eCNg5pey1G+zysyOG/YdidzDk7N51Al+wIg4Cdi
-          3w7CSwKBgEdJQI9TyL7eNU4eVpAeCmy7cJ94inDsRPIEGyisO+z0cJfl9JRfPSGn
-          IdWKdL53JCcWSmo6xQ4NcUcZWlIPUjuhQAyB1pOhkMGSUiUmjrVc5w6Ch8wfF7b6
-          O8xWtZamHHPYTN++RhRVp9AYV8/CSpYwxafiZz5V2h3t/Ipu/x9U
-            -----END RSA PRIVATE KEY-----
+        example: -----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAvLGBDZ5cFC3Pm7NQr9NfU37tNfcEwiAcDe0KS50b0Ecytux0\nfG4JMhghBW2zUfq2XZhBF3y9dXaoDo3w6QcqH3V9GiBF3D08687rjZnrIRHS1CzP\nwgh/pwpkGyZ6Qq7/OUGBxttr0Rc7j07VmoodqGS8hN9iioFa4Y35VPp/hzMaAek4\nN8XViyzEssKqBY821+H+dQ8ymaO2x0vgis/CHtpo8wvBD/oeDXWuTkCE5JmWWrD8\nxm/WkbFPPQJ8KewTNizjl5y4bAHxB5aLfZuriBKubqHZi9dXfwxeGA5R7VdTdyP0\njrP9JAN9dKkg8E7ewKxR6oP+MUbGHYITF/4+fwIDAQABAoIBAGQ7sj8GuQjrENY3\nmYvcr02OJfm9nuRz5BMtsINcEJNBztnGn1YdqXrXwGq+zDum/0qWfzU3yPhlsH4S\nvj861BBj+7FuJU4JpZvpjczpTzKA4kpdB3udwhl8dpLJjLZxeRf0CTkWA57NRZEp\nomP2LCzwXggDFbhXYGxiW2jdq/Knsonf0pwLsKE1vrwkyCA4f9Aqzv5TR/CcT1tE\nhFt2XvcRK2MJx9jzPRnq9V6z8WzwrS7FVJ8bVhRMCG5tkScUHcbkzJzsQZprJNVm\n5HsLJ7KKB7rjQaaCNro5uhjeSDMfRIsb9vATWIkyD+SOGj/WeW31eiYow4QnEqF4\n36NWplECgYEA9ltKOFfvSYgDs/PKm4/3V52Cz5ADCGY1ObI4ab/eVqw5mH/41Vtv\n2mUmG16cOodxCHL/boBpxdgceI5HuQrFkCFXPelHZH/ne6HE8rIo1GVrCuBE5WC9\ni0RdQ5FoD12dJWzQVYzujcYcxzKVipq6+iMRc1GyOTVwQy+P4FePFBcCgYEAxBRg\nvZcYJKiZL47qutWgV9Jdmdn6dnzZDKvcrODheVmjxj+iaXBKep/RKBORq5f+Xa8z\nG6/Za6AKpvgagGA6Q8oB+IdFp0rKMycYQhqZCWgan/BR9q17DAw0wKGp6Ck1J/iK\nvkCAo0lSTw2ycMtzP6Ct78FpatJ6Iy6SrKwi4dkCgYBh2RR7mIGUJQ/Dc7svWlkV\nVZxVMI/j0CSny9+YMPrwVetyZLHCnFSq263tBQDsRktg3bwSebKJQDLetzRJjLu3\naWarUnJmul6IvlHpS1XoNnfzk+wJZwkhvX+FjMVWBQqbiMKemCFP8jYP8ElxCc/l\n9fPCZ9pv2ofCR6vPoTdU9QKBgFl6fyclk1PvSHCGhKGcKR7KlgJGkeCOWrJIn1yZ\nBuvMt0sZ8PCy2Joa4mSqgXhP1TlFYUpKNirCDvphEB7zSsNypPGYMXYFUD6FobFQ\n1/ON+VBxZ8XtJtC5pT0eyR1z6JkD97SYVNuu8wu2UW7duQsZNSbLGWMxB6GUeESq\nDQUJAoGBAKPbaZhvj666fHIXsdFx30V63M1eCPWgtsJ+bTZw4xM4ubu5MShBbHVm\nPP4kdYhct6W0hc0iOUTslMkCZOwFKDvR+oLI73FZhLIPMy7jq5ZfiGgVcYQyB68c\n6eOAvdSrK5di8A3qWvGnZwlXuXT2JCOflfUHmKa8uOdMgDZ9yaED\n-----END RSA PRIVATE KEY-----
+      logstash_ip:
+        type: string
+        example: 172.19.0.2
+      logstash_port:
+        type: string
+        example: 5044
   AgentFull:
     type: object
     required:
       - agentId
       - host
       - monitored
+      - logstash_ip
+      - logstash_port
     properties:
       agentId:
         type: string
@@ -286,4 +270,10 @@ definitions:
       monitored:
         type: boolean
         example: true
+      logstash_ip:
+        type: string
+        example: 172.19.0.2
+      logstash_port:
+        type: string
+        example: 5044
     description: This entity defines an agent with all information available.
