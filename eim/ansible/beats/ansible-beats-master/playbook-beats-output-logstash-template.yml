@@ -91,7 +91,7 @@
       output:
         logstash:
 #          hosts: ["172.17.0.5:5044"]
-          hosts: ["logstash:5044"]
+          hosts: ["##logstash-ip##:##logstash-port##"]
           index: "filebeat"
       logging:
         to_syslog: true
@@ -112,7 +112,7 @@
       output:
         logstash:
 #          hosts: ["172.17.0.5:5044"]
-          hosts: ["logstash:5044"]
+          hosts: ["##logstash-ip##:##logstash-port##"]
           index: "topbeat"
       logging:
         to_syslog: true
@@ -156,7 +156,7 @@
       output:
         logstash:
 #          hosts: ["172.17.0.5:5044"]
-          hosts: ["logstash:5044"]
+          hosts: ["##logstash-ip##:##logstash-port##"]
           index: "packetbeat"
       logging:
           to_syslog: true
