@@ -42,6 +42,12 @@ public class AgentFull   {
 
   @JsonProperty("monitored")
   private Boolean monitored = null;
+  
+  @JsonProperty("logstash_ip")
+  private String logstashIp = null;
+  
+  @JsonProperty("logstash_port")
+  private String logstashPort = null;
 
   public AgentFull agentId(String agentId) {
     this.agentId = agentId;
@@ -103,6 +109,35 @@ public class AgentFull   {
     this.monitored = monitored;
   }
 
+  /**
+   * Get logstashIp
+   * @return logstashIp
+   **/
+  @JsonProperty("logstash_ip")
+  @ApiModelProperty(example = "172.24.0.9", required = true, value = "")
+  @NotNull
+  public String getLogstashIp() {
+    return logstashIp;
+  }
+
+  public void setLogstashIp(String logstashIp) {
+    this.logstashIp = logstashIp;
+  }
+  
+  /**
+   * Get logstashPort
+   * @return logstashPort
+   **/
+  @JsonProperty("logstash_port")
+  @ApiModelProperty(example = "5044", required = true, value = "")
+  @NotNull
+  public String getLogstashPort() {
+    return logstashPort;
+  }
+
+  public void setLogstashPort(String logstashPort) {
+    this.logstashPort = logstashPort;
+  }
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -115,7 +150,9 @@ public class AgentFull   {
     AgentFull agentFull = (AgentFull) o;
     return Objects.equals(this.agentId, agentFull.agentId) &&
         Objects.equals(this.host, agentFull.host) &&
-        Objects.equals(this.monitored, agentFull.monitored);
+        Objects.equals(this.monitored, agentFull.monitored) &&
+        Objects.equals(this.logstashIp, agentFull.logstashIp) &&
+        Objects.equals(this.logstashPort, agentFull.logstashPort);
   }
 
   @Override
@@ -132,6 +169,8 @@ public class AgentFull   {
     sb.append("    agentId: ").append(toIndentedString(agentId)).append("\n");
     sb.append("    host: ").append(toIndentedString(host)).append("\n");
     sb.append("    monitored: ").append(toIndentedString(monitored)).append("\n");
+    sb.append("    logstash_ip: ").append(toIndentedString(logstashIp)).append("\n");
+    sb.append("    logstash_port: ").append(toIndentedString(logstashPort)).append("\n");
     sb.append("}");
     return sb.toString();
   }

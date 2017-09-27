@@ -134,7 +134,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 				}
 				else {
 					int status = -1;
-					AgentFull agent = agentDb.addHost(body.getAddress());
+					AgentFull agent = agentDb.addHost(body);
 			        if (agent != null){
 			        	//create folder for host with the name of the agentId
 			        	new File(Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 

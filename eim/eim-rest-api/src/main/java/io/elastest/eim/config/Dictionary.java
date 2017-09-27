@@ -26,6 +26,8 @@ public class Dictionary {
 	public static String PROPERTY_TEMPLATES_BEATS_EXECUTIONPATH = "templates.beats.executionPath";
 	public static String PROPERTY_TEMPLATES_BEATS_LAUNCHER = "templates.beats.launcher";
 	public static String PROPERTY_TEMPLATES_BEATS_EXECUTION_LAUNCHER_PREFIX = "templates.beats.execution_launcher_prefix";
+	public static String PROPERTY_TEMPLATES_BEATS_JOKER_LOGSTASH_IP = "templates.beats.joker.logstaship";
+	public static String PROPERTY_TEMPLATES_BEATS_JOKER_LOGSTASH_PORT = "templates.beats.joker.logstashport";
 
 	public static String PROPERTY_EXECUTION_LOGS_PATH = "execution.logs.path";
 	public static String PROPERTY_EXECUTION_LOGS_SSH_PREFIX = "execution.logs.ssh.prefix";

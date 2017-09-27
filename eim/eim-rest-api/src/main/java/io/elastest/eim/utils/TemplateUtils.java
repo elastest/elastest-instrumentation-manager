@@ -64,6 +64,8 @@ public class TemplateUtils {
 					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_EXECUTION_PLAYBOOK_PREFIX) + agent.getAgentId() + 
 					"-" + executionDate + ".yml";
 			String jokerTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_PLAYBOOK_JOKER);
+			String jokerLogstashIp = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_LOGSTASH_IP);
+			String jokerLogstashPort = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_LOGSTASH_PORT);
 			
 			try {
 				//Generate the execution playbook
@@ -71,6 +73,10 @@ public class TemplateUtils {
 				logger.info("Generated successfully the SSH playbook for agent" + agent.getAgentId() + ": " + playbookToExecutePath);
 				//Fill the playbook with the agentId of the agent
 				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerTemplates, agent.getAgentId());
+				//Fill the playbook with the logstash IP of the agent
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerLogstashIp, agent.getLogstashIp());
+				//Fill the playbook with the logstash port of the agent
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerLogstashPort, agent.getLogstashPort());
 				logger.info("Modified successfully the generated SSH playbook for agent " + agent.getAgentId() + ". Ready to execute!");
 				return playbookToExecutePath;				
 			} catch (IOException e) {
