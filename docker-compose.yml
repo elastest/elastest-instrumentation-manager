@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-        mongo:
+        eim-mongo:
                 image: mvertes/alpine-mongo
                 expose: 
                         - 27017
