@@ -19,7 +19,7 @@ services:
                         - "9200:9200"
                         - "9300:9300"
                 depends_on:
-                        - mongo
+                        - eim-mongo
                 hostname: elasticsearch
                 networks:
                         - elastest
@@ -70,9 +70,9 @@ services:
                 #       - static-content:/tmp/ssh 
                 depends_on:
                         - sut
-                        - mongo
+                        - eim-mongo
                 links:
-                        - mongo
+                        - eim-mongo
                 stdin_open: true
                 tty: true
                 environment:
