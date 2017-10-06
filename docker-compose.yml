@@ -7,7 +7,7 @@ services:
                         - 27017
                 ports: 
                         - "27017:27017"
-                hostname: mongo 
+                hostname: eim-mongo 
                 stdin_open: true
                 tty: true
                 networks:
@@ -75,6 +75,8 @@ services:
                         - mongo
                 stdin_open: true
                 tty: true
+                environment:
+                        - ET_EIM_MONGO_HOST=eim-mongo
                 expose:
                         - 8080
                 ports:
