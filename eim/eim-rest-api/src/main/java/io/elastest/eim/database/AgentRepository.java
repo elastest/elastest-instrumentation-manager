@@ -28,6 +28,7 @@ import com.mongodb.MongoClient;
 import io.elastest.eim.config.Dictionary;
 import io.elastest.eim.config.Properties;
 import io.swagger.model.AgentFull;
+import io.swagger.model.Host;
 
 public class AgentRepository {
 
@@ -80,6 +81,8 @@ public class AgentRepository {
         	agent.setAgentId((String) cursor.next().get("agentId"));
         	agent.setHost((String) cursor.curr().get("host"));
         	agent.setMonitored((boolean) cursor.curr().get("monitored"));
+        	agent.setLogstashIp((String) cursor.curr().get("logstashIp"));
+        	agent.setLogstashPort((String) cursor.curr().get("logstashPort"));
         	logger.info("Host finded in DB with ipAddress = " + ipAddress + " with ID " + agent.getAgentId());
         	System.out.println("Host finded in DB with ipAddress = " + ipAddress + " with ID " + agent.getAgentId());
         }
@@ -104,6 +107,8 @@ public class AgentRepository {
         	agent.setAgentId((String) cursor.next().get("agentId"));
         	agent.setHost((String) cursor.curr().get("host"));
         	agent.setMonitored((boolean) cursor.curr().get("monitored"));
+        	agent.setLogstashIp((String) cursor.curr().get("logstashIp"));
+        	agent.setLogstashPort((String) cursor.curr().get("logstashPort"));
         	logger.info("Host finded in DB with agentId = " + agentId + " with ipAddress " + agent.getHost());
         	System.out.println("Host finded in DB with agentId = " + agentId + " with ipAddress " + agent.getHost());
         }
@@ -122,15 +127,17 @@ public class AgentRepository {
 		return newId;
 	}
 	
-	public AgentFull addHost(String ipAddress){
-		logger.info("Adding new host to DB, host with ipAddress = " + ipAddress);
-		System.out.println("Adding new host to DB, host with ipAddress = " + ipAddress);
+	public AgentFull addHost(Host host){
+		logger.info("Adding new host to DB, host with ipAddress = " + host.getAddress());
+		System.out.println("Adding new host to DB, host with ipAddress = " + host.getAddress());
 		BasicDBObject newHost = new BasicDBObject();
 		newHost.put("agentId", getNewAgentId());
-		newHost.put("host", ipAddress);
+		newHost.put("host", host.getAddress());
 		newHost.put("monitored", false);
+		newHost.put("logstashIp", host.getLogstashIp());
+		newHost.put("logstashPort", host.getLogstashPort());
 		getAgentTable().insert(newHost);
-		AgentFull inserted = getAgentByIpAddress(ipAddress);
+		AgentFull inserted = getAgentByIpAddress(host.getAddress());
 		return inserted;
 	}
 	

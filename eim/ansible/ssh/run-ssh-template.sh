@@ -1,3 +1,3 @@
 #! /bin/bash
 
-ansible-playbook ##playbook-path##
+ansible-playbook -i ##ansible-cfg-file## ##playbook-path##

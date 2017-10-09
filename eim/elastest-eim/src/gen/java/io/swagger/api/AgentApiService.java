@@ -35,4 +35,5 @@ public abstract class AgentApiService {
     public abstract Response postAction(String agentId,String actionId,SecurityContext securityContext) throws NotFoundException;
     public abstract Response postAgent(Events1 events,SecurityContext securityContext) throws NotFoundException;
     public abstract Response putAgent(String agentId,SecurityContext securityContext) throws NotFoundException;
+//	public abstract Response getPublickey(Events1 events, SecurityContext securityContext) throws NotFoundException;
 }

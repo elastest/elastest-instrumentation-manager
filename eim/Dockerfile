@@ -27,6 +27,7 @@ RUN \
 	mkdir -p /var/log/executed_playbooks && \
 	# folder for beats
 	mkdir -p /var/ansible/ssh && \
+	mkdir -p /var/ansible/ssh/hosts && \
         mkdir -p /var/ansible/beats/ansible-beats-master && \
         wget https://github.com/aya/ansible-beats/archive/master.zip -P /var/ansible/beats && \
         unzip /var/ansible/beats/master.zip -d /var/ansible/beats && \

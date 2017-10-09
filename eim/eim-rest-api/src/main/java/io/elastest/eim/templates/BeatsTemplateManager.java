@@ -34,9 +34,11 @@ private static Logger logger = Logger.getLogger(BeatsTemplateManager.class);
 	public int execute() {
 		logger.info("Preparing the execution of beat playbook for agent " + agent.getAgentId());
 		//generate files for execution: playbook and script
-		String generatedPlaybookPath = TemplateUtils.generatePlaybook("beats", executionDate, agent);
+		//the fourth argument is the user, that is not used in this playbook. The agent is also registrated, so in this case,
+		//elastest user is the one used.
+		String generatedPlaybookPath = TemplateUtils.generatePlaybook("beats", executionDate, agent, "");
 		if (generatedPlaybookPath != "") {
-			String generatedScriptPath = TemplateUtils.generateScript("beats", executionDate, agent, generatedPlaybookPath);	
+			String generatedScriptPath = TemplateUtils.generateScript("beats", executionDate, agent, generatedPlaybookPath, "");	
 			if (generatedScriptPath != null) {
 				//execute generated files
 				return TemplateUtils.executeScript("beats", generatedScriptPath, executionDate, agent);

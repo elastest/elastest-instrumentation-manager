@@ -135,4 +135,10 @@ public class AgentApiServiceImpl extends AgentApiService {
     	
         return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "This method will update an existing agent!")).build();
     }
+    
+//    @Override
+//    public Response getPublickey(SecurityContext securityContext) throws NotFoundException {
+//        // do some magic!
+//        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "This method will return the public key for eim")).build();
+//    }
 }

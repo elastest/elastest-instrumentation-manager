@@ -2,7 +2,7 @@
 #This playbook copy the ssh pub key in the .ssh directory of the elastest user in sut hosts
 - name: ssh
   hosts: ##targethost## 
-  remote_user: root
+  remote_user: ##user##
 
   tasks:
           - name: Set authorized key took from file

@@ -28,6 +28,8 @@ import javax.ws.rs.core.SecurityContext;
 
 import org.apache.log4j.Logger;
 
+import io.elastest.eim.config.Dictionary;
+import io.elastest.eim.config.Properties;
 import io.elastest.eim.database.AgentRepository;
 import io.elastest.eim.templates.BeatsTemplateManager;
 import io.elastest.eim.templates.SshTemplateManager;
@@ -132,27 +134,65 @@ public class AgentApiServiceImpl extends AgentApiService {
 				}
 				else {
 					int status = -1;
-					AgentFull agent = agentDb.addHost(body.getAddress());
+					AgentFull agent = agentDb.addHost(body);
 			        if (agent != null){
-			        	//add to ansible cfg file
-			        	FileWriter fw = new FileWriter("/etc/ansible/hosts", true);
-			            BufferedWriter bw = new BufferedWriter(fw);
-			            PrintWriter out = new PrintWriter(bw);
-			            //add to ansible cfg file
-			            //	[agentId]
-			            //	ipaddress
-			            // to identify the host
-			            out.println("[" + agent.getAgentId() + "]");
-			            out.println(agent.getHost());
-			            out.close();
-			            
+			        	//create folder for host with the name of the agentId
+			        	new File(Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
+			        			Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_HOSTS_FOLDER) +
+			        			agent.getAgentId()).mkdir();
+			        	
+			        	//write private key on a file
+			        	String privateKeyFileName = "host_" + agent.getAgentId() + "_private_key";
+			        	String privateKeyPath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
+			        			Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_HOSTS_FOLDER) +
+			        			agent.getAgentId() + "/" + privateKeyFileName;
+			        	FileWriter keyFileWriter = new FileWriter(privateKeyPath, true);
+			        	BufferedWriter keyBufferedWriter = new BufferedWriter(keyFileWriter);
+			        	PrintWriter keyPrintWriter = new PrintWriter(keyBufferedWriter);
+			        	keyPrintWriter.println(body.getPrivateKey());
+			        	keyPrintWriter.close();
+			        	
+			        	//set the privileges to the private key in order that the file is read only
+			        	FileTextUtils.setAsReadOnly(privateKeyPath);
+			        	
+			        	//write ansible cfg file for the host
+			        	String ansibleFileCfgPath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
+			        			Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_HOSTS_FOLDER) +
+			        			agent.getAgentId() + "/" + "host_" + agent.getAgentId() + "_cfg";
+			        	FileWriter fileWriter = new FileWriter(ansibleFileCfgPath, true);
+			        	BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+			        	PrintWriter printWriter = new PrintWriter(bufferedWriter);
+			        	printWriter.println("[" + agent.getAgentId() + "]");
+			        	printWriter.println(agent.getHost());
+			        	printWriter.println("[" + agent.getAgentId() + ":vars]");
+			        	printWriter.println("ansible_connection=ssh");
+			        	printWriter.println("ansible_user=" + body.getUser());
+			        	printWriter.println("ansible_ssh_private_key_file=" + privateKeyPath);
+			        	printWriter.println("ansible_ssh_extra_args=\"-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null\"");
+			        	printWriter.close();
+			        		            
 			            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 			            String executionDate = sdf.format(timestamp);
-			            SshTemplateManager sshTemplateManager = new SshTemplateManager(agent, executionDate);
+			            SshTemplateManager sshTemplateManager = new SshTemplateManager(agent, executionDate, ansibleFileCfgPath, body.getUser());
 			            status = sshTemplateManager.execute();
 			            if (status == 0) {
 			            	logger.info("Successful execution for the script generated to agent " + agent.getAgentId());
+			            	
+			            	logger.info("Adding new host to general ansible config file: /etc/ansible/hosts");
+			            	FileWriter fw = new FileWriter("/etc/ansible/hosts", true);
+				            BufferedWriter bw = new BufferedWriter(fw);
+				            PrintWriter out = new PrintWriter(bw);
+				            //add to ansible cfg file
+				            //	[agentId]
+				            //	ipaddress
+				            // to identify the host
+				            out.println("[" + agent.getAgentId() + "]");
+				            out.println(agent.getHost());
+				            out.close();
+				            logger.info("Added new host " + agent.getHost() + " to /etc/ansible/hosts");
+				            
 			            	return Response.ok().entity(agent).build();
+			            	
 			            }
 			            else {
 			            	//delete from DB

@@ -38,6 +38,18 @@ public class Host   {
   @JsonProperty("address")
   private String address = null;
 
+  @JsonProperty("user")
+  private String user = null;
+
+  @JsonProperty("private_key")
+  private String privateKey = null;
+  
+  @JsonProperty("logstash_ip")
+  private String logstashIp = null;
+  
+  @JsonProperty("logstash_port")
+  private String logstashPort = null;
+  
   public Host address(String address) {
     this.address = address;
     return this;
@@ -58,6 +70,75 @@ public class Host   {
     this.address = address;
   }
 
+  public Host user(String user) {
+	    this.user = user;
+	    return this;
+	  }
+
+	  /**
+	   * Get user
+	   * @return user
+	   **/
+	  @JsonProperty("user")
+	  @ApiModelProperty(example = "root", required = true, value = "")
+	  @NotNull
+	  public String getUser() {
+	    return user;
+	  }
+
+	  public void setUser(String user) {
+	    this.user = user;
+	  }
+
+	  public Host privateKey(String privateKey) {
+	    this.privateKey = privateKey;
+	    return this;
+	  }
+
+	  /**
+	   * Get privateKey
+	   * @return privateKey
+	   **/
+	  @JsonProperty("private_key")
+	  @ApiModelProperty(example = "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEAt7s9IdIBhoXqre2tXj2yHEVEhI0H/PApIcHteKTD3L2ogwhl\nVOhI/hH6VhOXfEakGFQx/REiZg+nB5cD73oAqCHhCj04JJJjtwNfOJApnpiBh4Op\nng/w+vL1vYByLPQhkGCLkMcya6aL++FuMJj9PSrWLEF8Lc7F1XbOKaMNVqZ667JD\n4gjqWEWRfSiWefBrXbIf4NzLmzAt6ChdtQxqB3oZDUkH7hyj5amhkrQZlNxh7FVW\niL6FtUQyXhT/Tj6mIe3krlSq68Hm9qSbtchYTww+NMtwp9hNLtwgzPGOdKIjGsHx\nJh5ydngzKdeWzBjQDHWOdjO72gTobPHLvw8YbwIDAQABAoIBAQCXbgQ5nrvRIwjE\nZ3OPi+wDrveFBDQEPfC4uPw/hhVEFzEPJllWPMkEVs7sKOOe8x4GS0aUHI4sblQt\nRkNhGj32VU4EQWbHhbwXt/jARtl2tJ11koe3Fc55FsyBbp8r+965/0iof/VHkpIn\nfKpz9XQq+OZivWpa2uRlRrEu0guJUPF1vX/RbNofoXu9G2xkBr/wHOPNzmk9WKik\nfVfS/Li8RaDCHimsoPHIxrFueO1V+Gt8vD4e9TTjivg/0BmRfa0dX5lcHe6HSIQP\nehIzutzmVFn9aCBGadCAD5ZHZaWeR9w6WCvsKS9udfJudcEP12LrDWqXfC2Cu9lP\nq483RoK5AoGBAOM0n1y4CBu3kBkpqCJG2lq/dfJvVdXv3nunj5wWSl/ijkTtchCI\nkcdzUOC0cizypUp0Fr3e0CthHBu/CaBkR5YTsbJB1mqRsUw5xGFfYbOFJAHIdXCp\nndmT+D3PirDnfcPOBOgbLFic+UHMRG6GyUeQ8fgMSxPmGUgP9Xr/QzOlAoGBAM8E\nJ/GBf81Zv1EZk2UgRR9xlL5X4//CtqHCKI3AFUBCTc1Fuh+Mz3Pt8aHLteAR5qDY\njj44bM+WiGxCSs+WEQ9xqP8XqmL2etizeOVO9bIMd2ma8peRGRFG3BpZ5FxOvZTK\n7HdZ7X3Pesvdgo15PQlLD7D89cPs4XNekbZMAQ+DAoGAWg7MsBq+FAZxlpe9bkC5\nYkkLvlnFIzSd8lObh9oKBvGtRML9eHI5nl4mC7tamlhfjiBvtzjvOJKYaqMRdMLq\n4SDTSX3xOHKhXT50icgd2OOIPzCu5EZHLCwLtKxkI/TOE+PAbCQBMuqdnigSY+EH\nPVfFoXV1+OA22yqAOg2eHIUCgYAglFzc6y572OX9E3NY9O0r96obEqX1OGWZq37K\nYDJ3/HdWGOUj1ftIGWhvuCmVa/vJ0IsCS8sEGIK71usDJHDm51JbYxQTowrOU+Bw\n5i5QqRmZ6yLGq7UwPOCi3QbNaC753b29Qs/XfvGqZ+AF99CdR8zeY9Eh1oPcrkNs\nVyXLlQKBgQCVtDGPiiVI1cfexJj3+txO11AvQEOD8udyc5TmSBc/GGeaz74Lhb7H\nJ1wqH2kAifyb5MZaQBvw8Z7oKSPFuYWRJ35YZQ6UbiE6bAp+inY0NBbR3YWNhh+F\n6yCgQarAypnJd5/p69IrRGM+BF/Xy4nk5IgG+RNcu2DTjFFWyCkmBA==\n-----END RSA PRIVATE KEY-----", required = true, value = "")
+	  @NotNull
+	  public String getPrivateKey() {
+	    return privateKey;
+	  }
+
+	  public void setPrivateKey(String privateKey) {
+	    this.privateKey = privateKey;
+	  }
+	  
+	  /**
+	   * Get logstashIp
+	   * @return logstashIp
+	   **/
+	  @JsonProperty("logstash_ip")
+	  @ApiModelProperty(example = "172.24.0.9", required = true, value = "")
+	  @NotNull
+	  public String getLogstashIp() {
+	    return logstashIp;
+	  }
+
+	  public void setLogstashIp(String logstashIp) {
+	    this.logstashIp = logstashIp;
+	  }
+	  
+	  /**
+	   * Get logstashPort
+	   * @return logstashPort
+	   **/
+	  @JsonProperty("logstash_port")
+	  @ApiModelProperty(example = "5044", required = true, value = "")
+	  @NotNull
+	  public String getLogstashPort() {
+	    return logstashPort;
+	  }
+
+	  public void setLogstashPort(String logstashPort) {
+	    this.logstashPort = logstashPort;
+	  }
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -68,7 +149,11 @@ public class Host   {
       return false;
     }
     Host host = (Host) o;
-    return Objects.equals(this.address, host.address);
+    return Objects.equals(this.address, host.address) &&
+            Objects.equals(this.user, host.user) &&
+            Objects.equals(this.privateKey, host.privateKey) &&
+            Objects.equals(this.logstashIp, host.logstashIp) &&
+            Objects.equals(this.logstashPort, host.logstashPort);
   }
 
   @Override
@@ -83,6 +168,10 @@ public class Host   {
     sb.append("class Host {\n");
     
     sb.append("    address: ").append(toIndentedString(address)).append("\n");
+    sb.append("    user: ").append(toIndentedString(user)).append("\n");
+    sb.append("    privateKey: ").append(toIndentedString(privateKey)).append("\n");
+    sb.append("    logstashIp: ").append(toIndentedString(logstashIp)).append("\n");
+    sb.append("    logstashPort: ").append(toIndentedString(logstashPort)).append("\n");
     sb.append("}");
     return sb.toString();
   }
