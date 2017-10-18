@@ -18,6 +18,8 @@ import java.io.InputStream;
 
 import org.apache.log4j.Logger;
 
+import io.elastest.eim.utils.FileTextUtils;
+
 public class Properties {
 
 	private static Logger logger = Logger.getLogger(Properties.class);
@@ -26,7 +28,14 @@ public class Properties {
 	
 	public static void load(InputStream propertiesFile, String filePath){
 		try {
+			//get hostname for mongo host
+			String dbHost = System.getenv("ET_EIM_MONGO_HOST");
+			//overwrite the mongo host in properties file
+			FileTextUtils.replaceTextInFile("/var/lib/tomcat7/webapps/eim/WEB-INF/bootstrap.properties", "##ET_EIM_MONGO_HOST##", dbHost);
+			
 			properties.load((propertiesFile));
+			
+			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

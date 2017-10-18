@@ -41,6 +41,7 @@ RUN \
 #	echo "cp /root/.ssh/id_rsa.pub /tmp/ssh" >> /etc/bash.bashrc
 	mkdir -p /root/.ssh/
 
+
 # open default tomcat port
 EXPOSE 8080
 
