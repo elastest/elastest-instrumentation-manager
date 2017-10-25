@@ -50,8 +50,9 @@ COPY ansible/ssh/run-ssh-template.sh /var/ansible/ssh
 COPY ansible/beats/run-beats-template.sh /var/ansible/beats
 COPY ansible/beats/ansible-beats-master/playbook-beats-output-logstash-template.yml /var/ansible/beats/ansible-beats-master
 
-# tomcat conf --> allow to change properties file without restarting the server
-COPY tomcat/context.xml /var/lib/tomcat7/conf
+# restart tomcat server to refresh the value of the properties 
+COPY tomcat/restart_tomcat.sh /var/tomcat/restart_tomcat.sh
+RUN chmod +x /var/tomcat/restart_tomcat.sh
 
 #COPY elastest-eim/target/elastest-instrumentation-manager-0.0.1-SNAPSHOT.war /var/lib/tomcat7/webapps/eim.war
 COPY eim-rest-api/target/eim-rest-api-0.0.1-SNAPSHOT.war /var/lib/tomcat7/webapps/eim.war
