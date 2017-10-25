@@ -13,8 +13,12 @@
 
 package io.elastest.eim.config;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 
 import org.apache.log4j.Logger;
 
@@ -31,8 +35,8 @@ public class Properties {
 			//get hostname for mongo host
 			String dbHost = System.getenv("ET_EIM_MONGO_HOST");
 			//overwrite the mongo host in properties file
-			FileTextUtils.replaceTextInFile("/var/lib/tomcat7/webapps/eim/WEB-INF/bootstrap.properties", "##ET_EIM_MONGO_HOST##", dbHost);
-			
+			FileTextUtils.replaceTextInFile("/var/lib/tomcat7/webapps/eim/WEB-INF/bootstrap.properties						", "##ET_EIM_MONGO_HOST##", dbHost);
+			restartServer();
 			properties.load((propertiesFile));
 			
 			
@@ -52,6 +56,31 @@ public class Properties {
 	
 	public static String getValue(String key){
 		return properties.getProperty(key);
+	}
+	
+	private static int restartServer() {
+		String scriptPath = "";
+		int resultCode = -1;
+		String s;
+    	Process p;
+    	try {
+            p = Runtime.getRuntime().exec(scriptPath);
+            logger.info("Restarting tomcat server...");
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                     
+            while ((s = br.readLine()) != null){
+            	logger.info(s);            	
+            }                
+            p.waitFor();
+            resultCode = p.exitValue();
+            logger.info("exit: " + resultCode);
+            p.destroy();
+            return resultCode;
+        } catch (Exception e) {
+        	logger.error("ERROR: " + e.getLocalizedMessage());
+        	logger.error(e.getStackTrace());
+        	return resultCode;
+        }		
 	}
 	
 }
