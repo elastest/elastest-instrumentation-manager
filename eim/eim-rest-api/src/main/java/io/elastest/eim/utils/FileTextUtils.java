@@ -180,4 +180,50 @@ public class FileTextUtils {
         logger.info("Modified as readOnly by owner: " + filePath);
 		
 	}
+	
+	
+	public static void replaceValueInPropertiesConf(String filePath, String textToFind, String replaceText) throws IOException {
+		List<String> newLines = new ArrayList<>();
+		boolean changed = false;
+		for (String line : Files.readAllLines(Paths.get(filePath), StandardCharsets.UTF_8)) {
+		    if (line.contains(textToFind)) {
+		       newLines.add(line.replace(textToFind, replaceText));
+		       logger.info(textToFind + " found in the file. Replacing it by " + replaceText);
+		       changed = true;
+		    } else {
+		       newLines.add(line);
+		    }
+		}
+		logger.info("Updating with new content the file " + filePath);
+		Files.write(Paths.get(filePath), newLines, StandardCharsets.UTF_8);
+		logger.info("File " + filePath + " updated");
+		if (changed) {
+			restartServer();
+		}
+	}
+	
+	private static int restartServer() {
+		String scriptPath = "/var/tomcat/restart_tomcat.sh";
+		int resultCode = -1;
+		String s;
+    	Process p;
+    	try {
+            p = Runtime.getRuntime().exec(scriptPath);
+            logger.info("Restarting tomcat server...");
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                     
+            while ((s = br.readLine()) != null){
+            	logger.info(s);            	
+            }                
+            p.waitFor();
+            resultCode = p.exitValue();
+            logger.info("exit: " + resultCode);
+            p.destroy();
+            return resultCode;
+        } catch (Exception e) {
+        	logger.error("ERROR: " + e.getLocalizedMessage());
+        	logger.error(e.getStackTrace());
+        	return resultCode;
+        }		
+	}
 }
