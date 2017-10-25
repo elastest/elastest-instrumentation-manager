@@ -35,7 +35,7 @@ public class Properties {
 			//get hostname for mongo host
 			String dbHost = System.getenv("ET_EIM_MONGO_HOST");
 			//overwrite the mongo host in properties file
-			FileTextUtils.replaceTextInFile("/var/lib/tomcat7/webapps/eim/WEB-INF/bootstrap.properties						", "##ET_EIM_MONGO_HOST##", dbHost);
+			FileTextUtils.replaceTextInFile("/var/lib/tomcat7/webapps/eim/WEB-INF/bootstrap.properties", "##ET_EIM_MONGO_HOST##", dbHost);
 			restartServer();
 			properties.load((propertiesFile));
 			
@@ -59,7 +59,7 @@ public class Properties {
 	}
 	
 	private static int restartServer() {
-		String scriptPath = "";
+		String scriptPath = "/var/tomcat/restart_tomcat.sh";
 		int resultCode = -1;
 		String s;
     	Process p;
