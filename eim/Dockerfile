@@ -49,6 +49,8 @@ COPY ansible/ssh/playbook-ssh-template.yml  /var/ansible/ssh
 COPY ansible/ssh/run-ssh-template.sh /var/ansible/ssh
 COPY ansible/beats/run-beats-template.sh /var/ansible/beats
 COPY ansible/beats/ansible-beats-master/playbook-beats-output-logstash-template.yml /var/ansible/beats/ansible-beats-master
+COPY ansible/beats/run-delete-beats-template.sh /var/ansible/beats
+COPY ansible/beats/ansible-beats-master/playbook-delete-beats-output-logstash-template.yml /var/ansible/beats/ansible-beats-master
 
 # restart tomcat server to refresh the value of the properties 
 COPY tomcat/restart_tomcat.sh /var/tomcat/restart_tomcat.sh
