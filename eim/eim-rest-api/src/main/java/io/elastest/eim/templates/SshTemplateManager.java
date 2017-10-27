@@ -16,6 +16,7 @@ package io.elastest.eim.templates;
 
 import org.apache.log4j.Logger;
 
+import io.elastest.eim.config.Dictionary;
 import io.elastest.eim.utils.TemplateUtils;
 import io.swagger.model.AgentFull;
 
@@ -27,8 +28,9 @@ public class SshTemplateManager {
 	private AgentFull agent;
 	private String cfgFilePath = "";
 	private String user = "";
+	private String action = "";
 	
-	public SshTemplateManager(AgentFull agent, String executionDate, String cfgFilePath, String user) {
+	public SshTemplateManager(AgentFull agent, String executionDate, String cfgFilePath, String user, String action) {
 		this.agent = agent;
 		this.executionDate = executionDate;
 		this.cfgFilePath = cfgFilePath;
@@ -36,25 +38,33 @@ public class SshTemplateManager {
 	}
 	
 	public int execute() {
-		logger.info("Preparing the execution of SSH playbook for agent " + agent.getAgentId());
-		//generate files for execution: playbook and script
-		String generatedPlaybookPath = TemplateUtils.generatePlaybook("ssh", executionDate, agent, user);
-		if (generatedPlaybookPath != "") {
-			String generatedScriptPath = TemplateUtils.generateScript("ssh", executionDate, agent, generatedPlaybookPath, cfgFilePath);	
-			if (generatedScriptPath != null) {
-				//execute generated files
-				return TemplateUtils.executeScript("ssh", generatedScriptPath, executionDate, agent);
+		if (action.equals(Dictionary.INSTALL)) {
+			logger.info("Preparing the execution of SSH register playbook for agent " + agent.getAgentId());
+			//generate files for execution: playbook and script
+			String generatedPlaybookPath = TemplateUtils.generatePlaybook("ssh", executionDate, agent, user, action);
+			if (generatedPlaybookPath != "") {
+				String generatedScriptPath = TemplateUtils.generateScript("ssh", executionDate, agent, generatedPlaybookPath, cfgFilePath, action);	
+				if (generatedScriptPath != null) {
+					//execute generated files
+					return TemplateUtils.executeScript("ssh", generatedScriptPath, executionDate, agent);
+				}
+				else {
+					logger.error("ERROR generating script for execution for agent " + agent.getAgentId( )+ ". Check logs please");
+					return -1;
+				}
 			}
 			else {
-				logger.error("ERROR generating script for execution for agent " + agent.getAgentId( )+ ". Check logs please");
+				logger.error("ERROR generating playbook for execution for agent " + agent.getAgentId( )+ ". Check logs please");
 				return -1;
-			}
+			}		
+			//TODO move template to history execution path			
 		}
-		else {
-			logger.error("ERROR generating playbook for execution for agent " + agent.getAgentId( )+ ". Check logs please");
-			return -1;
-		}		
-		//TODO move template to history execution path
+		else if (action.equals(Dictionary.REMOVE)) {
+			logger.info("Preparing the execution of beats remove playbook for agent " + agent.getAgentId());
+			return 0;
+		}	
+		return -1;
+
 	}
 	
 	

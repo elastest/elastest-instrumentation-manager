@@ -94,7 +94,7 @@ public class AgentRepository {
 		return agent;
 	}
 	
-	public AgentFull getAgentByIpAgentId(String agentId){
+	public AgentFull getAgentByAgentId(String agentId){
 		System.out.println("Searching host in DB with agentId = " + agentId);
 		logger.info("Searching host in DB with agentId = " + agentId);
 		AgentFull agent = null;
@@ -143,7 +143,7 @@ public class AgentRepository {
 	
 	
 	public AgentFull setMonitored(String agentId, boolean monitored){
-		AgentFull agent = getAgentByIpAgentId(agentId);
+		AgentFull agent = getAgentByAgentId(agentId);
 		if (agent != null){
 			agent.setMonitored(monitored);
 			
@@ -158,7 +158,7 @@ public class AgentRepository {
 	        //Launch the update
 	        getAgentTable().updateMulti(searchById, updateMonitored);
 	        
-	        return getAgentByIpAgentId(agentId);
+	        return getAgentByAgentId(agentId);
 			
 		}
 		else {
@@ -195,7 +195,7 @@ public class AgentRepository {
         getAgentTable().remove(new BasicDBObject().append("agentId", agentId));
         
         //Verify that the element has been deleted
-        if (getAgentByIpAgentId(agentId) == null) {
+        if (getAgentByAgentId(agentId) == null) {
         	return true;
         }
         else {

@@ -50,11 +50,56 @@ public class AgentApiServiceImpl extends AgentApiService {
 	
     @Override
     public Response deleteAgentByID(String agentId, SecurityContext securityContext) throws NotFoundException {
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "This method will delete agent")).build();
+        //verify that agent exists
+    	AgentFull agent = agentDb.getAgentByAgentId(agentId);
+        if (agent != null){
+    		if (agent.isMonitored()) {
+    			//remove beats
+    			int status = -1;
+	    		//beats installation
+	    		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+	            String executionDate = sdf.format(timestamp);
+	            BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate, Dictionary.REMOVE);
+	            
+	            status = beatsTemplateManager.execute();
+	            if (status == 0) {
+	            	logger.info("Successful execution for the beats script generated to agent " + agent.getAgentId());
+	            	//TODO remove ssh key
+	            	//remove from database
+	        		boolean deleted = agentDb.deleteAgent(agentId);
+	        		if (deleted) {
+	        			return Response.ok().entity(agent).build();
+	        		}
+	        		else {
+	        			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be deleted from database, check logs please")).build();
+	        		}
+	            }
+	            else {
+	            	
+	            	logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
+	            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
+	            }
+    		}
+    		
+    		//remove ssh key
+    		
+    		//delete from db
+    		boolean deleted = agentDb.deleteAgent(agentId);
+    		if (deleted) {
+    			return Response.ok().entity(agent).build();
+    		}
+    		else {
+    			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be deleted from database, check logs please")).build();
+    		}
+        }
+        else {
+        	return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "No agent with id " + agentId + " exists in the system")).build();
+        }
     }
+    
     @Override
     public Response getAgentByID(String agentId, SecurityContext securityContext) throws NotFoundException {
-    	AgentFull agent = agentDb.getAgentByIpAgentId(agentId);
+    	AgentFull agent = agentDb.getAgentByAgentId(agentId);
         if (agent != null){
     		return Response.ok().entity(agent).build();
         }
@@ -79,7 +124,7 @@ public class AgentApiServiceImpl extends AgentApiService {
     	
     	if (actionId.equals("monitor")){
 	    	//verify that agent exists in database and it is not monitored
-	    	AgentFull agent = agentDb.getAgentByIpAgentId(agentId);
+	    	AgentFull agent = agentDb.getAgentByAgentId(agentId);
 	    	if (agent == null) {
 	    		//agent not exists in db
 	    		logger.error("No exists any agent in the system with agentId " + agentId);
@@ -96,7 +141,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 	    		//beats installation
 	    		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 	            String executionDate = sdf.format(timestamp);
-	            BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate);
+	            BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate, Dictionary.INSTALL);
 	            
 	            status = beatsTemplateManager.execute();
 	            if (status == 0) {
@@ -173,7 +218,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 			        		            
 			            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 			            String executionDate = sdf.format(timestamp);
-			            SshTemplateManager sshTemplateManager = new SshTemplateManager(agent, executionDate, ansibleFileCfgPath, body.getUser());
+			            SshTemplateManager sshTemplateManager = new SshTemplateManager(agent, executionDate, ansibleFileCfgPath, body.getUser(), Dictionary.INSTALL);
 			            status = sshTemplateManager.execute();
 			            if (status == 0) {
 			            	logger.info("Successful execution for the script generated to agent " + agent.getAgentId());
