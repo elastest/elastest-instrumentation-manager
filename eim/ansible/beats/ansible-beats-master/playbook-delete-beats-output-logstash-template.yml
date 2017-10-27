@@ -1,5 +1,7 @@
 ---
-- hosts: iagent1
+# file: playbook-delete-beats-output-logstash-template.yml
+
+- hosts: ##targethost##
   remote_user: elastest
   become: yes
   tasks:
