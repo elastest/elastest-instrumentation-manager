@@ -35,6 +35,7 @@ public class SshTemplateManager {
 		this.executionDate = executionDate;
 		this.cfgFilePath = cfgFilePath;
 		this.user = user;
+		this.action = action;
 	}
 	
 	public int execute() {
