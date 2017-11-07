@@ -60,7 +60,22 @@ private static Logger logger = Logger.getLogger(BeatsTemplateManager.class);
 		}
 		else if (action.equals(Dictionary.REMOVE)) {
 			logger.info("Preparing the execution of beats remove playbook for agent " + agent.getAgentId());
-			return 0;
+			String generatedPlaybookPath = TemplateUtils.generatePlaybook("beats", executionDate, agent, "", action);
+			if (generatedPlaybookPath != "") {
+				String generatedScriptPath = TemplateUtils.generateScript("beats", executionDate, agent, generatedPlaybookPath, "", action);	
+				if (generatedScriptPath != null) {
+					//execute generated files
+					return TemplateUtils.executeScript("beats", generatedScriptPath, executionDate, agent);
+				}
+				else {
+					logger.error("ERROR generating script for execution for agent " + agent.getAgentId( )+ ". Check logs please");
+					return -1;
+				}
+			}
+			else {
+				logger.error("ERROR generating playbook for execution for agent " + agent.getAgentId( )+ ". Check logs please");
+				return -1;
+			}
 		}	
 		return -1;
 	}
