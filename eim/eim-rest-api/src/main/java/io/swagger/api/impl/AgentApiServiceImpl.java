@@ -52,15 +52,15 @@ public class AgentApiServiceImpl extends AgentApiService {
     public Response deleteAgentByID(String agentId, SecurityContext securityContext) throws NotFoundException {
         //verify that agent exists
     	AgentFull agent = agentDb.getAgentByAgentId(agentId);
+    	int status = 0;
+    	Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    	String executionDate = sdf.format(timestamp);
         if (agent != null){
     		if (agent.isMonitored()) {
     			//remove beats
-    			int status = -1;
-	    		//beats installation
-	    		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-	            String executionDate = sdf.format(timestamp);
-	            BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate, Dictionary.REMOVE);
-	            
+    			status = -1;
+	    		//beats uninstallation
+	            BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate, Dictionary.REMOVE);	            
 	            status = beatsTemplateManager.execute();
 	            if (status == 0) {
 	            	logger.info("Successful execution for the beats script generated to agent " + agent.getAgentId());
@@ -74,19 +74,24 @@ public class AgentApiServiceImpl extends AgentApiService {
 	        			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be deleted from database, check logs please")).build();
 	        		}
 	            }
-	            else {
-	            	
+	            else {	            	
 	            	logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
 	            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
 	            }
     		}
     		
     		//remove ssh key
-    		
+    		if (status==0) {
+    			String ansibleFileCfgPath = getAnsibleCfgFilePathForAgent(agent);
+    			SshTemplateManager sshTemplateManager = new SshTemplateManager(agent, executionDate, ansibleFileCfgPath, "elastest", Dictionary.REMOVE);
+    			status = sshTemplateManager.execute();
+    		}
     		//delete from db
     		boolean deleted = agentDb.deleteAgent(agentId);
     		if (deleted) {
     			return Response.ok().entity(agent).build();
+    			
+    			//TODO remove from /etc/ansible/hosts also
     		}
     		else {
     			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be deleted from database, check logs please")).build();
@@ -201,9 +206,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 			        	FileTextUtils.setAsReadOnly(privateKeyPath);
 			        	
 			        	//write ansible cfg file for the host
-			        	String ansibleFileCfgPath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
-			        			Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_HOSTS_FOLDER) +
-			        			agent.getAgentId() + "/" + "host_" + agent.getAgentId() + "_cfg";
+			        	String ansibleFileCfgPath = getAnsibleCfgFilePathForAgent(agent);
 			        	FileWriter fileWriter = new FileWriter(ansibleFileCfgPath, true);
 			        	BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 			        	PrintWriter printWriter = new PrintWriter(bufferedWriter);
@@ -260,6 +263,12 @@ public class AgentApiServiceImpl extends AgentApiService {
 		    	return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Check logs please!")).build();
 			}
     	}
+    }
+    
+    private String getAnsibleCfgFilePathForAgent(AgentFull agent) {
+    	return Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
+    			Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_HOSTS_FOLDER) +
+    			agent.getAgentId() + "/" + "host_" + agent.getAgentId() + "_cfg";
     }
     
 }

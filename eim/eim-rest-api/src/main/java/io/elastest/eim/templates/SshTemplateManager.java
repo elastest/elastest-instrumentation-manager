@@ -61,8 +61,25 @@ public class SshTemplateManager {
 			//TODO move template to history execution path			
 		}
 		else if (action.equals(Dictionary.REMOVE)) {
-			logger.info("Preparing the execution of beats remove playbook for agent " + agent.getAgentId());
-			return 0;
+			logger.info("Preparing the execution of SSH delete playbook for agent " + agent.getAgentId());
+			//generate files for execution: playbook and script
+			String generatedPlaybookPath = TemplateUtils.generatePlaybook("ssh", executionDate, agent, user, action);
+			if (generatedPlaybookPath != "") {
+				String generatedScriptPath = TemplateUtils.generateScript("ssh", executionDate, agent, generatedPlaybookPath, cfgFilePath, action);	
+				if (generatedScriptPath != null) {
+					//execute generated files
+					return TemplateUtils.executeScript("ssh", generatedScriptPath, executionDate, agent);
+				}
+				else {
+					logger.error("ERROR generating script for delete execution for agent " + agent.getAgentId( )+ ". Check logs please");
+					return -1;
+				}
+			}
+			else {
+				logger.error("ERROR generating playbook for delete execution for agent " + agent.getAgentId( )+ ". Check logs please");
+				return -1;
+			}	
+			
 		}	
 		return -1;
 

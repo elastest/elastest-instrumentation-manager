@@ -8,15 +8,19 @@ public class Dictionary {
 	public static String PROPERTY_MONGODB_HOST = "mongoDB.host";
 	
 	public static String PROPERTY_PUBLICKEY_LOCATION = "publickey.location";
-	public static String PROPERTY_TEMPLATES_SSH_PLAYBOOK = "templates.ssh.playbook";
+	public static String PROPERTY_TEMPLATES_SSH_INSTALL_PLAYBOOK = "templates.ssh.install.playbook";
+	public static String PROPERTY_TEMPLATES_SSH_REMOVE_PLAYBOOK = "templates.ssh.remove.playbook";
 	public static String PROPERTY_TEMPLATES_PLAYBOOK_JOKER = "templates.playbook.joker";
 	public static String PROPERTY_TEMPLATES_USER_JOKER = "templates.user.joker";
 	public static String PROPERTY_TEMPLATES_SCRIPT_JOKER_PLAYBOOK = "templates.script.joker.playbook";
 	public static String PROPERTY_TEMPLATES_SCRIPT_JOKER_CONFIG = "templates.script.joker.config";
-	public static String PROPERTY_TEMPLATES_SSH_EXECUTION_PLAYBOOK_PREFIX = "templates.ssh.execution_playbook_prefix";
+	public static String PROPERTY_TEMPLATES_SSH_INSTALL_EXECUTION_PLAYBOOK_PREFIX = "templates.ssh.install.execution_playbook_prefix";
+	public static String PROPERTY_TEMPLATES_SSH_REMOVE_EXECUTION_PLAYBOOK_PREFIX = "templates.ssh.remove.execution_playbook_prefix";
 	public static String PROPERTY_TEMPLATES_SSH_EXECUTIONPATH = "templates.ssh.executionPath";
-	public static String PROPERTY_TEMPLATES_SSH_LAUNCHER = "templates.ssh.launcher";
-	public static String PROPERTY_TEMPLATES_SSH_EXECUTION_LAUNCHER_PREFIX= "templates.ssh.execution_launcher_prefix";
+	public static String PROPERTY_TEMPLATES_SSH_INSTALL_LAUNCHER = "templates.ssh.install.launcher";
+	public static String PROPERTY_TEMPLATES_SSH_REMOVE_LAUNCHER = "templates.ssh.remove.launcher";
+	public static String PROPERTY_TEMPLATES_SSH_INSTALL_EXECUTION_LAUNCHER_PREFIX= "templates.ssh.install.execution_launcher_prefix";
+	public static String PROPERTY_TEMPLATES_SSH_REMOVE_EXECUTION_LAUNCHER_PREFIX= "templates.ssh.remove.execution_launcher_prefix";
 
 	public static String PROPERTY_TEMPLATES_SSH_HOSTS_FOLDER = "templates.ssh.hostsFolder";
 	

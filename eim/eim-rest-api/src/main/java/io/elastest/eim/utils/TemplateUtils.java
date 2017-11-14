@@ -33,9 +33,9 @@ public class TemplateUtils {
 		if (type.equalsIgnoreCase("ssh") && action.equalsIgnoreCase(Dictionary.INSTALL)) {
 			
 			String playbookTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
-					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_PLAYBOOK);
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_INSTALL_PLAYBOOK);
 			String playbookToExecutePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
-					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTION_PLAYBOOK_PREFIX) + agent.getAgentId() + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_INSTALL_EXECUTION_PLAYBOOK_PREFIX) + agent.getAgentId() + 
 					"-" + executionDate + ".yml";
 			String jokerTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_PLAYBOOK_JOKER);
 			String jokerUser = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_USER_JOKER);
@@ -109,6 +109,29 @@ public class TemplateUtils {
 				return "";
 			}	
 		}
+		else if (type.equalsIgnoreCase("ssh") && action.equalsIgnoreCase(Dictionary.REMOVE)) {
+			
+			String playbookTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_REMOVE_PLAYBOOK);
+			String playbookToExecutePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_REMOVE_EXECUTION_PLAYBOOK_PREFIX) + agent.getAgentId() + 
+					"-" + executionDate + ".yml";
+			String jokerTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_PLAYBOOK_JOKER);
+						
+			try {
+				//Generate the execution playbook
+				FileTextUtils.copyFile(playbookTemplatePath, playbookToExecutePath);
+				logger.info("Generated successfully the SSH playbook for agent" + agent.getAgentId() + ": " + playbookToExecutePath);
+				//Fill the playbook with the agentId of the agent
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerTemplates, agent.getAgentId());
+				logger.info("Modified successfully the generated SSH playbook for agent " + agent.getAgentId() + ". Ready to execute!");
+				return playbookToExecutePath;				
+			} catch (IOException e) {
+				logger.error("ERROR while triying to generate SSH playbook for agent " + agent.getAgentId() + " with execution date: " + executionDate);
+				e.printStackTrace();
+				return "";
+			}	
+		}
 
 		return "";
 		 
@@ -119,9 +142,9 @@ public class TemplateUtils {
 		if (type.equalsIgnoreCase("ssh") && action.equalsIgnoreCase(Dictionary.INSTALL)) {
 			
 			String scriptTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
-					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_LAUNCHER);
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_INSTALL_LAUNCHER);
 			String scriptToExecutePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
-					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTION_LAUNCHER_PREFIX) + agent.getAgentId() +"-" + executionDate + ".sh";
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_INSTALL_EXECUTION_LAUNCHER_PREFIX) + agent.getAgentId() +"-" + executionDate + ".sh";
 			String jokerPlaybookTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER_PLAYBOOK);
 			String jokerCfgFileTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER_CONFIG);
 			
@@ -196,6 +219,35 @@ public class TemplateUtils {
 				e.printStackTrace();
 				return "";
 			}	
+			
+		}
+		else if (type.equalsIgnoreCase("ssh") && action.equalsIgnoreCase(Dictionary.REMOVE)) {
+			
+			String scriptTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_REMOVE_LAUNCHER);
+			String scriptToExecutePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_REMOVE_EXECUTION_LAUNCHER_PREFIX) + agent.getAgentId() +"-" + executionDate + ".sh";
+			String jokerPlaybookTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER_PLAYBOOK);
+			String jokerCfgFileTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER_CONFIG);
+			
+			try {
+				//Generate the execution playbook
+				FileTextUtils.copyFile(scriptTemplatePath, scriptToExecutePath);
+				logger.info("Generated successfully the delete SSH script for agent" + agent.getAgentId() + ": " + scriptToExecutePath);
+				//Fill the playbook with the agentId of the agent
+				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerPlaybookTemplates, playbookPath);
+				//Fill the playbook with the specific ansible config file of the agent
+				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerCfgFileTemplates, ansibleCfgFilePath);
+				//set the file as executable
+				FileTextUtils.setAsExecutable(scriptToExecutePath);
+				logger.info("Modified successfully the generated  delete SSH script for agent " + agent.getAgentId() + ". Ready to execute!");
+				return scriptToExecutePath;
+				
+			} catch (IOException e) {
+				logger.error("ERROR while triying to generate delete SSH script for agent " + agent.getAgentId() + " with execution date: " + executionDate);
+				e.printStackTrace();
+				return "";
+			}				
 			
 		}
 		return "";
