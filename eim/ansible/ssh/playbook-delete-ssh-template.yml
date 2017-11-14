@@ -2,7 +2,7 @@
 #This playbook delete the authorized_keys file in the .ssh directory of the elastest user in sut hosts
 - name: ssh-delete
   hosts: ##targethost## 
-  remote_user: ##user##
+  remote_user: elastest
 
   tasks:
           - name: delete authorized_keys file
