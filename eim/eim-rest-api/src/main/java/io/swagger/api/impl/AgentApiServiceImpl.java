@@ -37,6 +37,7 @@ import io.elastest.eim.utils.FileTextUtils;
 import io.swagger.api.AgentApiService;
 import io.swagger.api.ApiResponseMessage;
 import io.swagger.api.NotFoundException;
+import io.swagger.model.AgentDeleted;
 import io.swagger.model.AgentFull;
 import io.swagger.model.Host;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2017-08-15T11:10:32.030+02:00")
@@ -66,13 +67,13 @@ public class AgentApiServiceImpl extends AgentApiService {
 	            	logger.info("Successful execution for the beats script generated to agent " + agent.getAgentId());
 	            	//TODO remove ssh key
 	            	//remove from database
-	        		boolean deleted = agentDb.deleteAgent(agentId);
-	        		if (deleted) {
-	        			return Response.ok().entity(agent).build();
-	        		}
-	        		else {
-	        			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be deleted from database, check logs please")).build();
-	        		}
+//	        		boolean deleted = agentDb.deleteAgent(agentId);
+//	        		if (deleted) {
+//	        			return Response.ok().entity(agent).build();
+//	        		}
+//	        		else {
+//	        			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be deleted from database, check logs please")).build();
+//	        		}
 	            }
 	            else {	            	
 	            	logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
@@ -85,17 +86,46 @@ public class AgentApiServiceImpl extends AgentApiService {
     			String ansibleFileCfgPath = getAnsibleCfgFilePathForAgent(agent);
     			SshTemplateManager sshTemplateManager = new SshTemplateManager(agent, executionDate, ansibleFileCfgPath, "elastest", Dictionary.REMOVE);
     			status = sshTemplateManager.execute();
+    			if (status == 0) {
+	            	logger.info("Successful execution for the ssh delete script generated to agent " + agent.getAgentId());
+	            }
+	            else {	            	
+	            	logger.error("ERROR executing the delete ssh script for agent " + agent.getAgentId() + ". Check logs please");
+	            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
+	            }
     		}
+    		
     		//delete from db
     		boolean deleted = agentDb.deleteAgent(agentId);
     		if (deleted) {
-    			return Response.ok().entity(agent).build();
+    			logger.info("Successful deleted from database -->  agent " + agent.getAgentId());
+    			//return Response.ok().entity(agent).build();
     			
-    			//TODO remove from /etc/ansible/hosts also
+    		
     		}
     		else {
+    			logger.error("ERROR deleting agent " + agent.getAgentId() + " from database");
     			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be deleted from database, check logs please")).build();
     		}
+    		
+    		try {
+    			//delete config files
+    			File f = new File(getConfigDirForAgent(agent));
+    			FileTextUtils.delete(f);
+    			
+    			//remove from /etc/ansible/hosts    		
+				FileTextUtils.removeAgentFromAnsibleCfg("/etc/ansible/hosts", agent.getAgentId());
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				logger.error(e.getMessage());
+		    	return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Check logs please!")).build();
+			}
+    	
+    		AgentDeleted agentDeleted = new AgentDeleted();
+    		agentDeleted.setAgentId(agent.getAgentId());
+    		agentDeleted.setDeleted("true");
+    		return Response.ok().entity(agentDeleted).build();
         }
         else {
         	return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "No agent with id " + agentId + " exists in the system")).build();
@@ -269,6 +299,12 @@ public class AgentApiServiceImpl extends AgentApiService {
     	return Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
     			Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_HOSTS_FOLDER) +
     			agent.getAgentId() + "/" + "host_" + agent.getAgentId() + "_cfg";
+    }
+    
+    private String getConfigDirForAgent(AgentFull agent) {
+    	return Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
+    			Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_HOSTS_FOLDER) +
+    			agent.getAgentId();
     }
     
 }

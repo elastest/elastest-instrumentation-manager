@@ -226,4 +226,48 @@ public class FileTextUtils {
         	return resultCode;
         }		
 	}
+	
+	
+	/**
+	 * Delete a file or a directory and its children.
+	 * 
+	 * @param file
+	 * @throws IOException
+	 */
+	public static void delete(File f) throws IOException {
+ 
+		try {
+			//Deleting the directory recursively.
+			deleteRecursive(f);
+			System.out.println("Path " + f.getAbsolutePath() + " has been deleted recursively !");
+		} catch (IOException e) {
+			System.out.println("Problem occurs when deleting the path : " + f.getAbsolutePath());
+			e.printStackTrace();
+		}
+	}	
+
+	
+	/**
+	 * Delete a file or a directory and its children. Internal recursive method
+	 * 
+	 * @param file
+	 * @throws IOException
+	 */
+	private static void deleteRecursive(File file) throws IOException {
+		 
+		for (File childFile : file.listFiles()) {
+ 
+			if (childFile.isDirectory()) {
+				deleteRecursive(childFile);
+			} else {
+				if (!childFile.delete()) {
+					throw new IOException();
+				}
+			}
+		}
+ 
+		if (!file.delete()) {
+			throw new IOException();
+		}
+	}
 }
