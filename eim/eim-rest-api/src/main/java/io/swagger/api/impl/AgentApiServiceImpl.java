@@ -37,6 +37,7 @@ import io.elastest.eim.utils.FileTextUtils;
 import io.swagger.api.AgentApiService;
 import io.swagger.api.ApiResponseMessage;
 import io.swagger.api.NotFoundException;
+import io.swagger.model.AgentConfiguration;
 import io.swagger.model.AgentDeleted;
 import io.swagger.model.AgentFull;
 import io.swagger.model.Host;
@@ -155,7 +156,7 @@ public class AgentApiServiceImpl extends AgentApiService {
         }
     }
     @Override
-    public Response postAction(String agentId, String actionId, SecurityContext securityContext) throws NotFoundException {    	
+    public Response postAction(String agentId, String actionId, AgentConfiguration body, SecurityContext securityContext) throws NotFoundException {    	
     	
     	if (actionId.equals("monitor")){
 	    	//verify that agent exists in database and it is not monitored

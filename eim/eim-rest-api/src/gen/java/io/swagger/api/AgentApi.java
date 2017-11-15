@@ -29,6 +29,7 @@ import javax.ws.rs.core.SecurityContext;
 import io.swagger.annotations.ApiParam;
 import io.swagger.api.factories.AgentApiServiceFactory;
 import io.swagger.model.Agent;
+import io.swagger.model.AgentConfiguration;
 import io.swagger.model.AgentFull;
 import io.swagger.model.Host;
 
@@ -137,9 +138,10 @@ public class AgentApi  {
         @io.swagger.annotations.ApiResponse(code = 404, message = "Agent not found", response = AgentFull.class) })
     public Response postAction(@ApiParam(value = "Id of agent to that receives the action",required=true) @PathParam("agentId") String agentId
 ,@ApiParam(value = "action to apply",required=true) @PathParam("actionId") String actionId
+,@ApiParam(value = "Configuration of the agent" ,required=true) AgentConfiguration body
 ,@Context SecurityContext securityContext)
     throws NotFoundException {
-        return delegate.postAction(agentId,actionId,securityContext);
+        return delegate.postAction(agentId,actionId,body,securityContext);
     }
     @POST
     

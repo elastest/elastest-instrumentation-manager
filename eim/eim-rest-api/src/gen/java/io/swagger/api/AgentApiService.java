@@ -17,12 +17,13 @@ package io.swagger.api;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import io.swagger.model.AgentConfiguration;
 import io.swagger.model.Host;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2017-08-15T11:10:32.030+02:00")
 public abstract class AgentApiService {
     public abstract Response deleteAgentByID(String agentId,SecurityContext securityContext) throws NotFoundException;
     public abstract Response getAgentByID(String agentId,SecurityContext securityContext) throws NotFoundException;
     public abstract Response getAllAgents(SecurityContext securityContext) throws NotFoundException;
-    public abstract Response postAction(String agentId,String actionId,SecurityContext securityContext) throws NotFoundException;
+    public abstract Response postAction(String agentId,String actionId,AgentConfiguration body,SecurityContext securityContext) throws NotFoundException;
     public abstract Response postAgent(Host body,SecurityContext securityContext) throws NotFoundException;
 }
