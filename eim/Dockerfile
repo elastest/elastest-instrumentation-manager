@@ -45,8 +45,13 @@ RUN \
 # open default tomcat port
 EXPOSE 8080
 
+# ssh
 COPY ansible/ssh/playbook-ssh-template.yml  /var/ansible/ssh
 COPY ansible/ssh/run-ssh-template.sh /var/ansible/ssh
+COPY ansible/ssh/playbook-delete-ssh-template.yml  /var/ansible/ssh
+COPY ansible/ssh/run-delete-ssh-template.sh /var/ansible/ssh
+
+ # beats
 COPY ansible/beats/run-beats-template.sh /var/ansible/beats
 COPY ansible/beats/ansible-beats-master/playbook-beats-output-logstash-template.yml /var/ansible/beats/ansible-beats-master
 COPY ansible/beats/run-delete-beats-template.sh /var/ansible/beats
