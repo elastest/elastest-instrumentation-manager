@@ -113,7 +113,7 @@ public class AgentRepository {
         	System.out.println("Host finded in DB with agentId = " + agentId + " with ipAddress " + agent.getHost());
         }
         else {
-        	logger.error("Host doesn't exists in DB with agentId = " + agentId);
+        	logger.info("Host doesn't exists in DB with agentId = " + agentId);
         	System.out.println("Host doesn't exists in DB with agentId = " + agentId);
         	return null;
         }		
