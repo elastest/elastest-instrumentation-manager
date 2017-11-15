@@ -8,10 +8,12 @@ Before you start using ElasTest, you need to know the following terms:
 - **SuT (System under Test):** Specification of the System that is being tested for correct operation.
 
 ## Features
-The version 0.1 of the EIM, provides the following features:
+The version 0.5.0-alpha2 of the EIM, provides the following features:
 
 - Register new Instrumentation Agent. 
-- Deploy [Beats](https://www.elastic.co/products/beats) software over the SuT.  
+- Deploy [Beats](https://www.elastic.co/products/beats) software over the SuT. 
+- Get one or all Instrumentation Agents.
+- Delete one Instrumentation Agent
 
 >**Note:** All tests has been done using ubuntu14.04 as operating system.
 
@@ -20,7 +22,7 @@ To start using EIM, you need to follow the next steps. Several of these steps, a
 
 ### Windows 
 1.  Install [Docker Toolbox for windows](https://docs.docker.com/toolbox/toolbox_install_windows/).
-Start Boo2docker Virtual Machine from Virtual Box GUI and connect via ssh. Execute `docker-machine ssh` from power shell or any terminal emulator. 
+Start Boot2docker Virtual Machine from Virtual Box GUI and connect via ssh. Execute `docker-machine ssh` from power shell or any terminal emulator. 
 2.  Install [Docker Compose](https://docs.docker.com/compose/install/.) on the Virtual Machine Boot2docker created by Docker Toolbox installation. 
     - `sudo -i` (get access as superuser)    
     - ``curl -L https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose``
@@ -100,7 +102,7 @@ The EIM is able to deploy the following Beats using the Instrumentation agents c
 
 #### Step by step 
 1. The agent must be registered on EIM (previous feature)
-2. Using the REST API execute a `POST`to `http://localhost:8080/eim/api/agent/<agentId>/monitor`. The call to the API must has as headers: `Accept: application/json, Content-Type: application/json`.
+2. Using the REST API execute a `POST` to `http://localhost:8080/eim/api/agent/<agentId>/monitor`. The call to the API must has as headers: `Accept: application/json, Content-Type: application/json`.
 > **Note:** The installation time depends of the number of packets to download and install, and also the bandwith and the latency to repositories.
 3. If everything works fine, the information about new agent is returned:
 `{"agentId":"iagent1","host":"172.21.0.6","monitored":true,"logstash_ip":"172.21.0.4","logstash_port":"5044"}`
@@ -109,6 +111,29 @@ The EIM is able to deploy the following Beats using the Instrumentation agents c
 5. Files executed available in `/var/ansible/beats`
 6. Check that Beats data are received by Logstash (in the shell that appears the messages of all containers deployed)
 7. Check that Beats data can be also shown in kibana(http://localhost:5601/app/kibana)
+
+### Get one or all Instrumentation Agents
+EIM is able to get an existing Instrumentation Agent using REST API exposed, to do this, the specified Instrumentation Agent must exists in the system.
+
+#### Step by step 
+1. Using the REST API execute a `GET` to `http://localhost:8080/eim/api/agent/<agentId>`. The call to the API must has as headers: `Accept: application/json, Content-Type: application/json`.
+2. If everything works fine, the information about new agent is returned:
+`{"agentId":"iagent1","host":"172.21.0.6","monitored":true,"logstash_ip":"172.21.0.4","logstash_port":"5044"}`
+> **Note:** Using the data from previous example
+3. Log file available: `/var/log/eim`
+
+Also is implemented de REST API method to retrieve all existing Instrumentation Agents, to get them execute a `GET` to `http://localhost:8080/eim/api/agent`. The call to the API must has as headers: `Accept: application/json, Content-Type: application/json`. The result will be a list of all the Instrumentation Agents that exists in the system.
+
+### Delete one Instrumentation Agent
+EIM is able to delete an existing Instrumentation Agent using the REST API exposed
+
+#### Step by step 
+1. The Instrumentation Agent that is going to be deleted, it must be created previously.
+2. Using the REST API execute a `DELETE` to `http://localhost:8080/eim/api/agent/<agentId>`. The call to the API must has as headers: `Accept: application/json, Content-Type: application/json`.
+3. If everything works fine, the information about the deleted agent is returned:
+`{"agentId":"iagent1","deleted":"true"}`
+> **Note:** Using the data from previous example
+4. Log file available: `/var/log/eim`
 
 ## Development documentation
 
