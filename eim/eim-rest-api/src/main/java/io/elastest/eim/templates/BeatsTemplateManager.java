@@ -41,6 +41,8 @@ private static Logger logger = Logger.getLogger(BeatsTemplateManager.class);
 	 */
 	public void setConfiguration(AgentConfiguration agentCfg) {
 		this.agentCfg = agentCfg;
+		System.out.println(this.agentCfg.toString());
+		logger.info(this.agentCfg.toString());
 	}
 	
 	public int execute() {
