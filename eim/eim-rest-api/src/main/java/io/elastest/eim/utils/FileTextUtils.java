@@ -35,9 +35,6 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import io.elastest.eim.config.Dictionary;
-import io.elastest.eim.config.Properties;
-
 
 public class FileTextUtils {
 
