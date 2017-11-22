@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -90,10 +91,52 @@ public class AgentConfigurationRepository {
 	}
 
 	
-	public AgentConfigurationDatabase addAgentCfg(String agentId, AgentConfiguration agentCfg){
+	public AgentConfigurationDatabase addAgentCfg(String agentId, AgentConfiguration agentCfgObj){
 		logger.info("Adding new agent configuration to DB, agent with agentId = " + agentId);
 		System.out.println("Adding new agent configuration to DB, agent with agentId = " + agentId);
 		BasicDBObject agentCfgDb = new BasicDBObject();
+		
+		//Gson gson = new Gson();
+//		BasicDBObject obj = (BasicDBObject)JSON.parse(gson.toJson(emp));
+		BasicDBObject packetbeat = new BasicDBObject();
+		packetbeat.put("stream", agentCfgObj.getPacketbeat().getStream());
+		
+		BasicDBObject filebeat = new BasicDBObject();
+		filebeat.put("stream", agentCfgObj.getFilebeat().getStream());
+		BasicDBList paths = new BasicDBList();
+		for (String path : agentCfgObj.getFilebeat().getPaths()) {
+			paths.add(path);	
+		}
+		filebeat.put("paths", paths);
+		
+		BasicDBObject topbeat = new BasicDBObject();
+		topbeat.put("stream", agentCfgObj.getTopbeat().getStream());
+		
+		BasicDBObject agentCfg = new BasicDBObject();
+		agentCfg.put("exec", agentCfgObj.getExec());
+		agentCfg.put("component", agentCfgObj.getComponent());
+		agentCfg.put("packetbeat", packetbeat);
+		agentCfg.put("filebeat", filebeat);
+		agentCfg.put("topbeat", topbeat);
+				
+//		{
+//			  "exec": "exec_name",
+//			  "component": "component_name",
+//			  "packetbeat": {
+//			    "stream": "stream1"
+//			  },
+//			  "filebeat": {
+//			    "stream": "stream2",
+//			    "paths": [
+//			      "/var/log/*.log",
+//			      "/var/log/*/*.log"
+//			    ]
+//			  },
+//			  "topbeat": {
+//			    "stream": "stream3"
+//			  }
+//			}
+				
 		agentCfgDb.put("agentId", agentId);
 		agentCfgDb.put("agentConfiguration", agentCfg);
 		getAgentConfigurationTable().insert(agentCfgDb);
