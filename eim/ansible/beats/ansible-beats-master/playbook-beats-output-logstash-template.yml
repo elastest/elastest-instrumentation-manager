@@ -91,8 +91,6 @@
       filebeat:
         prospectors:
           - paths:
-            - /var/log/*.log
-            - /var/log/*/*.log
             - ##filepaths-to-monitor##
       output:
         logstash:
