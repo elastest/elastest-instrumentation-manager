@@ -179,7 +179,6 @@ public class AgentApiServiceImpl extends AgentApiService {
     	if (actionId.equals("monitor")){
 	    	//verify that agent exists in database and it is not monitored
 	    	AgentFull agent = agentDb.getAgentByAgentId(agentId);
-	    	AgentConfigurationDatabase agentCfg = agentCfgDb.getAgentConfigurationByAgentId(agentId);
 	    	if (agent == null) {
 	    		//agent not exists in db
 	    		logger.error("No exists any agent in the system with agentId " + agentId);
