@@ -39,6 +39,7 @@ import io.swagger.api.AgentApiService;
 import io.swagger.api.ApiResponseMessage;
 import io.swagger.api.NotFoundException;
 import io.swagger.model.AgentConfiguration;
+import io.swagger.model.AgentConfigurationDatabase;
 import io.swagger.model.AgentDeleted;
 import io.swagger.model.AgentFull;
 import io.swagger.model.Host;
@@ -171,12 +172,14 @@ public class AgentApiServiceImpl extends AgentApiService {
         	return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "it has not been possible to retrieve info, check logs please!")).build();
         }
     }
+    
     @Override
     public Response postAction(String agentId, String actionId, AgentConfiguration body, SecurityContext securityContext) throws NotFoundException {    	
     	
     	if (actionId.equals("monitor")){
 	    	//verify that agent exists in database and it is not monitored
 	    	AgentFull agent = agentDb.getAgentByAgentId(agentId);
+	    	AgentConfigurationDatabase agentCfg = agentCfgDb.getAgentConfigurationByAgentId(agentId);
 	    	if (agent == null) {
 	    		//agent not exists in db
 	    		logger.error("No exists any agent in the system with agentId " + agentId);
@@ -198,6 +201,8 @@ public class AgentApiServiceImpl extends AgentApiService {
 	            status = beatsTemplateManager.execute();
 	            if (status == 0) {
 	            	logger.info("Successful execution for the beats script generated to agent " + agent.getAgentId());
+	            	// store agent configuration in db
+	            	agentCfgDb.addAgentCfg(agentId, body);
 	            	//set host as monitored in db    	
 		        	agent = agentDb.setMonitored(agentId, true);
 		        	logger.info("iAgent " + agent.getAgentId() + " monitored succesfully");
