@@ -42,9 +42,9 @@ public class SshTemplateManager {
 		if (action.equals(Dictionary.INSTALL)) {
 			logger.info("Preparing the execution of SSH register playbook for agent " + agent.getAgentId());
 			//generate files for execution: playbook and script
-			String generatedPlaybookPath = TemplateUtils.generatePlaybook("ssh", executionDate, agent, user, action);
+			String generatedPlaybookPath = TemplateUtils.generateSshPlaybook(executionDate, agent, user, action);
 			if (generatedPlaybookPath != "") {
-				String generatedScriptPath = TemplateUtils.generateScript("ssh", executionDate, agent, generatedPlaybookPath, cfgFilePath, action);	
+				String generatedScriptPath = TemplateUtils.generateSshScript(executionDate, agent, generatedPlaybookPath, cfgFilePath, action);	
 				if (generatedScriptPath != null) {
 					//execute generated files
 					return TemplateUtils.executeScript("ssh", generatedScriptPath, executionDate, agent);
@@ -63,9 +63,9 @@ public class SshTemplateManager {
 		else if (action.equals(Dictionary.REMOVE)) {
 			logger.info("Preparing the execution of SSH delete playbook for agent " + agent.getAgentId());
 			//generate files for execution: playbook and script
-			String generatedPlaybookPath = TemplateUtils.generatePlaybook("ssh", executionDate, agent, user, action);
+			String generatedPlaybookPath = TemplateUtils.generateSshPlaybook(executionDate, agent, user, action);
 			if (generatedPlaybookPath != "") {
-				String generatedScriptPath = TemplateUtils.generateScript("ssh", executionDate, agent, generatedPlaybookPath, cfgFilePath, action);	
+				String generatedScriptPath = TemplateUtils.generateSshScript(executionDate, agent, generatedPlaybookPath, cfgFilePath, action);	
 				if (generatedScriptPath != null) {
 					//execute generated files
 					return TemplateUtils.executeScript("ssh", generatedScriptPath, executionDate, agent);

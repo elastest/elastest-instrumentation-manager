@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 
 import io.elastest.eim.config.Dictionary;
 import io.elastest.eim.utils.TemplateUtils;
+import io.swagger.model.AgentConfiguration;
 import io.swagger.model.AgentFull;
 
 public class BeatsTemplateManager {
@@ -26,11 +27,20 @@ private static Logger logger = Logger.getLogger(BeatsTemplateManager.class);
 	private String executionDate = "";
 	private AgentFull agent;
 	private String action;
+	private AgentConfiguration agentCfg;
 	
 	public BeatsTemplateManager(AgentFull agent, String executionDate, String action) {
 		this.agent = agent;
 		this.executionDate = executionDate;
 		this.action = action;
+	}
+	
+	/**
+	 * Only needed when the beats are going to be installed. It must be called before call execute method
+	 * @param agentCfg
+	 */
+	public void setConfiguration(AgentConfiguration agentCfg) {
+		this.agentCfg = agentCfg;
 	}
 	
 	public int execute() {
@@ -40,9 +50,9 @@ private static Logger logger = Logger.getLogger(BeatsTemplateManager.class);
 			//generate files for execution: playbook and script
 			//the fourth argument is the user, that is not used in this playbook. The agent is also registrated, so in this case,
 			//elastest user is the one used.
-			String generatedPlaybookPath = TemplateUtils.generatePlaybook("beats", executionDate, agent, "", action);
+			String generatedPlaybookPath = TemplateUtils.generateBeatsPlaybook(executionDate, agent, "", action, agentCfg);
 			if (generatedPlaybookPath != "") {
-				String generatedScriptPath = TemplateUtils.generateScript("beats", executionDate, agent, generatedPlaybookPath, "", action);	
+				String generatedScriptPath = TemplateUtils.generateBeatsScript(executionDate, agent, generatedPlaybookPath, "", action);	
 				if (generatedScriptPath != null) {
 					//execute generated files
 					return TemplateUtils.executeScript("beats", generatedScriptPath, executionDate, agent);
@@ -60,9 +70,9 @@ private static Logger logger = Logger.getLogger(BeatsTemplateManager.class);
 		}
 		else if (action.equals(Dictionary.REMOVE)) {
 			logger.info("Preparing the execution of beats remove playbook for agent " + agent.getAgentId());
-			String generatedPlaybookPath = TemplateUtils.generatePlaybook("beats", executionDate, agent, "", action);
+			String generatedPlaybookPath = TemplateUtils.generateBeatsPlaybook(executionDate, agent, "", action, null);
 			if (generatedPlaybookPath != "") {
-				String generatedScriptPath = TemplateUtils.generateScript("beats", executionDate, agent, generatedPlaybookPath, "", action);	
+				String generatedScriptPath = TemplateUtils.generateBeatsScript(executionDate, agent, generatedPlaybookPath, "", action);	
 				if (generatedScriptPath != null) {
 					//execute generated files
 					return TemplateUtils.executeScript("beats", generatedScriptPath, executionDate, agent);

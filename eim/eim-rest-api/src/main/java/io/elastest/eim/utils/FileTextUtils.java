@@ -21,25 +21,22 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
-import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.PosixFilePermission;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-import javax.ws.rs.core.Response;
-
 import org.apache.log4j.Logger;
 
-import io.swagger.api.ApiResponseMessage;
+import io.elastest.eim.config.Dictionary;
+import io.elastest.eim.config.Properties;
 
 
 public class FileTextUtils {
@@ -99,6 +96,25 @@ public class FileTextUtils {
 		    if (line.contains(textToFind)) {
 		       newLines.add(line.replace(textToFind, replaceText));
 		       logger.info(textToFind + " found in the file. Replacing it by " + replaceText);
+		    } else {
+		       newLines.add(line);
+		    }
+		}
+		logger.info("Updating with new content the file " + filePath);
+		Files.write(Paths.get(filePath), newLines, StandardCharsets.UTF_8);
+		logger.info("File " + filePath + " updated");
+	}
+	
+	public static void replaceListInFile(String filePath, String textToFind, List<String> filePathsList) throws IOException {
+		List<String> newLines = new ArrayList<>();
+		for (String line : Files.readAllLines(Paths.get(filePath), StandardCharsets.UTF_8)) {
+		    if (line.contains(textToFind)) {
+		    	logger.info(textToFind + " found in the file. Replacing it by filepaths...");
+		    	for (String filepath : filePathsList) {
+		    		String newFilepath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_NUMBER_OF_BLANKS_FOR_FILEPATHS) + filepath; 
+		    		newLines.add(newFilepath);
+		    		logger.info("Added new line to playbook: " + newFilepath);
+		    	}		       
 		    } else {
 		       newLines.add(line);
 		    }
