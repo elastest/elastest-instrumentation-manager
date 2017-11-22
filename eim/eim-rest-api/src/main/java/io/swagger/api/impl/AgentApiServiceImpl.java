@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 
 import io.elastest.eim.config.Dictionary;
 import io.elastest.eim.config.Properties;
+import io.elastest.eim.database.AgentConfigurationRepository;
 import io.elastest.eim.database.AgentRepository;
 import io.elastest.eim.templates.BeatsTemplateManager;
 import io.elastest.eim.templates.SshTemplateManager;
@@ -47,6 +48,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 	private static Logger logger = Logger.getLogger(AgentApiServiceImpl.class);
 
 	private AgentRepository agentDb = new AgentRepository();
+	private AgentConfigurationRepository agentCfgDb = new AgentConfigurationRepository();
 	
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd-HH.mm.ss");
 	
@@ -65,7 +67,19 @@ public class AgentApiServiceImpl extends AgentApiService {
 	            BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate, Dictionary.REMOVE);	            
 	            status = beatsTemplateManager.execute();
 	            if (status == 0) {
-	            	logger.info("Successful execution for the beats script generated to agent " + agent.getAgentId());
+	            	logger.info("Successful execution for the delete script generated to agent " + agent.getAgentId());
+	            	
+	            	//delete agent configuration
+	            	boolean deleted = agentCfgDb.deleteAgentCfg(agentId);
+	        		if (deleted) {
+	        			logger.info("Successful deleted from database -->  agent configuration" + agent.getAgentId());
+	        			//return Response.ok().entity(agent).build();	        		
+	        		}
+	        		else {
+	        			logger.error("ERROR deleting agent configuration " + agent.getAgentId() + " from database");
+	        			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be deleted from database, check logs please")).build();
+	        		}
+	        		
 	            	//TODO remove ssh key
 	            	//remove from database
 //	        		boolean deleted = agentDb.deleteAgent(agentId);
@@ -95,6 +109,8 @@ public class AgentApiServiceImpl extends AgentApiService {
 	            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
 	            }
     		}
+    		
+    		
     		
     		//delete from db
     		boolean deleted = agentDb.deleteAgent(agentId);
@@ -178,7 +194,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 	    		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 	            String executionDate = sdf.format(timestamp);
 	            BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate, Dictionary.INSTALL);
-	            
+	            beatsTemplateManager.setConfiguration(body);
 	            status = beatsTemplateManager.execute();
 	            if (status == 0) {
 	            	logger.info("Successful execution for the beats script generated to agent " + agent.getAgentId());
