@@ -111,8 +111,9 @@ public class FileTextUtils {
 		    if (line.contains(textToFind)) {
 		    	logger.info(textToFind + " found in the file. Replacing it by filepaths...");
 		    	for (String filepath : filePathsList) {
-		    		String newFilepath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_NUMBER_OF_BLANKS_FOR_FILEPATHS) + filepath; 
-		    		newLines.add(newFilepath);
+		    		String copy = line.substring(0, line.length());
+			    	String newFilepath = copy.replace(textToFind, filepath) ;
+			    	newLines.add(newFilepath);
 		    		logger.info("Added new line to playbook: " + newFilepath);
 		    	}		       
 		    } else {
