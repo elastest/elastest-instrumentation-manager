@@ -24,12 +24,16 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import io.elastest.eim.config.Dictionary;
 import io.elastest.eim.config.Properties;
 import io.swagger.model.AgentConfiguration;
 import io.swagger.model.AgentConfigurationDatabase;
+import io.swagger.model.AgentConfigurationFilebeat;
+import io.swagger.model.AgentConfigurationPacketbeat;
+import io.swagger.model.AgentConfigurationTopbeat;
 
 public class AgentConfigurationRepository {
 
@@ -71,23 +75,19 @@ public class AgentConfigurationRepository {
 	public AgentConfigurationDatabase getAgentConfigurationByAgentId(String agentId){
 		System.out.println("Searching agent cfg in DB with agentId = " + agentId);
 		logger.info("Searching host in DB with agentId = " + agentId);
-		AgentConfigurationDatabase agent = null;
 		BasicDBObject query = new BasicDBObject();
         query.put("agentId", agentId);
 
         DBCursor cursor = getAgentConfigurationTable().find(query);
         if (cursor.hasNext()){
-        	agent = new AgentConfigurationDatabase();
-        	agent.setAgentConfiguration((AgentConfiguration) cursor.next().get("agentConfiguration"));
-        	logger.info("Agent cfg finded in DB with agentId = " + agentId);
-        	System.out.println("Agent cfg finded in DB with agentId = " + agentId);
+        	logger.info("Agent cfg exists in DB with agentId = " + agentId);
+        	return this.toAgentCfgDbObject(cursor.next());
         }
         else {
         	logger.info("Agent cfg doesn't exists in DB with agentId = " + agentId);
         	System.out.println("Agent cfg doesn't exists in DB with agentId = " + agentId);
         	return null;
         }		
-		return agent;
 	}
 
 	
@@ -95,9 +95,7 @@ public class AgentConfigurationRepository {
 		logger.info("Adding new agent configuration to DB, agent with agentId = " + agentId);
 		System.out.println("Adding new agent configuration to DB, agent with agentId = " + agentId);
 		BasicDBObject agentCfgDb = new BasicDBObject();
-		
-		//Gson gson = new Gson();
-//		BasicDBObject obj = (BasicDBObject)JSON.parse(gson.toJson(emp));
+
 		BasicDBObject packetbeat = new BasicDBObject();
 		packetbeat.put("stream", agentCfgObj.getPacketbeat().getStream());
 		
@@ -118,25 +116,7 @@ public class AgentConfigurationRepository {
 		agentCfg.put("packetbeat", packetbeat);
 		agentCfg.put("filebeat", filebeat);
 		agentCfg.put("topbeat", topbeat);
-				
-//		{
-//			  "exec": "exec_name",
-//			  "component": "component_name",
-//			  "packetbeat": {
-//			    "stream": "stream1"
-//			  },
-//			  "filebeat": {
-//			    "stream": "stream2",
-//			    "paths": [
-//			      "/var/log/*.log",
-//			      "/var/log/*/*.log"
-//			    ]
-//			  },
-//			  "topbeat": {
-//			    "stream": "stream3"
-//			  }
-//			}
-				
+						
 		agentCfgDb.put("agentId", agentId);
 		agentCfgDb.put("agentConfiguration", agentCfg);
 		getAgentConfigurationTable().insert(agentCfgDb);
@@ -149,15 +129,11 @@ public class AgentConfigurationRepository {
 		ArrayList<AgentConfigurationDatabase> agents = null;
 		logger.info("Getting all agent cfgs from database...");
         DBCursor cur = getAgentConfigurationTable().find();
-        AgentConfigurationDatabase agent = null;
         while (cur.hasNext()) {
         	if (agents == null) {
         		agents = new ArrayList<AgentConfigurationDatabase>();
         	}
-        	agent = new AgentConfigurationDatabase();
-        	agent.setAgentId((String) cur.next().get("agentId"));
-        	agent.setAgentConfiguration((AgentConfiguration) cur.curr().get("agentConfiguration"));
-        	agents.add(agent);    	
+        	agents.add(this.toAgentCfgDbObject(cur.next()));    	
         }
         if (agents != null){
         	logger.info("Retrieved " + agents.size() + " agent configurations from database");
@@ -179,6 +155,41 @@ public class AgentConfigurationRepository {
         else {
         	return false;
         }    
+	}
+	
+	private AgentConfigurationDatabase toAgentCfgDbObject(DBObject dbObject) {
+		AgentConfigurationDatabase agentCfgDb = new AgentConfigurationDatabase();
+		agentCfgDb.setAgentId((String) dbObject.get("agentId"));
+		
+		DBObject agentCfgDbObj = (DBObject) dbObject.get("agentConfiguration");
+		AgentConfiguration ac = new AgentConfiguration();
+		
+		ac.setExec((String) agentCfgDbObj.get("exec"));
+    	ac.setComponent((String) agentCfgDbObj.get("component"));
+    	
+    	AgentConfigurationPacketbeat packetbeat = new AgentConfigurationPacketbeat();
+    	packetbeat.setStream((String) ((DBObject)agentCfgDbObj.get("packetbeat")).get("stream"));
+    	ac.setPacketbeat(packetbeat);
+    	
+    	AgentConfigurationTopbeat topbeat = new AgentConfigurationTopbeat();
+    	packetbeat.setStream((String) ((DBObject)agentCfgDbObj.get("topbeat")).get("stream"));
+    	ac.setTopbeat(topbeat);
+    	
+    	AgentConfigurationFilebeat filebeat = new AgentConfigurationFilebeat();
+    	filebeat.setStream((String) ((DBObject)agentCfgDbObj.get("filebeat")).get("stream"));
+    	BasicDBList paths = (BasicDBList) ((DBObject)agentCfgDbObj.get("filebeat")).get("paths");
+    	String[] pathsArr = paths.toArray(new String[0]);
+    	List<String> pathsList = new ArrayList<String>();
+    	for(String path : pathsArr) {
+    		// add to the list
+    		pathsList.add(path);
+    	}
+    	filebeat.setPaths(pathsList);
+    	ac.setFilebeat(filebeat);
+
+    	agentCfgDb.setAgentConfiguration(ac);		
+		return agentCfgDb;
+		
 	}
 	
 	
