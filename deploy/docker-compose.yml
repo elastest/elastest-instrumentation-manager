@@ -14,7 +14,7 @@ services:
                         - elastest
         eim:
                 #image: elastest/eim:latest
-                image: elastest/eim:0.5.0-alpha2
+                image: elastest/eim:0.5.0
                 depends_on:
                         - eim-mongo
                 links:
