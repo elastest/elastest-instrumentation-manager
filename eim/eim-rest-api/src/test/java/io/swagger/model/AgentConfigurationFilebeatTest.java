@@ -27,6 +27,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import io.swagger.model.AgentConfigurationFilebeat;
+
 public class AgentConfigurationFilebeatTest {
 
 	@Test

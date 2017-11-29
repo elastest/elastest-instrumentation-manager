@@ -23,6 +23,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import io.swagger.model.Publickey;
+
 public class PublickeyTest {
 
 	@Test

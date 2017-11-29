@@ -19,8 +19,11 @@
 
 package io.swagger.model;
 
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+import io.swagger.model.AgentDeleted;
 
 public class AgentDeletedTest {
 

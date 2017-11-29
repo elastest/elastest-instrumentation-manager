@@ -23,6 +23,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import io.swagger.model.AgentConfiguration;
+import io.swagger.model.AgentConfigurationDatabase;
+
 public class AgentConfigurationDatabaseTest {
 
 	@Test

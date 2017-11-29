@@ -23,6 +23,11 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import io.swagger.model.AgentConfiguration;
+import io.swagger.model.AgentConfigurationFilebeat;
+import io.swagger.model.AgentConfigurationPacketbeat;
+import io.swagger.model.AgentConfigurationTopbeat;
+
 public class AgentConfigurationTest {
 	
 	@Test

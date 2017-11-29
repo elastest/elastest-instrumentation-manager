@@ -20,7 +20,10 @@
 package io.swagger.model;
 
 import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
+
+import io.swagger.model.AgentFull;
 
 public class AgentFullTest {
 
