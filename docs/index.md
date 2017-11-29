@@ -8,12 +8,13 @@ Before you start using ElasTest, you need to know the following terms:
 - **SuT (System under Test):** Specification of the System that is being tested for correct operation.
 
 ## Features
-The version 0.5.0-alpha2 of the EIM, provides the following features:
+The version 0.5.0 of the EIM, provides the following features:
 
 - Register new Instrumentation Agent. 
 - Deploy [Beats](https://www.elastic.co/products/beats) software over the SuT. 
 - Get one or all Instrumentation Agents.
 - Delete one Instrumentation Agent
+- Get one or all Instrumentation Agent Configurations
 
 >**Note:** All tests has been done using ubuntu14.04 as operating system.
 
@@ -102,7 +103,24 @@ The EIM is able to deploy the following Beats using the Instrumentation agents c
 
 #### Step by step 
 1. The agent must be registered on EIM (previous feature)
-2. Using the REST API execute a `POST` to `http://localhost:8080/eim/api/agent/<agentId>/monitor`. The call to the API must has as headers: `Accept: application/json, Content-Type: application/json`.
+2. Using the REST API execute a `POST` to `http://localhost:8080/eim/api/agent/<agentId>/monitor` and sending as body request the agent configuration:
+`{
+  "exec": "exec_name",
+  "component": "component_name",
+  "packetbeat": {
+    "stream": "stream1"
+  },
+  "filebeat": {
+    "stream": "stream2",
+    "paths": [
+      "/var/log/*.log"
+    ]
+  },
+  "topbeat": {
+    "stream": "stream3"
+  }
+}`
+The call to the API must has as headers: `Accept: application/json, Content-Type: application/json`.
 > **Note:** The installation time depends of the number of packets to download and install, and also the bandwith and the latency to repositories.
 3. If everything works fine, the information about new agent is returned:
 `{"agentId":"iagent1","host":"172.21.0.6","monitored":true,"logstash_ip":"172.21.0.4","logstash_port":"5044"}`
@@ -134,6 +152,33 @@ EIM is able to delete an existing Instrumentation Agent using the REST API expos
 `{"agentId":"iagent1","deleted":"true"}`
 > **Note:** Using the data from previous example
 4. Log file available: `/var/log/eim`
+
+### Get one or all Instrumentation Agent Configurations
+EIM is able to get an existing Instrumentation Agent Configuration using REST API exposed, to do this, the specified Instrumentation Agent must exists in the system.
+
+#### Step by step 
+1. Using the REST API execute a `GET` to `http://localhost:8080/eim/api/agentconfiguration/<agentId>`. The call to the API must has as headers: `Accept: application/json, Content-Type: application/json`.
+2. If everything works fine, the information about agent configuration that is stored when the beats are deplyed, is returned:
+`{
+  "exec": "exec_name",
+  "component": "component_name",
+  "packetbeat": {
+    "stream": "stream1"
+  },
+  "filebeat": {
+    "stream": "stream2",
+    "paths": [
+      "/var/log/*.log"
+    ]
+  },
+  "topbeat": {
+    "stream": "stream3"
+  }
+}`
+> **Note:** Using the data from previous example
+3. Log file available: `/var/log/eim`
+
+Also is implemented de REST API method to retrieve all existing Instrumentation Agent Configurations, to get them execute a `GET` to `http://localhost:8080/eim/api/agentconfiguration`. The call to the API must has as headers: `Accept: application/json, Content-Type: application/json`. The result will be a list of all the Instrumentation Agent Configuration that exists in the system.
 
 ## Development documentation
 
