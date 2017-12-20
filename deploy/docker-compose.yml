@@ -13,8 +13,8 @@ services:
                 networks:
                         - elastest
         eim:
-                image: elastest/eim:latest
-                #image: elastest/eim:0.5.0
+                #image: elastest/eim:latest
+                image: elastest/eim:0.5.0
                 depends_on:
                         - eim-mongo
                 links:
