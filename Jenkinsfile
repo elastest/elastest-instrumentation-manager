@@ -23,7 +23,7 @@ node('docker') {
 		stage "Build Logstash image - Package"
                 	echo ("building logstash..")
 			def logstash_image = docker.build("elastest/eim-logstash:0.5.0"./logstash")
-//                      def logstash_image = docker.build("elastest/eim-logstash:latest","./logstash")
+//  			def logstash_image = docker.build("elastest/eim-logstash:latest"./logstash")
 
 		stage "Build Kibana image - Package"
                         echo ("building kibana..")
