@@ -13,8 +13,8 @@ services:
                 networks:
                         - elastest
         elasticsearch:
-                image: elastest/eim-elasticsearch:0.5.0
-                #image: elastest/eim-elasticsearch:latest
+                #image: elastest/eim-elasticsearch:0.5.0
+                image: elastest/eim-elasticsearch:latest
                 ports:
                         - "9200:9200"
                         - "9300:9300"
@@ -24,8 +24,8 @@ services:
                 networks:
                         - elastest
         logstash:
-                image: elastest/eim-logstash:0.5.0
-                #image: elastest/eim-logstash:latest
+                #image: elastest/eim-logstash:0.5.0
+                image: elastest/eim-logstash:latest
                 ports:
                         - "5044:5044"
                 depends_on: 
@@ -37,8 +37,8 @@ services:
                         - elastest
 
         kibana:
-                image: elastest/eim-kibana:0.5.0
-                #image: elastest/eim-kibana:latest
+                #image: elastest/eim-kibana:0.5.0
+                image: elastest/eim-kibana:latest
                 ports: 
                         - "5601:5601"
                 depends_on:
@@ -50,8 +50,8 @@ services:
                         - elastest
 
         sut:
-                image: elastest/eim-sut:0.5.0
-                #image: elastest/eim-sut:latest
+                #image: elastest/eim-sut:0.5.0
+                image: elastest/eim-sut:latest
                 #image: dev/sut-v3
 #                volumes:
 #                        - static-content:/tmp/ssh
@@ -64,8 +64,8 @@ services:
                         - elastest
 
         eim:
-                image: elastest/eim:0.5.0
-                #image: elastest/eim:latest
+                #image: elastest/eim:0.5.0
+                image: elastest/eim:latest
                 # volumes:
                 #       - static-content:/tmp/ssh 
                 depends_on:
