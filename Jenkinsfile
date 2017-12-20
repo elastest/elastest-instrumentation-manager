@@ -17,28 +17,28 @@ node('docker') {
 
 		stage "Build Elasticsearch image - Package"
 	                echo ("building elasticsearch..")
-			def elasticsearch_image = docker.build("elastest/eim-elasticsearch:0.5.0","./elasticsearch")
-//			def elasticsearch_image = docker.build("elastest/eim-elasticsearch:latest","./elasticsearch")
+//			def elasticsearch_image = docker.build("elastest/eim-elasticsearch:0.5.0","./elasticsearch")
+			def elasticsearch_image = docker.build("elastest/eim-elasticsearch:latest","./elasticsearch")
 
 		stage "Build Logstash image - Package"
                 	echo ("building logstash..")
-			def logstash_image = docker.build("elastest/eim-logstash:0.5.0"./logstash")
-//			def logstash_image = docker.build("elastest/eim-logstash:latest","./logstash")
+//			def logstash_image = docker.build("elastest/eim-logstash:0.5.0"./logstash")
+			def logstash_image = docker.build("elastest/eim-logstash:latest","./logstash")
 
 		stage "Build Kibana image - Package"
                         echo ("building kibana..")
-                      def kibana_image = docker.build("elastest/eim-kibana:0.5.0","./kibana")
-//		        def kibana_image = docker.build("elastest/eim-kibana:latest","./kibana")
+//                      def kibana_image = docker.build("elastest/eim-kibana:0.5.0","./kibana")
+		        def kibana_image = docker.build("elastest/eim-kibana:latest","./kibana")
 
 		stage "Build SuT image - Package"
                         echo ("building sut..")
-                      def sut_image = docker.build("elastest/eim-sut:0.5.0","./sut")
-//		        def sut_image = docker.build("elastest/eim-sut:latest","./sut")
+//                      def sut_image = docker.build("elastest/eim-sut:0.5.0","./sut")
+		        def sut_image = docker.build("elastest/eim-sut:latest","./sut")
 
 		stage "Build EIM image - Package"
                         echo ("building eim..")
-                      def eim_image = docker.build("elastest/eim:0.5.0","./eim")
-//		        def eim_image = docker.build("elastest/eim:latest","./eim")
+//                      def eim_image = docker.build("elastest/eim:0.5.0","./eim")
+		        def eim_image = docker.build("elastest/eim:latest","./eim")
 
 		stage "Execute docker compose"
                  	echo ("running docker compose..")
