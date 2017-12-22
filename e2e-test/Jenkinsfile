@@ -2,8 +2,7 @@ node('docker') {
 
    stage('Preparation') {
       
-      def sut = docker.image('elastest/test-etm-sut3-eim')
-      sut.pull()
+      
 
       def mycontainer = docker.image('elastest/ci-docker-e2e:latest')
       mycontainer.pull()
@@ -11,6 +10,11 @@ node('docker') {
          sh '/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf &'
          git 'https://github.com/elastest/elastest-instrumentation-manager.git'
 
+         stage('SuT starting'){
+            sh "docker run --name eim-sut elastest/test-etmsut3-eim"
+            sh "docker logs eim-sut"
+         }   
+         
          stage('ElasTest starting'){
             sh "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock elastest/platform stop" 
             try {
