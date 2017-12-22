@@ -9,3 +9,7 @@ echo "elastest:elastest" | chpasswd; cd /root/.ssh;
 ssh-keygen -q -t rsa -N '' -f id_rsa; 
 cp id_rsa.pub authorized_keys; cd /; 
 service ssh restart; 
+
+# The container will run as long as the script is running, that's why
+# we need something long-lived here
+exec tail -f /var/log/dpkg.log
