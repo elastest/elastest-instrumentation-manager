@@ -5,9 +5,9 @@ RUN \
 	apt-get -y install apt-transport-https && \
 	apt-get -y install openssh-server && \
 	apt-get -y install vim && \
-        useradd -ms /bin/bash elastest && \
-	usermod -aG sudo elastest && \
-	echo "elastest:elastest" | chpasswd && \
+#        useradd -ms /bin/bash elastest && \
+#	usermod -aG sudo elastest && \
+#	echo "elastest:elastest" | chpasswd && \
 	mkdir -p /var/run/sshd && \
 	mkdir -p /root/.ssh && \
 ##	mkdir -p /tmp/ssh && \
@@ -21,3 +21,9 @@ EXPOSE 22
 # start ssh
 #CMD ["/usr/sbin/sshd", "-D"]
 # RUN echo "service ssh start" >> /etc/bash.bashrc
+
+COPY entrypoint.sh /entrypoint.sh
+
+RUN chmod 777 entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
