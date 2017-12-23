@@ -11,8 +11,24 @@ node('docker') {
          git 'https://github.com/elastest/elastest-instrumentation-manager.git'
 
          stage('SuT starting'){
+            //test-etmsut3-eim is used as base image because it has automated the generation of ssh keys
+            //ssh keys are generated when the container is launched
             sh "docker run --name eim-sut elastest/test-etmsut3-eim"
             sh "docker logs eim-sut"
+            
+            //how can I retrieve the containerId for eim-sut?
+            //there is an example below but is not clear how to search it...
+            //I need to connect the SuT to the same network
+            
+            //sutIp
+            sutIp= sh (
+                script: 'docker inspect --format=\\"{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}\\" eim-sut',
+                returnStdout: true
+            ).trim()
+            echo "SUT container IP=${sutIp}"
+            
+            //how can I retrieve the private key from SuT
+            privateKey=null
          }   
          
          stage('ElasTest starting'){
@@ -42,8 +58,9 @@ node('docker') {
          }
 
          stage ("E2E tests") {
+            //extra params are sent to java execution
             try {
-               sh "cd e2e-test; mvn -B clean test -DetEmpApi=http://${etEmpApi}:37000/"
+               sh "cd e2e-test; mvn -B clean test -DetEmpApi=http://${etEmpApi}:37000/ -DsutIp=${sutIp} -Duser=elastest -DprivateKey=${privateKey}"
             } catch(e) {
                 sh 'docker ps | awk "{print $NF}" | grep eus | xargs docker logs'
             }
