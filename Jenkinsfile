@@ -49,19 +49,19 @@ node('docker') {
                         echo ("running docker compose..")
                         sh 'docker-compose -f docker-compose.yml up -d --build'
 
-                stage "Publish"
-                        echo ("Publishing")
-                        withCredentials([[
-                            $class: 'UsernamePasswordMultiBinding', 
-                            credentialsId: 'elastestci-dockerhub',
-                            usernameVariable: 'USERNAME', 
-                            passwordVariable: 'PASSWORD']]) {
-                                sh 'docker login -u "$USERNAME" -p "$PASSWORD"'
-                                elasticsearch_image.push()
-                                logstash_image.push()
-                                kibana_image.push()
-                                sut_image.push()
-                                eim_image.push()
-                            }   
+            stage "Publish"
+                    echo ("Publishing")
+                    withCredentials([[
+                        $class: 'UsernamePasswordMultiBinding', 
+                        credentialsId: 'elastestci-dockerhub',
+                        usernameVariable: 'USERNAME', 
+                        passwordVariable: 'PASSWORD']]) {
+                            sh 'docker login -u "$USERNAME" -p "$PASSWORD"'
+                            elasticsearch_image.push()
+                            logstash_image.push()
+                            kibana_image.push()
+                            sut_image.push()
+                            eim_image.push()
+                        }   
             }
 }
