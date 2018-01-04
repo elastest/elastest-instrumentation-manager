@@ -1,5 +1,15 @@
 FROM williamyeh/ansible:ubuntu14.04-onbuild
 
+# Set Image Labels
+ARG GIT_COMMIT=unspecified
+LABEL git_commit=$GIT_COMMIT
+
+ARG COMMIT_DATE=unspecified
+LABEL commit_date=$COMMIT_DATE
+
+ARG VERSION=unspecified
+LABEL version=$VERSION
+
 # make sure the package repository is up to date
 RUN \
 	apt-get update && apt-get -y upgrade && \
