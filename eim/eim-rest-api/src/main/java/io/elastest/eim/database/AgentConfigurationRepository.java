@@ -172,7 +172,7 @@ public class AgentConfigurationRepository {
     	ac.setPacketbeat(packetbeat);
     	
     	AgentConfigurationTopbeat topbeat = new AgentConfigurationTopbeat();
-    	packetbeat.setStream((String) ((DBObject)agentCfgDbObj.get("topbeat")).get("stream"));
+    	topbeat.setStream((String) ((DBObject)agentCfgDbObj.get("topbeat")).get("stream"));
     	ac.setTopbeat(topbeat);
     	
     	AgentConfigurationFilebeat filebeat = new AgentConfigurationFilebeat();
