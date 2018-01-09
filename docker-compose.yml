@@ -2,7 +2,7 @@ version: '2'
 
 services:
         eim-mongo:
-                image: mvertes/alpine-mongo
+                image: mvertes/alpine-mongo:3.4.10-0
                 expose: 
                         - 27017
                 ports: 
