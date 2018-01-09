@@ -5,9 +5,9 @@ RUN \
 	apt-get -y install apt-transport-https && \
 	apt-get -y install openssh-server && \
 	apt-get -y install vim && \
-#        useradd -ms /bin/bash elastest && \
-#	usermod -aG sudo elastest && \
-#	echo "elastest:elastest" | chpasswd && \
+        useradd -ms /bin/bash elastest && \
+	usermod -aG sudo elastest && \
+	echo "elastest:elastest" | chpasswd && \
 	mkdir -p /var/run/sshd && \
 	mkdir -p /root/.ssh && \
 ##	mkdir -p /tmp/ssh && \
