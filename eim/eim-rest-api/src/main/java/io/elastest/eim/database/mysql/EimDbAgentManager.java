@@ -14,7 +14,7 @@ import io.elastest.eim.database.AgentRepository;
 import io.swagger.model.AgentFull;
 import io.swagger.model.Host;
 
-public class EimDbManager {
+public class EimDbAgentManager {
 
 	// JDBC driver name and database URL
     static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
@@ -24,9 +24,9 @@ public class EimDbManager {
     static final String USER = "elastest";
     static final String PASS = "elastest";
 
-    private static Logger logger = Logger.getLogger(AgentRepository.class);
+    private static Logger logger = Logger.getLogger(EimDbAgentManager.class);
     
-    public EimDbManager() {
+    public EimDbAgentManager() {
     	
     }
     
@@ -70,7 +70,7 @@ public class EimDbManager {
 	}
     
     private boolean existsAgent(Connection conn, String agentId) throws SQLException {
-    	String sqlSearchIagent = "SELECT iagent FROM agent WHERE codigo=?";
+    	String sqlSearchIagent = "SELECT AGENT_ID FROM agent WHERE AGENT_ID=?";
 		PreparedStatement pstSearchIagent = conn.prepareStatement(sqlSearchIagent);
 		pstSearchIagent.setString(1, agentId);
 		ResultSet rs = pstSearchIagent.executeQuery();
@@ -130,7 +130,7 @@ public class EimDbManager {
     		pstInsertHost.setString(4, host.getLogstashIp());
     		pstInsertHost.setString(5, host.getLogstashPort());
     		pstInsertHost.executeUpdate();
-    		logger.info("Agent inserted in database wiht agentId = " + host.getAddress());
+    		logger.info("Agent inserted in database wiht ipAddress = " + host.getAddress());
     		
     		inserted = getAgentByIpAddress(conn, host.getAddress());
     		
@@ -274,9 +274,158 @@ public class EimDbManager {
 		return agents;
 	}
 	
+	public List<AgentFull> getAgents() {
+		List<AgentFull> agents = null;
+    	Connection conn = null;
+    	try {
+    		
+    		conn = getConnection();
+    		return getAgents(conn);
+    		
+    	} catch (SQLException ex) {
+            logger.error("Error " + ex.getErrorCode() + ": " + ex.getMessage());
+        }
+    	finally {
+    		try{
+    			if(conn!=null)
+    				conn.close();
+    		} catch(SQLException se){
+    			logger.error(se.getMessage());
+    			se.printStackTrace();
+    		}
+    	}
+		return agents;
+    }
+	
+	public AgentFull getAgentByIpAddress(String ipAddress) {
+		AgentFull agent = null;
+    	Connection conn = null;
+    	try {
+    		
+    		conn = getConnection();
+    		return getAgentByIpAddress(conn, ipAddress);
+    		
+    	} catch (SQLException ex) {
+            logger.error("Error " + ex.getErrorCode() + ": " + ex.getMessage());
+        }
+    	finally {
+    		try{
+    			if(conn!=null)
+    				conn.close();
+    		} catch(SQLException se){
+    			logger.error(se.getMessage());
+    			se.printStackTrace();
+    		}
+    	}
+		return agent;
+	}
+	
+	private boolean deleteAgent(Connection conn, String agentId) throws SQLException {
+		logger.info("Deleting agent in DB with agentId = " + agentId);
+		System.out.println("Deleting agent in DB with agentId = " + agentId);
+		PreparedStatement pstDeleteAgent = null;
+		
+		try {
+			String deleteSQL = "DELETE FROM AGENT WHERE AGENT_ID = ?";
+			pstDeleteAgent = conn.prepareStatement(deleteSQL);
+			pstDeleteAgent.setString(1, agentId);
+			pstDeleteAgent.executeUpdate();
+			if (getAgentByAgentId(conn, agentId) == null) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		finally {
+    		try{
+    			if(pstDeleteAgent!=null)
+    				pstDeleteAgent
+    				.close();
+    		} catch(SQLException se){
+    			logger.error(se.getMessage());
+    			se.printStackTrace();
+    		}
+    	}
+	}
+	
+	
+	public boolean deleteAgent(String agentId) {
+    	Connection conn = null;
+    	try {
+    		
+    		conn = getConnection();
+    		return deleteAgent(conn, agentId);
+    		
+    	} catch (SQLException ex) {
+            logger.error("Error " + ex.getErrorCode() + ": " + ex.getMessage());
+        }
+    	finally {
+    		try{
+    			if(conn!=null)
+    				conn.close();
+    		} catch(SQLException se){
+    			logger.error(se.getMessage());
+    			se.printStackTrace();
+    		}
+    	}
+		return false;
+	}
+	
+	public AgentFull setMonitored(String agentId, boolean monitored) {
+		AgentFull agent = null;
+    	Connection conn = null;
+    	try {
+    		
+    		conn = getConnection();
+    		return setMonitored(conn, agentId, monitored);
+    		
+    	} catch (SQLException ex) {
+            logger.error("Error " + ex.getErrorCode() + ": " + ex.getMessage());
+        }
+    	finally {
+    		try{
+    			if(conn!=null)
+    				conn.close();
+    		} catch(SQLException se){
+    			logger.error(se.getMessage());
+    			se.printStackTrace();
+    		}
+    	}
+		return agent;
+	}
+
+	private AgentFull setMonitored(Connection conn, String agentId, boolean monitored) throws SQLException {
+		AgentFull modified = null;
+    	PreparedStatement pstSetMonitored = null;
+    	try {
+    		logger.info("Setting agent " + agentId + " monitored = " + monitored);
+    		System.out.println("Setting agent " + agentId + " monitored = " + monitored);
+    		
+    		String sqlSetMonitored = "UPDATE agent SET monitored = ? WHERE agent_Id = ?";
+    		pstSetMonitored = conn.prepareStatement(sqlSetMonitored);
+    	
+    		pstSetMonitored.setBoolean(1, monitored);
+    		pstSetMonitored.setString(2, agentId);
+    		pstSetMonitored.executeUpdate();
+    		logger.info("Agent modified in database wiht agentId = " + agentId);
+    		
+    		modified = getAgentByAgentId(conn, agentId);
+    		
+    	}
+		finally {
+    		try{
+    			if(pstSetMonitored!=null)
+    				pstSetMonitored.close();
+    		} catch(SQLException se){
+    			logger.error(se.getMessage());
+    			se.printStackTrace();
+    		}
+    	}
+    	return modified;
+	}
+	
 	//TODO
-	//setMonitored
-	//deleteAgent
 	//agentConfigurationRepo
 	
     
