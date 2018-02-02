@@ -21,7 +21,7 @@ public class EimDbAgentManager {
     static final String DB_URL = "jdbc:mariadb://localhost/eim";
 
     //  Database credentials
-    static final String USER = "root";
+    static final String USER = "elastest";
     static final String PASS = "elastest";
 
     private static Logger logger = Logger.getLogger(EimDbAgentManager.class);
