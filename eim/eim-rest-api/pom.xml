@@ -192,11 +192,10 @@
 	    <artifactId>swagger-codegen</artifactId>
 	    <version>2.2.3</version>
 	</dependency>
-	<!--  MongoDB -->
 	<dependency>
-	    <groupId>org.mongodb</groupId>
-	    <artifactId>mongo-java-driver</artifactId>
-	    <version>3.4.3</version>
+	    <groupId>org.mariadb.jdbc</groupId>
+	    <artifactId>mariadb-java-client</artifactId>
+	    <version>2.2.1</version>
 	</dependency>
   </dependencies>
   <repositories>
