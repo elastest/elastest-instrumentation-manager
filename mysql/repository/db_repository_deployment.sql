@@ -13,7 +13,7 @@ CREATE TABLE `agent` (
 	  `monitored` tinyint(1) NOT NULL,
 	  `logstash_ip` varchar(255) NOT NULL,
 	  `logstash_port` varchar(255) NOT NULL,
-	  PRIMARY KEY (`agentId`)
+	  PRIMARY KEY (`agent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Table structure for table `agentconfiguration` */
@@ -28,7 +28,7 @@ CREATE TABLE `agent_configuration` (
 	  `topbeat_stream` varchar(255) NOT NULL,
 	  `filebeat_stream` varchar(255) NOT NULL,
 	  `filebeat_paths` text NOT NULL,
-	  PRIMARY KEY (`agentId`)
+	  PRIMARY KEY (`agent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
