@@ -8,22 +8,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.lang.model.element.PackageElement;
-
 import org.apache.log4j.Logger;
 
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-
-import io.elastest.eim.database.AgentRepository;
 import io.swagger.model.AgentConfiguration;
 import io.swagger.model.AgentConfigurationDatabase;
 import io.swagger.model.AgentConfigurationFilebeat;
 import io.swagger.model.AgentConfigurationPacketbeat;
-import io.swagger.model.AgentConfigurationTest;
 import io.swagger.model.AgentConfigurationTopbeat;
-import io.swagger.model.AgentFull;
-import io.swagger.model.Host;
 
 public class EimDbAgentCfgManager {
 
@@ -37,11 +28,12 @@ public class EimDbAgentCfgManager {
 //			  `filebeat_paths` text NOT NULL,
 //			  PRIMARY KEY (`agentId`)
 	
-	// JDBC driver name and database URL
+	
+	// JDBC driver name
     static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
-    static final String DB_URL = "jdbc:mariadb://localhost/eim";
-
+    
     //  Database credentials
+    //TODO USE CONTSTANTS DEFINED IN DICTIONARY
     static final String USER = "elastest";
     static final String PASS = "elastest";
 
@@ -56,11 +48,14 @@ public class EimDbAgentCfgManager {
         try {
             //Register JDBC driver
             Class.forName(JDBC_DRIVER);
-
+            
+            //TODO USE CONTSTANTS DEFINED IN DICTIONARY
+            String dbUrl ="jdbc:mariadb://" + System.getenv("ET_EIM_MONGO_HOST") + ":3306/eim"; 
+            
             //Open a connection
             logger.info("Connecting to EIM database...");
             conn = DriverManager.getConnection(
-            		DB_URL, USER, PASS);
+            		dbUrl, USER, PASS);
             logger.info("Connected to EIM database successfully...");
             
 

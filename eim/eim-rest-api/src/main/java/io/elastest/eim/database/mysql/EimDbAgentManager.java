@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import io.elastest.eim.database.AgentRepository;
 import io.swagger.model.AgentFull;
 import io.swagger.model.Host;
 
@@ -18,7 +17,7 @@ public class EimDbAgentManager {
 
 	// JDBC driver name and database URL
     static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
-    static final String DB_URL = "jdbc:mariadb://localhost/eim";
+    static final String DB_URL = "jdbc:mariadb://localhost:3306/eim";
 
     //  Database credentials
     static final String USER = "elastest";
@@ -36,10 +35,13 @@ public class EimDbAgentManager {
             //Register JDBC driver
             Class.forName(JDBC_DRIVER);
 
+          //TODO USE CONTSTANTS DEFINED IN DICTIONARY
+            String dbUrl ="jdbc:mariadb://" + System.getenv("ET_EIM_MONGO_HOST") + ":3306/eim"; 
+            
             //Open a connection
             logger.info("Connecting to EIM database...");
             conn = DriverManager.getConnection(
-            		DB_URL, USER, PASS);
+            		dbUrl, USER, PASS);
             logger.info("Connected to EIM database successfully...");
             
 

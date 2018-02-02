@@ -18,8 +18,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.mongodb.DBCollection;
-
 import io.elastest.eim.database.mysql.EimDbAgentCfgManager;
 import io.swagger.model.AgentConfiguration;
 import io.swagger.model.AgentConfigurationDatabase;
@@ -27,8 +25,6 @@ import io.swagger.model.AgentConfigurationDatabase;
 public class AgentConfigurationRepository {
 
 	private static Logger logger = Logger.getLogger(AgentConfigurationRepository.class);
-	
-	private DBCollection collection; 
 	
 	//MySQL
 	private EimDbAgentCfgManager eimDbCfgManager;
