@@ -36,7 +36,8 @@ public class EimDbAgentManager {
             Class.forName(JDBC_DRIVER);
 
           //TODO USE CONTSTANTS DEFINED IN DICTIONARY
-            String dbUrl ="jdbc:mariadb://" + System.getenv("ET_EIM_MONGO_HOST") + ":3306/eim"; 
+           // String dbUrl ="jdbc:mariadb://" + System.getenv("ET_EIM_MONGO_HOST") + ":3306/eim"; 
+            String dbUrl ="jdbc:mariadb://" + "localhost" + ":3306/eim";
             
             //Open a connection
             logger.info("Connecting to EIM database...");
@@ -67,7 +68,12 @@ public class EimDbAgentManager {
 		if (agents != null) {
 			elements = agents.size();
 			newId += elements;
-		}		
+		}
+		else if (agents == null && conn != null){
+			//first time that the method is called
+			newId += 1;
+			
+		}
 		return newId;
 	}
     
@@ -427,8 +433,16 @@ public class EimDbAgentManager {
     	return modified;
 	}
 	
-	//TODO
-	//agentConfigurationRepo
+	public static void main (String args[]) {
+		EimDbAgentManager manager = new EimDbAgentManager();
+		Host host = new Host();
+		host.setAddress("1.1.1.1");
+		host.setLogstashIp("2.2.2.2");
+		host.setLogstashPort("1234");
+		host.setPrivateKey("myKey");
+		host.setUser("user");
+		manager.addHost(host);
+	}
 	
     
 }
