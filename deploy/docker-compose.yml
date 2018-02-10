@@ -2,11 +2,16 @@ version: '3'
 
 services:
         eim-mongo:
-                image: mvertes/alpine-mongo
+                # image: mvertes/alpine-mongo
+                image: elastest/mysql
                 expose: 
-                        - 27017
+                # - 27017
+                        - 3306
+                environment:
+                        - ET_EIM_SERVER=172.21.0.1
                 ports: 
-                        - "27017:27017"
+                        - "3306:3306"
+                          #         - "27017:27017"
                 hostname: eim-mongo 
                 stdin_open: true
                 tty: true

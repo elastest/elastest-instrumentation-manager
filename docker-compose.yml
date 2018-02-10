@@ -5,6 +5,8 @@ services:
                 image: elastest/mysql
                 expose: 
                         - 3306
+                environment:
+                        - ET_EIM_SERVER=172.21.0.7
                 ports: 
                         - "3306:3306"
                 hostname: eim-mongo 
@@ -65,7 +67,8 @@ services:
 
         eim:
                 #image: elastest/eim:0.5.0
-                image: elastest/eim:latest
+                #image: elastest/eim:latest
+                image: elastest-dev/eim-mariadb
                 # volumes:
                 #       - static-content:/tmp/ssh 
                 depends_on:
