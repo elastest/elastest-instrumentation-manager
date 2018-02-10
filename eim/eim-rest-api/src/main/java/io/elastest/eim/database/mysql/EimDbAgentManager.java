@@ -18,6 +18,8 @@ public class EimDbAgentManager {
 	// JDBC driver name and database URL
     static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
     static final String DB_URL = "jdbc:mariadb://localhost:3306/eim";
+    public static String DB_TABLE_AGENT = "agent";
+    public static String DB_TABLE_AGENT_CONFIGURATION = "agent_configuration";
 
     //  Database credentials
     static final String USER = "elastest";
@@ -36,8 +38,8 @@ public class EimDbAgentManager {
             Class.forName(JDBC_DRIVER);
 
           //TODO USE CONTSTANTS DEFINED IN DICTIONARY
-           // String dbUrl ="jdbc:mariadb://" + System.getenv("ET_EIM_MONGO_HOST") + ":3306/eim"; 
-            String dbUrl ="jdbc:mariadb://" + "localhost" + ":3306/eim";
+            String dbUrl ="jdbc:mariadb://" + System.getenv("ET_EIM_MONGO_HOST") + ":3306/eim"; 
+//            String dbUrl ="jdbc:mariadb://" + "localhost" + ":3306/eim";
             
             //Open a connection
             logger.info("Connecting to EIM database...");
@@ -78,7 +80,7 @@ public class EimDbAgentManager {
 	}
     
     private boolean existsAgent(Connection conn, String agentId) throws SQLException {
-    	String sqlSearchIagent = "SELECT AGENT_ID FROM agent WHERE AGENT_ID=?";
+    	String sqlSearchIagent = "SELECT AGENT_ID FROM " + DB_TABLE_AGENT + " WHERE AGENT_ID=?";
 		PreparedStatement pstSearchIagent = conn.prepareStatement(sqlSearchIagent);
 		pstSearchIagent.setString(1, agentId);
 		ResultSet rs = pstSearchIagent.executeQuery();
@@ -129,7 +131,7 @@ public class EimDbAgentManager {
     		logger.info("Adding new host to DB, host with ipAddress = " + host.getAddress());
     		System.out.println("Adding new host to DB, host with ipAddress = " + host.getAddress());
     		
-    		String sqlInsertHost = "INSERT INTO agent VALUES (?,?,?,?,?)";
+    		String sqlInsertHost = "INSERT INTO " + DB_TABLE_AGENT + " VALUES (?,?,?,?,?)";
     		pstInsertHost = conn.prepareStatement(sqlInsertHost);
     	
     		pstInsertHost.setString(1, getNewAgentId(conn));
@@ -163,20 +165,25 @@ public class EimDbAgentManager {
 		PreparedStatement pstSelectAgent = null;
 		
 		try {
-			String selectSQL = "SELECT AGENT_ID, HOST, LOGSTASH_IP, LOGSTASH_PORT FROM AGENT WHERE HOST = ?";
+			String selectSQL = "SELECT agent_id, host, monitored, logstash_ip, logstash_port FROM " + DB_TABLE_AGENT + " WHERE host=?";
 			pstSelectAgent = conn.prepareStatement(selectSQL);
 			pstSelectAgent.setString(1, ipAddress);
-			ResultSet rs = pstSelectAgent.executeQuery(selectSQL );
+			ResultSet rs = pstSelectAgent.executeQuery();
 			while (rs.next()) {
 				agent = new AgentFull();
 				agent.setAgentId(rs.getString("AGENT_ID"));
 				agent.setHost(rs.getString("HOST"));
+				agent.setMonitored(rs.getBoolean("MONITORED"));
 				agent.setLogstashIp(rs.getString("LOGSTASH_IP"));
 				agent.setLogstashPort(rs.getString("LOGSTASH_PORT"));
 	        	logger.info("Host finded in DB with ipAddress = " + ipAddress + " with ID " + agent.getAgentId());
 	        	System.out.println("Host finded in DB with ipAddress = " + ipAddress + " with ID " + agent.getAgentId());
 				return agent;
 			}
+		}
+		catch (Exception se) {
+			logger.error(se.getMessage());
+			se.printStackTrace();
 		}
 		finally {
     		try{
@@ -198,14 +205,15 @@ public class EimDbAgentManager {
 		PreparedStatement pstSelectAgent = null;
 		
 		try {
-			String selectSQL = "SELECT AGENT_ID, HOST, LOGSTASH_IP, LOGSTASH_PORT FROM AGENT WHERE AGENT_ID = ?";
+			String selectSQL = "SELECT AGENT_ID, HOST, MONITORED, LOGSTASH_IP, LOGSTASH_PORT FROM " + DB_TABLE_AGENT + " WHERE AGENT_ID = ?";
 			pstSelectAgent = conn.prepareStatement(selectSQL);
 			pstSelectAgent.setString(1, agentId);
-			ResultSet rs = pstSelectAgent.executeQuery(selectSQL );
+			ResultSet rs = pstSelectAgent.executeQuery();
 			while (rs.next()) {
 				agent = new AgentFull();
 				agent.setAgentId(rs.getString("AGENT_ID"));
 				agent.setHost(rs.getString("HOST"));
+				agent.setMonitored(rs.getBoolean("MONITORED"));
 				agent.setLogstashIp(rs.getString("LOGSTASH_IP"));
 				agent.setLogstashPort(rs.getString("LOGSTASH_PORT"));
 	        	logger.info("Host finded in DB with agentId = " + agentId + " with ID " + agent.getAgentId());
@@ -257,18 +265,23 @@ public class EimDbAgentManager {
 		PreparedStatement pstSelectAgents = null;
 		
 		try {
-			String selectSQL = "SELECT AGENT_ID, HOST, LOGSTASH_IP, LOGSTASH_PORT FROM AGENT";
+			String selectSQL = "SELECT AGENT_ID, HOST, MONITORED, LOGSTASH_IP, LOGSTASH_PORT FROM " + DB_TABLE_AGENT;
 			pstSelectAgents = conn.prepareStatement(selectSQL);
-			ResultSet rs = pstSelectAgents.executeQuery(selectSQL);
+			ResultSet rs = pstSelectAgents.executeQuery();
 			agents = new ArrayList<AgentFull>();
 			while (rs.next()) {
 				AgentFull agent = new AgentFull();
 				agent.setAgentId(rs.getString("AGENT_ID"));
 				agent.setHost(rs.getString("HOST"));
+				agent.setMonitored(rs.getBoolean("MONITORED"));
 				agent.setLogstashIp(rs.getString("LOGSTASH_IP"));
 				agent.setLogstashPort(rs.getString("LOGSTASH_PORT"));
 	        	agents.add(agent);
 			}
+		}
+		catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 		}
 		finally {
     		try{
@@ -334,7 +347,7 @@ public class EimDbAgentManager {
 		PreparedStatement pstDeleteAgent = null;
 		
 		try {
-			String deleteSQL = "DELETE FROM AGENT WHERE AGENT_ID = ?";
+			String deleteSQL = "DELETE FROM " + DB_TABLE_AGENT + " WHERE AGENT_ID = ?";
 			pstDeleteAgent = conn.prepareStatement(deleteSQL);
 			pstDeleteAgent.setString(1, agentId);
 			pstDeleteAgent.executeUpdate();
@@ -410,7 +423,7 @@ public class EimDbAgentManager {
     		logger.info("Setting agent " + agentId + " monitored = " + monitored);
     		System.out.println("Setting agent " + agentId + " monitored = " + monitored);
     		
-    		String sqlSetMonitored = "UPDATE agent SET monitored = ? WHERE agent_Id = ?";
+    		String sqlSetMonitored = "UPDATE " + DB_TABLE_AGENT + " SET monitored = ? WHERE agent_Id = ?";
     		pstSetMonitored = conn.prepareStatement(sqlSetMonitored);
     	
     		pstSetMonitored.setBoolean(1, monitored);
@@ -441,7 +454,11 @@ public class EimDbAgentManager {
 		host.setLogstashPort("1234");
 		host.setPrivateKey("myKey");
 		host.setUser("user");
-		manager.addHost(host);
+		//manager.addHost(host);
+		//manager.deleteAgent("iagent0");
+		AgentFull agent = manager.getAgentByIpAddress("1.1.1.1");
+		System.out.println(agent.getAgentId());
+		manager.setMonitored("iagent0", false);
 	}
 	
     

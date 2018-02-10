@@ -15,6 +15,7 @@ import io.swagger.model.AgentConfigurationDatabase;
 import io.swagger.model.AgentConfigurationFilebeat;
 import io.swagger.model.AgentConfigurationPacketbeat;
 import io.swagger.model.AgentConfigurationTopbeat;
+import io.swagger.model.AgentFull;
 
 public class EimDbAgentCfgManager {
 
@@ -51,6 +52,7 @@ public class EimDbAgentCfgManager {
             
             //TODO USE CONTSTANTS DEFINED IN DICTIONARY
             String dbUrl ="jdbc:mariadb://" + System.getenv("ET_EIM_MONGO_HOST") + ":3306/eim"; 
+//            String dbUrl ="jdbc:mariadb://" + "localhost" + ":3306/eim";
             
             //Open a connection
             logger.info("Connecting to EIM database...");
@@ -77,7 +79,7 @@ public class EimDbAgentCfgManager {
 
     
     private boolean existsAgentCfg(Connection conn, String agentId) throws SQLException {
-    	String sqlSearchIagent = "SELECT AGENT_ID FROM agent_configuration WHERE AGENT_ID=?";
+    	String sqlSearchIagent = "SELECT AGENT_ID FROM " + EimDbAgentManager.DB_TABLE_AGENT_CONFIGURATION + " WHERE AGENT_ID=?";
 		PreparedStatement pstSearchIagent = conn.prepareStatement(sqlSearchIagent);
 		pstSearchIagent.setString(1, agentId);
 		ResultSet rs = pstSearchIagent.executeQuery();
@@ -128,7 +130,7 @@ public class EimDbAgentCfgManager {
     		logger.info("Adding new agent configuration to DB for agent with agentId = " + agentId);
     		System.out.println("Adding new agent configuration to DB for agent with agentId = " + agentId);
     		
-    		String sqlInsertHost = "INSERT INTO agent_configuration VALUES (?,?,?,?,?,?,?)";
+    		String sqlInsertHost = "INSERT INTO " + EimDbAgentManager.DB_TABLE_AGENT_CONFIGURATION + " VALUES (?,?,?,?,?,?,?)";
     		pstInsertAgentCfg = conn.prepareStatement(sqlInsertHost);
     	
     		pstInsertAgentCfg.setString(1, agentId); 															//agentId
@@ -166,10 +168,10 @@ public class EimDbAgentCfgManager {
 		PreparedStatement pstSelectAgentCfg = null;
 		
 		try {
-			String selectAgentCfgSQL = "SELECT AGENT_ID, EXEC, COMPONENT, PACKETBEAT_STREAM, TOPBEAT_STREAM, FILEBEAT_STREAM, FILEBEAT_PATHS FROM agent_configuration WHERE AGENT_ID = ?";
+			String selectAgentCfgSQL = "SELECT AGENT_ID, EXEC, COMPONENT, PACKETBEAT_STREAM, TOPBEAT_STREAM, FILEBEAT_STREAM, FILEBEAT_PATHS FROM " + EimDbAgentManager.DB_TABLE_AGENT_CONFIGURATION + " WHERE AGENT_ID = ?";
 			pstSelectAgentCfg = conn.prepareStatement(selectAgentCfgSQL);
 			pstSelectAgentCfg.setString(1, agentId);
-			ResultSet rs = pstSelectAgentCfg.executeQuery(selectAgentCfgSQL);
+			ResultSet rs = pstSelectAgentCfg.executeQuery();
 			while (rs.next()) {
 				agentCfgDb = toAgentCfgDb(rs);
 	        	logger.info("Agent configuration finded in DB for agent with agentId = " + agentId + " with ID " + agentId);
@@ -221,9 +223,9 @@ public class EimDbAgentCfgManager {
 		PreparedStatement pstSelectCfgAgents = null;
 		
 		try {
-			String selectSQL = "SELECT AGENT_ID, EXEC, COMPONENT, PACKETBEAT_STREAM, TOPBEAT_STREAM, FILEBEAT_STREAM, FILEBEAT_PATHS FROM AGENT_CONFIGURATION";
+			String selectSQL = "SELECT AGENT_ID, EXEC, COMPONENT, PACKETBEAT_STREAM, TOPBEAT_STREAM, FILEBEAT_STREAM, FILEBEAT_PATHS FROM " + EimDbAgentManager.DB_TABLE_AGENT_CONFIGURATION;
 			pstSelectCfgAgents = conn.prepareStatement(selectSQL);
-			ResultSet rs = pstSelectCfgAgents.executeQuery(selectSQL);
+			ResultSet rs = pstSelectCfgAgents.executeQuery();
 			agentsCfg = new ArrayList<AgentConfigurationDatabase>();
 			while (rs.next()) {
 				AgentConfigurationDatabase agentCfg = toAgentCfgDb(rs);
@@ -271,14 +273,18 @@ public class EimDbAgentCfgManager {
 		PreparedStatement pstDeleteAgent = null;
 		
 		try {
-			String deleteSQL = "DELETE FROM agent_configuration WHERE AGENT_ID = ?";
+			String deleteSQL = "DELETE FROM " + EimDbAgentManager.DB_TABLE_AGENT_CONFIGURATION + " WHERE AGENT_ID = ?";
 			pstDeleteAgent = conn.prepareStatement(deleteSQL);
 			pstDeleteAgent.setString(1, agentId);
 			pstDeleteAgent.executeUpdate();
 			if (getAgentConfigurationByAgentId(conn, agentId) == null) {
+				logger.info("Agent configuration for agent " + agentId + " deleted");
+				System.out.println("Agent configuration for agent " + agentId + " deleted");
 				return true;
 			}
 			else {
+				logger.info("Agent configuration for agent " + agentId + " not deleted");
+				System.out.println("Agent configuration for agent " + agentId + " not deleted");
 				return false;
 			}
 		}
@@ -362,8 +368,37 @@ public class EimDbAgentCfgManager {
 		agentCfg.setAgentConfiguration(agentConfiguration);
 
 		return agentCfg;
+	}
+	
+	
+	public static void main (String args[]) {
+		EimDbAgentCfgManager manager = new EimDbAgentCfgManager();
 
-
+		AgentConfiguration agentCfg = new AgentConfiguration();
+		agentCfg.setExec("exec_name");
+		agentCfg.setComponent("component_name");
+		
+		AgentConfigurationFilebeat filebeat = new AgentConfigurationFilebeat();
+		filebeat.addPathsItem("/home/logs/*");
+		filebeat.setStream("filebeat_stream");
+		agentCfg.setFilebeat(filebeat);
+		
+		AgentConfigurationPacketbeat packetbeat = new AgentConfigurationPacketbeat();
+		packetbeat.setStream("packetbeat_stream");
+		agentCfg.setPacketbeat(packetbeat);
+		
+		AgentConfigurationTopbeat topbeat = new AgentConfigurationTopbeat();
+		topbeat.setStream("topbeat_stream");
+		agentCfg.setTopbeat(topbeat);
+		
+		manager.addAgentConfiguration("iagent0", agentCfg);
+		AgentConfigurationDatabase agentCfgDb = manager.getAgentConfigurationByAgentId("iagent0");
+		System.out.println(agentCfgDb.getAgentId());
+		//manager.addHost(host);
+//		manager.deleteAgentConfiguration("iagent0");
+//		AgentFull agent = manager.getAgentByIpAddress("1.1.1.1");
+//		System.out.println(agent.getAgentId());
+//		manager.setMonitored("iagent0", false);
 	}
 	
     
