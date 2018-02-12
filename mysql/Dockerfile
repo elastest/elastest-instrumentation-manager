@@ -1,11 +1,6 @@
 FROM mysql:5.7
 MAINTAINER  David Rojo <david.rojoa@atos.net>
 
-ARG ET_EIM_SERVER
-
-#ENV ET_EIM_SERVER "$ET_EIM_SERVER"
-ENV ET_EIM_SERVER=$ET_EIM_SERVER
-
 #EXPOSE ${ET_EIM_SERVER}
 #EXPOSE $ET_EIM_SERVER
 
@@ -15,12 +10,17 @@ ENV MYSQL_ROOT_PASSWORD elastest
 #ENV MYSQL_PASSWORD elastest
 
 ADD 1-model_repository.sql /docker-entrypoint-initdb.d/
-RUN sed -i 's/ET_EIM_SERVER/$ET_EIM_SERVER/g' /docker-entrypoint-initdb.d/1-model_repository.sql
 ADD 2-setup.sh /docker-entrypoint-initdb.d/
 RUN chmod +x /docker-entrypoint-initdb.d/2-setup.sh
 
 COPY . /elastest
 WORKDIR /elastest
+
+RUN chmod 777 entrypoint.sh
+
+ENTRYPOINT ["./entrypoint.sh"]
+
+CMD ["mysqld"]
 
 # Requires: 
 # Create image with:  docker build -t elastest/mysql .
