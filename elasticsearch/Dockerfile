@@ -1,4 +1,5 @@
 FROM elasticsearch
+MAINTAINER  David Rojo <david.rojoa@atos.net>
 
 # Set Image Labels
 ARG GIT_COMMIT=unspecified
