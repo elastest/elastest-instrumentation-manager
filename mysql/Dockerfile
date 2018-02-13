@@ -1,9 +1,6 @@
 FROM mysql:5.7
 MAINTAINER  David Rojo <david.rojoa@atos.net>
 
-#EXPOSE ${ET_EIM_SERVER}
-#EXPOSE $ET_EIM_SERVER
-
 ENV MYSQL_ROOT_PASSWORD elastest
 #ENV MYSQL_DATABASE eim
 #ENV MYSQL_USER elastest 
