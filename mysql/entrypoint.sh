@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # replace the value of the EIM server in the sql script in order to allow connection from this place
-sed -i 's/##EIM_SERVER##/$ET_EIM_SERVER/g' /docker-entrypoint-initdb.d/1-model_repository.sql
+sed -i "s/##EIM_SERVER##/$ET_EIM_SERVER/g" /docker-entrypoint-initdb.d/1-model_repository.sql
 
 # original content of mysql entrypoint
 set -eo pipefail
