@@ -4,11 +4,13 @@ services:
         eim-mongo:
                 image: elastest/eim-mysql:latest
                 expose: 
-                        - 3306
+                # - 3306
+                        - 52000
                 environment:
                         - ET_EIM_SERVER=172.21.0.7
                 ports: 
-                        - "3306:3306"
+                # - "3306:3306"
+                        - "52000:3306"
                 hostname: eim-mongo 
                 stdin_open: true
                 tty: true

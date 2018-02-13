@@ -15,7 +15,6 @@ import io.swagger.model.AgentConfigurationDatabase;
 import io.swagger.model.AgentConfigurationFilebeat;
 import io.swagger.model.AgentConfigurationPacketbeat;
 import io.swagger.model.AgentConfigurationTopbeat;
-import io.swagger.model.AgentFull;
 
 public class EimDbAgentCfgManager {
 
@@ -51,8 +50,8 @@ public class EimDbAgentCfgManager {
             Class.forName(JDBC_DRIVER);
             
             //TODO USE CONTSTANTS DEFINED IN DICTIONARY
-            String dbUrl ="jdbc:mariadb://" + System.getenv("ET_EIM_MONGO_HOST") + ":3306/eim"; 
-//            String dbUrl ="jdbc:mariadb://" + "localhost" + ":3306/eim";
+            String dbUrl ="jdbc:mariadb://" + System.getenv("ET_EIM_MONGO_HOST") + ":" + EimDbAgentManager.DB_PORT + "/eim"; 
+//            String dbUrl ="jdbc:mariadb://" + "localhost" + ":" + EimDbAgentManager.DB_PORT + "/eim";
             
             //Open a connection
             logger.info("Connecting to EIM database...");

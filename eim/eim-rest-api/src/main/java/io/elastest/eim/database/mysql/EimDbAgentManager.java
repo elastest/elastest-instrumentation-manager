@@ -15,15 +15,17 @@ import io.swagger.model.Host;
 
 public class EimDbAgentManager {
 
-	// JDBC driver name and database URL
-    static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
-    static final String DB_URL = "jdbc:mariadb://localhost:3306/eim";
     public static String DB_TABLE_AGENT = "agent";
     public static String DB_TABLE_AGENT_CONFIGURATION = "agent_configuration";
-
+    //public static String DB_PORT = "3306";
+    public static String DB_PORT = "52000";
     //  Database credentials
     static final String USER = "elastest";
     static final String PASS = "elastest";
+    
+	// JDBC driver name and database URL
+    static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
+   // static final String DB_URL = "jdbc:mariadb://localhost:" + DB_PORT + "/eim";
 
     private static Logger logger = Logger.getLogger(EimDbAgentManager.class);
     
@@ -37,9 +39,9 @@ public class EimDbAgentManager {
             //Register JDBC driver
             Class.forName(JDBC_DRIVER);
 
-          //TODO USE CONTSTANTS DEFINED IN DICTIONARY
-            String dbUrl ="jdbc:mariadb://" + System.getenv("ET_EIM_MONGO_HOST") + ":3306/eim"; 
-//            String dbUrl ="jdbc:mariadb://" + "localhost" + ":3306/eim";
+          //TODO USE CONSTANTS DEFINED IN DICTIONARY
+            String dbUrl ="jdbc:mariadb://" + System.getenv("ET_EIM_MONGO_HOST") + ":" + DB_PORT + "/eim"; 
+//          String dbUrl ="jdbc:mariadb://" + "localhost" + ":" + DB_PORT + "/eim";
             
             //Open a connection
             logger.info("Connecting to EIM database...");
