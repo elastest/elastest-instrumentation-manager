@@ -25,7 +25,7 @@ node('docker') {
                         echo ("building elasticsearch..")
                         //def elasticsearch_image = docker.build("elastest/eim-elasticsearch:latest","./elasticsearch")
                         sh 'cd elasticsearch; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-elasticsearch:latest'
-                        def elasticsearch_image = docker.image('elastest/eus:latest')
+                        def elasticsearch_image = docker.image('elastest/eim-elasticsearch:latest')
 
                 stage "Build Logstash image - Package"
                         echo ("building logstash..")
