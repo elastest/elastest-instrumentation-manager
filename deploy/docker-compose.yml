@@ -3,7 +3,7 @@ version: '3'
 services:
         eim-mongo:
                 # image: mvertes/alpine-mongo
-                image: elastest/mysql
+                image: elastest/eim-mysql
                 expose: 
                 # - 27017
                         - 3306
