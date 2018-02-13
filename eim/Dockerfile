@@ -1,4 +1,5 @@
 FROM williamyeh/ansible:ubuntu14.04-onbuild
+MAINTAINER  David Rojo <david.rojoa@atos.net>
 
 # Set Image Labels
 ARG GIT_COMMIT=unspecified
