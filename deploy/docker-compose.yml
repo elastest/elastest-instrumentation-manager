@@ -6,8 +6,8 @@ services:
                 expose: 
                 #        - 3306
                          - 52000
-                environment:
-                        - ET_EIM_SERVER=172.21.0.1
+                # environment:
+                #         - ET_EIM_SERVER=172.21.0.1
                 ports: 
                        # - "3306:3306"
                          - "52000:3306"
