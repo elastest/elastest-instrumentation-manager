@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import io.elastest.eim.config.Dictionary;
 import io.swagger.model.AgentConfiguration;
 import io.swagger.model.AgentConfigurationDatabase;
 import io.swagger.model.AgentConfigurationFilebeat;
@@ -18,54 +19,38 @@ import io.swagger.model.AgentConfigurationTopbeat;
 
 public class EimDbAgentCfgManager {
 
-//	CREATE TABLE `agent_configuration` (
-//			  `agent_id` varchar(255) NOT NULL,
-//			  `exec` varchar(255) NOT NULL,
-//			  `component` varchar(255) NOT NULL,
-//			  `packetbeat_stream` varchar(255) NOT NULL,
-//			  `topbeat_stream` varchar(255) NOT NULL,
-//			  `filebeat_stream` varchar(255) NOT NULL,
-//			  `filebeat_paths` text NOT NULL,
-//			  PRIMARY KEY (`agentId`)
-	
-	
-	// JDBC driver name
-    static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
-    
-    //  Database credentials
-    //TODO USE CONTSTANTS DEFINED IN DICTIONARY
-    static final String USER = "elastest";
-    static final String PASS = "elastest";
-
     private static Logger logger = Logger.getLogger(EimDbAgentCfgManager.class);
     
     public EimDbAgentCfgManager() {
     	
     }
     
-    public Connection getConnection() {
+    public Connection getConnection() throws SQLException {
     	Connection conn = null;
         try {
             //Register JDBC driver
-            Class.forName(JDBC_DRIVER);
-            
-            //TODO USE CONTSTANTS DEFINED IN DICTIONARY
-            String dbUrl ="jdbc:mariadb://" + System.getenv("ET_EIM_MONGO_HOST") + ":" + EimDbAgentManager.DB_PORT + "/eim"; 
-//            String dbUrl ="jdbc:mariadb://" + "localhost" + ":" + EimDbAgentManager.DB_PORT + "/eim";
+            Class.forName(Dictionary.JDBC_DRIVER);
             
             //Open a connection
             logger.info("Connecting to EIM database...");
             conn = DriverManager.getConnection(
-            		dbUrl, USER, PASS);
+            		Dictionary.DBURL, Dictionary.DBUSER, Dictionary.DBPASS);
             logger.info("Connected to EIM database successfully...");
-            
-
             return conn;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            return null;
         } catch (SQLException se) {
             //Handle errors for JDBC
         	se.printStackTrace();
             logger.error(se.getMessage());
-            return null;
+            EimDbCreator eimDbCreator = new EimDbCreator();
+            eimDbCreator.createSchema();
+            conn = null;
+            conn = DriverManager.getConnection(Dictionary.DBURL, Dictionary.DBUSER, Dictionary.DBPASS);
+            logger.info("Connected to EIM database successfully...");
+            return conn;
         } catch (Exception e) {
             //Handle errors for Class.forName
             e.printStackTrace();
@@ -78,7 +63,7 @@ public class EimDbAgentCfgManager {
 
     
     private boolean existsAgentCfg(Connection conn, String agentId) throws SQLException {
-    	String sqlSearchIagent = "SELECT AGENT_ID FROM " + EimDbAgentManager.DB_TABLE_AGENT_CONFIGURATION + " WHERE AGENT_ID=?";
+    	String sqlSearchIagent = "SELECT AGENT_ID FROM " + Dictionary.DBTABLE_AGENT_CONFIGURATION + " WHERE AGENT_ID=?";
 		PreparedStatement pstSearchIagent = conn.prepareStatement(sqlSearchIagent);
 		pstSearchIagent.setString(1, agentId);
 		ResultSet rs = pstSearchIagent.executeQuery();
@@ -129,7 +114,7 @@ public class EimDbAgentCfgManager {
     		logger.info("Adding new agent configuration to DB for agent with agentId = " + agentId);
     		System.out.println("Adding new agent configuration to DB for agent with agentId = " + agentId);
     		
-    		String sqlInsertHost = "INSERT INTO " + EimDbAgentManager.DB_TABLE_AGENT_CONFIGURATION + " VALUES (?,?,?,?,?,?,?)";
+    		String sqlInsertHost = "INSERT INTO " + Dictionary.DBTABLE_AGENT_CONFIGURATION + " VALUES (?,?,?,?,?,?,?)";
     		pstInsertAgentCfg = conn.prepareStatement(sqlInsertHost);
     	
     		pstInsertAgentCfg.setString(1, agentId); 															//agentId
@@ -155,10 +140,7 @@ public class EimDbAgentCfgManager {
     		}
     	}
     	return inserted;
-    }
-   
-    
-	
+    }	
 	
 	private AgentConfigurationDatabase getAgentConfigurationByAgentId(Connection conn, String agentId) throws SQLException {
 		logger.info("Searching agent configuration for agent with agentId = " + agentId);
@@ -167,7 +149,7 @@ public class EimDbAgentCfgManager {
 		PreparedStatement pstSelectAgentCfg = null;
 		
 		try {
-			String selectAgentCfgSQL = "SELECT AGENT_ID, EXEC, COMPONENT, PACKETBEAT_STREAM, TOPBEAT_STREAM, FILEBEAT_STREAM, FILEBEAT_PATHS FROM " + EimDbAgentManager.DB_TABLE_AGENT_CONFIGURATION + " WHERE AGENT_ID = ?";
+			String selectAgentCfgSQL = "SELECT AGENT_ID, EXEC, COMPONENT, PACKETBEAT_STREAM, TOPBEAT_STREAM, FILEBEAT_STREAM, FILEBEAT_PATHS FROM " + Dictionary.DBTABLE_AGENT_CONFIGURATION + " WHERE AGENT_ID = ?";
 			pstSelectAgentCfg = conn.prepareStatement(selectAgentCfgSQL);
 			pstSelectAgentCfg.setString(1, agentId);
 			ResultSet rs = pstSelectAgentCfg.executeQuery();
@@ -222,7 +204,7 @@ public class EimDbAgentCfgManager {
 		PreparedStatement pstSelectCfgAgents = null;
 		
 		try {
-			String selectSQL = "SELECT AGENT_ID, EXEC, COMPONENT, PACKETBEAT_STREAM, TOPBEAT_STREAM, FILEBEAT_STREAM, FILEBEAT_PATHS FROM " + EimDbAgentManager.DB_TABLE_AGENT_CONFIGURATION;
+			String selectSQL = "SELECT AGENT_ID, EXEC, COMPONENT, PACKETBEAT_STREAM, TOPBEAT_STREAM, FILEBEAT_STREAM, FILEBEAT_PATHS FROM " + Dictionary.DBTABLE_AGENT_CONFIGURATION;
 			pstSelectCfgAgents = conn.prepareStatement(selectSQL);
 			ResultSet rs = pstSelectCfgAgents.executeQuery();
 			agentsCfg = new ArrayList<AgentConfigurationDatabase>();
@@ -272,7 +254,7 @@ public class EimDbAgentCfgManager {
 		PreparedStatement pstDeleteAgent = null;
 		
 		try {
-			String deleteSQL = "DELETE FROM " + EimDbAgentManager.DB_TABLE_AGENT_CONFIGURATION + " WHERE AGENT_ID = ?";
+			String deleteSQL = "DELETE FROM " + Dictionary.DBTABLE_AGENT_CONFIGURATION + " WHERE AGENT_ID = ?";
 			pstDeleteAgent = conn.prepareStatement(deleteSQL);
 			pstDeleteAgent.setString(1, agentId);
 			pstDeleteAgent.executeUpdate();

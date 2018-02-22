@@ -1,11 +1,13 @@
 package io.elastest.eim.config;
 
+import io.elastest.eim.database.mysql.EimDbAgentManager;
+
 public class Dictionary {
 		
 	
 	//PROPERTIES
 	
-	public static String PROPERTY_MONGODB_HOST = "mongoDB.host";
+//	public static String PROPERTY_MONGODB_HOST = "mongoDB.host";
 	
 	public static String PROPERTY_PUBLICKEY_LOCATION = "publickey.location";
 	public static String PROPERTY_TEMPLATES_SSH_INSTALL_PLAYBOOK = "templates.ssh.install.playbook";
@@ -53,6 +55,17 @@ public class Dictionary {
 	// USED TO INSTALL/REMOVE FEATURES IN SUT
 	public static String INSTALL = "install";
 	public static String REMOVE = "remove";
+	
+	//MYSQL DATABASE CONSTANTS
+	 public static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
+	 public static final String DBNAME = "EIM";
+	 public static final String DBTABLE_AGENT = "agent";
+	 public static final String DBTABLE_AGENT_CONFIGURATION = "agent_configuration";
+	 public static final String DBUSER = "elastest";
+	 public static final String DBPASS = "elastest";
+	 //public static final String DBPORT = "3306";
+	 //public static final String DBURL ="jdbc:mariadb://" + System.getenv("ET_EIM_MONGO_HOST") + ":" + DBPORT + "/eim";
+	 public static final String DBURL ="jdbc:mariadb://" + System.getenv("ET_EDM_MYSQL_HOST") + ":" + System.getenv("ET_EDM_MYSQL_PORT") + "/" + DBNAME;
 	
 
 }

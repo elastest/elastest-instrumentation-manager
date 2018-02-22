@@ -1,17 +1,17 @@
 version: '2'
 
 services:
-        eim-mongo:
+        eim-mysql:
                 image: elastest/eim-mysql:latest
                 expose: 
-                # - 3306
-                        - 52000
+                        - 3306
+                #        - 52000
                 # environment:
                 #        - ET_EIM_SERVER=172.21.0.7
                 ports: 
-                # - "3306:3306"
-                        - "52000:3306"
-                hostname: eim-mongo 
+                        - "3306:3306"
+                #        - "52000:3306"
+                hostname: eim-mysql 
                 stdin_open: true
                 tty: true
                 networks:
@@ -23,7 +23,7 @@ services:
                         - "9200:9200"
                         - "9300:9300"
                 depends_on:
-                        - eim-mongo
+                        - eim-mysql
                 hostname: elasticsearch
                 networks:
                         - elastest
@@ -74,13 +74,14 @@ services:
                 #       - static-content:/tmp/ssh 
                 depends_on:
                         - sut
-                        - eim-mongo
+                        - eim-mysql
                 links:
-                        - eim-mongo
+                        - eim-mysql
                 stdin_open: true
                 tty: true
                 environment:
-                        - ET_EIM_MONGO_HOST=eim-mongo
+                        - ET_EDM_MYSQL_HOST=eim-mysql
+                        - ET_EDM_MYSQL_PORT=3306
                 expose:
                         - 8080
                 ports:

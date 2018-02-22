@@ -10,22 +10,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import io.elastest.eim.config.Dictionary;
 import io.swagger.model.AgentFull;
 import io.swagger.model.Host;
 
 public class EimDbAgentManager {
 
-    public static String DB_TABLE_AGENT = "agent";
-    public static String DB_TABLE_AGENT_CONFIGURATION = "agent_configuration";
-    //public static String DB_PORT = "3306";
-    public static String DB_PORT = "52000";
-    //  Database credentials
-    static final String USER = "elastest";
-    static final String PASS = "elastest";
-    
-	// JDBC driver name and database URL
-    static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
-   // static final String DB_URL = "jdbc:mariadb://localhost:" + DB_PORT + "/eim";
+   
 
     private static Logger logger = Logger.getLogger(EimDbAgentManager.class);
     
@@ -33,29 +24,33 @@ public class EimDbAgentManager {
     	
     }
     
-    public Connection getConnection() {
+    public Connection getConnection() throws SQLException {
     	Connection conn = null;
         try {
             //Register JDBC driver
-            Class.forName(JDBC_DRIVER);
-
-          //TODO USE CONSTANTS DEFINED IN DICTIONARY
-            String dbUrl ="jdbc:mariadb://" + System.getenv("ET_EIM_MONGO_HOST") + ":" + DB_PORT + "/eim"; 
-//          String dbUrl ="jdbc:mariadb://" + "localhost" + ":" + DB_PORT + "/eim";
-            
+            Class.forName(Dictionary.JDBC_DRIVER);
+  
             //Open a connection
             logger.info("Connecting to EIM database...");
             conn = DriverManager.getConnection(
-            		dbUrl, USER, PASS);
+            		Dictionary.DBURL, Dictionary.DBUSER, Dictionary.DBPASS);
             logger.info("Connected to EIM database successfully...");
-            
 
             return conn;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            return null;
         } catch (SQLException se) {
             //Handle errors for JDBC
         	se.printStackTrace();
             logger.error(se.getMessage());
-            return null;
+            EimDbCreator eimDbCreator = new EimDbCreator();
+            eimDbCreator.createSchema();
+            conn = null;
+            conn = DriverManager.getConnection(Dictionary.DBURL, Dictionary.DBUSER, Dictionary.DBPASS);
+            logger.info("Connected to EIM database successfully...");
+            return conn;
         } catch (Exception e) {
             //Handle errors for Class.forName
             e.printStackTrace();
@@ -82,7 +77,7 @@ public class EimDbAgentManager {
 	}
     
     private boolean existsAgent(Connection conn, String agentId) throws SQLException {
-    	String sqlSearchIagent = "SELECT AGENT_ID FROM " + DB_TABLE_AGENT + " WHERE AGENT_ID=?";
+    	String sqlSearchIagent = "SELECT AGENT_ID FROM " + Dictionary.DBTABLE_AGENT + " WHERE AGENT_ID=?";
 		PreparedStatement pstSearchIagent = conn.prepareStatement(sqlSearchIagent);
 		pstSearchIagent.setString(1, agentId);
 		ResultSet rs = pstSearchIagent.executeQuery();
@@ -133,7 +128,7 @@ public class EimDbAgentManager {
     		logger.info("Adding new host to DB, host with ipAddress = " + host.getAddress());
     		System.out.println("Adding new host to DB, host with ipAddress = " + host.getAddress());
     		
-    		String sqlInsertHost = "INSERT INTO " + DB_TABLE_AGENT + " VALUES (?,?,?,?,?)";
+    		String sqlInsertHost = "INSERT INTO " + Dictionary.DBTABLE_AGENT + " VALUES (?,?,?,?,?)";
     		pstInsertHost = conn.prepareStatement(sqlInsertHost);
     	
     		pstInsertHost.setString(1, getNewAgentId(conn));
@@ -167,7 +162,7 @@ public class EimDbAgentManager {
 		PreparedStatement pstSelectAgent = null;
 		
 		try {
-			String selectSQL = "SELECT agent_id, host, monitored, logstash_ip, logstash_port FROM " + DB_TABLE_AGENT + " WHERE host=?";
+			String selectSQL = "SELECT agent_id, host, monitored, logstash_ip, logstash_port FROM " + Dictionary.DBTABLE_AGENT + " WHERE host=?";
 			pstSelectAgent = conn.prepareStatement(selectSQL);
 			pstSelectAgent.setString(1, ipAddress);
 			ResultSet rs = pstSelectAgent.executeQuery();
@@ -207,7 +202,7 @@ public class EimDbAgentManager {
 		PreparedStatement pstSelectAgent = null;
 		
 		try {
-			String selectSQL = "SELECT AGENT_ID, HOST, MONITORED, LOGSTASH_IP, LOGSTASH_PORT FROM " + DB_TABLE_AGENT + " WHERE AGENT_ID = ?";
+			String selectSQL = "SELECT AGENT_ID, HOST, MONITORED, LOGSTASH_IP, LOGSTASH_PORT FROM " + Dictionary.DBTABLE_AGENT + " WHERE AGENT_ID = ?";
 			pstSelectAgent = conn.prepareStatement(selectSQL);
 			pstSelectAgent.setString(1, agentId);
 			ResultSet rs = pstSelectAgent.executeQuery();
@@ -267,7 +262,7 @@ public class EimDbAgentManager {
 		PreparedStatement pstSelectAgents = null;
 		
 		try {
-			String selectSQL = "SELECT AGENT_ID, HOST, MONITORED, LOGSTASH_IP, LOGSTASH_PORT FROM " + DB_TABLE_AGENT;
+			String selectSQL = "SELECT AGENT_ID, HOST, MONITORED, LOGSTASH_IP, LOGSTASH_PORT FROM " + Dictionary.DBTABLE_AGENT;
 			pstSelectAgents = conn.prepareStatement(selectSQL);
 			ResultSet rs = pstSelectAgents.executeQuery();
 			agents = new ArrayList<AgentFull>();
@@ -349,7 +344,7 @@ public class EimDbAgentManager {
 		PreparedStatement pstDeleteAgent = null;
 		
 		try {
-			String deleteSQL = "DELETE FROM " + DB_TABLE_AGENT + " WHERE AGENT_ID = ?";
+			String deleteSQL = "DELETE FROM " + Dictionary.DBTABLE_AGENT + " WHERE AGENT_ID = ?";
 			pstDeleteAgent = conn.prepareStatement(deleteSQL);
 			pstDeleteAgent.setString(1, agentId);
 			pstDeleteAgent.executeUpdate();
@@ -425,7 +420,7 @@ public class EimDbAgentManager {
     		logger.info("Setting agent " + agentId + " monitored = " + monitored);
     		System.out.println("Setting agent " + agentId + " monitored = " + monitored);
     		
-    		String sqlSetMonitored = "UPDATE " + DB_TABLE_AGENT + " SET monitored = ? WHERE agent_Id = ?";
+    		String sqlSetMonitored = "UPDATE " + Dictionary.DBTABLE_AGENT + " SET monitored = ? WHERE agent_Id = ?";
     		pstSetMonitored = conn.prepareStatement(sqlSetMonitored);
     	
     		pstSetMonitored.setBoolean(1, monitored);
