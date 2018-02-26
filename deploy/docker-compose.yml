@@ -17,7 +17,7 @@ services:
                 tty: true
                 networks:
                         - elastest
-        eim:
+         eim:
                 image: elastest/eim:latest
                 #image: elastest/eim-dev
                 #image: elastest/eim:0.5.0
