@@ -1,3 +1,16 @@
+/**
+ * Copyright (c) 2018 Atos
+ * This program and the accompanying materials
+ * are made available under the terms of the Apache License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Contributors:
+ *    @author David Rojo Antona (Atos)
+ *    
+ * Developed in the context of ElasTest EU project http://elastest.io 
+ */
+
 package io.elastest.eim.database.mysql;
 
 import java.sql.Connection;

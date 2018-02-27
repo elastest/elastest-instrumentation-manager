@@ -20,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
 import io.elastest.eim.config.Properties;
+import io.elastest.eim.database.mysql.EimDbCreator;
 import io.swagger.jaxrs.config.SwaggerContextService;
 import io.swagger.models.Contact;
 import io.swagger.models.Info;
@@ -41,8 +42,15 @@ public class Bootstrap extends HttpServlet {
 
     ServletContext context = config.getServletContext();
     Swagger swagger = new Swagger().info(info);
+    
+    // load properties
     String propertiesFile = "/WEB-INF/bootstrap.properties";
     Properties.load(config.getServletContext().getResourceAsStream(propertiesFile), propertiesFile);
+    
+    // create database schema
+    EimDbCreator dbCreator = new EimDbCreator();
+    dbCreator.createSchema();
+    
     new SwaggerContextService().withServletConfig(config).updateSwagger(swagger);
   }
 }

@@ -1,3 +1,16 @@
+/**
+ * Copyright (c) 2018 Atos
+ * This program and the accompanying materials
+ * are made available under the terms of the Apache License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Contributors:
+ *    @author David Rojo Antona (Atos)
+ *    
+ * Developed in the context of ElasTest EU project http://elastest.io 
+ */
+
 package io.elastest.eim.database.mysql;
 
 import java.sql.Connection;
@@ -42,15 +55,10 @@ public class EimDbAgentManager {
             logger.error(e.getMessage());
             return null;
         } catch (SQLException se) {
-            //Handle errors for JDBC
+        	//Handle errors for JDBC
         	se.printStackTrace();
-            logger.error(se.getMessage());
-            EimDbCreator eimDbCreator = new EimDbCreator();
-            eimDbCreator.createSchema();
-            conn = null;
-            conn = DriverManager.getConnection(Dictionary.DBURL, Dictionary.DBUSER, Dictionary.DBPASS);
-            logger.info("Connected to EIM database successfully...");
-            return conn;
+        	logger.error(se.getMessage());
+        	return null;
         } catch (Exception e) {
             //Handle errors for Class.forName
             e.printStackTrace();

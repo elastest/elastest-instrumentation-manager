@@ -1,3 +1,16 @@
+/**
+ * Copyright (c) 2018 Atos
+ * This program and the accompanying materials
+ * are made available under the terms of the Apache License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Contributors:
+ *    @author David Rojo Antona (Atos)
+ *    
+ * Developed in the context of ElasTest EU project http://elastest.io 
+ */
+
 package io.elastest.eim.database.mysql;
 
 import java.sql.Connection;
@@ -45,12 +58,7 @@ public class EimDbAgentCfgManager {
             //Handle errors for JDBC
         	se.printStackTrace();
             logger.error(se.getMessage());
-            EimDbCreator eimDbCreator = new EimDbCreator();
-            eimDbCreator.createSchema();
-            conn = null;
-            conn = DriverManager.getConnection(Dictionary.DBURL, Dictionary.DBUSER, Dictionary.DBPASS);
-            logger.info("Connected to EIM database successfully...");
-            return conn;
+            return null;
         } catch (Exception e) {
             //Handle errors for Class.forName
             e.printStackTrace();
@@ -59,8 +67,6 @@ public class EimDbAgentCfgManager {
         } 
     }
     
-    
-
     
     private boolean existsAgentCfg(Connection conn, String agentId) throws SQLException {
     	String sqlSearchIagent = "SELECT AGENT_ID FROM " + Dictionary.DBTABLE_AGENT_CONFIGURATION + " WHERE AGENT_ID=?";
