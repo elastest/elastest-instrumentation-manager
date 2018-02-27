@@ -67,7 +67,7 @@ public class EimDbCreator {
 	}
 	
 	private void createTableAgentCfg() {
-		String mysqlCreateCmd = "CREATE TABLE " + Dictionary.DBTABLE_AGENT + " (" 
+		String mysqlCreateCmd = "CREATE TABLE " + Dictionary.DBTABLE_AGENT_CONFIGURATION + " (" 
 								  + "agent_id varchar(255) NOT NULL,"
 								  + "exec varchar(255) NOT NULL,"
 								  + "component varchar(255) NOT NULL,"
