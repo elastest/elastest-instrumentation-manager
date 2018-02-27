@@ -15,11 +15,11 @@ node('docker') {
                         echo ("Build eim-rest-api")
                         sh 'cd ./eim/eim-rest-api; mvn clean package -DskipTests;'
 
-                stage "Build MySQL image - Package"
-                        echo ("building MySQL..")
+                //stage "Build MySQL image - Package"
+                 //       echo ("building MySQL..")
                         //def logstash_image = docker.build("elastest/eim-mysql:latest","./mysql")
-                        sh 'cd mysql; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-mysql:latest'
-                        def mysql_image = docker.image('elastest/eim-mysql:latest')
+                 //       sh 'cd mysql; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-mysql:latest'
+                 //       def mysql_image = docker.image('elastest/eim-mysql:latest')
                 
                 //stage "Build Elasticsearch image - Package"
                 //        echo ("building elasticsearch..")
@@ -39,11 +39,11 @@ node('docker') {
                 //        sh 'cd kibana; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-kibana:latest'
                 //        def kibana_image = docker.image('elastest/eim-kibana:latest')
 
-                stage "Build SuT image - Package"
-                        echo ("building sut..")
+                //stage "Build SuT image - Package"
+                //        echo ("building sut..")
                         //def sut_image = docker.build("elastest/eim-sut:latest","./sut")
-                        sh 'cd sut; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t eim-sut:latest'
-                        def sut_image = docker.image('eim-sut:latest')
+                //        sh 'cd sut; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t eim-sut:latest'
+                //        def sut_image = docker.image('eim-sut:latest')
 
                 stage "Build EIM image - Package"
                         echo ("building eim..")
@@ -53,7 +53,7 @@ node('docker') {
 
                 stage "Execute docker compose"
                         echo ("running docker compose..")
-                        sh 'docker-compose -f docker-compose.yml up -d --build'
+                        sh 'docker-compose -f deploy/docker-compose.yml up -d --build'
 
             stage "Publish"
                 echo ("Publishing")
@@ -63,11 +63,11 @@ node('docker') {
                         usernameVariable: 'USERNAME', 
                         passwordVariable: 'PASSWORD']]) {
                                 sh 'docker login -u "$USERNAME" -p "$PASSWORD"'
-                                mysql_image.push()
+                  //              mysql_image.push()
                   //              elasticsearch_image.push()
                   //              logstash_image.push()
                   //              kibana_image.push()
-                                sut_image.push()
+                  //              sut_image.push()
                                 eim_image.push()
                         }   
             }
