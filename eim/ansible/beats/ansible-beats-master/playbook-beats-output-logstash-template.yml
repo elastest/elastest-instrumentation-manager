@@ -18,9 +18,9 @@
       - packetbeat
 #      - metricbeat
     beats_package:
-      - { 'name': 'filebeat', 'state': 'present', 'version': '1.2.3' }
+      - { 'name': 'filebeat', 'state': 'present', 'version': '5.0.0' }
       - { 'name': 'topbeat', 'state': 'present', 'version': '1.2.3' }
-      - { 'name': 'packetbeat', 'state': 'present', 'version': '1.2.3' }
+      - { 'name': 'packetbeat', 'state': 'present', 'version': '5.0.0' }
 #      - { 'name': 'metricbeat', 'state': 'present', 'version': '1.2.3' }
 
 
