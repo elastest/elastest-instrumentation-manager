@@ -39,4 +39,4 @@ RUN chmod 777 entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-#CMD ["/bin/bash"]
+CMD ["/bin/bash"]
