@@ -35,6 +35,9 @@ public class AgentconfigurationApiServiceImpl extends AgentconfigurationApiServi
 	
 	@Override
     public Response getAgentCfgByID(String agentId, SecurityContext securityContext) throws NotFoundException {
+		logger.info("getAgentCfgByID method invoked for agentId " + agentId);
+    	System.out.println("getAgentCfgByID method invoked for agentId " + agentId);
+    	
 		AgentConfigurationDatabase agent = agentCfgDb.getAgentConfigurationByAgentId(agentId);
         if (agent != null){
     		return Response.ok().entity(agent).build();
@@ -47,6 +50,9 @@ public class AgentconfigurationApiServiceImpl extends AgentconfigurationApiServi
 	
     @Override
     public Response getAllAgentConfigurations(SecurityContext securityContext) throws NotFoundException {
+    	logger.info("getAllAgentConfigurations method invoked");
+    	System.out.println("getAllAgentConfigurations method invoked");
+    	
     	List<AgentConfigurationDatabase> agents = agentCfgDb.findAll();
         if (agents != null){
     		return Response.ok().entity(agents).build();

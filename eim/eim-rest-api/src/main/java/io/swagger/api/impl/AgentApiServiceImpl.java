@@ -39,7 +39,6 @@ import io.swagger.api.AgentApiService;
 import io.swagger.api.ApiResponseMessage;
 import io.swagger.api.NotFoundException;
 import io.swagger.model.AgentConfiguration;
-import io.swagger.model.AgentConfigurationDatabase;
 import io.swagger.model.AgentDeleted;
 import io.swagger.model.AgentFull;
 import io.swagger.model.Host;
@@ -55,7 +54,11 @@ public class AgentApiServiceImpl extends AgentApiService {
 	
     @Override
     public Response deleteAgentByID(String agentId, SecurityContext securityContext) throws NotFoundException {
-        //verify that agent exists
+    	
+    	logger.info("deleteAgentByID method invoked for agentId " + agentId);
+    	System.out.println("deleteAgentByID method invoked for agentId " + agentId);
+    	
+    	//verify that agent exists
     	AgentFull agent = agentDb.getAgentByAgentId(agentId);
     	int status = 0;
     	Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -152,6 +155,9 @@ public class AgentApiServiceImpl extends AgentApiService {
     
     @Override
     public Response getAgentByID(String agentId, SecurityContext securityContext) throws NotFoundException {
+    	logger.info("getAgentByID method invoked for agentId " + agentId);
+    	System.out.println("getAgentByID method invoked for agentId " + agentId);
+    	
     	AgentFull agent = agentDb.getAgentByAgentId(agentId);
         if (agent != null){
     		return Response.ok().entity(agent).build();
@@ -164,6 +170,9 @@ public class AgentApiServiceImpl extends AgentApiService {
     
     @Override
     public Response getAllAgents(SecurityContext securityContext) throws NotFoundException {
+    	logger.info("getAllAgents method invoked");
+    	System.out.println("getAllAgents method invoked");
+    	
     	List<AgentFull> agents = agentDb.findAll();
         if (agents != null){
     		return Response.ok().entity(agents).build();
@@ -175,6 +184,9 @@ public class AgentApiServiceImpl extends AgentApiService {
     
     @Override
     public Response postAction(String agentId, String actionId, AgentConfiguration body, SecurityContext securityContext) throws NotFoundException {    	
+    	
+    	logger.info("PostAction method invoked for agent " + agentId + " with action " + actionId + " and body: " + body);
+    	System.out.println("PostAction method invoked for agent " + agentId + " with action " + actionId + " and body: " + body);
     	
     	if (actionId.equals("monitor")){
 	    	//verify that agent exists in database and it is not monitored
@@ -224,6 +236,8 @@ public class AgentApiServiceImpl extends AgentApiService {
     @Override
     public Response postAgent(Host body, SecurityContext securityContext) throws NotFoundException {
         
+    	logger.info("PostAgent method invoked with body: " + body);
+    	System.out.println("PostAgent method invoked with body: " + body);
     	
     	if (agentDb.existHost(body.getAddress())){
     		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "not inserted! The host exists in database")).build();
