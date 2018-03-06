@@ -28,10 +28,8 @@ import io.swagger.model.AgentConfigurationDatabase;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2017-11-28T00:11:53.581+01:00")
 public class AgentconfigurationApiServiceImpl extends AgentconfigurationApiService {
    
-	private static Logger logger = Logger.getLogger(AgentApiServiceImpl.class);
-
+	private static Logger logger = Logger.getLogger(AgentconfigurationApiServiceImpl.class);
 	private AgentConfigurationRepository agentCfgDb = new AgentConfigurationRepository();
-
 	
 	@Override
     public Response getAgentCfgByID(String agentId, SecurityContext securityContext) throws NotFoundException {
