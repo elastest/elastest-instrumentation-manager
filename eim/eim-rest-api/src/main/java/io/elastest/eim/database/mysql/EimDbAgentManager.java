@@ -459,11 +459,12 @@ public class EimDbAgentManager {
 		host.setLogstashPort("1234");
 		host.setPrivateKey("myKey");
 		host.setUser("user");
-		//manager.addHost(host);
+		manager.addHost(host);
 		//manager.deleteAgent("iagent0");
 		AgentFull agent = manager.getAgentByIpAddress("1.1.1.1");
 		System.out.println(agent.getAgentId());
-		manager.setMonitored("iagent0", false);
+		AgentFull notMonitored = manager.setMonitored("iagent0", false);
+		System.out.println("The returned agent " + notMonitored.getAgentId() + " when monitored is setted to false has monitored = " + notMonitored.isMonitored());
 	}
 	
     
