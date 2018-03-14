@@ -52,6 +52,10 @@ public class Dictionary {
 
 	public static String PROPERTY_LOGGING_FILE = "logging.file";
 	
+	// AVAILABLE ACTIONS OVER SUT
+	public static String SUT_ACTION_MONITOR = "monitor";
+	public static String SUT_ACTION_UNMONITOR = "unmonitor";
+	
 	// USED TO INSTALL/REMOVE FEATURES IN SUT
 	public static String INSTALL = "install";
 	public static String REMOVE = "remove";

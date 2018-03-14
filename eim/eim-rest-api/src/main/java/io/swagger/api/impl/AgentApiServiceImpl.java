@@ -188,7 +188,7 @@ public class AgentApiServiceImpl extends AgentApiService {
     	logger.info("PostAction method invoked for agent " + agentId + " with action " + actionId + " and body: " + body);
     	System.out.println("PostAction method invoked for agent " + agentId + " with action " + actionId + " and body: " + body);
     	
-    	if (actionId.equals("monitor")){
+    	if (actionId.equals(Dictionary.SUT_ACTION_MONITOR)){
 	    	//verify that agent exists in database and it is not monitored
 	    	AgentFull agent = agentDb.getAgentByAgentId(agentId);
 	    	if (agent == null) {
@@ -226,6 +226,44 @@ public class AgentApiServiceImpl extends AgentApiService {
 	            }		
 	    	}
     	} 
+    	else if (actionId.equals(Dictionary.SUT_ACTION_UNMONITOR)){
+    		//verify that agent exists in database and it is monitored
+    		AgentFull agent = agentDb.getAgentByAgentId(agentId);
+	    	if (agent == null) {
+	    		//agent not exists in db
+	    		logger.error("No exists any agent in the system with agentId " + agentId);
+	    		return Response.status(Response.Status.NOT_FOUND).entity("No exists any agent in the system with agentId " + agentId).build();
+	    	}
+	    	else if (agent != null && !agent.isMonitored()) {
+	    		logger.error("Agent " + agentId + " is not monitored");
+	    		return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Agent " + agentId + " is not monitored").build();
+	    	}
+	    	else {
+	    		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+	        	String executionDate = sdf.format(timestamp);
+	    		int status = 0;
+	    		BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate, Dictionary.REMOVE);	            
+	            status = beatsTemplateManager.execute();
+	            if (status == 0) {
+	            	logger.info("Successful execution for the delete script generated to agent " + agent.getAgentId());
+	            	
+	            	//set the agent in db as not monitored
+	        		AgentFull agentNotMonitored = agentDb.setMonitored(agentId, false);
+	        		if (agentNotMonitored == null) {
+	        			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be setted as not monitored in database, check logs please")).build();
+	        		}
+	        		else {
+	        			return Response.ok().entity(agent).build();
+	        		}
+
+	            }
+	            else {	            	
+	            	logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
+	            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
+	            }
+	    	}
+    		
+    	}
     	else {
     		return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "This method will execute the action " + actionId +  "!")).build();
     	}    	
