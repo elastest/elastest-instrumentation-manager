@@ -11,7 +11,8 @@ Before you start using ElasTest, you need to know the following terms:
 The version 0.5.0 of the EIM, provides the following features:
 
 - Register new Instrumentation Agent. 
-- Deploy [Beats](https://www.elastic.co/products/beats) software over the SuT. 
+- Deploy [Beats](https://www.elastic.co/products/beats) software over the SuT.
+- Undeploy [Beats](https://www.elastic.co/products/beats)
 - Get one or all Instrumentation Agents.
 - Delete one Instrumentation Agent
 - Get one or all Instrumentation Agent Configurations
@@ -129,6 +130,22 @@ The call to the API must has as headers: `Accept: application/json, Content-Type
 5. Files executed available in `/var/ansible/beats`
 6. Check that Beats data are received by Logstash (in the shell that appears the messages of all containers deployed)
 7. Check that Beats data can be also shown in kibana(http://localhost:5601/app/kibana)
+
+### Undeploy Beats over the SuT
+The EIM is able to undeploy the following Beats using the Instrumentation agents created in SuT:
+- [Packetbeat](https://www.elastic.co/products/beats/packetbeat)
+- [Filebeat](https://www.elastic.co/products/beats/filebeat)
+- [Topbeat](https://www.elastic.co/products/beats/topbeat)
+
+#### Step by step 
+1. The agent must have the Beats installed (previous feature)
+2. Using the REST API execute a `POST` to `http://localhost:8080/eim/api/agent/<agentId>/unmonitor` 
+The call to the API must has as headers: `Accept: application/json, Content-Type: application/json`.
+3. If everything works fine, the information updated about the agent is returned:
+`{"agentId":"iagent1","host":"172.21.0.6","monitored":false,"logstash_ip":"172.21.0.4","logstash_port":"5044"}`
+> **Note:** Using the data from previous example
+4. Log file available: `/var/log/eim` with this format `/var/log/eim/beats_<agentId>_<execution_date>`
+5. Files executed available in `/var/ansible/beats`
 
 ### Get one or all Instrumentation Agents
 EIM is able to get an existing Instrumentation Agent using REST API exposed, to do this, the specified Instrumentation Agent must exists in the system.
