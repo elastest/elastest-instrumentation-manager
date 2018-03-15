@@ -83,16 +83,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 	        			logger.error("ERROR deleting agent configuration " + agent.getAgentId() + " from database");
 	        			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be deleted from database, check logs please")).build();
 	        		}
-	        		
-	            	//TODO remove ssh key
-	            	//remove from database
-//	        		boolean deleted = agentDb.deleteAgent(agentId);
-//	        		if (deleted) {
-//	        			return Response.ok().entity(agent).build();
-//	        		}
-//	        		else {
-//	        			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be deleted from database, check logs please")).build();
-//	        		}
+	        	
 	            }
 	            else {	            	
 	            	logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
@@ -120,9 +111,7 @@ public class AgentApiServiceImpl extends AgentApiService {
     		boolean deleted = agentDb.deleteAgent(agentId);
     		if (deleted) {
     			logger.info("Successful deleted from database -->  agent " + agent.getAgentId());
-    			//return Response.ok().entity(agent).build();
-    			
-    		
+    			//return Response.ok().entity(agent).build();    		
     		}
     		else {
     			logger.error("ERROR deleting agent " + agent.getAgentId() + " from database");
@@ -375,7 +364,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 	        			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be setted as not monitored in database, check logs please")).build();
 	        		}
 	        		else {
-	        			return Response.ok().entity(agent).build();
+	        			return Response.ok().entity(agentNotMonitored).build();
 	        		}
 
 	            }
