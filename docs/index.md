@@ -114,7 +114,8 @@ The EIM is able to deploy the following Beats using the Instrumentation agents c
   "filebeat": {
     "stream": "stream2",
     "paths": [
-      "/var/log/*.log"
+      "/var/log/*.log",
+      "/var/log/*/*.log"
     ]
   },
   "topbeat": {
@@ -139,7 +140,7 @@ The EIM is able to undeploy the following Beats using the Instrumentation agents
 
 #### Step by step 
 1. The agent must have the Beats installed (previous feature)
-2. Using the REST API execute a `POST` to `http://localhost:8080/eim/api/agent/<agentId>/unmonitor` 
+2. Using the REST API execute a `DELETE` to `http://localhost:8080/eim/api/agent/<agentId>/unmonitor` 
 The call to the API must has as headers: `Accept: application/json, Content-Type: application/json`.
 3. If everything works fine, the information updated about the agent is returned:
 `{"agentId":"iagent1","host":"172.21.0.6","monitored":false,"logstash_ip":"172.21.0.4","logstash_port":"5044"}`
