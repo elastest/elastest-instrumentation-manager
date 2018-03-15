@@ -26,4 +26,5 @@ public abstract class AgentApiService {
     public abstract Response getAllAgents(SecurityContext securityContext) throws NotFoundException;
     public abstract Response postAction(String agentId,String actionId,AgentConfiguration body,SecurityContext securityContext) throws NotFoundException;
     public abstract Response postAgent(Host body,SecurityContext securityContext) throws NotFoundException;
+	public abstract Response deleteAction(String agentId, String actionId, SecurityContext securityContext) throws NotFoundException;
 }

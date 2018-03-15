@@ -123,7 +123,7 @@ public class AgentApi  {
     @Path("/{agentId}/{actionId}")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    @io.swagger.annotations.ApiOperation(value = "Submit an action ti an agent", notes = "A client submit an action to an agent", response = AgentFull.class, tags={ "Agent", })
+    @io.swagger.annotations.ApiOperation(value = "Submit an action to an agent", notes = "A client submit an action to an agent", response = AgentFull.class, tags={ "Agent", })
     @io.swagger.annotations.ApiResponses(value = { 
         @io.swagger.annotations.ApiResponse(code = 200, message = "Action applied OK", response = AgentFull.class),
         
@@ -164,5 +164,29 @@ public class AgentApi  {
 ,@Context SecurityContext securityContext)
     throws NotFoundException {
         return delegate.postAgent(body,securityContext);
+    }
+    
+    @DELETE
+    @Path("/{agentId}/{actionId}")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @io.swagger.annotations.ApiOperation(value = "Submit a delete action to agent", notes = "A client submit a delete action to an agent", response = AgentFull.class, tags={ "Agent", })
+    @io.swagger.annotations.ApiResponses(value = { 
+        @io.swagger.annotations.ApiResponse(code = 200, message = "Action applied OK", response = AgentFull.class),
+        
+        @io.swagger.annotations.ApiResponse(code = 204, message = "No Content", response = AgentFull.class),
+        
+        @io.swagger.annotations.ApiResponse(code = 400, message = "Bad Request", response = AgentFull.class),
+        
+        @io.swagger.annotations.ApiResponse(code = 401, message = "Unauthorized", response = AgentFull.class),
+        
+        @io.swagger.annotations.ApiResponse(code = 403, message = "Forbidden", response = AgentFull.class),
+        
+        @io.swagger.annotations.ApiResponse(code = 404, message = "Agent not found", response = String.class) })
+    public Response deleteAction(@ApiParam(value = "Id of agent to that receives the action",required=true) @PathParam("agentId") String agentId
+    		,@ApiParam(value = "action to apply",required=true) @PathParam("actionId") String actionId
+    		,@Context SecurityContext securityContext)
+    throws NotFoundException {
+        return delegate.deleteAction(agentId,actionId,securityContext);
     }
 }
