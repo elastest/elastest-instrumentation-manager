@@ -70,6 +70,7 @@ public class Dictionary {
 	 //public static final String DBPORT = "3306";
 	 //public static final String DBURL ="jdbc:mariadb://" + System.getenv("ET_EIM_MONGO_HOST") + ":" + DBPORT + "/eim";
 	 public static final String DBURL ="jdbc:mariadb://" + System.getenv("ET_EDM_MYSQL_HOST") + ":" + System.getenv("ET_EDM_MYSQL_PORT") + "/" + DBNAME;
+//	 public static final String DBURL ="jdbc:mariadb://" + "172.17.0.5" + ":" + "3306" + "/" + DBNAME;
 	
 
 }

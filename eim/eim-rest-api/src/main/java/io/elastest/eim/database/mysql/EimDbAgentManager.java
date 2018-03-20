@@ -76,9 +76,9 @@ public class EimDbAgentManager {
 			elements = agents.size();
 			newId += elements;
 		}
-		else if (agents == null && conn != null){
+		else if ((agents == null  || agents.isEmpty()) && conn != null){
 			//first time that the method is called
-			newId += 1;
+			newId += 0;
 			
 		}
 		return newId;
@@ -451,20 +451,23 @@ public class EimDbAgentManager {
     	return modified;
 	}
 	
-	public static void main (String args[]) {
+	public static void main (String args[]) throws SQLException {
 		EimDbAgentManager manager = new EimDbAgentManager();
+		System.out.println("id: " + manager.getNewAgentId(manager.getConnection()));
 		Host host = new Host();
-		host.setAddress("1.1.1.1");
+		host.setAddress("1.1.1.2");
 		host.setLogstashIp("2.2.2.2");
 		host.setLogstashPort("1234");
 		host.setPrivateKey("myKey");
 		host.setUser("user");
 		manager.addHost(host);
+		System.out.println("id: " + manager.getNewAgentId(manager.getConnection()));
 		//manager.deleteAgent("iagent0");
-		AgentFull agent = manager.getAgentByIpAddress("1.1.1.1");
+		AgentFull agent = manager.getAgentByIpAddress("1.1.1.2");
 		System.out.println(agent.getAgentId());
 		AgentFull notMonitored = manager.setMonitored("iagent0", false);
 		System.out.println("The returned agent " + notMonitored.getAgentId() + " when monitored is setted to false has monitored = " + notMonitored.isMonitored());
+		System.out.println("id: " + manager.getNewAgentId(manager.getConnection()));
 	}
 	
     

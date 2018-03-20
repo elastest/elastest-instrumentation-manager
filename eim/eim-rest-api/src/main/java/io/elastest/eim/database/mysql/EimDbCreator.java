@@ -14,7 +14,9 @@
 package io.elastest.eim.database.mysql;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -34,10 +36,12 @@ public class EimDbCreator {
 	
 	public void createSchema() {
 		createDatabase();
-		dropTableAgent();
-		createTableAgent();
-		dropTableAgentCfg();
-		createTableAgentCfg();
+		if (!existsTableAgent()) {
+			createTableAgent();	
+		}
+		if (!existsTableAgentCfg()) {
+			createTableAgentCfg();	
+		}
 	}
 	
 	private void createDatabase() {
@@ -126,6 +130,53 @@ public class EimDbCreator {
             System.out.println("MariaDB drivers were not found");
             logger.error("MariaDB drivers were not found");
         }
+	}
+	
+	public boolean existsTableAgent() {
+		return existsTable(Dictionary.DBTABLE_AGENT);
+	}
+	
+	public boolean existsTableAgentCfg() {
+		return existsTable(Dictionary.DBTABLE_AGENT_CONFIGURATION);
+	}
+	
+	private boolean existsTable(String tableName) { 
+        try {
+            Class.forName(Dictionary.JDBC_DRIVER);
+            con = DriverManager.getConnection(Dictionary.DBURL, Dictionary.DBUSER, Dictionary.DBPASS);
+
+            logger.info("Checking if table " + tableName + " exists in DB");
+            
+            DatabaseMetaData dbm = con.getMetaData();
+            ResultSet rs = dbm.getTables(null, "EIM", tableName, null);
+            if (!rs.next()) {
+            	 System.out.println(tableName + " table no exists in DB");
+            	 return false;
+            }else{
+                System.out.println(tableName + " table exists in DB");
+                return true;
+            }
+        }
+        catch (SQLException e ) {
+            System.out.println("Error has occurred on table " + tableName + " check");
+            logger.error("Error has occurred on table " + tableName + " check");
+        }
+        catch (ClassNotFoundException e) {
+            System.out.println("MariaDB drivers were not found");
+            logger.error("MariaDB drivers were not found");
+        }
+        return false;
+    }
+	
+
+	public static void main (String args[]) {
+		EimDbCreator creator = new EimDbCreator();
+		creator.existsTableAgent();
+		creator.existsTableAgentCfg();
+		creator.createTableAgent();
+		creator.createTableAgentCfg();
+		creator.existsTableAgent();
+		creator.existsTableAgentCfg();
 	}
 	
 }
