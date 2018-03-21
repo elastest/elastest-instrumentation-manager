@@ -93,6 +93,10 @@
           - paths:
             - ##filepaths-to-monitor##
       output:
+        file:
+          path: "/tmp/beats"
+          filename: filebeat.log
+          rotate_every_kb: 2048
         logstash:
 #          hosts: ["172.17.0.5:5044"]
           hosts: ["##logstash-ip##:##logstash-port##"]
@@ -119,6 +123,10 @@
           filesystem: true
           cpu_per_core: false
       output:
+        file:
+          path: "/tmp/beats"
+          filename: topbeat.log
+          rotate_every_kb: 2048
         logstash:
 #          hosts: ["172.17.0.5:5044"]
           hosts: ["##logstash-ip##:##logstash-port##"]
@@ -168,6 +176,10 @@
             ports:
             - 9090
       output:
+        file:
+          path: "/tmp/beats"
+          filename: packetbeat.log
+          rotate_every_kb: 2048
         logstash:
 #          hosts: ["172.17.0.5:5044"]
           hosts: ["##logstash-ip##:##logstash-port##"]
