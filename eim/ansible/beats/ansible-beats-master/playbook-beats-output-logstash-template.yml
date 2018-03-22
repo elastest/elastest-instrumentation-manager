@@ -97,6 +97,7 @@
           path: "/tmp/beats"
           filename: filebeat.log
           rotate_every_kb: 2048
+          number_of_files: 3
         logstash:
 #          hosts: ["172.17.0.5:5044"]
           hosts: ["##logstash-ip##:##logstash-port##"]
@@ -127,6 +128,7 @@
           path: "/tmp/beats"
           filename: topbeat.log
           rotate_every_kb: 2048
+          number_of_files: 3
         logstash:
 #          hosts: ["172.17.0.5:5044"]
           hosts: ["##logstash-ip##:##logstash-port##"]
@@ -180,6 +182,7 @@
           path: "/tmp/beats"
           filename: packetbeat.log
           rotate_every_kb: 2048
+          number_of_files: 3
         logstash:
 #          hosts: ["172.17.0.5:5044"]
           hosts: ["##logstash-ip##:##logstash-port##"]
