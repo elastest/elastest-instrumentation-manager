@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.AgentConfigurationFilebeat;
 import io.swagger.model.AgentConfigurationPacketbeat;
-import io.swagger.model.AgentConfigurationTopbeat;
+import io.swagger.model.AgentConfigurationMetricbeat;
 import javax.validation.constraints.*;
 
 /**
@@ -48,8 +48,8 @@ public class AgentConfiguration   {
   @JsonProperty("filebeat")
   private AgentConfigurationFilebeat filebeat = null;
 
-  @JsonProperty("topbeat")
-  private AgentConfigurationTopbeat topbeat = null;
+  @JsonProperty("metricbeat")
+  private AgentConfigurationMetricbeat metricbeat = null;
 
   public AgentConfiguration exec(String exec) {
     this.exec = exec;
@@ -129,23 +129,23 @@ public class AgentConfiguration   {
     this.filebeat = filebeat;
   }
 
-  public AgentConfiguration topbeat(AgentConfigurationTopbeat topbeat) {
-    this.topbeat = topbeat;
+  public AgentConfiguration metricbeat(AgentConfigurationMetricbeat metricbeat) {
+    this.metricbeat = metricbeat;
     return this;
   }
 
   /**
-   * Get topbeat
-   * @return topbeat
+   * Get metricbeat
+   * @return metricbeat
    **/
-  @JsonProperty("topbeat")
+  @JsonProperty("metricbeat")
   @ApiModelProperty(value = "")
-  public AgentConfigurationTopbeat getTopbeat() {
-    return topbeat;
+  public AgentConfigurationMetricbeat getMetricbeat() {
+    return metricbeat;
   }
 
-  public void setTopbeat(AgentConfigurationTopbeat topbeat) {
-    this.topbeat = topbeat;
+  public void setMetricbeat(AgentConfigurationMetricbeat metricbeat) {
+    this.metricbeat = metricbeat;
   }
 
 
@@ -162,12 +162,12 @@ public class AgentConfiguration   {
         Objects.equals(this.component, agentConfiguration.component) &&
         Objects.equals(this.packetbeat, agentConfiguration.packetbeat) &&
         Objects.equals(this.filebeat, agentConfiguration.filebeat) &&
-        Objects.equals(this.topbeat, agentConfiguration.topbeat);
+        Objects.equals(this.metricbeat, agentConfiguration.metricbeat);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(exec, component, packetbeat, filebeat, topbeat);
+    return Objects.hash(exec, component, packetbeat, filebeat, metricbeat);
   }
 
 
@@ -180,7 +180,7 @@ public class AgentConfiguration   {
     sb.append("    component: ").append(toIndentedString(component)).append("\n");
     sb.append("    packetbeat: ").append(toIndentedString(packetbeat)).append("\n");
     sb.append("    filebeat: ").append(toIndentedString(filebeat)).append("\n");
-    sb.append("    topbeat: ").append(toIndentedString(topbeat)).append("\n");
+    sb.append("    metricbeat: ").append(toIndentedString(metricbeat)).append("\n");
     sb.append("}");
     return sb.toString();
   }

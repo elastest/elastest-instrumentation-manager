@@ -21,21 +21,22 @@
 package io.swagger.model;
 
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
+
 import io.swagger.annotations.ApiModelProperty;
-import javax.validation.constraints.*;
 
 /**
- * AgentConfigurationTopbeat
+ * AgentConfigurationMetricbeat
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2017-11-15T18:55:29.616+01:00")
-public class AgentConfigurationTopbeat   {
+public class AgentConfigurationMetricbeat   {
   @JsonProperty("stream")
   private String stream = null;
 
-  public AgentConfigurationTopbeat stream(String stream) {
+  public AgentConfigurationMetricbeat stream(String stream) {
     this.stream = stream;
     return this;
   }
@@ -64,8 +65,8 @@ public class AgentConfigurationTopbeat   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    AgentConfigurationTopbeat agentConfigurationTopbeat = (AgentConfigurationTopbeat) o;
-    return Objects.equals(this.stream, agentConfigurationTopbeat.stream);
+    AgentConfigurationMetricbeat agentConfigurationMetricbeat = (AgentConfigurationMetricbeat) o;
+    return Objects.equals(this.stream, agentConfigurationMetricbeat.stream);
   }
 
   @Override
@@ -77,7 +78,7 @@ public class AgentConfigurationTopbeat   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class AgentConfigurationTopbeat {\n");
+    sb.append("class AgentConfigurationMetricbeat {\n");
     
     sb.append("    stream: ").append(toIndentedString(stream)).append("\n");
     sb.append("}");

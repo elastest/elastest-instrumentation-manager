@@ -28,7 +28,7 @@ import io.swagger.model.AgentConfiguration;
 import io.swagger.model.AgentConfigurationDatabase;
 import io.swagger.model.AgentConfigurationFilebeat;
 import io.swagger.model.AgentConfigurationPacketbeat;
-import io.swagger.model.AgentConfigurationTopbeat;
+import io.swagger.model.AgentConfigurationMetricbeat;
 
 public class EimDbAgentCfgManager {
 
@@ -127,7 +127,7 @@ public class EimDbAgentCfgManager {
     		pstInsertAgentCfg.setString(2, agentCfgObj.getExec());												//exec
     		pstInsertAgentCfg.setString(3, agentCfgObj.getComponent());											//component
     		pstInsertAgentCfg.setString(4, agentCfgObj.getPacketbeat().getStream());							//packetbeat_stream
-    		pstInsertAgentCfg.setString(5, agentCfgObj.getTopbeat().getStream());								//topbeat_stream
+    		pstInsertAgentCfg.setString(5, agentCfgObj.getMetricbeat().getStream());							//metricbeat_stream
     		pstInsertAgentCfg.setString(6, agentCfgObj.getFilebeat().getStream());								//filebeat_stream
     		pstInsertAgentCfg.setString(7, getStringFromArrayList(agentCfgObj.getFilebeat().getPaths(), ","));	//filebeat_paths
     		pstInsertAgentCfg.executeUpdate();				
@@ -155,7 +155,7 @@ public class EimDbAgentCfgManager {
 		PreparedStatement pstSelectAgentCfg = null;
 		
 		try {
-			String selectAgentCfgSQL = "SELECT AGENT_ID, EXEC, COMPONENT, PACKETBEAT_STREAM, TOPBEAT_STREAM, FILEBEAT_STREAM, FILEBEAT_PATHS FROM " + Dictionary.DBTABLE_AGENT_CONFIGURATION + " WHERE AGENT_ID = ?";
+			String selectAgentCfgSQL = "SELECT AGENT_ID, EXEC, COMPONENT, PACKETBEAT_STREAM, METRIC_STREAM, FILEBEAT_STREAM, FILEBEAT_PATHS FROM " + Dictionary.DBTABLE_AGENT_CONFIGURATION + " WHERE AGENT_ID = ?";
 			pstSelectAgentCfg = conn.prepareStatement(selectAgentCfgSQL);
 			pstSelectAgentCfg.setString(1, agentId);
 			ResultSet rs = pstSelectAgentCfg.executeQuery();
@@ -210,7 +210,7 @@ public class EimDbAgentCfgManager {
 		PreparedStatement pstSelectCfgAgents = null;
 		
 		try {
-			String selectSQL = "SELECT AGENT_ID, EXEC, COMPONENT, PACKETBEAT_STREAM, TOPBEAT_STREAM, FILEBEAT_STREAM, FILEBEAT_PATHS FROM " + Dictionary.DBTABLE_AGENT_CONFIGURATION;
+			String selectSQL = "SELECT AGENT_ID, EXEC, COMPONENT, PACKETBEAT_STREAM, METRICBEAT_STREAM, FILEBEAT_STREAM, FILEBEAT_PATHS FROM " + Dictionary.DBTABLE_AGENT_CONFIGURATION;
 			pstSelectCfgAgents = conn.prepareStatement(selectSQL);
 			ResultSet rs = pstSelectCfgAgents.executeQuery();
 			agentsCfg = new ArrayList<AgentConfigurationDatabase>();
@@ -339,9 +339,9 @@ public class EimDbAgentCfgManager {
 		agentConfiguration.setExec(rs.getString("EXEC"));
 		agentConfiguration.setComponent(rs.getString("COMPONENT"));
 
-		AgentConfigurationTopbeat topbeat = new AgentConfigurationTopbeat();
-		topbeat.setStream(rs.getString("TOPBEAT_STREAM"));
-		agentConfiguration.setTopbeat(topbeat);
+		AgentConfigurationMetricbeat metricbeat = new AgentConfigurationMetricbeat();
+		metricbeat.setStream(rs.getString("METRICBEAT_STREAM"));
+		agentConfiguration.setMetricbeat(metricbeat);
 
 		AgentConfigurationPacketbeat packetbeat = new AgentConfigurationPacketbeat();
 		packetbeat.setStream(rs.getString("PACKETBEAT_STREAM"));
@@ -374,9 +374,9 @@ public class EimDbAgentCfgManager {
 		packetbeat.setStream("packetbeat_stream");
 		agentCfg.setPacketbeat(packetbeat);
 		
-		AgentConfigurationTopbeat topbeat = new AgentConfigurationTopbeat();
-		topbeat.setStream("topbeat_stream");
-		agentCfg.setTopbeat(topbeat);
+		AgentConfigurationMetricbeat metricbeat = new AgentConfigurationMetricbeat();
+		metricbeat.setStream("metricbeat_stream");
+		agentCfg.setMetricbeat(metricbeat);
 		
 		manager.addAgentConfiguration("iagent0", agentCfg);
 		AgentConfigurationDatabase agentCfgDb = manager.getAgentConfigurationByAgentId("iagent0");

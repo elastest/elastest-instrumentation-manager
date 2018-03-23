@@ -24,15 +24,15 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import io.swagger.model.AgentConfigurationTopbeat;
+import io.swagger.model.AgentConfigurationMetricbeat;
 
-public class AgentConfigurationTopbeatTest {
+public class AgentConfigurationMetricbeatTest {
 
 	@Test
 	public void pojoTest() {
-		AgentConfigurationTopbeat agentCfgTopbeat = new AgentConfigurationTopbeat();
-		agentCfgTopbeat.setStream("stream");
+		AgentConfigurationMetricbeat agentCfgMetricbeat = new AgentConfigurationMetricbeat();
+		agentCfgMetricbeat.setStream("stream");
 		
-		assertEquals("stream", agentCfgTopbeat.getStream());
+		assertEquals("stream", agentCfgMetricbeat.getStream());
 	}
 }

@@ -76,7 +76,7 @@ public class EimDbCreator {
 								  + "exec varchar(255) NOT NULL,"
 								  + "component varchar(255) NOT NULL,"
 								  + "packetbeat_stream varchar(255) NOT NULL,"
-								  + "topbeat_stream varchar(255) NOT NULL,"
+								  + "metricbeat_stream varchar(255) NOT NULL,"
 								  + "filebeat_stream varchar(255) NOT NULL,"
 								  + "filebeat_paths text NOT NULL,"
 								  + "PRIMARY KEY (`agent_id`)"

@@ -98,7 +98,7 @@ public class TemplateUtils {
 			String jokerComponent = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_COMPONENT);
 			String jokerStreamFilebeat = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_FILEBEAT);
 			String jokerStreamPacketbeat = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_PACKETBEAT);
-			String jokerStreamTopbeat = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_TOPBEAT);
+			String jokerStreamMetricbeat = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_METRICBEAT);
 			String jokerFilepaths = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_FILEPATHS);
 
 			try {
@@ -117,8 +117,8 @@ public class TemplateUtils {
 				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerComponent, agentCfg.getComponent());
 				//Fill the playbook with the stream for filebeat
 				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerStreamFilebeat, agentCfg.getFilebeat().getStream());
-				//Fill the playbook with the stream for topbeat
-				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerStreamTopbeat, agentCfg.getTopbeat().getStream());
+				//Fill the playbook with the stream for metricbeat
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerStreamMetricbeat, agentCfg.getMetricbeat().getStream());
 				//Fill the playbook with the stream for packetbeat
 				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerStreamPacketbeat, agentCfg.getPacketbeat().getStream());
 				//Fill the playbook with the stream for packetbeat

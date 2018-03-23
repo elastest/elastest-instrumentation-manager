@@ -42,7 +42,7 @@ public class Dictionary {
 	public static String PROPERTY_TEMPLATES_BEATS_JOKER_COMPONENT = "templates.beats.joker.component";
 	public static String PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_FILEBEAT = "templates.beats.joker.stream.filebeat";
 	public static String PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_PACKETBEAT = "templates.beats.joker.stream.packetbeat";
-	public static String PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_TOPBEAT = "templates.beats.joker.stream.topbeat";
+	public static String PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_METRICBEAT = "templates.beats.joker.stream.metricbeat";
 	public static String PROPERTY_TEMPLATES_BEATS_JOKER_FILEPATHS = "templates.beats.joker.filepaths";
 	public static String PROPERTY_TEMPLATES_NUMBER_OF_BLANKS_FOR_FILEPATHS = "            - ";
 

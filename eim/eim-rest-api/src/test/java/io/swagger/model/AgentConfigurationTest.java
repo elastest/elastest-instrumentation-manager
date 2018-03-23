@@ -26,7 +26,7 @@ import org.junit.Test;
 import io.swagger.model.AgentConfiguration;
 import io.swagger.model.AgentConfigurationFilebeat;
 import io.swagger.model.AgentConfigurationPacketbeat;
-import io.swagger.model.AgentConfigurationTopbeat;
+import io.swagger.model.AgentConfigurationMetricbeat;
 
 public class AgentConfigurationTest {
 	
@@ -38,15 +38,15 @@ public class AgentConfigurationTest {
 		agentCfg.setExec("exec");
 		AgentConfigurationPacketbeat packetbeat = new AgentConfigurationPacketbeat();
 		agentCfg.setPacketbeat(packetbeat);
-		AgentConfigurationTopbeat topbeat = new AgentConfigurationTopbeat();
-		agentCfg.setTopbeat(topbeat);
+		AgentConfigurationMetricbeat metricbeat = new AgentConfigurationMetricbeat();
+		agentCfg.setMetricbeat(metricbeat);
 		AgentConfigurationFilebeat filebeat = new AgentConfigurationFilebeat();
 		agentCfg.setFilebeat(filebeat);
 		
 		assertEquals("component", agentCfg.getComponent());
 		assertEquals("exec", agentCfg.getExec());
 		assertEquals(filebeat, agentCfg.getFilebeat());
-		assertEquals(topbeat, agentCfg.getTopbeat());
+		assertEquals(metricbeat, agentCfg.getMetricbeat());
 		assertEquals(packetbeat, agentCfg.getPacketbeat());
 	}
 
