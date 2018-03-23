@@ -1,0 +1,11 @@
+# location /etc/filebeat/
+
+# Custom fields
+
+# Prospectors
+
+logging:
+    level: error
+    to_syslog: true
+# Logstash output
+

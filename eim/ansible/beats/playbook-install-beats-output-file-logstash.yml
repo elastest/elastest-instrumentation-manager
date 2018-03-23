@@ -1,0 +1,62 @@
+# playbook-install-beats-v5.yml
+- name: EIM - Filebeat installation and configuration
+  hosts: ##targethost##
+  remote_user: elastest
+  become: yes
+
+  tasks: 
+
+  - name: APT - Add elastic.co key 
+    apt_key: url="https://artifacts.elastic.co/GPG-KEY-elasticsearch" 
+    when: ansible_distribution == "Ubuntu" 
+
+  - name: APT - Add elastic.co repository 
+    apt_repository: repo="deb https://artifacts.elastic.co/packages/5.x/apt stable main" filename="elastic-5.x" update_cache=yes 
+    when: ansible_distribution == "Ubuntu" 
+
+  - name: FILEBEAT - Install Filebeat 
+    apt: pkg=filebeat 
+    when: ansible_distribution == "Ubuntu" 
+  
+  - name: FILEBEAT - Copy base filebeat config file 
+    copy: src=/var/ansible/beats/ansible-beats-master/setup-files/filebeat.yml dest=/etc/filebeat/filebeat.yml 
+  
+  - name: FILEBEAT - Set up custom fields
+    blockinfile: 
+      dest: /etc/filebeat/filebeat.yml 
+      insertafter: '# Custom fields' 
+      marker: "# {mark} -- Filebeat custom fields configured by Ansible" 
+      block: |
+        fields:
+          exec: "##exec-id##"
+          component: "##component-name##"
+          stream: "##stream-filebeat##"
+        fields_under_root: true
+
+  - name: FILEBEAT - Configure Filebeat prospectors 
+    blockinfile: 
+      dest: /etc/filebeat/filebeat.yml 
+      insertafter: '# Prospectors' 
+      marker: "# {mark} -- Prospectors configured by Ansible" 
+      block: |
+        filebeat:
+          prospectors:
+          -   paths:
+              - ##filepaths-to-monitor##
+
+  - name: FILEBEAT - Configure Logstash and file output 
+    blockinfile: 
+      dest: /etc/filebeat/filebeat.yml 
+      insertafter: '# Logstash output' 
+      marker: "# {mark} -- Logstash and file output configured by Ansible" 
+      block: |
+        output.logstash: 
+          hosts: ["##logstash-ip##:##logstash-port##"]
+        output.file:
+          path: "/tmp/beats"
+          filename: filebeat.log
+          rotate_every_kb: 2048
+          number_of_files: 3  
+
+  - name: FILEBEAT - Restart filebeat 
+    service: name=filebeat state=restarted 
