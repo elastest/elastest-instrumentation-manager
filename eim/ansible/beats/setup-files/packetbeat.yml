@@ -1,0 +1,38 @@
+# location /etc/packetbeat/
+
+# Custom fields
+
+interfaces:
+    device: any
+logging:
+    level: error
+    to_syslog: true
+# Logstash output
+protocols:
+    dns:
+        include_additionals: true
+        include_authorities: true
+        ports:
+        - 53
+    http:
+        ports:
+        - 80
+        - 8080
+    memcache:
+        ports:
+        - 11211
+    mongodb:
+        ports:
+        - 27017
+    mysql:
+        ports:
+        - 3306
+    pgsql:
+        ports:
+        - 5432
+    redis:
+        ports:
+        - 6379
+    thrift:
+        ports:
+        - 9090
