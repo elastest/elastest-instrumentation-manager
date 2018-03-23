@@ -17,9 +17,23 @@
   - name: FILEBEAT - Install Filebeat 
     apt: pkg=filebeat 
     when: ansible_distribution == "Ubuntu" 
+
+  - name: PACKETBEAT - Install Packetbeat 
+    apt: pkg=packetbeat 
+    when: ansible_distribution == "Ubuntu"
   
+  - name: METRICBEAT - Install Metricbeat 
+    apt: pkg=metricbeat 
+    when: ansible_distribution == "Ubuntu"
+
   - name: FILEBEAT - Copy base filebeat config file 
     copy: src=/var/ansible/beats/ansible-beats-master/setup-files/filebeat.yml dest=/etc/filebeat/filebeat.yml 
+
+  - name: PACKETBEAT - Copy base packetbeat config file 
+    copy: src=/var/ansible/beats/ansible-beats-master/setup-files/packetbeat.yml dest=/etc/packetbeat/packetbeat.yml 
+
+  - name: METRICBEAT - Copy base metricbeat config file 
+    copy: src=/var/ansible/beats/ansible-beats-master/setup-files/metricbeat.yml dest=/etc/metricbeat/metricbeat.yml 
   
   - name: FILEBEAT - Set up custom fields
     blockinfile: 
@@ -31,6 +45,30 @@
           exec: "##exec-id##"
           component: "##component-name##"
           stream: "##stream-filebeat##"
+        fields_under_root: true
+  
+  - name: PACKETBEAT - Set up custom fields
+    blockinfile: 
+      dest: /etc/packetbeat/packetbeat.yml 
+      insertafter: '# Custom fields' 
+      marker: "# {mark} -- Packetbeat custom fields configured by Ansible" 
+      block: |
+        fields:
+          exec: "##exec-id##"
+          component: "##component-name##"
+          stream: "##stream-packetbeat##"
+        fields_under_root: true
+  
+  - name: METRICBEAT - Set up custom fields
+    blockinfile: 
+      dest: /etc/metricbeat/metricbeat.yml 
+      insertafter: '# Custom fields' 
+      marker: "# {mark} -- Metricbeat custom fields configured by Ansible" 
+      block: |
+        fields:
+          exec: "##exec-id##"
+          component: "##component-name##"
+          stream: "##stream-metricbeat##"
         fields_under_root: true
 
   - name: FILEBEAT - Configure Filebeat prospectors 
@@ -58,5 +96,40 @@
           rotate_every_kb: 2048
           number_of_files: 3  
 
+  - name: PACKETBEAT - Configure Logstash and file output 
+    blockinfile: 
+      dest: /etc/packetbeat/packetbeat.yml 
+      insertafter: '# Logstash output' 
+      marker: "# {mark} -- Logstash and file output configured by Ansible" 
+      block: |
+        output.logstash: 
+          hosts: ["##logstash-ip##:##logstash-port##"]
+        output.file:
+          path: "/tmp/beats"
+          filename: packetbeat.log
+          rotate_every_kb: 2048
+          number_of_files: 3 
+
+  - name: METRICBEAT - Configure Logstash and file output 
+    blockinfile: 
+      dest: /etc/metricbeat/metricbeat.yml 
+      insertafter: '# Logstash output' 
+      marker: "# {mark} -- Logstash and file output configured by Ansible" 
+      block: |
+        output.logstash: 
+          hosts: ["##logstash-ip##:##logstash-port##"]
+        output.file:
+          path: "/tmp/beats"
+          filename: metricbeat.log
+          rotate_every_kb: 2048
+          number_of_files: 3 
+
   - name: FILEBEAT - Restart filebeat 
     service: name=filebeat state=restarted 
+
+  - name: PACKETBEAT - Restart packetbeat 
+    service: name=packetbeat state=restarted 
+
+  - name: METRICBEAT - Restart metricbeat 
+    service: name=metricbeat state=restarted 
+
