@@ -1,7 +1,5 @@
 package io.elastest.eim.config;
 
-import io.elastest.eim.database.mysql.EimDbAgentManager;
-
 public class Dictionary {
 		
 	

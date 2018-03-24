@@ -18,8 +18,6 @@ import java.io.InputStream;
 
 import org.apache.log4j.Logger;
 
-import io.elastest.eim.utils.FileTextUtils;
-
 public class Properties {
 
 	private static Logger logger = Logger.getLogger(Properties.class);
