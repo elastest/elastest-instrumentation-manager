@@ -1,13 +1,8 @@
 # location /etc/packetbeat/
 
 # Custom fields
-
 interfaces:
     device: any
-logging:
-    level: error
-    to_syslog: true
-# Logstash output
 protocols:
     dns:
         include_additionals: true
@@ -36,3 +31,8 @@ protocols:
     thrift:
         ports:
         - 9090
+
+logging:
+    level: error
+    to_syslog: true
+# Logstash output
