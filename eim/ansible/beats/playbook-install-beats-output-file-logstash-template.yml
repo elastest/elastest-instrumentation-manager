@@ -27,13 +27,13 @@
     when: ansible_distribution == "Ubuntu"
 
   - name: FILEBEAT - Copy base filebeat config file 
-    copy: src=/var/ansible/beats/ansible-beats-master/setup-files/filebeat.yml dest=/etc/filebeat/filebeat.yml 
+    copy: src=/var/ansible/beats/setup-files/filebeat.yml dest=/etc/filebeat/filebeat.yml 
 
   - name: PACKETBEAT - Copy base packetbeat config file 
-    copy: src=/var/ansible/beats/ansible-beats-master/setup-files/packetbeat.yml dest=/etc/packetbeat/packetbeat.yml 
+    copy: src=/var/ansible/beats/setup-files/packetbeat.yml dest=/etc/packetbeat/packetbeat.yml 
 
   - name: METRICBEAT - Copy base metricbeat config file 
-    copy: src=/var/ansible/beats/ansible-beats-master/setup-files/metricbeat.yml dest=/etc/metricbeat/metricbeat.yml 
+    copy: src=/var/ansible/beats/setup-files/metricbeat.yml dest=/etc/metricbeat/metricbeat.yml 
   
   - name: FILEBEAT - Set up custom fields
     blockinfile: 

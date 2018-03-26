@@ -39,9 +39,10 @@ RUN \
 	# folder for beats
 	mkdir -p /var/ansible/ssh && \
 	mkdir -p /var/ansible/ssh/hosts && \
-        mkdir -p /var/ansible/beats/ansible-beats-master && \
-        wget https://github.com/aya/ansible-beats/archive/master.zip -P /var/ansible/beats && \
-        unzip /var/ansible/beats/master.zip -d /var/ansible/beats && \
+        mkdir -p /var/ansible/beats/setup-files && \
+#        mkdir -p /var/ansible/beats/ansible-beats-master && \
+#        wget https://github.com/aya/ansible-beats/archive/master.zip -P /var/ansible/beats && \
+#        unzip /var/ansible/beats/master.zip -d /var/ansible/beats && \
 	# tomcat7 is executed as root
 	sed -i 's/=tomcat7/=root/g' /etc/default/tomcat7 && \
 	# generate ssh keys
@@ -63,10 +64,13 @@ COPY ansible/ssh/playbook-delete-ssh-template.yml  /var/ansible/ssh
 COPY ansible/ssh/run-delete-ssh-template.sh /var/ansible/ssh
 
  # beats
-COPY ansible/beats/run-beats-template.sh /var/ansible/beats
-COPY ansible/beats/ansible-beats-master/playbook-beats-output-logstash-template.yml /var/ansible/beats/ansible-beats-master
+COPY ansible/beats/run-install-beats-template.sh /var/ansible/beats
+COPY ansible/beats/playbook-install-beats-output-file-logstash-template.yml /var/ansible/beats
 COPY ansible/beats/run-delete-beats-template.sh /var/ansible/beats
-COPY ansible/beats/ansible-beats-master/playbook-delete-beats-output-logstash-template.yml /var/ansible/beats/ansible-beats-master
+COPY ansible/beats/playbook-delete-beats-template.yml /var/ansible/beats
+COPY ansible/beats/setup-files/filebeat.yml /var/ansible/beats/setup-files
+COPY ansible/beats/setup-files/metricbeat.yml /var/ansible/beats/setup-files
+COPY ansible/beats/setup-files/packetbeat.yml /var/ansible/beats/setup-files
 
 # restart tomcat server to refresh the value of the properties 
 COPY tomcat/restart_tomcat.sh /var/tomcat/restart_tomcat.sh
