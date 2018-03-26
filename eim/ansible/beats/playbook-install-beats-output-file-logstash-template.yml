@@ -1,5 +1,5 @@
 # playbook-install-beats-v5.yml
-- name: EIM - Filebeat installation and configuration
+- name: EIM - Beats v5.0.0 installation and configuration - packetbeat, filebeat and metricbeat
   hosts: ##targethost##
   remote_user: elastest
   become: yes
