@@ -92,6 +92,7 @@
       block: |
         output.logstash: 
           hosts: ["##logstash-ip##:##logstash-port##"]
+          index: "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}" 
 # Only one ouput allowed in beats v6.x
 #        output.file:
 #          path: "/tmp/beats"
@@ -107,6 +108,7 @@
       block: |
         output.logstash: 
           hosts: ["##logstash-ip##:##logstash-port##"]
+          index: "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
 # Only one ouput allowed in beats v6.x
 #        output.file:
 #          path: "/tmp/beats"
@@ -122,6 +124,7 @@
       block: |
         output.logstash: 
           hosts: ["##logstash-ip##:##logstash-port##"]
+          index: "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
 # Only one ouput allowed in beats v6.x
 #        output.file:
 #          path: "/tmp/beats"
