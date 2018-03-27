@@ -92,11 +92,12 @@
       block: |
         output.logstash: 
           hosts: ["##logstash-ip##:##logstash-port##"]
-        output.file:
-          path: "/tmp/beats"
-          filename: filebeat.log
-          rotate_every_kb: 2048
-          number_of_files: 3  
+# Only one ouput allowed in beats v6.x
+#        output.file:
+#          path: "/tmp/beats"
+#          filename: filebeat.log
+#          rotate_every_kb: 2048
+#          number_of_files: 3  
 
   - name: PACKETBEAT - Configure Logstash and file output 
     blockinfile: 
@@ -106,11 +107,12 @@
       block: |
         output.logstash: 
           hosts: ["##logstash-ip##:##logstash-port##"]
-        output.file:
-          path: "/tmp/beats"
-          filename: packetbeat.log
-          rotate_every_kb: 2048
-          number_of_files: 3 
+# Only one ouput allowed in beats v6.x
+#        output.file:
+#          path: "/tmp/beats"
+#          filename: packetbeat.log
+#          rotate_every_kb: 2048
+#          number_of_files: 3 
 
   - name: METRICBEAT - Configure Logstash and file output 
     blockinfile: 
@@ -120,11 +122,12 @@
       block: |
         output.logstash: 
           hosts: ["##logstash-ip##:##logstash-port##"]
-        output.file:
-          path: "/tmp/beats"
-          filename: metricbeat.log
-          rotate_every_kb: 2048
-          number_of_files: 3 
+# Only one ouput allowed in beats v6.x
+#        output.file:
+#          path: "/tmp/beats"
+#          filename: metricbeat.log
+#          rotate_every_kb: 2048
+#          number_of_files: 3 
 
   - name: FILEBEAT - Restart filebeat 
     service: name=filebeat state=restarted 
