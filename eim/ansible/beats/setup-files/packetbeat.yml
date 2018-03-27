@@ -1,9 +1,17 @@
 # location /etc/packetbeat/
 
 # Custom fields
-interfaces:
+packetbeat.interfaces:
     device: any
-protocols:
+packetbeat.flows:
+    timeout: 30s
+    period: 10s
+packetbeat.protocols:
+    icmp:
+        enabled: true
+    amqp:
+        ports:
+        - 5672
     dns:
         include_additionals: true
         include_authorities: true
@@ -13,6 +21,9 @@ protocols:
         ports:
         - 80
         - 8080
+        - 8000
+        - 5000
+        - 8002
     memcache:
         ports:
         - 11211
@@ -28,11 +39,13 @@ protocols:
     redis:
         ports:
         - 6379
+    nfs:
+        ports:
+        - 2049
     thrift:
         ports:
         - 9090
-
+# Logstash output
 logging:
     level: error
     to_syslog: true
-# Logstash output
