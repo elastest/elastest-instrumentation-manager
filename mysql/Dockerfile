@@ -16,6 +16,8 @@ ENV MYSQL_ROOT_PASSWORD elastest
 #ENV MYSQL_USER elastest 
 #ENV MYSQL_PASSWORD elastest
 
+RUN apt-get update && apt-get -y upgrade && apt-get -y install net-tools
+  
 ADD 1-model_repository.sql /docker-entrypoint-initdb.d/
 ADD 2-setup.sh /docker-entrypoint-initdb.d/
 RUN chmod +x /docker-entrypoint-initdb.d/2-setup.sh
