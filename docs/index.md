@@ -8,7 +8,7 @@ Before you start using ElasTest, you need to know the following terms:
 - **SuT (System under Test):** Specification of the System that is being tested for correct operation.
 
 ## Features
-The version 0.5.0 of the EIM, provides the following features:
+The version 0.8.0 of the EIM, provides the following features:
 
 - Register new Instrumentation Agent. 
 - Deploy [Beats](https://www.elastic.co/products/beats) software over the SuT.
@@ -98,9 +98,9 @@ B. SSH keys generated without passphrase:
     
 ### Deploy Beats over the SuT
 The EIM is able to deploy the following Beats using the Instrumentation agents created in SuT:
-- [Packetbeat](https://www.elastic.co/products/beats/packetbeat)
-- [Filebeat](https://www.elastic.co/products/beats/filebeat)
-- [Topbeat](https://www.elastic.co/products/beats/topbeat)
+- [Packetbeat](https://www.elastic.co/guide/en/beats/packetbeat/5.6/packetbeat-overview.html)
+- [Filebeat](https://www.elastic.co/guide/en/beats/filebeat/5.6/filebeat-overview.html)
+- [Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/5.6/metricbeat-overview.html)
 
 #### Step by step 
 1. The agent must be registered on EIM (previous feature)
@@ -118,7 +118,7 @@ The EIM is able to deploy the following Beats using the Instrumentation agents c
       "/var/log/*/*.log"
     ]
   },
-  "topbeat": {
+  "metricbeat": {
     "stream": "stream3"
   }
 }`
