@@ -1,6 +1,6 @@
-create database if not exists `eim`;
+create database if not exists `EIM`;
 
-USE `eim`;
+USE `EIM`;
 
 
 /*Table structure for table `agent` */
