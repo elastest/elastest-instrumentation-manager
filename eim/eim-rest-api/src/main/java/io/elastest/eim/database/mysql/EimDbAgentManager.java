@@ -69,30 +69,39 @@ public class EimDbAgentManager {
     
     
     private String getNewAgentId(Connection conn) throws SQLException{
-		String newId = "iagent";
+		String newId = Dictionary.PREFIX_AGENTS_ID;
 		List<AgentFull> agents = getAgents(conn);
-		int elements;
-		if (agents != null) {
-			elements = agents.size();
-			newId += elements;
+		if (agents != null && !agents.isEmpty()) {
+			int maxId = Integer.MIN_VALUE;
+			for (int i=0;i<agents.size();i++) {
+				int currentId = Integer.parseInt(agents.get(i).getAgentId().substring(
+						Dictionary.PREFIX_AGENTS_ID.length(), 
+						agents.get(i).getAgentId().length()));
+				if (currentId>maxId) {
+					maxId = currentId;
+				}
+			}
+			maxId++;
+			newId += maxId;
 		}
 		else if ((agents == null  || agents.isEmpty()) && conn != null){
 			//first time that the method is called
-			newId += 0;
-			
+			newId += 0;			
 		}
 		return newId;
 	}
     
-    private boolean existsAgent(Connection conn, String agentId) throws SQLException {
-    	String sqlSearchIagent = "SELECT AGENT_ID FROM " + Dictionary.DBTABLE_AGENT + " WHERE AGENT_ID=?";
+    private boolean existsAgent(Connection conn, String hostAddress) throws SQLException {
+    	String sqlSearchIagent = "SELECT AGENT_ID FROM " + Dictionary.DBTABLE_AGENT + " WHERE HOST=?";
 		PreparedStatement pstSearchIagent = conn.prepareStatement(sqlSearchIagent);
-		pstSearchIagent.setString(1, agentId);
+		pstSearchIagent.setString(1, hostAddress);
 		ResultSet rs = pstSearchIagent.executeQuery();
 		if (!rs.next()) {
 			return false;
 		}
 		else {
+			logger.error(hostAddress + " is assigned to iagent " + rs.getString("AGENT_ID") + ". Is not possible to assign the same host to different iagents");
+			System.out.println(hostAddress + " is assigned to iagent " + rs.getString("AGENT_ID") + ". Is not possible to assign the same host to different iagents");
 			return true;
 		}
     }
@@ -109,7 +118,7 @@ public class EimDbAgentManager {
     			return agent;
     		}
     		else { 
-    			logger.info("Agent with agentId = " + host.getAddress() + " exists in database");
+    			logger.info("Agent with host = " + host.getAddress() + " exists in database");
     			return null;
     		}
     		
@@ -451,6 +460,7 @@ public class EimDbAgentManager {
     	return modified;
 	}
 	
+	
 	public static void main (String args[]) throws SQLException {
 		EimDbAgentManager manager = new EimDbAgentManager();
 		System.out.println("id: " + manager.getNewAgentId(manager.getConnection()));
@@ -460,15 +470,9 @@ public class EimDbAgentManager {
 		host.setLogstashPort("1234");
 		host.setPrivateKey("myKey");
 		host.setUser("user");
+		System.out.println("Adding first agent to DB");
 		manager.addHost(host);
-		System.out.println("id: " + manager.getNewAgentId(manager.getConnection()));
-		//manager.deleteAgent("iagent0");
-		AgentFull agent = manager.getAgentByIpAddress("1.1.1.2");
-		System.out.println(agent.getAgentId());
-		AgentFull notMonitored = manager.setMonitored("iagent0", false);
-		System.out.println("The returned agent " + notMonitored.getAgentId() + " when monitored is setted to false has monitored = " + notMonitored.isMonitored());
 		System.out.println("id: " + manager.getNewAgentId(manager.getConnection()));
 	}
 	
-    
 }
