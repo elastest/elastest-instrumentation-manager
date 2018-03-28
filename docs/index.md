@@ -134,9 +134,9 @@ The call to the API must has as headers: `Accept: application/json, Content-Type
 
 ### Undeploy Beats over the SuT
 The EIM is able to undeploy the following Beats using the Instrumentation agents created in SuT:
-- [Packetbeat](https://www.elastic.co/products/beats/packetbeat)
-- [Filebeat](https://www.elastic.co/products/beats/filebeat)
-- [Topbeat](https://www.elastic.co/products/beats/topbeat)
+- [Packetbeat](https://www.elastic.co/guide/en/beats/packetbeat/5.6/packetbeat-overview.html)
+- [Filebeat](https://www.elastic.co/guide/en/beats/filebeat/5.6/filebeat-overview.html)
+- [Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/5.6/metricbeat-overview.html)
 
 #### Step by step 
 1. The agent must have the Beats installed (previous feature)
