@@ -358,15 +358,21 @@ public class AgentApiServiceImpl extends AgentApiService {
 	            if (status == 0) {
 	            	logger.info("Successful execution for the delete script generated to agent " + agent.getAgentId());
 	            	
-	            	//set the agent in db as not monitored
-	        		AgentFull agentNotMonitored = agentDb.setMonitored(agentId, false);
-	        		if (agentNotMonitored == null) {
-	        			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be setted as not monitored in database, check logs please")).build();
-	        		}
-	        		else {
-	        			return Response.ok().entity(agentNotMonitored).build();
-	        		}
-
+	            	//delete agent configuration
+	            	boolean cfgDeleted = agentCfgDb.deleteAgentCfg(agentId);
+	            	if (cfgDeleted) {
+	            		//set the agent in db as not monitored
+		        		AgentFull agentNotMonitored = agentDb.setMonitored(agentId, false);
+		        		if (agentNotMonitored == null) {
+		        			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be setted as not monitored in database, check logs please")).build();
+		        		}
+		        		else {
+		        			return Response.ok().entity(agentNotMonitored).build();
+		        		}
+	            	}
+	            	else {
+	            		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " configuration cannot be deleted in database, check logs please")).build();
+	            	}
 	            }
 	            else {	            	
 	            	logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
