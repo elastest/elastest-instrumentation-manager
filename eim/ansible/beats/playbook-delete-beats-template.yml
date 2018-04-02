@@ -9,9 +9,9 @@
      apt:
        name: packetbeat
        state: absent
-   - name: remove topbeat
+   - name: remove metricbeat
      apt:
-       name: topbeat
+       name: metricbeat
        state: absent
    - name: remove filebeat
      apt:
