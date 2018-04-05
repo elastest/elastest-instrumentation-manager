@@ -135,9 +135,16 @@ public class AgentApiServiceImpl extends AgentApiService {
     		AgentDeleted agentDeleted = new AgentDeleted();
     		agentDeleted.setAgentId(agent.getAgentId());
     		agentDeleted.setDeleted("true");
+    		
+    		logger.info("deleteAgentByID method response: " + agentDeleted);
+        	System.out.println("deleteAgentByID method response: " + agentDeleted);
+        	
     		return Response.ok().entity(agentDeleted).build();
         }
         else {
+        	logger.info("deleteAgentByID method response: No agent with id" + agentId + " exists in the system");
+        	System.out.println("deleteAgentByID method response: No agent with id" + agentId + " exists in the system");
+        	
         	return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "No agent with id " + agentId + " exists in the system")).build();
         }
     }
@@ -149,10 +156,17 @@ public class AgentApiServiceImpl extends AgentApiService {
     	
     	AgentFull agent = agentDb.getAgentByAgentId(agentId);
         if (agent != null){
+        	logger.info("getAgentByID method OK response: " + agent);
+        	System.out.println("getAgentByID method OK response: " + agent);
+        	
     		return Response.ok().entity(agent).build();
         }
         else {
-        	return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "it has not been possible to retrieve info, check logs please!")).build();
+        	
+        	logger.info("getAgentByID method response: It has not been possible to retrieve agent with agentId " + agentId + " from DB , check logs please!");
+        	System.out.println("getAgentByID method response: It has not been possible to retrieve agent with agentId " + agentId + " from DB , check logs please!");
+ 
+        	return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "It has not been possible to retrieve agent with agentId " + agentId + " from DB , check logs please!")).build();
         }
     }
     
@@ -164,10 +178,16 @@ public class AgentApiServiceImpl extends AgentApiService {
     	
     	List<AgentFull> agents = agentDb.findAll();
         if (agents != null){
+        	logger.info("getAllAgents method OK response: " + agents);
+        	System.out.println("getAllAgents method OK response: " + agents);
+        	
     		return Response.ok().entity(agents).build();
         }
         else {
-        	return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "it has not been possible to retrieve info, check logs please!")).build();
+        	logger.info("getAgentByID method response: It has not been possible to retrieve agents from DB , check logs please!");
+        	System.out.println("getAgentByID method response: It has not been possible to retrieve agents from DB , check logs please!");
+
+        	return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "It has not been possible to retrieve info, check logs please!")).build();
         }
     }
     
@@ -206,7 +226,11 @@ public class AgentApiServiceImpl extends AgentApiService {
 	            	//set host as monitored in db    	
 		        	agent = agentDb.setMonitored(agentId, true);
 		        	logger.info("iAgent " + agent.getAgentId() + " monitored succesfully");
-		          	return Response.ok().entity(agent).build();
+		        	
+		        	logger.info("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
+		        	System.out.println("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
+		          	
+		        	return Response.ok().entity(agent).build();
 	            }
 	            else {
 	            	
@@ -216,6 +240,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 	    	}
     	}
     	else {
+    		
     		return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "This method will execute the action " + actionId +  "!")).build();
     	}    	
         
@@ -293,6 +318,9 @@ public class AgentApiServiceImpl extends AgentApiService {
 				            out.close();
 				            logger.info("Added new host " + agent.getHost() + " to /etc/ansible/hosts");
 				            
+				            logger.info("PostAgent method OK response: " + agent);
+				        	System.out.println("PostAgent method OK response: " + agent);
+				        	
 			            	return Response.ok().entity(agent).build();
 			            	
 			            }
@@ -367,6 +395,9 @@ public class AgentApiServiceImpl extends AgentApiService {
 		        			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be setted as not monitored in database, check logs please")).build();
 		        		}
 		        		else {
+		        			logger.info("deleteAction method with unmonitor param for agent " + agentId + " OK response: " + agentNotMonitored);
+				        	System.out.println("deleteAction method with unmonitor param for agent " + agentId + " OK response: " + agentNotMonitored);
+
 		        			return Response.ok().entity(agentNotMonitored).build();
 		        		}
 	            	}
