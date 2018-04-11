@@ -34,8 +34,12 @@ EXPOSE 22
 # RUN echo "service ssh start" >> /etc/bash.bashrc
 
 COPY entrypoint.sh /entrypoint.sh
+COPY print_date.sh /print_date.sh
 
 RUN chmod 777 entrypoint.sh
+RUN chmod 777 print_date.sh
+
+# RUN watch -n 10 /print_date.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
 
