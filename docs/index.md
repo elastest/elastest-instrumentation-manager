@@ -59,7 +59,7 @@ If you do not have git installed, you can also download the zip file from GithHu
  
 ### Start and stop EIM
 - `cd elastest-instrumentation-manager`
-- `docker-compose -p eim up `
+- `docker-compose -f docker-compose-standalone.yml -p eim up `
 - To stop EIM press `Ctrl+C` in the shell
 
 ## Basic usage
