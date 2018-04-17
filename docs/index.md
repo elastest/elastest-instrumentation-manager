@@ -94,7 +94,7 @@ B. SSH keys generated without passphrase:
 `{"agentId":"iagent1","host":"172.21.0.6","monitored":false", "logstash_ip":"172.21.0.4","logstash_port":"5044"}`
 3. Log file available: `/var/log/eim` with this format `/var/log/eim/ssh_<agentId>_<execution_date>`
 4. Files executed available in `/var/ansible/ssh`
-5. Check that the new agent is created in mongoDB database `eim` in table `agent`. For this task, [Robomongo](https://robomongo.org/) is a good choice. The database connection details is `http://localhost:27017/`
+5. Check that the new agent is created in MySQL database `EIM` in table `agent`.
     
 ### Deploy Beats over the SuT
 The EIM is able to deploy the following Beats using the Instrumentation agents created in SuT:
@@ -189,7 +189,7 @@ EIM is able to get an existing Instrumentation Agent Configuration using REST AP
       "/var/log/*.log"
     ]
   },
-  "topbeat": {
+  "metricbeat": {
     "stream": "stream3"
   }
 }`
@@ -207,7 +207,7 @@ The ElasTest Instrumentation Manager Platform is divided in two parts:
 
 In the next diagram, you can to see the ElasTest Instrumentation Manager Components Architecture.
 
-![ElasTest Instrumentation Manager Arquitecture](images/docker_environment_eim_r2.jpg)
+![ElasTest Instrumentation Manager Arquitecture](images/docker_environment_eim_r4.jpg)
 
 > **Note:** Take in account that when the environment are launched from docker-compose command, the SuT host does not have Beats installed and the EIM does not have any agent registered
 
@@ -217,7 +217,7 @@ This application is the EIM backend that provides a REST API in order to interac
 #### EIM Platform Services.
 EIM uses several external components to implement the features it offers:
 
-- **[Mongo DB:](https://www.mongodb.com/)** The Database System that uses the EIM to store the persistent data, necessary to manage the Agents.
+- **[MySQL DB:](https://www.mysql.com/)** The Database System that uses the EIM to store the persistent data, necessary to manage the Agents.
 - **[Elasticsearch:](https://www.elastic.co/products/elasticsearch)** As indicated on its website *"is a distributed, RESTful search and analytics engine capable of solving a growing number of use cases. As the heart of the Elastic Stack, it centrally stores your data "*.
 - **[Logstash:](https://www.elastic.co/products/logstash)** As indicated on its website *"It is a server-side data processing pipeline that ingests data from a multitude of sources simultaneously, transforms it, and then sends it to your favorite *stash*"*. EIM uses it to gather and parse logs and metrics produced in the SuT where Beats are deployed. The logs and metrics are sent to Elasticsearch.
 - **[Kibana:](https://www.elastic.co/products/kibana)** As indicated on its website *"Kibana lets you visualize your Elasticsearch data and navigate the Elastic Stack *". EIM uses it to visualize the data collected from Beats from SuT.
