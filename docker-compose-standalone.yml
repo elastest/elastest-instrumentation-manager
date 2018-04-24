@@ -3,9 +3,8 @@ version: '2'
 services:
         eim-mysql:
                 image: elastest/eim-mysql:latest
-                expose: 
-                        - 3306
-                #        - 52000
+                #expose: 
+                #        - 3306
                 # environment:
                 #        - ET_EIM_SERVER=172.21.0.7
                 ports: 
