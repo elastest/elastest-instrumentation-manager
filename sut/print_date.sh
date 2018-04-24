@@ -1,4 +1,4 @@
 #!/bin/bash
 
-DATE=`date +%Y-%m-%d`
+DATE=`date`
 echo $DATE > /tmp/date.log
