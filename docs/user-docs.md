@@ -43,4 +43,24 @@ The operations are finished when the EIM returns the message that SuT is monitor
 
 ![Instrumentalized SuT](images/install_beats_log.jpg)<br>
 
+When you have your SuT instrumentalized you can run TJobs to test it
+
+### Create TJob
+Click on `New TJob` button inside the created project and the form to create a new TJob will appear. You can use the following data to create a TJob to test the SuT that you created:
+1. TJob Name
+2. Select a SuT: you have to select the created SuT in previous steps.
+3. Environment docker image: `elastest/test-etm-alpinegitjava`
+4. Commands: <br>
+`git clone https://github.com/elastest/demo-projects`<br>
+`cd demo-projects/unit-java-test`<br>
+`mvn -B test`<br>
+5. Uncheck `All-in-one chart` check in Metrics and logs section <br>
+6. Save changes
+
+![New TJob](images/new_tjob.jpg)<br>
+
+### Execute TJob
+
+
+
 ## De-instrumentalize SuT
