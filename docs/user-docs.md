@@ -36,9 +36,9 @@ This operation launches two processes from ETM to EIM:
 - [Filebeat](https://www.elastic.co/guide/en/beats/filebeat/5.6/filebeat-overview.html)
 - [Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/5.6/metricbeat-overview.html)
 
-You can follow the progress of both operations looking at the EIM log:
-a. Connect to EIM: `docker exec -it elastest_eim_1 /bin/bash`
-b. Execute: `tail -f /var/log/tomcat7/eim-rest-api.log`
+You can follow the progress of both operations looking at the EIM log: <br>
+a. Connect to EIM: `docker exec -it elastest_eim_1 /bin/bash`<br>
+b. Execute: `tail -f /var/log/tomcat7/eim-rest-api.log`<br>
 The operations are finished when the EIM returns the message that SuT is monitored: `{"agentId":"iagent1","host":"172.21.0.13","monitored":true,"logstash_ip":"172.21.0.8","logstash_port":"5044"}`
 
 ![Instrumentalized SuT](images/install_beats_log.jpg)<br>
@@ -60,7 +60,20 @@ Click on `New TJob` button inside the created project and the form to create a n
 ![New TJob](images/new_tjob.jpg)<br>
 
 ### Execute TJob
+To execute an existing TJob you have to click on `Play` button (marked in red) on Tjob section of the created project:
 
+![Run TJob](images/run_tjob.jpg)<br>
 
+When the Execution is launched the screen changes to show the execution view, you have to click on the `Open Monitoring Config` button (marked in red):
+
+![Configure TJob output](images/configure_tjob_output.jpg)<br>
+
+In the screen that appears, you have to check `sut` on Metrics tree in order that the metrics appears in the execution and click on `Apply and Save` button:
+
+![Show metrics](images/show_metrics.jpg)<br>
+
+Then the value of the metrics and the logs captured by the TJob will appear:
+![TJob execution metrics](images/tjob_execution_metrics.jpg)<br>
+![TJob execution logs](images/tjob_execution_logs.jpg)<br>
 
 ## De-instrumentalize SuT
