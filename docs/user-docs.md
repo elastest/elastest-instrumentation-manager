@@ -30,7 +30,7 @@ The SuT information is displayed, you have to click on the `Instrumentalize` che
 ![Instrumentalize SuT](images/instrumentalize_sut.jpg)<br>
 
 This operation launches two processes from ETM to EIM:
-1. Register the agent, in order that EIM will be able to instrumentalize the SuT.
+1. Register the instrumentation agent, in order that EIM will be able to instrumentalize the SuT.
 2. Installation of [Beats](https://www.elastic.co/products/beats), a monitoring software to capture metrics from SuT. The installed beats are:
 - [Packetbeat](https://www.elastic.co/guide/en/beats/packetbeat/5.6/packetbeat-overview.html)
 - [Filebeat](https://www.elastic.co/guide/en/beats/filebeat/5.6/filebeat-overview.html)
@@ -41,7 +41,7 @@ a. Connect to EIM: `docker exec -it elastest_eim_1 /bin/bash`<br>
 b. Execute: `tail -f /var/log/tomcat7/eim-rest-api.log`<br>
 The operations are finished when the EIM returns the message that SuT is monitored: `{"agentId":"iagent1","host":"172.21.0.13","monitored":true,"logstash_ip":"172.21.0.8","logstash_port":"5044"}`
 
-![Instrumentalized SuT](images/install_beats_log.jpg)<br>
+![Install beats log](images/install_beats_log.jpg)<br>
 
 When you have your SuT instrumentalized you can run TJobs to test it
 
@@ -77,3 +77,19 @@ Then the value of the metrics and the logs captured by the TJob will appear:
 ![TJob execution logs](images/tjob_execution_logs.jpg)<br>
 
 ## De-instrumentalize SuT
+You can de-instrumentalize an instrumentalized SuT. To do this, you have to Edit it, clicking on the pencil (marked in red) in the list of SuTs:
+![Edit SuT](images/edit_sut.jpg)<br>
+
+The SuT information is displayed, you have to click on the `De-Instrumentalize` check button and save changes:
+![De-instrumentalize SuT](images/deinstrumentalize_sut.jpg.jpg)<br>
+
+This operation launches two processes from ETM to EIM:
+1. Uninstall of the installed [Beats](https://www.elastic.co/products/beats) ([Packetbeat](https://www.elastic.co/guide/en/beats/packetbeat/5.6/packetbeat-overview.html), [Filebeat](https://www.elastic.co/guide/en/beats/filebeat/5.6/filebeat-overview.html), [Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/5.6/metricbeat-overview.html))
+2. Unregister of the instrumentation agent
+
+You can follow the progress of both operations looking at the EIM log: <br>
+a. Connect to EIM: `docker exec -it elastest_eim_1 /bin/bash`<br>
+b. Execute: `tail -f /var/log/tomcat7/eim-rest-api.log`<br>
+The operations are finished when the EIM returns the message that SuT is monitored: `{"agentId":"iagent1","deleted":true,}`
+
+![Uninstall beats log](images/delete_iagent_log.jpg)<br>
