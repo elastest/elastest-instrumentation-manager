@@ -18,38 +18,38 @@ node('docker') {
                 stage "Build MySQL image - Package"
                        echo ("building MySQL..")
                         //def logstash_image = docker.build("elastest/eim-mysql:latest","./mysql")
-                       sh 'cd mysql; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-mysql:0.9.0'
-                       def mysql_image = docker.image('elastest/eim-mysql:0.9.0')
+                       sh 'cd mysql; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-mysql:latest'
+                       def mysql_image = docker.image('elastest/eim-mysql:latest')
                 
                 stage "Build Elasticsearch image - Package"
                         echo ("building elasticsearch..")
                         //def elasticsearch_image = docker.build("elastest/eim-elasticsearch:latest","./elasticsearch")
-                        sh 'cd elasticsearch; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-elasticsearch:0.9.0'
-                        def elasticsearch_image = docker.image('elastest/eim-elasticsearch:0.9.0')
+                        sh 'cd elasticsearch; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-elasticsearch:latest'
+                        def elasticsearch_image = docker.image('elastest/eim-elasticsearch:latest')
 
                 stage "Build Logstash image - Package"
                         echo ("building logstash..")
                         //def logstash_image = docker.build("elastest/eim-logstash:latest","./logstash")
-                        sh 'cd logstash; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-logstash:0.9.0'
-                        def logstash_image = docker.image('elastest/eim-logstash:0.9.0')
+                        sh 'cd logstash; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-logstash:latest'
+                        def logstash_image = docker.image('elastest/eim-logstash:latest')
 
                 stage "Build Kibana image - Package"
                         echo ("building kibana..")
                         //def kibana_image = docker.build("elastest/eim-kibana:latest","./kibana")
-                        sh 'cd kibana; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-kibana:0.9.0'
-                        def kibana_image = docker.image('elastest/eim-kibana:0.9.0')
+                        sh 'cd kibana; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-kibana:latest'
+                        def kibana_image = docker.image('elastest/eim-kibana:latest')
 
                stage "Build EIM SuT image - Package"
                         echo ("building sut..")
                         //def sut_image = docker.build("elastest/eim-sut:latest","./sut")
-                        sh 'cd sut; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-sut:0.9.0'
-                        def sut_image = docker.image('elastest/eim-sut:0.9.0')
+                        sh 'cd sut; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-sut:latest'
+                        def sut_image = docker.image('elastest/eim-sut:latest')
 
                 stage "Build EIM image - Package"
                         echo ("building eim..")
                         //def eim_image = docker.build("elastest/eim:latest","./eim")
-                        sh 'cd eim; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim:0.9.0'
-                        def eim_image = docker.image('elastest/eim:0.9.0')
+                        sh 'cd eim; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim:latest'
+                        def eim_image = docker.image('elastest/eim:latest')
 
                 stage "Execute docker compose"
                         echo ("running docker compose..")

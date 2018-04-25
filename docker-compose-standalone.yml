@@ -2,8 +2,8 @@ version: '2'
 
 services:
         eim-mysql:
-                image: elastest/eim-elasticsearch:0.9.0
-                #image: elastest/eim-mysql:latest
+                #image: elastest/eim-elasticsearch:0.9.0
+                image: elastest/eim-mysql:latest
                 #expose: 
                 #        - 3306
                 # environment:
@@ -17,8 +17,8 @@ services:
                 networks:
                         - elastest
         elasticsearch:
-                image: elastest/eim-elasticsearch:0.9.0
-                #image: elastest/eim-elasticsearch:latest
+                #image: elastest/eim-elasticsearch:0.9.0
+                image: elastest/eim-elasticsearch:latest
                 ports:
                         - "9200:9200"
                         - "9300:9300"
@@ -28,8 +28,8 @@ services:
                 networks:
                         - elastest
         logstash:
-                image: elastest/eim-logstash:0.9.0
-                #image: elastest/eim-logstash:latest
+                #image: elastest/eim-logstash:0.9.0
+                image: elastest/eim-logstash:latest
                 ports:
                         - "5044:5044"
                 depends_on: 
@@ -41,8 +41,8 @@ services:
                         - elastest
 
         kibana:
-                image: elastest/eim-kibana:0.9.0
-                #image: elastest/eim-kibana:latest
+                #image: elastest/eim-kibana:0.9.0
+                image: elastest/eim-kibana:latest
                 ports: 
                         - "5601:5601"
                 depends_on:
@@ -54,8 +54,8 @@ services:
                         - elastest
 
         sut:
-                image: elastest/eim-sut:0.9.0
-                #image: elastest/eim-sut:latest
+                #image: elastest/eim-sut:0.9.0
+                image: elastest/eim-sut:latest
                 #image: dev/sut-v3
 #                volumes:
 #                        - static-content:/tmp/ssh
@@ -68,8 +68,8 @@ services:
                         - elastest
 
         eim:
-                image: elastest/eim:0.9.0
-                #image: elastest/eim:latest              
+                #image: elastest/eim:0.9.0
+                image: elastest/eim:latest              
                 # volumes:
                 #       - static-content:/tmp/ssh 
                 depends_on:
