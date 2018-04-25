@@ -84,7 +84,7 @@ The SuT information is displayed, you have to click on the `De-Instrumentalize` 
 ![De-instrumentalize SuT](images/deinstrumentalize_sut.jpg)<br>
 
 This operation launches two processes from ETM to EIM:
-1. Uninstall of the installed [Beats](https://www.elastic.co/products/beats) ([Packetbeat](https://www.elastic.co/guide/en/beats/packetbeat/5.6/packetbeat-overview.html), [Filebeat](https://www.elastic.co/guide/en/beats/filebeat/5.6/filebeat-overview.html), [Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/5.6/metricbeat-overview.html))
+1. Uninstall the installed [Beats](https://www.elastic.co/products/beats) ([Packetbeat](https://www.elastic.co/guide/en/beats/packetbeat/5.6/packetbeat-overview.html), [Filebeat](https://www.elastic.co/guide/en/beats/filebeat/5.6/filebeat-overview.html) and [Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/5.6/metricbeat-overview.html))
 2. Unregister of the instrumentation agent
 
 You can follow the progress of both operations looking at the EIM log: <br>
