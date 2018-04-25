@@ -81,7 +81,7 @@ You can de-instrumentalize an instrumentalized SuT. To do this, you have to Edit
 ![Edit SuT](images/edit_sut.jpg)<br>
 
 The SuT information is displayed, you have to click on the `De-Instrumentalize` check button and save changes:
-![De-instrumentalize SuT](images/deinstrumentalize_sut.jpg.jpg)<br>
+![De-instrumentalize SuT](images/deinstrumentalize_sut.jpg)<br>
 
 This operation launches two processes from ETM to EIM:
 1. Uninstall of the installed [Beats](https://www.elastic.co/products/beats) ([Packetbeat](https://www.elastic.co/guide/en/beats/packetbeat/5.6/packetbeat-overview.html), [Filebeat](https://www.elastic.co/guide/en/beats/filebeat/5.6/filebeat-overview.html), [Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/5.6/metricbeat-overview.html))
