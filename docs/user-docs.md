@@ -66,14 +66,14 @@ To execute an existing TJob you have to click on `Play` button (marked in red) o
 
 When the Execution is launched the screen changes to show the execution view, you have to click on the `Open Monitoring Config` button (marked in red):
 
-![Configure TJob output](images/configure_tjob_output.jpg)<br>
+![Configure TJob output](images/configure_tjob_output.jpg)<br><br>
 
-In the screen that appears, you have to check `sut` on Metrics tree in order that the metrics appears in the execution and click on `Apply and Save` button:
+In the screen that appears, you have to check `sut` (marked in red) on Metrics tree in order that the metrics appears in the execution and click on `Apply and Save` button:
 
 ![Show metrics](images/show_metrics.jpg)<br>
 
 Then the value of the metrics and the logs captured by the TJob will appear:
-![TJob execution metrics](images/tjob_execution_metrics.jpg)<br>
+![TJob execution metrics](images/tjob_execution_metrics.jpg)<br><br>
 ![TJob execution logs](images/tjob_execution_logs.jpg)<br>
 
 ## De-instrumentalize SuT
