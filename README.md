@@ -13,7 +13,9 @@ The ElasTest Instrumentation Manager (EIM) component controls and orchestrates t
 1) Controllability, through which the agent can force custom behaviours on the host’s network, CPU utilization, memory consumption, process lifecycle management or system shutdown, etc.
 2) Observability, through which the Agent collects all information relevant for testing or monitoring purposes (e.g. energy consumption, resources utilization, etc.)
 
-The EIM component is currently in development. If you want to contribute to the EIM project you need to read the [Development documentation](https://github.com/elastest/elastest-instrumentation-manager/blob/master/docs/index.md) 
+The EIM component is currently in development. If you want to contribute to the EIM project you need to read the [Development documentation](https://github.com/elastest/elastest-instrumentation-manager/blob/master/docs/index.md) to deploy the component on standalone mode.
+
+If you want to test the component inside an ElasTest running platform, please read the [User guide](https://github.com/elastest/elastest-instrumentation-manager/blob/master/docs/user-docs.md)
 
 # What is ElasTest
 
