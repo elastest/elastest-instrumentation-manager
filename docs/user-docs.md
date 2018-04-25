@@ -18,11 +18,29 @@ EIM is integrated with the ElasTest dashboard and allows to instrumentalize and 
   3.4. SuT IP<br>
   3.5. User: `root` for the proposed SuT<br>
   3.6. Private key: the result of the 2.2.3 command<br>
-  3.7. Logs paths: the paths you want to monitorize the changes that is going to happen in these files. You can add more paths to monitor, clicking on the `Add Logs Path` button <br>
+  3.7. Logs paths: the paths you want to monitorize the changes that is going to happen in these files. You can add more paths to monitor, clicking on the `Add Logs Path` button <br>. You can use `"/tmp/date.log"` for the proposed SuT because the SuT has a running process that every 10 seconds publish the current date in this path (the file always has one line in order to avoid a huge filesize).
   When you finish to complete all the required fields, click on `Save` button at the bottom of the form
-
-![New SuT creation](images/new_sut.jpg)
+![New SuT creation](images/new_sut.jpg)<br>
 
 ## Instrumentalize SuT
+After completing the Prerequisites, you can Instrumentalize the SuT that you created before. To do this, you have to Edit it, clicking on the pencil (marked in red) in the list of SuTs:
+![Edit SuT](images/edit_sut.jpg)<br>
+
+The SuT information is displayed, you have to click on the `Instrumentalize` check button and save changes:
+![Instrumentalize SuT](images/instrumentalize_sut.jpg)<br>
+
+This operation launches two processes from ETM to EIM:
+1. Register the agent, in order that EIM will be able to instrumentalize the SuT.
+2. Installation of [Beats](https://www.elastic.co/products/beats), a monitoring software to capture metrics from SuT. The installed beats are:
+- [Packetbeat](https://www.elastic.co/guide/en/beats/packetbeat/5.6/packetbeat-overview.html)
+- [Filebeat](https://www.elastic.co/guide/en/beats/filebeat/5.6/filebeat-overview.html)
+- [Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/5.6/metricbeat-overview.html)
+
+You can follow the progress of both operations looking at the EIM log:
+a. Connect to EIM: `docker exec -it elastest_eim_1 /bin/bash`
+b. Execute: `tail -f /var/log/tomcat7/eim-rest-api.log`
+The operations are finished when the EIM returns the message that SuT is monitored: `{"agentId":"iagent1","host":"172.21.0.13","monitored":true,"logstash_ip":"172.21.0.4","logstash_port":"5044"}`
+
+![Instrumentalized SuT](images/install_beats_log.jpg)<br>
 
 ## De-instrumentalize SuT
