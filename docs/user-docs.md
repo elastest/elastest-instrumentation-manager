@@ -39,7 +39,7 @@ This operation launches two processes from ETM to EIM:
 You can follow the progress of both operations looking at the EIM log:
 a. Connect to EIM: `docker exec -it elastest_eim_1 /bin/bash`
 b. Execute: `tail -f /var/log/tomcat7/eim-rest-api.log`
-The operations are finished when the EIM returns the message that SuT is monitored: `{"agentId":"iagent1","host":"172.21.0.13","monitored":true,"logstash_ip":"172.21.0.4","logstash_port":"5044"}`
+The operations are finished when the EIM returns the message that SuT is monitored: `{"agentId":"iagent1","host":"172.21.0.13","monitored":true,"logstash_ip":"172.21.0.8","logstash_port":"5044"}`
 
 ![Instrumentalized SuT](images/install_beats_log.jpg)<br>
 
