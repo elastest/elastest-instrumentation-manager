@@ -135,23 +135,23 @@
   - name: METRICBEAT - Restart metricbeat 
     service: name=metricbeat state=restarted 
     
-  - name: Enable the filebeat systemd service
-    systemd:
-      name: filebeat
-      enabled: yes
-      state: started
-      daemon_reload: yes
+#  - name: Enable the filebeat systemd service
+#    systemd:
+#      name: filebeat
+#      enabled: yes
+#      state: started
+#      daemon_reload: yes
       
-  - name: Enable the packetbeat systemd service
-    systemd:
-      name: packetbeat
-      enabled: yes
-      state: started
-      daemon_reload: yes
+#  - name: Enable the packetbeat systemd service
+#    systemd:
+#      name: packetbeat
+#      enabled: yes
+#      state: started
+#      daemon_reload: yes
       
-  - name: Enable the metricbeat systemd service
-    systemd:
-      name: metricbeat
-      enabled: yes
-      state: started
-      daemon_reload: yes
+#  - name: Enable the metricbeat systemd service
+#    systemd:
+#      name: metricbeat
+#      enabled: yes
+#      state: started
+#      daemon_reload: yes
