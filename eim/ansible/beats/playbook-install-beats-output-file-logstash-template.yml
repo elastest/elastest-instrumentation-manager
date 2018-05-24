@@ -1,6 +1,6 @@
 # playbook-install-beats-v5.yml
-- name: EIM - Beats v5.6.8 installation and configuration - packetbeat, filebeat and metricbeat
-#- name: EIM - Beats v6.2 installation and configuration - filebeat, packetbeat and metricbeat
+#- name: EIM - Beats v5.6.8 installation and configuration - packetbeat, filebeat and metricbeat
+- name: EIM - Beats v6.2 installation and configuration - filebeat, packetbeat and metricbeat
   hosts: ##targethost##
   remote_user: elastest
   become: yes
@@ -12,8 +12,8 @@
     when: ansible_distribution == "Ubuntu" 
 
   - name: APT - Add elastic.co repository 
-    apt_repository: repo="deb https://artifacts.elastic.co/packages/5.x/apt stable main" filename="elastic-5.x" update_cache=yes 
-    #apt_repository: repo="deb https://artifacts.elastic.co/packages/6.x/apt stable main" filename="elastic-6.x" update_cache=yes 
+#    apt_repository: repo="deb https://artifacts.elastic.co/packages/5.x/apt stable main" filename="elastic-5.x" update_cache=yes 
+    apt_repository: repo="deb https://artifacts.elastic.co/packages/6.x/apt stable main" filename="elastic-6.x" update_cache=yes 
     when: ansible_distribution == "Ubuntu" 
 
   - name: FILEBEAT - Install Filebeat 
@@ -81,8 +81,16 @@
       block: |
         filebeat:
           prospectors:
-          -   paths:
+          - type: log
+            paths:
               - ##filepaths-to-monitor##
+          - type: log
+            paths:
+              - '/var/lib/docker/containers/*/*.log'
+            json.message_key: log
+            json.keys_under_root: true
+            processors:
+              - add_docker_metadata: ~
 
   - name: FILEBEAT - Configure Logstash and file output 
     blockinfile: 
@@ -92,11 +100,11 @@
       block: |
         output.logstash: 
           hosts: ["##logstash-ip##:##logstash-port##"]
-        output.file:
-          path: "/tmp/beats"
-          filename: filebeat.log
-          rotate_every_kb: 2048
-          number_of_files: 3  
+#        output.file:
+#          path: "/tmp/beats"
+#          filename: filebeat.log
+#          rotate_every_kb: 2048
+#          number_of_files: 3  
 
   - name: PACKETBEAT - Configure Logstash and file output 
     blockinfile: 
@@ -106,11 +114,11 @@
       block: |
         output.logstash: 
           hosts: ["##logstash-ip##:##logstash-port##"]
-        output.file:
-          path: "/tmp/beats"
-          filename: packetbeat.log
-          rotate_every_kb: 2048
-          number_of_files: 3 
+#        output.file:
+#          path: "/tmp/beats"
+#          filename: packetbeat.log
+#          rotate_every_kb: 2048
+#          number_of_files: 3 
 
   - name: METRICBEAT - Configure Logstash and file output 
     blockinfile: 
@@ -120,11 +128,11 @@
       block: |
         output.logstash: 
           hosts: ["##logstash-ip##:##logstash-port##"]
-        output.file:
-          path: "/tmp/beats"
-          filename: metricbeat.log
-          rotate_every_kb: 2048
-          number_of_files: 3 
+#        output.file:
+#          path: "/tmp/beats"
+#          filename: metricbeat.log
+#          rotate_every_kb: 2048
+#          number_of_files: 3 
 
   - name: FILEBEAT - Restart filebeat 
     service: name=filebeat state=restarted 
