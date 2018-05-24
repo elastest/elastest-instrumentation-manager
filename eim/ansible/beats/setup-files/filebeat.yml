@@ -6,6 +6,13 @@
 
 logging:
     level: error
-    to_syslog: true
+    #to_syslog: true
+    to_files: true
+    files:
+      path: "/tmp/beats/logs"
+      name: filebeat_error.log
+      rotateeverybytes: 2048
+      keepfiles: 7
+
 # Logstash output
 
