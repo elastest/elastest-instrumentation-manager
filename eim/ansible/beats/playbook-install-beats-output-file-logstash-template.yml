@@ -76,8 +76,8 @@
   - name: METRICBEAT - Configure metricbeat modules
     blockinfile: 
       dest: /etc/metricbeat/metricbeat.yml 
-      insertafter: '# Prospectors' 
-      marker: "# {mark} -- Prospectors configured by Ansible" 
+      insertafter: '# Metricbeat modules' 
+      marker: "# {mark} -- Metricbeat modules configured by Ansible" 
       block: |
         - module: system
           metricsets:
