@@ -151,7 +151,7 @@ public class TemplateUtils {
 					//Fill the playbook with docker metrics conf (if is dockerized)
 					FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerPlaybookDockerizedMetricbeat, dockerConfMetricbeat);
 					//Fill the playbook with docker_path on prospector info (if is dockerized)	
-					FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerDockerPath, agentCfg.getMetricbeat().getDockerized().get(0));
+					FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerDockerMetrics, agentCfg.getMetricbeat().getDockerized().get(0));
 				}
 								
 				logger.info("Modified successfully the generated beats installation playbook for agent " + agent.getAgentId() + ". Ready to execute!");
