@@ -145,13 +145,23 @@ public class TemplateUtils {
 					//Fill the playbook with docker prospector (if is dockerized)
 					FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerPlaybookDockerizedFilebeat, dockerConfFilebeat);
 					//Fill the playbook with docker_path on prospector info (if is dockerized)	
-					FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerDockerPath, agentCfg.getFilebeat().getDockerized().get(0));
+					//if the value is not defined in the object, default value is used
+					String dockerPathValue = Dictionary.DOCKERIZED_DEFAULT_DOCKER_PATH;
+					if (!agentCfg.getFilebeat().getDockerized().isEmpty()) {
+						dockerPathValue = agentCfg.getFilebeat().getDockerized().get(0);
+					}
+					FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerDockerPath, dockerPathValue);
 					
 					//Metricbeat
 					//Fill the playbook with docker metrics conf (if is dockerized)
 					FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerPlaybookDockerizedMetricbeat, dockerConfMetricbeat);
-					//Fill the playbook with docker_path on prospector info (if is dockerized)	
-					FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerDockerMetrics, agentCfg.getMetricbeat().getDockerized().get(0));
+					//Fill the playbook with docker_path on prospector info (if is dockerized)
+					//if the value is not defined in the object, default value is used
+					String dockerPathMetrics = Dictionary.DOCKERIZED_DEFAULT_DOCKER_METRIC;
+					if (!agentCfg.getMetricbeat().getDockerized().isEmpty()) {
+						dockerPathMetrics = agentCfg.getMetricbeat().getDockerized().get(0);
+					}
+					FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerDockerMetrics, dockerPathMetrics);
 				}
 								
 				logger.info("Modified successfully the generated beats installation playbook for agent " + agent.getAgentId() + ". Ready to execute!");
