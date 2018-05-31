@@ -100,17 +100,24 @@ public class TemplateUtils {
 			String jokerStreamPacketbeat = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_PACKETBEAT);
 			String jokerStreamMetricbeat = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_METRICBEAT);
 			String jokerFilepaths = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_FILEPATHS);
-			String jokerDockerized = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_DOCKERIZED);
+			String jokerPlaybookDockerizedFilebeat = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_PLAYBOOK_DOCKERIZED_FILEBEAT);
+			String jokerDockerPath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_DOCKER_PATH);
 			String dockerConfFilebeat = 
 	        		"          - type: log\n" + 
 	        		"            paths:\n" + 
-	        		"              - \""+ Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_DOCKER_PATH) + "*/*.log\"\n" + 
+	        		"              - \"" + Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_DOCKER_PATH) + "*/*.log\"\n" + 
 	        		"            json.message_key: log\n" + 
 	        		"            json.keys_under_root: true\n" + 
 	        		"            processors:\n" + 
 	        		"              - add_docker_metadata: ~";
-			String jokerDockePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_DOCKER_PATH);
-			
+			String jokerPlaybookDockerizedMetricbeat = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_PLAYBOOK_DOCKERIZED_METRICBEAT);
+			String jokerDockerMetrics = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_DOCKER_METRICS);
+			String dockerConfMetricbeat = 
+					"        - module: docker\n" + 
+					"          metricsets: [\"cpu\", \"diskio\", \"healthcheck\", \"info\", \"memory\", \"network\"]\n" + 
+					"          hosts: [\"unix://" + Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_DOCKER_METRICS) + "\"]\n" + 
+					"          enabled: true\n" + 
+					"          period: 10s";
 			try {
 				//Generate the execution playbook
 				FileTextUtils.copyFile(playbookTemplatePath, playbookToExecutePath);
@@ -134,10 +141,17 @@ public class TemplateUtils {
 				//Fill the playbook with the stream for packetbeat
 				FileTextUtils.replaceListInFile(playbookToExecutePath, jokerFilepaths, agentCfg.getFilebeat().getPaths());
 				if (agentCfg.isDockerized()) {
+					//Filebeat
 					//Fill the playbook with docker prospector (if is dockerized)
-					FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerDockerized, dockerConfFilebeat);
+					FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerPlaybookDockerizedFilebeat, dockerConfFilebeat);
 					//Fill the playbook with docker_path on prospector info (if is dockerized)	
-					FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerDockePath, agentCfg.getDockerPath());
+					FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerDockerPath, agentCfg.getFilebeat().getDockerized().get(0));
+					
+					//Metricbeat
+					//Fill the playbook with docker metrics conf (if is dockerized)
+					FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerPlaybookDockerizedMetricbeat, dockerConfMetricbeat);
+					//Fill the playbook with docker_path on prospector info (if is dockerized)	
+					FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerDockerPath, agentCfg.getMetricbeat().getDockerized().get(0));
 				}
 								
 				logger.info("Modified successfully the generated beats installation playbook for agent " + agent.getAgentId() + ". Ready to execute!");

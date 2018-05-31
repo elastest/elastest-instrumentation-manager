@@ -43,8 +43,11 @@ public class Dictionary {
 	public static String PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_METRICBEAT = "templates.beats.joker.stream.metricbeat";
 	public static String PROPERTY_TEMPLATES_BEATS_JOKER_FILEPATHS = "templates.beats.joker.filepaths";
 	public static String PROPERTY_TEMPLATES_NUMBER_OF_BLANKS_FOR_FILEPATHS = "            - ";
-	public static String PROPERTY_TEMPLATES_BEATS_JOKER_DOCKERIZED = "templates.beats.joker.dockerized";
+	public static String PROPERTY_TEMPLATES_BEATS_JOKER_PLAYBOOK_DOCKERIZED_FILEBEAT = "templates.beats.joker.playbook.dockerized.filebeat";
 	public static String PROPERTY_TEMPLATES_BEATS_JOKER_DOCKER_PATH = "templates.beats.joker.dockerpath";
+	public static String PROPERTY_TEMPLATES_BEATS_JOKER_DOCKER_METRICS = "templates.beats.joker.dockermetrics";
+	public static String PROPERTY_TEMPLATES_BEATS_JOKER_PLAYBOOK_DOCKERIZED_METRICBEAT = "templates.beats.joker.playbook.dockerized.metricbeat";
+	
 
 	public static String PROPERTY_EXECUTION_LOGS_PATH = "execution.logs.path";
 	public static String PROPERTY_EXECUTION_LOGS_SSH_PREFIX = "execution.logs.ssh.prefix";
@@ -59,6 +62,12 @@ public class Dictionary {
 	// USED TO INSTALL/REMOVE FEATURES IN SUT
 	public static String INSTALL = "install";
 	public static String REMOVE = "remove";
+	
+	// DOCKERIZED
+	public static String DOCKERIZED_YES = "yes";
+	public static String DOCKERIZED_NO = "no";
+	public static String DOCKERIZED_DEFAULT_DOCKER_PATH = "/var/lib/docker/containers/";
+	public static String DOCKERIZED_DEFAULT_DOCKER_METRIC = "/var/lib/docker.sock";
 	
 	//MYSQL DATABASE CONSTANTS
 	 public static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";

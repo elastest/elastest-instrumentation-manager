@@ -20,6 +20,8 @@
 
 package io.swagger.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
@@ -36,6 +38,9 @@ public class AgentConfigurationMetricbeat   {
   @JsonProperty("stream")
   private String stream = null;
 
+  @JsonProperty("dockerized")
+  private List<String> dockerized = new ArrayList<String>();
+  
   public AgentConfigurationMetricbeat stream(String stream) {
     this.stream = stream;
     return this;
@@ -57,6 +62,32 @@ public class AgentConfigurationMetricbeat   {
   }
 
 
+  public AgentConfigurationMetricbeat dockerized(List<String> dockerized) {
+	  this.dockerized = dockerized;
+	  return this;
+  }
+
+  public AgentConfigurationMetricbeat addDockerizedItem(String dockerizedItem) {
+	  this.dockerized.add(dockerizedItem);
+	  return this;
+  }
+
+  /**
+   * Get dockerized
+   * @return dockerized
+   **/
+  @JsonProperty("dockerized")
+  @ApiModelProperty(value = "")
+  //	  @ApiModelProperty(required = true, value = "")
+  @NotNull
+  public List<String> getDockerized() {
+	  return dockerized;
+  }
+
+  public void setDockerized(List<String> dockerized) {
+	  this.dockerized = dockerized;
+  }
+  
   @Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
@@ -66,12 +97,13 @@ public class AgentConfigurationMetricbeat   {
       return false;
     }
     AgentConfigurationMetricbeat agentConfigurationMetricbeat = (AgentConfigurationMetricbeat) o;
-    return Objects.equals(this.stream, agentConfigurationMetricbeat.stream);
+    return Objects.equals(this.stream, agentConfigurationMetricbeat.stream) &&
+            Objects.equals(this.dockerized, agentConfigurationMetricbeat.dockerized);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(stream);
+    return Objects.hash(stream, dockerized);
   }
 
 
@@ -81,6 +113,7 @@ public class AgentConfigurationMetricbeat   {
     sb.append("class AgentConfigurationMetricbeat {\n");
     
     sb.append("    stream: ").append(toIndentedString(stream)).append("\n");
+    sb.append("    dockerized: ").append(toIndentedString(dockerized)).append("\n");
     sb.append("}");
     return sb.toString();
   }

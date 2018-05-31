@@ -2,6 +2,7 @@
 
 # Custom fields
 metricbeat.modules:
+# Metricbeat modules
 - module: docker
   metricsets: ["cpu", "diskio", "healthcheck", "info", "memory", "network"]
   hosts: ["unix:///var/run/docker.sock"]

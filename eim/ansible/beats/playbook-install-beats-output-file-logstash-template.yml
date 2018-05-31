@@ -73,6 +73,39 @@
           stream: "##stream-metricbeat##"
         fields_under_root: true
 
+  - name: METRICBEAT - Configure metricbeat modules
+    blockinfile: 
+      dest: /etc/metricbeat/metricbeat.yml 
+      insertafter: '# Prospectors' 
+      marker: "# {mark} -- Prospectors configured by Ansible" 
+      block: |
+        - module: system
+          metricsets:
+            # CPU stats
+            - cpu
+            # System Load stats
+            - load
+            # Per CPU core stats
+            #- core
+            # IO stats
+            #- diskio
+            # Per filesystem stats
+            - filesystem
+            # File system summary stats
+            - fsstat
+            # Memory stats
+            - memory
+            # Network stats
+            - network
+            # Per process stats
+            - process
+            # Sockets (linux only)
+            #- socket
+          enabled: true
+          period: 10s
+          processes: ['.*']
+# docker metrics information
+
   - name: FILEBEAT - Configure Filebeat prospectors 
     blockinfile: 
       dest: /etc/filebeat/filebeat.yml 

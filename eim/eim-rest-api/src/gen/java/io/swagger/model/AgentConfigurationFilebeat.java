@@ -20,14 +20,15 @@
 
 package io.swagger.model;
 
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
-import javax.validation.constraints.*;
+import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * AgentConfigurationFilebeat
@@ -40,6 +41,9 @@ public class AgentConfigurationFilebeat   {
   @JsonProperty("paths")
   private List<String> paths = new ArrayList<String>();
 
+  @JsonProperty("dockerized")
+  private List<String> dockerized = new ArrayList<String>();
+  
   public AgentConfigurationFilebeat stream(String stream) {
     this.stream = stream;
     return this;
@@ -70,6 +74,7 @@ public class AgentConfigurationFilebeat   {
     return this;
   }
 
+  
   /**
    * Get paths
    * @return paths
@@ -85,23 +90,49 @@ public class AgentConfigurationFilebeat   {
     this.paths = paths;
   }
 
+  public AgentConfigurationFilebeat dockerized(List<String> dockerized) {
+	  this.dockerized = dockerized;
+	  return this;
+  }
+
+  public AgentConfigurationFilebeat addDockerizedItem(String dockerizedItem) {
+	  this.dockerized.add(dockerizedItem);
+	  return this;
+  }
+
+  /**
+   * Get dockerized
+   * @return dockerized
+   **/
+  @JsonProperty("dockerized")
+  @ApiModelProperty(value = "")
+  //	  @ApiModelProperty(required = true, value = "")
+  @NotNull
+  public List<String> getDockerized() {
+	  return dockerized;
+  }
+
+  public void setDockerized(List<String> dockerized) {
+	  this.dockerized = dockerized;
+  }
 
   @Override
   public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
+	  if (this == o) {
+		  return true;
+	  }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
     AgentConfigurationFilebeat agentConfigurationFilebeat = (AgentConfigurationFilebeat) o;
     return Objects.equals(this.stream, agentConfigurationFilebeat.stream) &&
-        Objects.equals(this.paths, agentConfigurationFilebeat.paths);
+        Objects.equals(this.paths, agentConfigurationFilebeat.paths) &&
+        Objects.equals(this.dockerized, agentConfigurationFilebeat.dockerized);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(stream, paths);
+    return Objects.hash(stream, paths, dockerized);
   }
 
 
@@ -112,6 +143,7 @@ public class AgentConfigurationFilebeat   {
     
     sb.append("    stream: ").append(toIndentedString(stream)).append("\n");
     sb.append("    paths: ").append(toIndentedString(paths)).append("\n");
+    sb.append("    dockerized: ").append(toIndentedString(dockerized)).append("\n");
     sb.append("}");
     return sb.toString();
   }

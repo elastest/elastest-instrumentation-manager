@@ -20,17 +20,16 @@
 
 package io.swagger.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
+import io.elastest.eim.config.Dictionary;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.AgentConfigurationFilebeat;
-import io.swagger.model.AgentConfigurationPacketbeat;
-import io.swagger.model.AgentConfigurationMetricbeat;
-import javax.validation.constraints.*;
 
 /**
  * This entity defines the configuration that will be applied to the agent
@@ -44,6 +43,9 @@ public class AgentConfiguration   {
   @JsonProperty("component")
   private String component = null;
 
+  @JsonProperty("dockerized")
+  private String dockerized = Dictionary.DOCKERIZED_YES;
+  
   @JsonProperty("packetbeat")
   private AgentConfigurationPacketbeat packetbeat = null;
 
@@ -53,8 +55,8 @@ public class AgentConfiguration   {
   @JsonProperty("metricbeat")
   private AgentConfigurationMetricbeat metricbeat = null;
 
-  @JsonProperty("dockerized")
-  private List<String> dockerized = new ArrayList<String>();
+//  @JsonProperty("dockerized")
+//  private List<String> dockerized = new ArrayList<String>();
   
   public AgentConfiguration exec(String exec) {
     this.exec = exec;
@@ -96,6 +98,22 @@ public class AgentConfiguration   {
     this.component = component;
   }
 
+  /**
+   * Get component
+   * @return component
+   **/
+  @JsonProperty("dockerized")
+  @ApiModelProperty(example = "yes", value = "")
+  //@ApiModelProperty(example = "yes", required = true, value = "")
+  //@NotNull
+  public String getDockerized() {
+    return dockerized;
+  }
+
+  public void setDockerized(String dockerized) {
+    this.dockerized = dockerized;
+  }
+  
   public AgentConfiguration packetbeat(AgentConfigurationPacketbeat packetbeat) {
     this.packetbeat = packetbeat;
     return this;
@@ -152,21 +170,6 @@ public class AgentConfiguration   {
   public void setMetricbeat(AgentConfigurationMetricbeat metricbeat) {
     this.metricbeat = metricbeat;
   }
-
-  /**
-   * Get dockerized
-   * @return dockerized
-   **/
-  @JsonProperty("dockerized")
-  @ApiModelProperty(required = true, value = "")
-  @NotNull
-  public List<String> getDockerized() {
-    return dockerized;
-  }
-
-  public void setDockerized(List<String> dockerized) {
-    this.dockerized = dockerized;
-  }
   
   @Override
   public boolean equals(java.lang.Object o) {
@@ -198,10 +201,10 @@ public class AgentConfiguration   {
     
     sb.append("    exec: ").append(toIndentedString(exec)).append("\n");
     sb.append("    component: ").append(toIndentedString(component)).append("\n");
+    sb.append("    dockerized: ").append(toIndentedString(dockerized)).append("\n");
     sb.append("    packetbeat: ").append(toIndentedString(packetbeat)).append("\n");
     sb.append("    filebeat: ").append(toIndentedString(filebeat)).append("\n");
     sb.append("    metricbeat: ").append(toIndentedString(metricbeat)).append("\n");
-    sb.append("    dockerized: ").append(toIndentedString(dockerized)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -218,8 +221,8 @@ public class AgentConfiguration   {
   }
   
   public boolean isDockerized() {
-	  if (dockerized != null && !dockerized.isEmpty()) {
-		  if (dockerized.get(0).equalsIgnoreCase("yes")) {
+	  if (dockerized != null) {
+		  if (dockerized.equalsIgnoreCase("yes")) {
 			  return true;
 		  }
 		  else {
@@ -231,13 +234,5 @@ public class AgentConfiguration   {
 	  }
   }
   
-  public String getDockerPath() {
-	  if (isDockerized()) {
-		  return dockerized.get(1);
-	  }
-	  else {
-		  return "";
-	  }
-  }
 }
 

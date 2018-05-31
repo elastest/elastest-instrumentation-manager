@@ -120,7 +120,7 @@ public class EimDbAgentCfgManager {
     		logger.info("Adding new agent configuration to DB for agent with agentId = " + agentId);
     		System.out.println("Adding new agent configuration to DB for agent with agentId = " + agentId);
     		
-    		String sqlInsertHost = "INSERT INTO " + Dictionary.DBTABLE_AGENT_CONFIGURATION + " VALUES (?,?,?,?,?,?,?,?,?)";
+    		String sqlInsertHost = "INSERT INTO " + Dictionary.DBTABLE_AGENT_CONFIGURATION + " VALUES (?,?,?,?,?,?,?,?,?,?)";
     		pstInsertAgentCfg = conn.prepareStatement(sqlInsertHost);
     	
     		pstInsertAgentCfg.setString(1, agentId); 															//agentId
@@ -131,15 +131,58 @@ public class EimDbAgentCfgManager {
     		pstInsertAgentCfg.setString(6, agentCfgObj.getFilebeat().getStream());								//filebeat_stream
     		pstInsertAgentCfg.setString(7, getStringFromArrayList(agentCfgObj.getFilebeat().getPaths(), ","));	//filebeat_paths
     		
-    		if (agentCfgObj.getDockerized().get(0).equals("yes")) {
+    		if (agentCfgObj.getDockerized() == null) {
+    			//no Dockerized param is specified in the request --> default value = yes
+    			logger.info("Not specified if SuT is dockerized or not. Using default value: yes");
+    			System.out.println("Not specified if SuT is dockerized or not. Using default value: yes");
+    			pstInsertAgentCfg.setString(8, Dictionary.DOCKERIZED_YES);										//dockerized
+    			logger.info("Using default value for docker_path: " + Dictionary.DOCKERIZED_DEFAULT_DOCKER_PATH);
+    			System.out.println("Using default value for docker_path: " + Dictionary.DOCKERIZED_DEFAULT_DOCKER_PATH);
+    			pstInsertAgentCfg.setString(9, Dictionary.DOCKERIZED_DEFAULT_DOCKER_PATH);						//docker_path
+    			logger.info("Using default value for docker_metrics: " + Dictionary.DOCKERIZED_DEFAULT_DOCKER_METRIC);
+    			System.out.println("Using default value for docker_metrics: " + Dictionary.DOCKERIZED_DEFAULT_DOCKER_METRIC);
+    			pstInsertAgentCfg.setString(10, Dictionary.DOCKERIZED_DEFAULT_DOCKER_METRIC);										//docker_metrics
+    		}
+    		else if (agentCfgObj.getDockerized().equals(Dictionary.DOCKERIZED_YES)) {
     			//isDockerized
-    			pstInsertAgentCfg.setString(8, agentCfgObj.getDockerized().get(0));								//dockerized
-    			pstInsertAgentCfg.setString(9, agentCfgObj.getDockerized().get(1));								//docker_path
+    			logger.info("SuT is dockerized...");
+    			System.out.println("SuT is dockerized...");
+    			pstInsertAgentCfg.setString(8, agentCfgObj.getDockerized());									//dockerized
+    			
+    			//docker_path
+    			try {
+    				pstInsertAgentCfg.setString(9, agentCfgObj.getFilebeat().getDockerized().get(0));				
+    				logger.info("docker_path = " + agentCfgObj.getFilebeat().getDockerized().get(0));
+    				System.out.println("docker_path = " + agentCfgObj.getFilebeat().getDockerized().get(0));
+    			}
+    			catch (Exception e) {
+    				//not docker path specified, using default value
+    				logger.info("Not docker_path specified value. Using default value for docker_path: " + Dictionary.DOCKERIZED_DEFAULT_DOCKER_PATH);
+    				System.out.println("Not docker_path specified value. Using default value for docker_path: " + Dictionary.DOCKERIZED_DEFAULT_DOCKER_PATH);
+    				pstInsertAgentCfg.setString(9, Dictionary.DOCKERIZED_DEFAULT_DOCKER_PATH);								//docker_path
+    			}
+    			
+    			//docker_metrics
+    			try {
+    				pstInsertAgentCfg.setString(10, agentCfgObj.getMetricbeat().getDockerized().get(0));				
+    				logger.info("docker_metrics = " + agentCfgObj.getMetricbeat().getDockerized().get(0));
+    				System.out.println("docker_metrics = " + agentCfgObj.getMetricbeat().getDockerized().get(0));
+    			}
+    			catch (Exception e) {
+    				//not docker metrics specified, using default value
+    				logger.info("Not docker_metrics specified value. Using default value for docker_metrics: " + Dictionary.DOCKERIZED_DEFAULT_DOCKER_METRIC);
+    				System.out.println("Not docker_metrics specified value. Using default value for docker_metrics: " + Dictionary.DOCKERIZED_DEFAULT_DOCKER_METRIC);
+    				pstInsertAgentCfg.setString(10, Dictionary.DOCKERIZED_DEFAULT_DOCKER_METRIC);								//docker_metrics
+    			}
     		}
     		else {
     			//notDockerized
-    			pstInsertAgentCfg.setString(8, agentCfgObj.getDockerized().get(0));								//dockerized
+    			logger.info("SuT is not dockerized...");
+    			System.out.println("SuT is not dockerized...docker_path & docker_metrics will be null");
+    			
+    			pstInsertAgentCfg.setString(8, Dictionary.DOCKERIZED_NO);										//dockerized
     			pstInsertAgentCfg.setString(9, null);															//docker_path
+    			pstInsertAgentCfg.setString(10, null);															//docker_metrics
     		}
     		pstInsertAgentCfg.executeUpdate();				
     		logger.info("Agent Configuration inserted in database wiht agentId = " + agentId);
@@ -350,8 +393,13 @@ public class EimDbAgentCfgManager {
 		agentConfiguration.setExec(rs.getString("EXEC"));
 		agentConfiguration.setComponent(rs.getString("COMPONENT"));
 
+		agentConfiguration.setDockerized(rs.getString("DOCKERIZED"));
+		
 		AgentConfigurationMetricbeat metricbeat = new AgentConfigurationMetricbeat();
 		metricbeat.setStream(rs.getString("METRICBEAT_STREAM"));
+		List<String> dockerized_metricbeat = new ArrayList<>();
+		dockerized_metricbeat.add(rs.getString("DOCKER_METRICS"));
+		metricbeat.setDockerized(dockerized_metricbeat);
 		agentConfiguration.setMetricbeat(metricbeat);
 
 		AgentConfigurationPacketbeat packetbeat = new AgentConfigurationPacketbeat();
@@ -361,15 +409,10 @@ public class EimDbAgentCfgManager {
 		AgentConfigurationFilebeat filebeat = new AgentConfigurationFilebeat();
 		filebeat.setStream(rs.getString("FILEBEAT_STREAM"));
 		filebeat.setPaths(getArrayListFromString(rs.getString("FILEBEAT_PATHS"), ","));
+		List<String> dockerized_filebeat = new ArrayList<>();
+		dockerized_filebeat.add(rs.getString("DOCKER_PATH"));
+		filebeat.setDockerized(dockerized_filebeat);
 		agentConfiguration.setFilebeat(filebeat);
-
-		List<String> dockerized = new ArrayList<>();
-		String dockerized_value = rs.getString("DOCKERIZED");
-		dockerized.add(dockerized_value);
-		if (dockerized_value.equalsIgnoreCase("yes")) {
-			dockerized.add(rs.getString("DOCKER_PATH"));
-		}
-		agentConfiguration.setDockerized(dockerized);
 		
 		agentCfg.setAgentConfiguration(agentConfiguration);
 
