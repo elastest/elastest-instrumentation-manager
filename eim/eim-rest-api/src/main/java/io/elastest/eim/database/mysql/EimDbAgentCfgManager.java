@@ -120,7 +120,7 @@ public class EimDbAgentCfgManager {
     		logger.info("Adding new agent configuration to DB for agent with agentId = " + agentId);
     		System.out.println("Adding new agent configuration to DB for agent with agentId = " + agentId);
     		
-    		String sqlInsertHost = "INSERT INTO " + Dictionary.DBTABLE_AGENT_CONFIGURATION + " VALUES (?,?,?,?,?,?,?)";
+    		String sqlInsertHost = "INSERT INTO " + Dictionary.DBTABLE_AGENT_CONFIGURATION + " VALUES (?,?,?,?,?,?,?,?,?)";
     		pstInsertAgentCfg = conn.prepareStatement(sqlInsertHost);
     	
     		pstInsertAgentCfg.setString(1, agentId); 															//agentId
@@ -130,6 +130,17 @@ public class EimDbAgentCfgManager {
     		pstInsertAgentCfg.setString(5, agentCfgObj.getMetricbeat().getStream());							//metricbeat_stream
     		pstInsertAgentCfg.setString(6, agentCfgObj.getFilebeat().getStream());								//filebeat_stream
     		pstInsertAgentCfg.setString(7, getStringFromArrayList(agentCfgObj.getFilebeat().getPaths(), ","));	//filebeat_paths
+    		
+    		if (agentCfgObj.getDockerized().get(0).equals("yes")) {
+    			//isDockerized
+    			pstInsertAgentCfg.setString(8, agentCfgObj.getDockerized().get(0));								//dockerized
+    			pstInsertAgentCfg.setString(9, agentCfgObj.getDockerized().get(1));								//docker_path
+    		}
+    		else {
+    			//notDockerized
+    			pstInsertAgentCfg.setString(8, agentCfgObj.getDockerized().get(0));								//dockerized
+    			pstInsertAgentCfg.setString(9, null);															//docker_path
+    		}
     		pstInsertAgentCfg.executeUpdate();				
     		logger.info("Agent Configuration inserted in database wiht agentId = " + agentId);
     		
@@ -155,7 +166,7 @@ public class EimDbAgentCfgManager {
 		PreparedStatement pstSelectAgentCfg = null;
 		
 		try {
-			String selectAgentCfgSQL = "SELECT AGENT_ID, EXEC, COMPONENT, PACKETBEAT_STREAM, METRICBEAT_STREAM, FILEBEAT_STREAM, FILEBEAT_PATHS FROM " + Dictionary.DBTABLE_AGENT_CONFIGURATION + " WHERE AGENT_ID = ?";
+			String selectAgentCfgSQL = "SELECT AGENT_ID, EXEC, COMPONENT, PACKETBEAT_STREAM, METRICBEAT_STREAM, FILEBEAT_STREAM, FILEBEAT_PATHS, DOCKERIZED, DOCKER_PATH FROM " + Dictionary.DBTABLE_AGENT_CONFIGURATION + " WHERE AGENT_ID = ?";
 			pstSelectAgentCfg = conn.prepareStatement(selectAgentCfgSQL);
 			pstSelectAgentCfg.setString(1, agentId);
 			ResultSet rs = pstSelectAgentCfg.executeQuery();
@@ -210,7 +221,7 @@ public class EimDbAgentCfgManager {
 		PreparedStatement pstSelectCfgAgents = null;
 		
 		try {
-			String selectSQL = "SELECT AGENT_ID, EXEC, COMPONENT, PACKETBEAT_STREAM, METRICBEAT_STREAM, FILEBEAT_STREAM, FILEBEAT_PATHS FROM " + Dictionary.DBTABLE_AGENT_CONFIGURATION;
+			String selectSQL = "SELECT AGENT_ID, EXEC, COMPONENT, PACKETBEAT_STREAM, METRICBEAT_STREAM, FILEBEAT_STREAM, FILEBEAT_PATHS, DOCKERIZED, DOCKER_PATH FROM " + Dictionary.DBTABLE_AGENT_CONFIGURATION;
 			pstSelectCfgAgents = conn.prepareStatement(selectSQL);
 			ResultSet rs = pstSelectCfgAgents.executeQuery();
 			agentsCfg = new ArrayList<AgentConfigurationDatabase>();
@@ -352,6 +363,14 @@ public class EimDbAgentCfgManager {
 		filebeat.setPaths(getArrayListFromString(rs.getString("FILEBEAT_PATHS"), ","));
 		agentConfiguration.setFilebeat(filebeat);
 
+		List<String> dockerized = new ArrayList<>();
+		String dockerized_value = rs.getString("DOCKERIZED");
+		dockerized.add(dockerized_value);
+		if (dockerized_value.equalsIgnoreCase("yes")) {
+			dockerized.add(rs.getString("DOCKER_PATH"));
+		}
+		agentConfiguration.setDockerized(dockerized);
+		
 		agentCfg.setAgentConfiguration(agentConfiguration);
 
 		return agentCfg;

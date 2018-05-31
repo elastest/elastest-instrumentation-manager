@@ -20,6 +20,8 @@
 
 package io.swagger.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -51,6 +53,9 @@ public class AgentConfiguration   {
   @JsonProperty("metricbeat")
   private AgentConfigurationMetricbeat metricbeat = null;
 
+  @JsonProperty("dockerized")
+  private List<String> dockerized = new ArrayList<String>();
+  
   public AgentConfiguration exec(String exec) {
     this.exec = exec;
     return this;
@@ -148,7 +153,21 @@ public class AgentConfiguration   {
     this.metricbeat = metricbeat;
   }
 
+  /**
+   * Get dockerized
+   * @return dockerized
+   **/
+  @JsonProperty("dockerized")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
+  public List<String> getDockerized() {
+    return dockerized;
+  }
 
+  public void setDockerized(List<String> dockerized) {
+    this.dockerized = dockerized;
+  }
+  
   @Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
@@ -162,12 +181,13 @@ public class AgentConfiguration   {
         Objects.equals(this.component, agentConfiguration.component) &&
         Objects.equals(this.packetbeat, agentConfiguration.packetbeat) &&
         Objects.equals(this.filebeat, agentConfiguration.filebeat) &&
-        Objects.equals(this.metricbeat, agentConfiguration.metricbeat);
+        Objects.equals(this.metricbeat, agentConfiguration.metricbeat) && 
+        Objects.equals(this.dockerized, agentConfiguration.dockerized);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(exec, component, packetbeat, filebeat, metricbeat);
+    return Objects.hash(exec, component, packetbeat, filebeat, metricbeat, dockerized);
   }
 
 
@@ -181,6 +201,7 @@ public class AgentConfiguration   {
     sb.append("    packetbeat: ").append(toIndentedString(packetbeat)).append("\n");
     sb.append("    filebeat: ").append(toIndentedString(filebeat)).append("\n");
     sb.append("    metricbeat: ").append(toIndentedString(metricbeat)).append("\n");
+    sb.append("    dockerized: ").append(toIndentedString(dockerized)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -194,6 +215,29 @@ public class AgentConfiguration   {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+  
+  public boolean isDockerized() {
+	  if (dockerized != null && !dockerized.isEmpty()) {
+		  if (dockerized.get(0).equalsIgnoreCase("yes")) {
+			  return true;
+		  }
+		  else {
+			  return false;
+		  }
+	  }
+	  else {
+		  return false;
+	  }
+  }
+  
+  public String getDockerPath() {
+	  if (isDockerized()) {
+		  return dockerized.get(1);
+	  }
+	  else {
+		  return "";
+	  }
   }
 }
 

@@ -43,6 +43,8 @@ public class Dictionary {
 	public static String PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_METRICBEAT = "templates.beats.joker.stream.metricbeat";
 	public static String PROPERTY_TEMPLATES_BEATS_JOKER_FILEPATHS = "templates.beats.joker.filepaths";
 	public static String PROPERTY_TEMPLATES_NUMBER_OF_BLANKS_FOR_FILEPATHS = "            - ";
+	public static String PROPERTY_TEMPLATES_BEATS_JOKER_DOCKERIZED = "templates.beats.joker.dockerized";
+	public static String PROPERTY_TEMPLATES_BEATS_JOKER_DOCKER_PATH = "templates.beats.joker.dockerpath";
 
 	public static String PROPERTY_EXECUTION_LOGS_PATH = "execution.logs.path";
 	public static String PROPERTY_EXECUTION_LOGS_SSH_PREFIX = "execution.logs.ssh.prefix";

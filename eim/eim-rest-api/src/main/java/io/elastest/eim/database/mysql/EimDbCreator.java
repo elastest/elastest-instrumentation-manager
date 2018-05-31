@@ -79,6 +79,8 @@ public class EimDbCreator {
 								  + "metricbeat_stream varchar(255) NOT NULL,"
 								  + "filebeat_stream varchar(255) NOT NULL,"
 								  + "filebeat_paths text NOT NULL,"
+								  + "dockerized varchar(255) NOT NULL,"
+								  + "docker_path varchar(255),"
 								  + "PRIMARY KEY (`agent_id`)"
 							+ ") ENGINE=InnoDB DEFAULT CHARSET=utf8";
 		createTable(mysqlCreateCmd, Dictionary.DBTABLE_AGENT_CONFIGURATION);

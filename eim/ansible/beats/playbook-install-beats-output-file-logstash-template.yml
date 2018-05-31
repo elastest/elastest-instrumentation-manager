@@ -84,13 +84,7 @@
           - type: log
             paths:
               - ##filepaths-to-monitor##
-          - type: log
-            paths:
-              - "/var/lib/docker/containers/*/*.log"
-            json.message_key: log
-            json.keys_under_root: true
-            processors:
-              - add_docker_metadata: ~
+# docker prospector information
 
   - name: FILEBEAT - Configure Logstash and file output 
     blockinfile: 
