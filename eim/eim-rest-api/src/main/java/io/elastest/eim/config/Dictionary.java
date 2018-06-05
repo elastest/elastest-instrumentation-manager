@@ -67,7 +67,7 @@ public class Dictionary {
 	public static String DOCKERIZED_YES = "yes";
 	public static String DOCKERIZED_NO = "no";
 	public static String DOCKERIZED_DEFAULT_DOCKER_PATH = "/var/lib/docker/containers/";
-	public static String DOCKERIZED_DEFAULT_DOCKER_METRIC = "/var/lib/docker.sock";
+	public static String DOCKERIZED_DEFAULT_DOCKER_METRIC = "/var/run/docker.sock";
 	
 	//MYSQL DATABASE CONSTANTS
 	 public static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
