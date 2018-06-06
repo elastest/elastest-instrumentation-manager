@@ -43,7 +43,7 @@ public class AgentConfiguration   {
   private String component = null;
 
   @JsonProperty("dockerized")
-  private String dockerized = Dictionary.DOCKERIZED_NO;
+  private String dockerized;
   
   @JsonProperty("packetbeat")
   private AgentConfigurationPacketbeat packetbeat = null;

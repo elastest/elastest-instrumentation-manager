@@ -197,6 +197,11 @@ public class AgentApiServiceImpl extends AgentApiService {
     	logger.info("PostAction method invoked for agent " + agentId + " with action " + actionId + " and body: " + body);
     	System.out.println("PostAction method invoked for agent " + agentId + " with action " + actionId + " and body: " + body);
     	
+    	//set Dockerized default value if not specified
+    	if (body.getDockerized() == null) {
+    		body.setDockerized(Dictionary.DOCKERIZED_NO);
+    	}
+    	
     	if (actionId.equals(Dictionary.SUT_ACTION_MONITOR)){
 	    	//verify that agent exists in database and it is not monitored
 	    	AgentFull agent = agentDb.getAgentByAgentId(agentId);
