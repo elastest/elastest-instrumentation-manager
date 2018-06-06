@@ -20,7 +20,6 @@
 
 package io.swagger.model;
 
-import java.util.List;
 import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
@@ -44,7 +43,7 @@ public class AgentConfiguration   {
   private String component = null;
 
   @JsonProperty("dockerized")
-  private String dockerized = Dictionary.DOCKERIZED_YES;
+  private String dockerized = Dictionary.DOCKERIZED_NO;
   
   @JsonProperty("packetbeat")
   private AgentConfigurationPacketbeat packetbeat = null;
@@ -99,8 +98,8 @@ public class AgentConfiguration   {
   }
 
   /**
-   * Get component
-   * @return component
+   * Get dockerized
+   * @return dockerized
    **/
   @JsonProperty("dockerized")
   @ApiModelProperty(example = "yes", value = "")
