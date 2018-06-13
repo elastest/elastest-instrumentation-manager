@@ -209,7 +209,7 @@ public class EimDbAgentCfgManager {
 		PreparedStatement pstSelectAgentCfg = null;
 		
 		try {
-			String selectAgentCfgSQL = "SELECT AGENT_ID, EXEC, COMPONENT, PACKETBEAT_STREAM, METRICBEAT_STREAM, FILEBEAT_STREAM, FILEBEAT_PATHS, DOCKERIZED, DOCKER_PATH FROM " + Dictionary.DBTABLE_AGENT_CONFIGURATION + " WHERE AGENT_ID = ?";
+			String selectAgentCfgSQL = "SELECT AGENT_ID, EXEC, COMPONENT, PACKETBEAT_STREAM, METRICBEAT_STREAM, FILEBEAT_STREAM, FILEBEAT_PATHS, DOCKERIZED, DOCKER_PATH, DOCKER_METRICS FROM " + Dictionary.DBTABLE_AGENT_CONFIGURATION + " WHERE AGENT_ID = ?";
 			pstSelectAgentCfg = conn.prepareStatement(selectAgentCfgSQL);
 			pstSelectAgentCfg.setString(1, agentId);
 			ResultSet rs = pstSelectAgentCfg.executeQuery();
