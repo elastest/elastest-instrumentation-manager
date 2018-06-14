@@ -280,7 +280,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 			        	String privateKeyPath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
 			        			Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_HOSTS_FOLDER) +
 			        			agent.getAgentId() + "/" + privateKeyFileName;
-			        	FileWriter keyFileWriter = new FileWriter(privateKeyPath, true);
+			        	FileWriter keyFileWriter = new FileWriter(privateKeyPath, false);
 			        	BufferedWriter keyBufferedWriter = new BufferedWriter(keyFileWriter);
 			        	PrintWriter keyPrintWriter = new PrintWriter(keyBufferedWriter);
 			        	keyPrintWriter.println(body.getPrivateKey());
@@ -291,7 +291,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 			        	
 			        	//write ansible cfg file for the host
 			        	String ansibleFileCfgPath = getAnsibleCfgFilePathForAgent(agent);
-			        	FileWriter fileWriter = new FileWriter(ansibleFileCfgPath, true);
+			        	FileWriter fileWriter = new FileWriter(ansibleFileCfgPath, false);
 			        	BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 			        	PrintWriter printWriter = new PrintWriter(bufferedWriter);
 			        	printWriter.println("[" + agent.getAgentId() + "]");
