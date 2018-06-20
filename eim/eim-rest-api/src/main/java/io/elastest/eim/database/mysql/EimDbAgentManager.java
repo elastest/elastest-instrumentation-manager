@@ -181,7 +181,7 @@ public class EimDbAgentManager {
 		PreparedStatement pstSelectAgent = null;
 		
 		try {
-			String selectSQL = "SELECT agent_id, host, monitored, logstash_ip, logstash_port FROM " + Dictionary.DBTABLE_AGENT + " WHERE host=?";
+			String selectSQL = "SELECT agent_id, host, monitored, logstash_ip, logstash_port, user, password FROM " + Dictionary.DBTABLE_AGENT + " WHERE host=?";
 			pstSelectAgent = conn.prepareStatement(selectSQL);
 			pstSelectAgent.setString(1, ipAddress);
 			ResultSet rs = pstSelectAgent.executeQuery();
@@ -192,6 +192,8 @@ public class EimDbAgentManager {
 				agent.setMonitored(rs.getBoolean("MONITORED"));
 				agent.setLogstashIp(rs.getString("LOGSTASH_IP"));
 				agent.setLogstashPort(rs.getString("LOGSTASH_PORT"));
+				agent.setUser(rs.getString("USER"));
+				agent.setPassword(rs.getString("PASSWORD"));
 	        	logger.info("Host finded in DB with ipAddress = " + ipAddress + " with ID " + agent.getAgentId());
 	        	System.out.println("Host finded in DB with ipAddress = " + ipAddress + " with ID " + agent.getAgentId());
 				return agent;

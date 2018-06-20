@@ -88,6 +88,13 @@ public class FileTextUtils {
 	}
 	
 	public static void replaceTextInFile(String filePath, String textToFind, String replaceText) throws IOException {
+		System.out.println("file path: " + filePath);
+		System.out.println("textToFind: " + textToFind);
+		System.out.println("replaceText: " + replaceText);
+		logger.info("file path: " + filePath);
+		logger.info("textToFind: " + textToFind);
+		logger.info("replaceText: " + replaceText);
+		
 		List<String> newLines = new ArrayList<>();
 		for (String line : Files.readAllLines(Paths.get(filePath), StandardCharsets.UTF_8)) {
 		    if (line.contains(textToFind)) {
