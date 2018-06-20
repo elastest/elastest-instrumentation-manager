@@ -68,7 +68,7 @@ public class AgentApiServiceImpl extends AgentApiService {
     			//remove beats
     			status = -1;
 	    		//beats uninstallation
-	            BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate, Dictionary.REMOVE);	            
+	            BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate, Dictionary.REMOVE, getAnsibleCfgFilePathForAgent(agent));	            
 	            status = beatsTemplateManager.execute();
 	            if (status == 0) {
 	            	logger.info("Successful execution for the delete script generated to agent " + agent.getAgentId());
@@ -94,7 +94,7 @@ public class AgentApiServiceImpl extends AgentApiService {
     		//remove ssh key
     		if (status==0) {
     			String ansibleFileCfgPath = getAnsibleCfgFilePathForAgent(agent);
-    			SshTemplateManager sshTemplateManager = new SshTemplateManager(agent, executionDate, ansibleFileCfgPath, "elastest", Dictionary.REMOVE);
+    			SshTemplateManager sshTemplateManager = new SshTemplateManager(agent, executionDate, ansibleFileCfgPath, Dictionary.REMOVE);
     			status = sshTemplateManager.execute();
     			if (status == 0) {
 	            	logger.info("Successful execution for the ssh delete script generated to agent " + agent.getAgentId());
@@ -221,7 +221,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 	    		//beats installation
 	    		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 	            String executionDate = sdf.format(timestamp);
-	            BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate, Dictionary.INSTALL);
+	            BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate, Dictionary.INSTALL, getAnsibleCfgFilePathForAgent(agent));
 	            beatsTemplateManager.setConfiguration(body);
 	            status = beatsTemplateManager.execute();
 	            if (status == 0) {
@@ -299,13 +299,14 @@ public class AgentApiServiceImpl extends AgentApiService {
 			        	printWriter.println("[" + agent.getAgentId() + ":vars]");
 			        	printWriter.println("ansible_connection=ssh");
 			        	printWriter.println("ansible_user=" + body.getUser());
+			        	printWriter.println("ansible_become_pass=" + body.getPassword());
 			        	printWriter.println("ansible_ssh_private_key_file=" + privateKeyPath);
 			        	printWriter.println("ansible_ssh_extra_args=\"-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null\"");
 			        	printWriter.close();
 			        		            
 			            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 			            String executionDate = sdf.format(timestamp);
-			            SshTemplateManager sshTemplateManager = new SshTemplateManager(agent, executionDate, ansibleFileCfgPath, body.getUser(), Dictionary.INSTALL);
+			            SshTemplateManager sshTemplateManager = new SshTemplateManager(agent, executionDate, ansibleFileCfgPath, Dictionary.INSTALL);
 			            status = sshTemplateManager.execute();
 			            if (status == 0) {
 			            	logger.info("Successful execution for the script generated to agent " + agent.getAgentId());
@@ -386,7 +387,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 	    		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 	        	String executionDate = sdf.format(timestamp);
 	    		int status = 0;
-	    		BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate, Dictionary.REMOVE);	            
+	    		BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate, Dictionary.REMOVE, getAnsibleCfgFilePathForAgent(agent));	            
 	            status = beatsTemplateManager.execute();
 	            if (status == 0) {
 	            	logger.info("Successful execution for the delete script generated to agent " + agent.getAgentId());

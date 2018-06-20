@@ -15,6 +15,7 @@ package io.elastest.eim.templates;
 
 import org.apache.log4j.Logger;
 
+import ch.qos.logback.core.pattern.color.ANSIConstants;
 import io.elastest.eim.config.Dictionary;
 import io.elastest.eim.utils.TemplateUtils;
 import io.swagger.model.AgentConfiguration;
@@ -28,11 +29,13 @@ private static Logger logger = Logger.getLogger(BeatsTemplateManager.class);
 	private AgentFull agent;
 	private String action;
 	private AgentConfiguration agentCfg;
+	private String cfgFilePath = "";
 	
-	public BeatsTemplateManager(AgentFull agent, String executionDate, String action) {
+	public BeatsTemplateManager(AgentFull agent, String executionDate, String action, String cfgFilePath) {
 		this.agent = agent;
 		this.executionDate = executionDate;
 		this.action = action;
+		this.cfgFilePath = cfgFilePath;
 	}
 	
 	/**
@@ -52,9 +55,9 @@ private static Logger logger = Logger.getLogger(BeatsTemplateManager.class);
 			//generate files for execution: playbook and script
 			//the fourth argument is the user, that is not used in this playbook. The agent is also registrated, so in this case,
 			//elastest user is the one used.
-			String generatedPlaybookPath = TemplateUtils.generateBeatsPlaybook(executionDate, agent, "", action, agentCfg);
+			String generatedPlaybookPath = TemplateUtils.generateBeatsPlaybook(executionDate, agent, action, agentCfg);
 			if (generatedPlaybookPath != "") {
-				String generatedScriptPath = TemplateUtils.generateBeatsScript(executionDate, agent, generatedPlaybookPath, "", action);	
+				String generatedScriptPath = TemplateUtils.generateBeatsScript(executionDate, agent, generatedPlaybookPath, cfgFilePath, action);	
 				if (generatedScriptPath != null) {
 					//execute generated files
 					return TemplateUtils.executeScript("beats", generatedScriptPath, executionDate, agent);
@@ -72,9 +75,9 @@ private static Logger logger = Logger.getLogger(BeatsTemplateManager.class);
 		}
 		else if (action.equals(Dictionary.REMOVE)) {
 			logger.info("Preparing the execution of beats remove playbook for agent " + agent.getAgentId());
-			String generatedPlaybookPath = TemplateUtils.generateBeatsPlaybook(executionDate, agent, "", action, null);
+			String generatedPlaybookPath = TemplateUtils.generateBeatsPlaybook(executionDate, agent, action, null);
 			if (generatedPlaybookPath != "") {
-				String generatedScriptPath = TemplateUtils.generateBeatsScript(executionDate, agent, generatedPlaybookPath, "", action);	
+				String generatedScriptPath = TemplateUtils.generateBeatsScript(executionDate, agent, generatedPlaybookPath, cfgFilePath, action);	
 				if (generatedScriptPath != null) {
 					//execute generated files
 					return TemplateUtils.executeScript("beats", generatedScriptPath, executionDate, agent);

@@ -30,7 +30,7 @@ public class TemplateUtils {
 
 	private static Logger logger = Logger.getLogger(TemplateUtils.class);
 	
-	public static String generateSshPlaybook(String executionDate, AgentFull agent, String user, String action) {
+	public static String generateSshPlaybook(String executionDate, AgentFull agent, String action) {
 		if (action.equalsIgnoreCase(Dictionary.INSTALL)) {
 			
 			String playbookTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
@@ -48,7 +48,7 @@ public class TemplateUtils {
 				//Fill the playbook with the agentId of the agent
 				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerTemplates, agent.getAgentId());
 				//Fill the playbook with the user of the new host
-				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerUser, user);
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerUser, agent.getUser());
 				logger.info("Modified successfully the generated SSH playbook for agent " + agent.getAgentId() + ". Ready to execute!");
 				return playbookToExecutePath;				
 			} catch (IOException e) {
@@ -83,7 +83,7 @@ public class TemplateUtils {
 		return "";
 	}
 	
-	public static String generateBeatsPlaybook(String executionDate, AgentFull agent, String user, String action, AgentConfiguration agentCfg) {
+	public static String generateBeatsPlaybook(String executionDate, AgentFull agent, String action, AgentConfiguration agentCfg) {
 		 if (action.equalsIgnoreCase(Dictionary.INSTALL)) {			
 
 			String playbookTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_PLAYBOOKPATH) + 
@@ -215,7 +215,7 @@ public class TemplateUtils {
 				//Generate the execution playbook
 				FileTextUtils.copyFile(scriptTemplatePath, scriptToExecutePath);
 				logger.info("Generated successfully the SSH script for agent" + agent.getAgentId() + ": " + scriptToExecutePath);
-				//Fill the playbook with the agentId of the agent
+				//Fill the script with the playbook path
 				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerPlaybookTemplates, playbookPath);
 				//Fill the playbook with the specific ansible config file of the agent
 				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerCfgFileTemplates, ansibleCfgFilePath);
@@ -244,7 +244,7 @@ public class TemplateUtils {
 				//Generate the execution playbook
 				FileTextUtils.copyFile(scriptTemplatePath, scriptToExecutePath);
 				logger.info("Generated successfully the delete SSH script for agent" + agent.getAgentId() + ": " + scriptToExecutePath);
-				//Fill the playbook with the agentId of the agent
+				//Fill the script with the playbook path
 				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerPlaybookTemplates, playbookPath);
 				//Fill the playbook with the specific ansible config file of the agent
 				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerCfgFileTemplates, ansibleCfgFilePath);
@@ -272,13 +272,16 @@ public class TemplateUtils {
 			String scriptToExecutePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_EXECUTIONPATH) + 
 					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_INSTALL_EXECUTION_LAUNCHER_PREFIX) + agent.getAgentId() +"-" + executionDate + ".sh";
 			String jokerTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER_PLAYBOOK);
+			String jokerCfgFileTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER_CONFIG);
 			
 			try {
 				//Generate the execution playbook
 				FileTextUtils.copyFile(scriptTemplatePath, scriptToExecutePath);
 				logger.info("Generated successfully the beats installation script for agent" + agent.getAgentId() + ": " + scriptToExecutePath);
-				
+				//Fill the script with the playbook path
 				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerTemplates, playbookPath);
+				//Fill the playbook with the specific ansible config file of the agent
+				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerCfgFileTemplates, ansibleCfgFilePath);
 				//set the file as executable
 				FileTextUtils.setAsExecutable(scriptToExecutePath);
 				logger.info("Modified successfully the generated beats installation script for agent " + agent.getAgentId() + ". Ready to execute!");
@@ -298,13 +301,16 @@ public class TemplateUtils {
 			String scriptToExecutePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_EXECUTIONPATH) + 
 					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_REMOVE_EXECUTION_LAUNCHER_PREFIX) + agent.getAgentId() +"-" + executionDate + ".sh";
 			String jokerTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER_PLAYBOOK);
+			String jokerCfgFileTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER_CONFIG);
 			
 			try {
 				//Generate the execution playbook
 				FileTextUtils.copyFile(scriptTemplatePath, scriptToExecutePath);
 				logger.info("Generated successfully the beats remove script for agent" + agent.getAgentId() + ": " + scriptToExecutePath);
-				
+				//Fill the script with the playbook path
 				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerTemplates, playbookPath);
+				//Fill the playbook with the specific ansible config file of the agent
+				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerCfgFileTemplates, ansibleCfgFilePath);
 				//set the file as executable
 				FileTextUtils.setAsExecutable(scriptToExecutePath);
 				logger.info("Modified successfully the generated beats remove script for agent " + agent.getAgentId() + ". Ready to execute!");

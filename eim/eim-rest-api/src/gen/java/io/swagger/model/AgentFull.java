@@ -48,6 +48,12 @@ public class AgentFull   {
   
   @JsonProperty("logstash_port")
   private String logstashPort = null;
+  
+  @JsonProperty("user")
+  private String user = null;
+  
+  @JsonProperty("password")
+  private String password = null;
 
   public AgentFull agentId(String agentId) {
     this.agentId = agentId;
@@ -139,6 +145,46 @@ public class AgentFull   {
     this.logstashPort = logstashPort;
   }
 
+  public AgentFull user(String user) {
+	  this.user = user;
+	  return this;
+  }
+
+  /**
+   * Get user
+   * @return user
+   **/
+  @JsonProperty("user")
+  @ApiModelProperty(example = "elastest", required = true, value = "")
+  @NotNull
+  public String getUser() {
+	  return user;
+  }
+
+  public void setUser(String user) {
+	  this.user = user;
+  }
+  
+  public AgentFull password(String password) {
+	  this.password = password;
+	  return this;
+  }
+
+  /**
+   * Get password
+   * @return password
+   **/
+  @JsonProperty("password")
+  @ApiModelProperty(example = "mypass", required = true, value = "")
+  @NotNull
+  public String getPassword() {
+	  return password;
+  }
+
+  public void setPassword(String password) {
+	  this.password = password;
+  }
+
   @Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
@@ -152,12 +198,14 @@ public class AgentFull   {
         Objects.equals(this.host, agentFull.host) &&
         Objects.equals(this.monitored, agentFull.monitored) &&
         Objects.equals(this.logstashIp, agentFull.logstashIp) &&
-        Objects.equals(this.logstashPort, agentFull.logstashPort);
+        Objects.equals(this.logstashPort, agentFull.logstashPort) &&
+        Objects.equals(this.user, agentFull.user) &&
+        Objects.equals(this.password, agentFull.password);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(agentId, host, monitored);
+    return Objects.hash(agentId, host, monitored, logstashIp, logstashPort, user, password);
   }
 
 
@@ -171,6 +219,8 @@ public class AgentFull   {
     sb.append("    monitored: ").append(toIndentedString(monitored)).append("\n");
     sb.append("    logstash_ip: ").append(toIndentedString(logstashIp)).append("\n");
     sb.append("    logstash_port: ").append(toIndentedString(logstashPort)).append("\n");
+    sb.append("    user: ").append(toIndentedString(user)).append("\n");
+    sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("}");
     return sb.toString();
   }

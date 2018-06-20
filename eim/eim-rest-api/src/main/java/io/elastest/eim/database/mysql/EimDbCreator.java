@@ -64,6 +64,8 @@ public class EimDbCreator {
 								  + "monitored tinyint(1) NOT NULL,"
 								  + "logstash_ip varchar(255) NOT NULL,"
 								  + "logstash_port varchar(255) NOT NULL,"
+								  + "user varchar(255) NOT NULL,"
+								  + "password varchar(255) NOT NULL,"
 								  + "PRIMARY KEY (agent_id)"
 						+ ") ENGINE=InnoDB DEFAULT CHARSET=utf8";
 		

@@ -145,7 +145,7 @@ public class EimDbAgentManager {
     		logger.info("Adding new host to DB, host with ipAddress = " + host.getAddress());
     		System.out.println("Adding new host to DB, host with ipAddress = " + host.getAddress());
     		
-    		String sqlInsertHost = "INSERT INTO " + Dictionary.DBTABLE_AGENT + " VALUES (?,?,?,?,?)";
+    		String sqlInsertHost = "INSERT INTO " + Dictionary.DBTABLE_AGENT + " VALUES (?,?,?,?,?,?,?)";
     		pstInsertHost = conn.prepareStatement(sqlInsertHost);
     	
     		pstInsertHost.setString(1, getNewAgentId(conn));
@@ -153,6 +153,8 @@ public class EimDbAgentManager {
     		pstInsertHost.setBoolean(3, false);
     		pstInsertHost.setString(4, host.getLogstashIp());
     		pstInsertHost.setString(5, host.getLogstashPort());
+    		pstInsertHost.setString(6, host.getUser());
+    		pstInsertHost.setString(7, host.getPassword());
     		pstInsertHost.executeUpdate();
     		logger.info("Agent inserted in database wiht ipAddress = " + host.getAddress());
     		
@@ -219,7 +221,7 @@ public class EimDbAgentManager {
 		PreparedStatement pstSelectAgent = null;
 		
 		try {
-			String selectSQL = "SELECT AGENT_ID, HOST, MONITORED, LOGSTASH_IP, LOGSTASH_PORT FROM " + Dictionary.DBTABLE_AGENT + " WHERE AGENT_ID = ?";
+			String selectSQL = "SELECT AGENT_ID, HOST, MONITORED, LOGSTASH_IP, LOGSTASH_PORT, USER, PASSWORD FROM " + Dictionary.DBTABLE_AGENT + " WHERE AGENT_ID = ?";
 			pstSelectAgent = conn.prepareStatement(selectSQL);
 			pstSelectAgent.setString(1, agentId);
 			ResultSet rs = pstSelectAgent.executeQuery();
@@ -230,6 +232,8 @@ public class EimDbAgentManager {
 				agent.setMonitored(rs.getBoolean("MONITORED"));
 				agent.setLogstashIp(rs.getString("LOGSTASH_IP"));
 				agent.setLogstashPort(rs.getString("LOGSTASH_PORT"));
+				agent.setUser(rs.getString("USER"));
+				agent.setPassword(rs.getString("PASSWORD"));
 	        	logger.info("Host finded in DB with agentId = " + agentId + " with ID " + agent.getAgentId());
 	        	System.out.println("Host finded in DB with agentId = " + agentId + " with ID " + agent.getAgentId());
 				return agent;
@@ -290,6 +294,8 @@ public class EimDbAgentManager {
 				agent.setMonitored(rs.getBoolean("MONITORED"));
 				agent.setLogstashIp(rs.getString("LOGSTASH_IP"));
 				agent.setLogstashPort(rs.getString("LOGSTASH_PORT"));
+				agent.setUser(rs.getString("USER"));
+				agent.setPassword(rs.getString("PASSWORD"));
 	        	agents.add(agent);
 			}
 		}
