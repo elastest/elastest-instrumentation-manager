@@ -2,9 +2,18 @@
 # file: playbook-delete-beats-output-logstash-template.yml
 
 - hosts: ##targethost##
-  remote_user: elastest
+  remote_user: ##user##
   become: yes
   tasks:
+   - service:
+       name: packetbeat
+       state: stopped
+   - service:
+       name: metricbeat
+       state: stopped
+   - service:
+       name: filebeat
+       state: stopped
    - name: remove packetbeat
      apt:
        name: packetbeat

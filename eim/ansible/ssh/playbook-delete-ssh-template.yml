@@ -1,11 +1,13 @@
 ---
-#This playbook delete the authorized_keys file in the .ssh directory of the elastest user in sut hosts
-- name: ssh-delete
+#This playbook delete the ssh key from root user of the authorized_keys file in the .ssh directory of the user in SuT
+- name: ssh-key-delete
   hosts: ##targethost## 
-  remote_user: elastest
+  remote_user: ##user##
 
   tasks:
-          - name: delete authorized_keys file
-            file:
+          - name: delete ssh-key from authorized_keys file of the user
+            authorized_key:
+              user: ##user## 
               state: absent
-              path: "/home/elastest/.ssh/authorized_keys"
+              key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+
