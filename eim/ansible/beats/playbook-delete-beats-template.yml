@@ -26,3 +26,4 @@
      apt:
        name: filebeat
        state: absent
+# pending to delete also folder and conf files of each beat located in /etc/<beat_name>
