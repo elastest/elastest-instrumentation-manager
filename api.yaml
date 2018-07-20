@@ -319,6 +319,7 @@ definitions:
       - monitored
       - logstash_ip
       - logstash_port
+      - password
     properties:
       agentId:
         type: string
@@ -335,15 +336,19 @@ definitions:
       logstash_port:
         type: string
         example: 5044
+      password:
+        type: string
+        example: myPassword
     description: This entity defines an agent with all information available.
   AgentConfiguration:
     type: object
     required:
       - exec
       - component
+      - dockerized
       - packetbeat
       - filebeat
-      - topbeat
+      - metricbeat
     properties:
       exec:
         type: string
@@ -351,6 +356,9 @@ definitions:
       component:
         type: string
         example: component_name
+      dockerized:
+        type: string
+        example: yes
       packetbeat:
         type: object
         required:
@@ -374,7 +382,13 @@ definitions:
             items:
               type: string
               example: /var/log/*.log
-      topbeat:
+          dockerized:
+            type: array
+            minLength: 1
+            items:
+              type: string
+              example: /var/lib/docker/containers/
+      metricbeat:
         type: object
         required:
           - stream
@@ -382,7 +396,13 @@ definitions:
           stream:
             type: string
             example: stream3
-    description: This entity defines the configuration that will be applied to the agent.
+          dockerized:
+            type: array
+            minLength: 1
+            items:
+              type: string
+              example: /var/run/docker.sock
+    description: This entity defines the configuration that will be applied to the agent. If dockerized equals "yes" then the dockerized fields in metricbeat and filebeat must be filled. If dockerized equals "no" then the dockerized fields in metricbeat and filebeat can be null (never are used) 
   AgentDeleted:
     type: object
     required:
