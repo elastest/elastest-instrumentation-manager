@@ -8,7 +8,7 @@ Before you start using ElasTest, you need to know the following terms:
 - **SuT (System under Test):** Specification of the System that is being tested for correct operation.
 
 ## Features
-The version 0.8.0 of the EIM, provides the following features:
+The version 0.9.0 of the EIM, provides the following features:
 
 - Register new Instrumentation Agent. 
 - Deploy [Beats](https://www.elastic.co/products/beats) software over the SuT.
@@ -98,9 +98,9 @@ B. SSH keys generated without passphrase:
     
 ### Deploy Beats over the SuT
 The EIM is able to deploy the following Beats using the Instrumentation agents created in SuT:
-- [Packetbeat](https://www.elastic.co/guide/en/beats/packetbeat/5.6/packetbeat-overview.html)
-- [Filebeat](https://www.elastic.co/guide/en/beats/filebeat/5.6/filebeat-overview.html)
-- [Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/5.6/metricbeat-overview.html)
+- [Packetbeat](https://www.elastic.co/guide/en/beats/packetbeat/6.2/index.html)
+- [Filebeat](https://www.elastic.co/guide/en/beats/filebeat/6.2/index.html)
+- [Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/6.2/index.html)
 
 #### Step by step 
 1. The agent must be registered on EIM (previous feature)
@@ -108,6 +108,7 @@ The EIM is able to deploy the following Beats using the Instrumentation agents c
 `{
   "exec": "exec_name",
   "component": "component_name",
+  "dockerized": "no"
   "packetbeat": {
     "stream": "stream1"
   },
@@ -134,9 +135,9 @@ The call to the API must has as headers: `Accept: application/json, Content-Type
 
 ### Undeploy Beats over the SuT
 The EIM is able to undeploy the following Beats using the Instrumentation agents created in SuT:
-- [Packetbeat](https://www.elastic.co/guide/en/beats/packetbeat/5.6/packetbeat-overview.html)
-- [Filebeat](https://www.elastic.co/guide/en/beats/filebeat/5.6/filebeat-overview.html)
-- [Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/5.6/metricbeat-overview.html)
+- [Packetbeat](https://www.elastic.co/guide/en/beats/packetbeat/6.2/index.html)
+- [Filebeat](https://www.elastic.co/guide/en/beats/filebeat/6.2/index.html)
+- [Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/6.2/index.html)
 
 #### Step by step 
 1. The agent must have the Beats installed (previous feature)
@@ -180,6 +181,7 @@ EIM is able to get an existing Instrumentation Agent Configuration using REST AP
 `{
   "exec": "exec_name",
   "component": "component_name",
+  "dockerized": "no"
   "packetbeat": {
     "stream": "stream1"
   },
