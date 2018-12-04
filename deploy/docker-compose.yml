@@ -2,7 +2,6 @@ version: '3'
 
 services:
          eim:
-                #image: elastest/eim:0.9.0
                 image: elastest/eim:latest
                 depends_on:
                         - edm-mysql  
@@ -33,7 +32,8 @@ services:
                         - "37004:8080" 
                 networks:
                         - elastest
-
+                labels:
+                        - io.elastest.type=core
 networks:
         elastest:
                 driver: bridge
