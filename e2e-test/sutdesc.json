@@ -1,0 +1,72 @@
+{
+  "id": 0,
+  "name": "sut-dockerized",
+  "specification": SUTIP
+  "sutType": "MANAGED",
+  "description": "created with Atos image",
+  "project": {
+    "id": PROJID,
+    "name": "",
+    "suts": [],
+    "tjobs": []
+  },
+  "eimConfig": {
+    "id": 0,
+    "privateKey": PRIVATEKEY,
+    "ip": SUTIP,
+    "logstashIp": "172.18.0.5",
+    "logstashTcpHost": "etm",
+    "logstashTcpPort": "5000",
+    "logstashBeatsHost": "etm",
+    "logstashBeatsPort": "5044",
+    "logstashBindedTcpHost": "172.18.0.1",
+    "logstashBindedTcpPort": "37500",
+    "logstashBindedBeatsHost": "172.18.0.1",
+    "logstashBindedBeatsPort": "37502",
+    "logstashHttpPort": "5003",
+    "logstashHttpApiUrl": "http://172.18.0.5:5003/api/monitoring/",
+    "user": "root",
+    "password": "root"
+  },
+  "eimMonitoringConfig": {
+    "id": 0,
+    "exec": "",
+    "component": "sut",
+    "dockerized": true,
+    "beats": {
+      "packetbeat": {
+        "id": 0,
+        "name": "packetbeat",
+        "stream": "et_packetbeat",
+        "paths": []
+      },
+      "filebeat": {
+        "id": 0,
+        "name": "filebeat",
+        "stream": "default_log",
+        "paths": [
+          "/var/log/*.log"
+        ],
+        "dockerized": [
+          "/var/lib/docker/containers/"
+        ]
+      },
+      "metricbeat": {
+        "id": 0,
+        "name": "metricbeat",
+        "stream": "et_metricbeat",
+        "paths": [],
+        "dockerized": [
+          "/var/run/docker.sock"
+        ]
+      }
+    }
+  },
+  "instrumentalize": true,
+  "instrumentedBy": "ELASTEST",
+  "managedDockerType": "COMMANDS",
+  "mainService": "",
+  "parameters": [],
+  "commands": "",
+  "commandsOption": "DEFAULT",
+}
