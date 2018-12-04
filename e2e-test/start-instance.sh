@@ -1,44 +1,40 @@
 #!/bin/bash
 
 ELASTESTURL=$1
+PRIVATEKEY=$2
+SUTIP=$3
 
-echo Initial Test successful
+
+function cleanexit() {
+    # Project destruction
+    echo Destroying project
+    curl -X "DELETE" "$ELASTESTURL/api/project/$PROJID"
+    exit $1
+}
+
+function checknonempty() {
+    if [[ $1X = "X" ]]; then
+        echo Empty string
+        cleanexit -5
+    fi
+}
+
+# Project creation
+echo Creating Project
+PROJ=$(curl -s -H "Content-Type: application/json" -d '{ "id": 0, "name": "EIMe2e" }' "$ELASTESTURL/api/project")
+echo $PROJ
+PROJID=`echo "$PROJ" | tr '\n' ' ' | jq '.id'`
+echo Proj ID: $PROJID
+checknonempty "$PROJID"
 
 # SuT creation
-#echo Creating SuT
-#SUT=$(curl -s -H "Content-Type: application/json" -d @sutdesc.json "$ELASTESTURL/api/sut")
-#echo $SUT
+echo Creating SuT
+DESC=`sed -i -e "s/PROJID/$PROJID/g" -e "s/PRIVATEKEY/$PRIVATEKEY/g" -e "s/SUTIP/$SUTIP/g" sutdesc.json`
+SUT=$(curl -s -H "Content-Type: application/json" -d "$DESC" "$ELASTESTURL/api/sut")
+echo $SUT
+SUTID=`echo "$SUT" | tr '\n' ' ' | jq '.id'`
+echo SuT ID: $SUTID
+checknonempty "$SUTID"
 
-# T-Job creation
-#echo Creating T-Job
-#TJOB=$(curl -s -H "Content-Type: application/json" -d @tjobdesc.json "$ELASTESTURL/api/tjob")
-#echo $TJOB
-
-# T-Job execution
-#echo Executing T-Job
-#TJOBEXEC=$(curl -s -H "Content-Type: application/json" -d '{"tJobParams": []}' "$ELASTESTURL/api/tjob/2/exec")
-#echo $TJOBEXEC
-
-# Getting result
-#n=0
-#while [ $n -le 3000 ]
-#do
-#	n=$(( n+1 ))	 # increments $n
-#	sleep 1
-#	TJOBEXEC=$(curl -s "$ELASTESTURL/api/tjob/2/exec/1/result")
-#    if [[ $TJOBEXEC = *"SUCCESS"* ]]; then
-#        echo Test successful
-#        exit 0
-#    fi
-#    if [[ $TJOBEXEC = *"FAIL"* ]]; then
-#        echo Test failed
-#        exit -1
-#    fi
-#    if [[ $TJOBEXEC = *"ERROR"* ]]; then
-#        echo Test erroneous
-#        exit -1
-#    fi
-#done
-#
-#echo Test took too long
-#exit -1
+echo Test successful
+cleanexit 0

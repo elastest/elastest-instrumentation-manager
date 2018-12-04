@@ -1,7 +1,7 @@
 {
   "id": 0,
   "name": "sut-dockerized",
-  "specification": SUTIP
+  "specification": SUTIP,
   "sutType": "MANAGED",
   "description": "created with Atos image",
   "project": {
@@ -68,5 +68,5 @@
   "mainService": "",
   "parameters": [],
   "commands": "",
-  "commandsOption": "DEFAULT",
+  "commandsOption": "DEFAULT"
 }
