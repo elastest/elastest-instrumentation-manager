@@ -2,7 +2,7 @@
   "id": 0,
   "name": "sut-dockerized",
   "specification": SUTIP,
-  "sutType": "MANAGED",
+  "sutType": "DEPLOYED",
   "description": "created with Atos image",
   "project": {
     "id": PROJID,

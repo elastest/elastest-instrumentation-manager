@@ -29,10 +29,10 @@ checknonempty "$PROJID"
 
 # SuT creation
 echo Creating SuT
-DESC=`sed -i -e "s/PROJID/$PROJID/g" -e "s/PRIVATEKEY/$PRIVATEKEY/g" -e "s/SUTIP/$SUTIP/g" sutdesc.json`
-SUT=$(curl -s -H "Content-Type: application/json" -d "$DESC" "$ELASTESTURL/api/sut")
+sed -i -e "s|PROJID|$PROJID|g" -e "s|PRIVATEKEY|\"$PRIVATEKEY\"|g" -e "s|SUTIP|\"$SUTIP\"|g" sutdesc.json
+SUT=$(curl -s -H "Content-Type: application/json" -d @sutdesc.json "$ELASTESTURL/api/sut")
 echo $SUT
-SUTID=`echo "$SUT" | tr '\n' ' ' | grep -wo .id.:[0-9]* | cut -d ':' -f 2`
+SUTID=`echo "$SUT" | tr '\n' ' ' | grep -wo eimConfig.:..id.:[0-9]* | cut -d ':' -f 3`
 echo SuT ID: $SUTID
 checknonempty "$SUTID"
 
