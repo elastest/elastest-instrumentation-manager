@@ -23,7 +23,7 @@ function checknonempty() {
 echo Creating Project
 PROJ=$(curl -s -H "Content-Type: application/json" -d '{ "id": 0, "name": "EIMe2e" }' "$ELASTESTURL/api/project")
 echo $PROJ
-PROJID=`echo "$PROJ" | tr '\n' ' ' | jq '.id'`
+PROJID=`echo "$PROJ" | tr '\n' ' ' | grep -wo .id.:[0-9]* | cut -d ':' -f 2`
 echo Proj ID: $PROJID
 checknonempty "$PROJID"
 
@@ -32,7 +32,7 @@ echo Creating SuT
 DESC=`sed -i -e "s/PROJID/$PROJID/g" -e "s/PRIVATEKEY/$PRIVATEKEY/g" -e "s/SUTIP/$SUTIP/g" sutdesc.json`
 SUT=$(curl -s -H "Content-Type: application/json" -d "$DESC" "$ELASTESTURL/api/sut")
 echo $SUT
-SUTID=`echo "$SUT" | tr '\n' ' ' | jq '.id'`
+SUTID=`echo "$SUT" | tr '\n' ' ' | grep -wo .id.:[0-9]* | cut -d ':' -f 2`
 echo SuT ID: $SUTID
 checknonempty "$SUTID"
 
