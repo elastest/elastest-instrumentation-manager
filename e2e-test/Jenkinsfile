@@ -11,36 +11,6 @@ elastest_lib.setMode('experimental-lite')
 //definition of nodes is managed by the library. Just declare the steps of your pipeline
 //inside the elastest_lib.pipeline({...})
 
-
-
-def isBeatsUp() {
-
-    def isFileBeatDown = true
-    def isMetricBeatDown = true
-    def isPacketBeatDown = true
-    def result = false
-
-    do {
-
-        sleep(5000)
-
-        sutContainer.inside("-u root") {
-            sh 'service filebeat status'
-            result = sh returnStdout: true, script: 'echo $?'
-            isFileBeatDown = result != 0
-
-            sh 'service metricbeat status'
-            result = sh returnStdout: true, script: 'echo $?'
-            isMetricBeatDown = result != 0
-
-            sh 'service packetbeat status'
-            result = sh returnStdout: true, script: 'echo $?'
-            isPacketBeatDown = result != 0
-        }
-
-    } while (isFileBeatDown || isMetricBeatDown || isPacketBeatDown)
-}
-
 elastest_lib.pipeline({
 
     stage ('docker container')
@@ -69,15 +39,42 @@ elastest_lib.pipeline({
 
             stage ("E2E tests")
                 try {
-                     sh "cd e2e-test; bash ./create-sut.sh "+elastestURL+" "+privateKey+" "+ipAddr
+                     sh "cd e2e-test; bash ./create-sut-tjob.sh "+elastestURL+" "+privateKey+" "+ipAddr
+                     //def projId = sh returnStdout: true, script: "cat $sutResult | grep 'SuT ID' | cut -d ':' -f 2 | grep -wo [0-9]*"
+                     //def sutId = sh returnStdout: true, script: "cat $sutResult | grep 'Proj ID' | cut -d ':' -f 2 | grep -wo [0-9]*"
                      //sh "echo Initial Test successful;"
 
                     try {
                         timeout(time: 180, unit: 'SECONDS') {
-                            checkBeatsServiceStatus()
+
+                            def isFileBeatDown = true
+                            def isMetricBeatDown = true
+                            def isPacketBeatDown = true
+                            def result = false
+
+                            while (isFileBeatDown || isMetricBeatDown || isPacketBeatDown) {
+
+                                sleep(10)
+
+                                sutContainer.inside("-u root --name=sut-dockerized -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/containers/:/var/lib/docker/containers/") {
+                                    sh 'service filebeat status'
+                                    result = sh returnStdout: true, script: 'echo $?'
+                                    isFileBeatDown = result != 0
+
+                                    sh 'service metricbeat status'
+                                    result = sh returnStdout: true, script: 'echo $?'
+                                    isMetricBeatDown = result != 0
+
+                                    sh 'service packetbeat status'
+                                    result = sh returnStdout: true, script: 'echo $?'
+                                    isPacketBeatDown = result != 0
+                                }
+                            }
                         }
                     } catch(e) {
+                        def message = e.getMessage()
                         sh "echo BEATS SERVICES INITIALIZATION FAILURE"
+                        sh "echo $message"
                         throw e
                     }
 

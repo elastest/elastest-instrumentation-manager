@@ -20,9 +20,10 @@ function checknonempty() {
 }
 
 # Project creation
-echo Creating Project
+echo "Creating Project"
 PROJ=$(curl -s -H "Content-Type: application/json" -d '{ "id": 0, "name": "EIMe2e" }' "$ELASTESTURL/api/project")
 echo $PROJ
+
 PROJID=`echo "$PROJ" | tr '\n' ' ' | grep -wo .id.:[0-9]* | cut -d ':' -f 2`
 echo Proj ID: $PROJID
 checknonempty "$PROJID"
@@ -32,9 +33,20 @@ echo Creating SuT
 sed -i -e "s|PROJID|$PROJID|g" -e "s|PRIVATEKEY|\"$PRIVATEKEY\"|g" -e "s|SUTIP|\"$SUTIP\"|g" sutdesc.json
 SUT=$(curl -s -H "Content-Type: application/json" -d @sutdesc.json "$ELASTESTURL/api/sut")
 echo $SUT
+
 SUTID=`echo "$SUT" | tr '\n' ' ' | grep -wo eimConfig.:..id.:[0-9]* | cut -d ':' -f 3`
 echo SuT ID: $SUTID
 checknonempty "$SUTID"
+
+# T-Job creation
+echo Creating T-Job
+sed -i -e "s|PROJID|$PROJID|g" -e "s|SUTID|$SUTID|g" tjobdesc.json
+TJOB=$(curl -s -H "Content-Type: application/json" -d @tjobdesc.json "$ELASTESTURL/api/tjob")
+echo $TJOB
+
+TJOBID=`echo "$TJOB" | grep -wo .id.:[0-9]*,.name.:.eim.tjob | cut -d ',' -f 1 | cut -d ':' -f 2`
+echo TJob ID: $TJOBID
+checknonempty "$TJOBID"
 
 #echo Test successful
 #cleanexit 0
