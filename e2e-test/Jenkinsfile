@@ -11,43 +11,85 @@ elastest_lib.setMode('experimental-lite')
 //definition of nodes is managed by the library. Just declare the steps of your pipeline
 //inside the elastest_lib.pipeline({...})
 
+
+
+def isBeatsUp() {
+
+    def isFileBeatDown = true
+    def isMetricBeatDown = true
+    def isPacketBeatDown = true
+    def result = false
+
+    do {
+
+        sleep(5000)
+
+        sutContainer.inside("-u root") {
+            sh 'service filebeat status'
+            result = sh returnStdout: true, script: 'echo $?'
+            isFileBeatDown = result != 0
+
+            sh 'service metricbeat status'
+            result = sh returnStdout: true, script: 'echo $?'
+            isMetricBeatDown = result != 0
+
+            sh 'service packetbeat status'
+            result = sh returnStdout: true, script: 'echo $?'
+            isPacketBeatDown = result != 0
+        }
+
+    } while (isFileBeatDown || isMetricBeatDown || isPacketBeatDown)
+}
+
 elastest_lib.pipeline({
-    
+
     stage ('docker container')
         def elastestContainer = elastest.ctx.docker.image('elastest/ci-docker-e2e:latest')
         elastestContainer.pull()
-        elastesetContainer.inside("-u jenkins -v /var/run/docker.sock:/var/run/docker.sock:rw -v /dev/shm:/dev/shm")  {
+        elastestContainer.inside("-u jenkins -v /var/run/docker.sock:/var/run/docker.sock:rw -v /dev/shm:/dev/shm")  {
             sh '/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf &'
 
-            def privateKey = ""
-            def ipAddr = ""
             def sutContainer = elastest.ctx.docker.image('elastest/eim-sut')
-            sutContainer.pull()
-            sutContainer.inside("-u root --name=sut-dockerized -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/containers/:/var/lib/docker/containers/") {
 
-                sh 'cp /root/.ssh/id_rsa .; sed -i "\$ d" id_rsa; sed -i "1d" id_rsa'
-                privateKey = sh returnStdout: true, script: 'tr -d "\n" < id_rsa'
-                ipAddr = sh returnStdout: true, script: 'hostname -I'
-            }
-          
             stage ('prepare')
+
+                def privateKey = ""
+                def ipAddr = ""
+                sutContainer.pull()
+                sutContainer.inside("-u root --name=sut-dockerized -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/containers/:/var/lib/docker/containers/") {
+
+                    sh 'cp /root/.ssh/id_rsa .; sed -i "\$ d" id_rsa; sed -i "1d" id_rsa'
+                    privateKey = sh returnStdout: true, script: 'tr -d "\n" < id_rsa'
+                    ipAddr = sh returnStdout: true, script: 'hostname -I'
+                }
+
                 git 'https://github.com/elastest/elastest-instrumentation-manager.git'
                 elastest.connect2ElastestNetwork()
                 def elastestURL = elastest.getEtmUrl()
-                
+
             stage ("E2E tests")
                 try {
-                     //sh "cd e2e-test; bash ./start-instance.sh "+elastestURL+" "+privateKey+" "+ipAddr
-                     sh "echo Initial Test successful;"
+                     sh "cd e2e-test; bash ./create-sut.sh "+elastestURL+" "+privateKey+" "+ipAddr
+                     //sh "echo Initial Test successful;"
+
+                    try {
+                        timeout(time: 180, unit: 'SECONDS') {
+                            checkBeatsServiceStatus()
+                        }
+                    } catch(e) {
+                        sh "echo BEATS SERVICES INITIALIZATION FAILURE"
+                        throw e
+                    }
+
                 } catch(e) {
                     sh '''\
                        docker ps --all
                        docker ps --filter name=eus -q
                        docker ps --filter name=eus -q | xargs -L 1 docker logs || true
                        docker ps --filter name=eus -q | xargs -L 1 docker inspect || true
-                    ''' 
+                    '''
                 } finally {
                     //step([$class: 'JUnitResultArchiver', testDataPublishers: [[$class: 'AttachmentPublisher']], testResults: '**/target/surefire-reports/TEST-*.xml'])
-                }   
+                }
         }
   })

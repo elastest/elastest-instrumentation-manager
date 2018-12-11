@@ -36,5 +36,5 @@ SUTID=`echo "$SUT" | tr '\n' ' ' | grep -wo eimConfig.:..id.:[0-9]* | cut -d ':'
 echo SuT ID: $SUTID
 checknonempty "$SUTID"
 
-echo Test successful
-cleanexit 0
+#echo Test successful
+#cleanexit 0
