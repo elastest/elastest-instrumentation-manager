@@ -23,70 +23,66 @@ elastest_lib.pipeline({
 
             stage ('prepare')
 
+                git 'https://github.com/elastest/elastest-instrumentation-manager.git'
+                elastest.connect2ElastestNetwork()
+                def elastestURL = elastest.getEtmUrl()
+
                 def privateKey = ""
                 def ipAddr = ""
                 sutContainer.pull()
                 sutContainer.inside("-u root --name=sut-dockerized -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/containers/:/var/lib/docker/containers/") {
 
-                    sh 'cp /root/.ssh/id_rsa .; sed -i "\$ d" id_rsa; sed -i "1d" id_rsa'
-                    privateKey = sh returnStdout: true, script: 'tr -d "\n" < id_rsa'
+                    //sh 'cp /root/.ssh/id_rsa .; sed -i "\$ d" id_rsa; sed -i "1d" id_rsa'
+                    //privateKey = sh returnStdout: true, script: 'tr -d "\n" < id_rsa'
+                    sh "cat /root/.ssh/id_rsa"
+                    sh "touch id_rsa"
+                    sh "awk '{printf \"%s\\\\n\", \$0}' /root/.ssh/id_rsa > id_rsa"
+                    sh "sed -i -e '\$ s|.\$||' -e '\$ s|.\$||' id_rsa"
+                    privateKey = readFile 'id_rsa'
                     ipAddr = sh returnStdout: true, script: 'hostname -I'
-                }
-
-                git 'https://github.com/elastest/elastest-instrumentation-manager.git'
-                elastest.connect2ElastestNetwork()
-                def elastestURL = elastest.getEtmUrl()
-
-            stage ("E2E tests")
-                try {
-                     sh "cd e2e-test; bash ./create-sut-tjob.sh "+elastestURL+" "+privateKey+" "+ipAddr
-                     //def projId = sh returnStdout: true, script: "cat $sutResult | grep 'SuT ID' | cut -d ':' -f 2 | grep -wo [0-9]*"
-                     //def sutId = sh returnStdout: true, script: "cat $sutResult | grep 'Proj ID' | cut -d ':' -f 2 | grep -wo [0-9]*"
-                     //sh "echo Initial Test successful;"
+                    sh "echo $ipAddr"
 
                     try {
-                        timeout(time: 180, unit: 'SECONDS') {
+                        sh "cd /home/ubuntu/workspace/elastest-instrumentation-manager/eim-e2e-test/e2e-test; bash ./create-sut-tjob.sh "+elastestURL+" "+privateKey+" "+ipAddr
+                        //def projId = sh returnStdout: true, script: "cat $sutResult | grep 'SuT ID' | cut -d ':' -f 2 | grep -wo [0-9]*"
+                        //def sutId = sh returnStdout: true, script: "cat $sutResult | grep 'Proj ID' | cut -d ':' -f 2 | grep -wo [0-9]*"
+                        //sh "echo Initial Test successful;"
 
-                            def isFileBeatDown = true
-                            def isMetricBeatDown = true
-                            def isPacketBeatDown = true
-                            def result = false
+                        sleep(180)
 
-                            while (isFileBeatDown || isMetricBeatDown || isPacketBeatDown) {
+                        def isFileBeatDown = true
+                        def isMetricBeatDown = true
+                        def isPacketBeatDown = true
+                        def result = false
 
-                                sleep(10)
+                        def ipad = sh returnStdout: true, script: 'hostname -I'
+                        sh "echo $ipad"
 
-                                sutContainer.inside("-u root --name=sut-dockerized -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/containers/:/var/lib/docker/containers/") {
-                                    sh 'service filebeat status'
-                                    result = sh returnStdout: true, script: 'echo $?'
-                                    isFileBeatDown = result != 0
+                        sh 'service filebeat status'
+                        result = sh returnStdout: true, script: 'echo $?'
+                        isFileBeatDown = result != 0
 
-                                    sh 'service metricbeat status'
-                                    result = sh returnStdout: true, script: 'echo $?'
-                                    isMetricBeatDown = result != 0
+                        sh 'service metricbeat status'
+                        result = sh returnStdout: true, script: 'echo $?'
+                        isMetricBeatDown = result != 0
 
-                                    sh 'service packetbeat status'
-                                    result = sh returnStdout: true, script: 'echo $?'
-                                    isPacketBeatDown = result != 0
-                                }
-                            }
+                        sh 'service packetbeat status'
+                        result = sh returnStdout: true, script: 'echo $?'
+                        isPacketBeatDown = result != 0
+
+                        if (isPacketBeatDown || isMetricBeatDown || isFileBeatDown) {
+                            throw new Exception("BEATS INITIALIZATION FAILURE")
                         }
                     } catch(e) {
-                        def message = e.getMessage()
-                        sh "echo BEATS SERVICES INITIALIZATION FAILURE"
-                        sh "echo $message"
-                        throw e
-                    }
-
-                } catch(e) {
-                    sh '''\
+                        sh '''\
                        docker ps --all
                        docker ps --filter name=eus -q
                        docker ps --filter name=eus -q | xargs -L 1 docker logs || true
                        docker ps --filter name=eus -q | xargs -L 1 docker inspect || true
                     '''
-                } finally {
-                    //step([$class: 'JUnitResultArchiver', testDataPublishers: [[$class: 'AttachmentPublisher']], testResults: '**/target/surefire-reports/TEST-*.xml'])
+                    } finally {
+                        //step([$class: 'JUnitResultArchiver', testDataPublishers: [[$class: 'AttachmentPublisher']], testResults: '**/target/surefire-reports/TEST-*.xml'])
+                    }
                 }
         }
   })
