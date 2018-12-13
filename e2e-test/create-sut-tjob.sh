@@ -28,6 +28,9 @@ PROJID=`echo "$PROJ" | tr '\n' ' ' | grep -wo .id.:[0-9]* | cut -d ':' -f 2`
 echo Proj ID: $PROJID
 checknonempty "$PROJID"
 
+touch projid_file
+echo $PROJID > projid_file
+
 # SuT creation
 echo Creating SuT
 sed -i -e "s|PROJID|$PROJID|g" -e "s|PRIVATEKEY|\"$PRIVATEKEY\"|g" -e "s|SUTIP|\"$SUTIP\"|g" sutdesc.json

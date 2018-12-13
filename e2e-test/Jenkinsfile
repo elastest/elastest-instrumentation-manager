@@ -41,48 +41,60 @@ elastest_lib.pipeline({
                     privateKey = readFile 'id_rsa'
                     ipAddr = sh returnStdout: true, script: 'hostname -I'
                     sh "echo $ipAddr"
+                }
 
-                    try {
-                        sh "cd /home/ubuntu/workspace/elastest-instrumentation-manager/eim-e2e-test/e2e-test; bash ./create-sut-tjob.sh "+elastestURL+" "+privateKey+" "+ipAddr
-                        //def projId = sh returnStdout: true, script: "cat $sutResult | grep 'SuT ID' | cut -d ':' -f 2 | grep -wo [0-9]*"
-                        //def sutId = sh returnStdout: true, script: "cat $sutResult | grep 'Proj ID' | cut -d ':' -f 2 | grep -wo [0-9]*"
-                        //sh "echo Initial Test successful;"
+            stage ("E2E tests")
+                try {
+                     sh "cd e2e-test; bash ./create-sut-tjob.sh "+elastestURL+" "+privateKey+" "+ipAddr
+                     //def projId = sh returnStdout: true, script: "cat $sutResult | grep 'SuT ID' | cut -d ':' -f 2 | grep -wo [0-9]*"
+                     //def sutId = sh returnStdout: true, script: "cat $sutResult | grep 'Proj ID' | cut -d ':' -f 2 | grep -wo [0-9]*"
+                     //sh "echo Initial Test successful;"
 
-                        sleep(180)
+                    sleep(180)
 
-                        def isFileBeatDown = true
-                        def isMetricBeatDown = true
-                        def isPacketBeatDown = true
-                        def result = false
+                    def projID = sh returnStdout: true, script: 'cat projid_file'
+                    sh "bash ./check-beat-status.sh "+elastestURL+" "+projID
 
-                        def ipad = sh returnStdout: true, script: 'hostname -I'
-                        sh "echo $ipad"
+                    sh "echo TEST_SUCCESSFULL"
+//
+//
+//                    def isFileBeatDown = true
+//                    def isMetricBeatDown = true
+//                    def isPacketBeatDown = true
+//                    def result = false
+//
+//                    sutContainer.inside {
+//
+//                        def ipad = sh returnStdout: true, script: 'hostname -I'
+//                        sh "echo $ipad"
+//
+//                        sh 'service filebeat status'
+//                        result = sh returnStdout: true, script: 'echo $?'
+//                        isFileBeatDown = result != 0
+//
+//                        sh 'service metricbeat status'
+//                        result = sh returnStdout: true, script: 'echo $?'
+//                        isMetricBeatDown = result != 0
+//
+//                        sh 'service packetbeat status'
+//                        result = sh returnStdout: true, script: 'echo $?'
+//                        isPacketBeatDown = result != 0
+//                    }
+//
+//                    if (isPacketBeatDown || isMetricBeatDown || isFileBeatDown) {
+//                        throw new Exception("BEATS INITIALIZATION FAILURE")
+//                    }
 
-                        sh 'service filebeat status'
-                        result = sh returnStdout: true, script: 'echo $?'
-                        isFileBeatDown = result != 0
 
-                        sh 'service metricbeat status'
-                        result = sh returnStdout: true, script: 'echo $?'
-                        isMetricBeatDown = result != 0
-
-                        sh 'service packetbeat status'
-                        result = sh returnStdout: true, script: 'echo $?'
-                        isPacketBeatDown = result != 0
-
-                        if (isPacketBeatDown || isMetricBeatDown || isFileBeatDown) {
-                            throw new Exception("BEATS INITIALIZATION FAILURE")
-                        }
-                    } catch(e) {
-                        sh '''\
+                } catch(e) {
+                    sh '''\
                        docker ps --all
                        docker ps --filter name=eus -q
                        docker ps --filter name=eus -q | xargs -L 1 docker logs || true
                        docker ps --filter name=eus -q | xargs -L 1 docker inspect || true
                     '''
-                    } finally {
-                        //step([$class: 'JUnitResultArchiver', testDataPublishers: [[$class: 'AttachmentPublisher']], testResults: '**/target/surefire-reports/TEST-*.xml'])
-                    }
+                } finally {
+                    //step([$class: 'JUnitResultArchiver', testDataPublishers: [[$class: 'AttachmentPublisher']], testResults: '**/target/surefire-reports/TEST-*.xml'])
                 }
         }
   })
