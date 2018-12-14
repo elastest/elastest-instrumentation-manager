@@ -28,6 +28,7 @@ PROJID=`echo "$PROJ" | tr '\n' ' ' | grep -wo .id.:[0-9]* | cut -d ':' -f 2`
 echo Proj ID: $PROJID
 checknonempty "$PROJID"
 
+pwd
 touch projid_file
 echo $PROJID > projid_file
 

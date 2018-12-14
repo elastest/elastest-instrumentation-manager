@@ -36,7 +36,7 @@ elastest_lib.pipeline({
                     //privateKey = sh returnStdout: true, script: 'tr -d "\n" < id_rsa'
                     sh "cat /root/.ssh/id_rsa"
                     sh "touch id_rsa"
-                    sh "awk '{printf \"%s\\\\n\", \$0}' /root/.ssh/id_rsa > id_rsa"
+                    sh "awk '{printf \"%s\\\\\\\\n\", \$0}' /root/.ssh/id_rsa > id_rsa"
                     sh "sed -i -e '\$ s|.\$||' -e '\$ s|.\$||' id_rsa"
                     privateKey = readFile 'id_rsa'
                     ipAddr = sh returnStdout: true, script: 'hostname -I'
@@ -45,6 +45,7 @@ elastest_lib.pipeline({
 
             stage ("E2E tests")
                 try {
+                     sh "pwd"
                      sh "cd e2e-test; bash ./create-sut-tjob.sh "+elastestURL+" "+privateKey+" "+ipAddr
                      //def projId = sh returnStdout: true, script: "cat $sutResult | grep 'SuT ID' | cut -d ':' -f 2 | grep -wo [0-9]*"
                      //def sutId = sh returnStdout: true, script: "cat $sutResult | grep 'Proj ID' | cut -d ':' -f 2 | grep -wo [0-9]*"
@@ -52,7 +53,8 @@ elastest_lib.pipeline({
 
                     sleep(180)
 
-                    def projID = sh returnStdout: true, script: 'cat projid_file'
+                    sh "pwd"
+                    def projID = sh returnStdout: true, script: 'cat e2e-test/projid_file'
                     sh "bash ./check-beat-status.sh "+elastestURL+" "+projID
 
                     sh "echo TEST_SUCCESSFULL"
