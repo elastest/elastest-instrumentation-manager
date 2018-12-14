@@ -45,17 +45,16 @@ elastest_lib.pipeline({
 
             stage ("E2E tests")
                 try {
-                     sh "pwd"
-                     sh "cd e2e-test; bash ./create-sut-tjob.sh "+elastestURL+" "+privateKey+" "+ipAddr
+                     writeFile file: "e2e-test/pKey", text: privateKey
+                     sh "cd e2e-test; bash ./create-sut-tjob.sh "+elastestURL+" "+ipAddr
                      //def projId = sh returnStdout: true, script: "cat $sutResult | grep 'SuT ID' | cut -d ':' -f 2 | grep -wo [0-9]*"
                      //def sutId = sh returnStdout: true, script: "cat $sutResult | grep 'Proj ID' | cut -d ':' -f 2 | grep -wo [0-9]*"
                      //sh "echo Initial Test successful;"
 
                     sleep(180)
 
-                    sh "pwd"
                     def projID = sh returnStdout: true, script: 'cat e2e-test/projid_file'
-                    sh "bash ./check-beat-status.sh "+elastestURL+" "+projID
+                    sh "cd e2e-test; bash ./check-beat-status.sh "+elastestURL+" "+projID
 
                     sh "echo TEST_SUCCESSFULL"
 //

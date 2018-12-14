@@ -1,8 +1,8 @@
 #!/bin/bash
 
 ELASTESTURL=$1
-PRIVATEKEY=$2
-SUTIP=$3
+SUTIP=$2
+PRIVATEKEY=$(cat pKey)
 
 
 function cleanexit() {
