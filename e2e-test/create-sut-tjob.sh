@@ -51,6 +51,3 @@ echo $TJOB
 TJOBID=`echo "$TJOB" | grep -wo .id.:[0-9]*,.name.:.eim.tjob | cut -d ',' -f 1 | cut -d ':' -f 2`
 echo TJob ID: $TJOBID
 checknonempty "$TJOBID"
-
-#echo Test successful
-#cleanexit 0

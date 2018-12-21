@@ -32,11 +32,11 @@ elastest_lib.pipeline({
                 sutContainer.pull()
                 sutContainer.inside("-u root --name=sut-dockerized -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/containers/:/var/lib/docker/containers/") {
 
-                    //sh 'cp /root/.ssh/id_rsa .; sed -i "\$ d" id_rsa; sed -i "1d" id_rsa'
-                    //privateKey = sh returnStdout: true, script: 'tr -d "\n" < id_rsa'
                     sh "cat /root/.ssh/id_rsa"
                     sh "touch id_rsa"
+                    // Replacing newline characters with literal \n
                     sh "awk '{printf \"%s\\\\\\\\n\", \$0}' /root/.ssh/id_rsa > id_rsa"
+                    // Removing last two characters
                     sh "sed -i -e '\$ s|.\$||' -e '\$ s|.\$||' id_rsa"
                     privateKey = readFile 'id_rsa'
                     ipAddr = sh returnStdout: true, script: 'hostname -I'
@@ -47,9 +47,6 @@ elastest_lib.pipeline({
                 try {
                      writeFile file: "e2e-test/pKey", text: privateKey
                      sh "cd e2e-test; bash ./create-sut-tjob.sh "+elastestURL+" "+ipAddr
-                     //def projId = sh returnStdout: true, script: "cat $sutResult | grep 'SuT ID' | cut -d ':' -f 2 | grep -wo [0-9]*"
-                     //def sutId = sh returnStdout: true, script: "cat $sutResult | grep 'Proj ID' | cut -d ':' -f 2 | grep -wo [0-9]*"
-                     //sh "echo Initial Test successful;"
 
                     sleep(180)
 
@@ -57,34 +54,6 @@ elastest_lib.pipeline({
                     sh "cd e2e-test; bash ./check-beat-status.sh "+elastestURL+" "+projID
 
                     sh "echo TEST_SUCCESSFULL"
-//
-//
-//                    def isFileBeatDown = true
-//                    def isMetricBeatDown = true
-//                    def isPacketBeatDown = true
-//                    def result = false
-//
-//                    sutContainer.inside {
-//
-//                        def ipad = sh returnStdout: true, script: 'hostname -I'
-//                        sh "echo $ipad"
-//
-//                        sh 'service filebeat status'
-//                        result = sh returnStdout: true, script: 'echo $?'
-//                        isFileBeatDown = result != 0
-//
-//                        sh 'service metricbeat status'
-//                        result = sh returnStdout: true, script: 'echo $?'
-//                        isMetricBeatDown = result != 0
-//
-//                        sh 'service packetbeat status'
-//                        result = sh returnStdout: true, script: 'echo $?'
-//                        isPacketBeatDown = result != 0
-//                    }
-//
-//                    if (isPacketBeatDown || isMetricBeatDown || isFileBeatDown) {
-//                        throw new Exception("BEATS INITIALIZATION FAILURE")
-//                    }
 
 
                 } catch(e) {
