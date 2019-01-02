@@ -20,7 +20,7 @@ function checknonempty() {
 
 # Project creation
 echo "Checking beats services"
-AGENTS=$(curl -s -H "Content-Type: application/json" "$ELASTESTURL/api/agent")
+AGENTS=$(curl -s -H "Content-Type: application/json" "$ELASTESTURL/eim/api/agent")
 echo $AGENTS
 
 RESULT=`echo "$AGENTS" | grep -wo .status.:[0-9]* | cut -d ':' -f 2`
