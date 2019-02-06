@@ -1,0 +1,69 @@
+def elastestURL = ""
+node("et_in_et"){
+    
+    elastest(tss: ['EUS'], surefireReportsPattern: '**/target/surefire-reports/TEST-*.xml', project: 'ETinET_EIM', sut:11){
+        echo "...STARTING..."
+    
+        stage ('docker container')
+            //Referencia a la librería: def elastestContainer = elastest.ctx.docker.image('elastest/ci-docker-e2e:latest')
+            
+            def elastestContainer = docker.image('elastest/ci-docker-e2e:latest')
+
+            elastestContainer.pull()
+            elastestContainer.inside("-u jenkins -v /var/run/docker.sock:/var/run/docker.sock:rw -v /dev/shm:/dev/shm")  {
+                sh '/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf &'
+    
+                // referencia a la libreria... def sutContainer = elastest.ctx.docker.image('elastest/eim-sut')
+                
+                def sutContainer = docker.image('elastest/eim-sut')
+                
+                stage ('prepare')
+    
+                    git 'https://github.com/elastest/elastest-instrumentation-manager.git'
+                    //library reference delete elastest.connect2ElastestNetwork()
+                    
+                    // referencia a la librería elastestURL = elastest.getEtmUrl() => 
+                    //sustituir por la env.SUT_PROTOCOL y env.SUT_URL (o algo así mirad en el pipeline del torm)
+    
+                    def privateKey = ""
+                    def ipAddr = ""
+                    sutContainer.pull()
+                    sutContainer.inside("-u root --name=sut-dockerized -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/containers/:/var/lib/docker/containers/") {
+    
+                        sh "cat /root/.ssh/id_rsa"
+                        sh "touch id_rsa"
+                        // Replacing newline characters with literal \n
+                        sh "awk '{printf \"%s\\\\\\\\n\", \$0}' /root/.ssh/id_rsa > id_rsa"
+                        // Removing last two characters
+                        sh "sed -i -e '\$ s|.\$||' -e '\$ s|.\$||' id_rsa"
+                        privateKey = readFile 'id_rsa'
+                        ipAddr = sh returnStdout: true, script: 'hostname -I'
+                        sh "echo $ipAddr"
+                    }
+    
+                stage ("API tests")
+                    try {
+                         writeFile file: "e2e-test/pKey", text: privateKey
+                         sh "cd e2e-test; bash ./create-sut-tjob.sh "+elastestURL+" "+ipAddr
+    
+                        sleep(180)
+    
+                        def projID = sh returnStdout: true, script: 'cat e2e-test/projid_file'
+                        sh "cd e2e-test; bash ./check-beat-status.sh "+elastestURL+" "+projID
+    
+                        sh "echo TEST_SUCCESSFULL"
+    
+    
+                    } catch(e) {
+                        sh '''\
+                           docker ps --all
+                           docker ps --filter name=eus -q
+                           docker ps --filter name=eus -q | xargs -L 1 docker logs || true
+                           docker ps --filter name=eus -q | xargs -L 1 docker inspect || true
+                        '''
+                    } finally {
+                        //step([$class: 'JUnitResultArchiver', testDataPublishers: [[$class: 'AttachmentPublisher']], testResults: '**/target/surefire-reports/TEST-*.xml'])
+                    }
+            }
+    }
+  }
