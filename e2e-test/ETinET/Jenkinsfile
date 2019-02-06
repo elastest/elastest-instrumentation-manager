@@ -1,4 +1,6 @@
 def elastestURL = ""
+
+
 node("et_in_et"){
     
     elastest(tss: ['EUS'], surefireReportsPattern: '**/target/surefire-reports/TEST-*.xml', project: 'ETinET_EIM', sut:11){
@@ -7,7 +9,7 @@ node("et_in_et"){
         stage ('docker container')
             //Referencia a la librería: def elastestContainer = elastest.ctx.docker.image('elastest/ci-docker-e2e:latest')
             
-            def elastestContainer = docker.image('elastest/ci-docker-e2e:1.0.0')
+            def elastestContainer = docker.image('elastest/ci-docker-e2e:latest')
 
             elastestContainer.pull()
             elastestContainer.inside("-u jenkins -v /var/run/docker.sock:/var/run/docker.sock:rw -v /dev/shm:/dev/shm")  {
@@ -15,7 +17,7 @@ node("et_in_et"){
     
                 // referencia a la libreria... def sutContainer = elastest.ctx.docker.image('elastest/eim-sut')
                 
-                def sutContainer = docker.image('elastest/eim-sut:1.0.0')
+                def sutContainer = docker.image('elastest/eim-sut:latest')
                 
                 stage ('prepare')
     
