@@ -1,5 +1,5 @@
 FROM williamyeh/ansible:ubuntu14.04-onbuild
-MAINTAINER  David Rojo <david.rojoa@atos.net>
+MAINTAINER  David Rojo <david.rojoa@atos.net> & Fernando Mendez <fernando.mendez@atos.net>
 
 # Set Image Labels
 ARG GIT_COMMIT=unspecified
@@ -72,6 +72,10 @@ COPY ansible/beats/setup-files/filebeat.yml /var/ansible/beats/setup-files
 COPY ansible/beats/setup-files/metricbeat.yml /var/ansible/beats/setup-files
 COPY ansible/beats/setup-files/packetbeat.yml /var/ansible/beats/setup-files
 
+# beats - EXECBEAT
+COPY ansible/beats/playbook-install-beat-execbeat.yml /var/ansible/beats
+COPY ansible/beats/setup-files/execbeat.yml /var/ansible/beats/setup-files
+
 # restart tomcat server to refresh the value of the properties 
 COPY tomcat/restart_tomcat.sh /var/tomcat/restart_tomcat.sh
 RUN chmod +x /var/tomcat/restart_tomcat.sh
@@ -85,4 +89,7 @@ COPY eim-rest-api/target/eim-rest-api-0.0.1-SNAPSHOT.war /var/lib/tomcat7/webapp
 # start tomcat7
 ADD run.sh /root/run.sh
 RUN chmod +x /root/run.sh
-CMD ["/root/run.sh"]
+#ADD wait.sh /root/wait.sh
+#RUN chmod +x /root/wait.sh
+#CMD /root/wait.sh && /root/run.sh 
+ENTRYPOINT ["/root/run.sh"]

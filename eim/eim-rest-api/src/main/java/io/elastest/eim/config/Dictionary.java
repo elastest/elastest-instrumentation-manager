@@ -48,6 +48,14 @@ public class Dictionary {
 	public static String PROPERTY_TEMPLATES_BEATS_JOKER_DOCKER_METRICS = "templates.beats.joker.dockermetrics";
 	public static String PROPERTY_TEMPLATES_BEATS_JOKER_PLAYBOOK_DOCKERIZED_METRICBEAT = "templates.beats.joker.playbook.dockerized.metricbeat";
 	
+	
+	// Execbeat properties configuration & installation
+	public static String PROPERTY_TEMPLATES_BEATS_INSTALL_PLAYBOOK_EXECBEAT="templates.beats.install.plabook";
+	public static String PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_EXECBEAT = "templates.beats.joker.stream.execbeat";
+	public static String PROPERTY_TEMPLATES_BEATS_ARGS_EXECBEAT="templates.beats.joker.args.execbeat";
+	public static String PROPERTY_TEMPLATES_BEATS_CRONEXPRESSION_EXECBEAT="templates.beats.joker.cronExpression.execbeat";
+	
+
 
 	public static String PROPERTY_EXECUTION_LOGS_PATH = "execution.logs.path";
 	public static String PROPERTY_EXECUTION_LOGS_SSH_PREFIX = "execution.logs.ssh.prefix";
@@ -58,6 +66,13 @@ public class Dictionary {
 	// AVAILABLE ACTIONS OVER SUT
 	public static String SUT_ACTION_MONITOR = "monitor";
 	public static String SUT_ACTION_UNMONITOR = "unmonitor";
+	
+	// ACTIONS AVAILABLE OVER SUT: CONTROLLABILITY
+	public static String SUT_ACTION_PACKETLOSS = "packetloss";
+	public static String SUT_ACTION_STRESS_CPU = "stress";
+	public static String NO_ACTION_PACKETLOSS = "";
+	public static String NO_ACTION_STRESS_CPU = "";
+	
 	
 	// USED TO INSTALL/REMOVE FEATURES IN SUT
 	public static String INSTALL = "install";
@@ -74,12 +89,13 @@ public class Dictionary {
 	 public static final String DBNAME = "EIM";
 	 public static final String DBTABLE_AGENT = "agent";
 	 public static final String DBTABLE_AGENT_CONFIGURATION = "agent_configuration";
+	 public static final String DBTABLE_AGENT_CONFIGURATION_CONTROL = "agent_configuration_control";
 	 public static final String DBUSER = "elastest";
 	 public static final String DBPASS = "elastest";
 	 //public static final String DBPORT = "3306";
 	 //public static final String DBURL ="jdbc:mariadb://" + System.getenv("ET_EIM_MONGO_HOST") + ":" + DBPORT + "/eim";
 	 public static final String DBURL ="jdbc:mariadb://" + System.getenv("ET_EDM_MYSQL_HOST") + ":" + System.getenv("ET_EDM_MYSQL_PORT") + "/" + DBNAME;
-//	 public static final String DBURL ="jdbc:mariadb://" + "172.17.0.2" + ":" + "3306" + "/" + DBNAME;
+	 //public static final String DBURL ="jdbc:mariadb://" + "172.17.0.2" + ":" + "3306" + "/" + DBNAME;
 
 	 // PREFIX FOR AGENTS ID
 	 public static String PREFIX_AGENTS_ID = "iagent";

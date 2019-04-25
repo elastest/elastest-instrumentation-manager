@@ -1,0 +1,85 @@
+# playbook-install-execbeat.yml
+
+- name: EIM - Beats v6.2 installation and configuration - execBeat
+  hosts: ##targethost##
+  remote_user: ##user##
+  become: yes
+
+  tasks:
+
+  - name: EXECBEAT - Install git 
+    yum: name=git state=present
+
+  - name: EXECBEAT - Install stress-ng  
+    yum: name=stress-ng state=present
+
+  - name: EXECBEAT - Install iptables 
+    yum: name=iptables state=present
+
+  - name: EXECBEAT - Check if EXECBEAT repository exists
+    stat:
+      path: /etc/execbeat/
+    register: stat_result
+
+  - name: EXECBEAT - Create execbeat folder if it not exists already
+    file:
+      path: /etc/execbeat/
+      state: directory
+      mode: 0777
+      group: root
+      owner: root
+    when: stat_result.stat.exists == false
+    
+  - name: EXECBEAT - Donwload my package execbeat-3.3.0-amd64
+    get_url:
+        url="https://github.com/christiangalsterer/execbeat/releases/download/3.3.0/execbeat-3.3.0-amd64.deb"
+        dest="/etc/execbeat/execbeat-3.3.0-amd64.deb"
+    when: stat_result.stat.exists == false
+
+    
+    
+  - name: EXECBEAT - Copy custom template execbeat.yml filename
+    copy: src=./setup-files/execbeat.yml dest=/etc/execbeat/execbeat.yml
+
+  - name: EXECBEAT - Install execbeat-3.3.0-amd64.deb
+    apt:
+      deb: /etc/execbeat/execbeat-3.3.0-amd64.deb
+
+  - name: EXECBEAT - Set up custom fields
+    blockinfile: 
+      dest: /etc/execbeat/execbeat.yml
+      insertafter: '# Custom fields'
+      marker: "# {mark} -- Execbeat custom fields configured by Ansible" 
+      block: |
+        fields:
+          exeusc: "##exec-id##"
+          component: "##component-name##"
+          stream: "##stream-execbeat##"
+        fields_under_root: true
+  
+  - name: EXECBEAT - Commands to execute 
+    blockinfile: 
+      dest: /etc/execbeat/execbeat.yml 
+      insertafter: '# Execbeat' 
+      marker: "# {mark} -- ############################ Execbeat ############################" 
+      block: |
+        execbeat:
+          commands:
+          - 
+            schedule: "##cron_expression##"
+            command: ##command##
+            args: ##args##
+
+  - name: EXECBEAT - Configure what outputs to use when sending the data collected by the beat 
+    blockinfile: 
+      dest: /etc/execbeat/execbeat.yml 
+      insertafter: '# Logstash output' 
+      marker: "# {mark} -- ############################ Logstash output ############################" 
+      block: |
+        output.logstash:
+          hosts: ["##logstash-ip##:##logstash-port##"]
+
+  - name: EXECBEAT - Restart execbeat 
+    service: name=execbeat state=restarted
+
+

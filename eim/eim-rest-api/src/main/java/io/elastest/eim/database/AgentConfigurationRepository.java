@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import io.elastest.eim.database.mysql.EimDbAgentCfgManager;
 import io.swagger.model.AgentConfiguration;
+import io.swagger.model.AgentConfigurationControl;
 import io.swagger.model.AgentConfigurationDatabase;
 
 public class AgentConfigurationRepository {
@@ -50,6 +51,7 @@ public class AgentConfigurationRepository {
 	public AgentConfigurationDatabase addAgentCfg(String agentId, AgentConfiguration agentCfgObj){
 		return eimDbCfgManager.addAgentConfiguration(agentId, agentCfgObj);
 	}
+	
 		
 	public List<AgentConfigurationDatabase> findAll(){
 		return eimDbCfgManager.getAgentsConfigurations();

@@ -1,0 +1,85 @@
+version: "2"
+
+services:
+    eim-mysql:
+        image: elastest/eim-mysql:latest
+        hostname: eim-mysql
+        stdin_open: true
+        restart: always
+        tty: true
+        networks:
+            - elastest
+        ports:
+            - "3306:3306"
+        expose:
+            - "3306"
+    eim:
+        build:  ./eim
+        depends_on:
+            - eim-mysql
+            - sut
+        links:
+            - eim-mysql
+        stdin_open: true
+        tty: true
+        environment:
+            - ET_EDM_MYSQL_HOST=eim-mysql
+            - ET_EDM_MYSQL_PORT=3306
+            - WAIT_HOSTS=eim-mysql:3306
+        expose:
+            - 8080
+        ports:
+            - 8080:8080
+        hostname: eim
+        networks:
+            - elastest
+    sut:
+        image: elastest/eim-sut:latest
+        depends_on:
+            - kibana
+        stdin_open: true
+        tty: true
+        networks:
+            - elastest
+        cap_add:
+            - ALL
+    elasticsearch:
+        #image: elastest/eim-elasticsearch:0.9.0
+        image: elastest/eim-elasticsearch:latest
+        ports:
+                - "9200:9200"
+                - "9300:9300"
+        depends_on:
+                - eim-mysql
+        hostname: elasticsearch
+        networks:
+                - elastest
+    logstash:
+        #image: elastest/eim-logstash:0.9.0
+        image: elastest/eim-logstash:latest
+        ports:
+                - "5044:5044"
+        depends_on: 
+                - elasticsearch
+        links:
+                - elasticsearch
+        hostname: logstash
+        networks:
+                - elastest
+
+    kibana:
+        #image: elastest/eim-kibana:0.9.0
+        image: elastest/eim-kibana:latest
+        ports: 
+                - "5601:5601"
+        depends_on:
+                - logstash
+        links:
+                - elasticsearch
+        hostname: kibana
+        networks:
+                - elastest
+networks:
+    elastest:
+        driver: bridge
+
