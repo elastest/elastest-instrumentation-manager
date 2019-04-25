@@ -5,25 +5,65 @@
   remote_user: ##user##
   become: yes
   tasks:
-   - service:
-       name: packetbeat
-       state: stopped
-   - service:
-       name: metricbeat
-       state: stopped
-   - service:
-       name: filebeat
-       state: stopped
-   - name: remove packetbeat
-     apt:
-       name: packetbeat
-       state: absent
-   - name: remove metricbeat
-     apt:
-       name: metricbeat
-       state: absent
-   - name: remove filebeat
-     apt:
-       name: filebeat
-       state: absent
+
+  - name: Check if Service Exists packebeat
+    stat: path=/etc/init.d/packetbeat
+    register: service_status
+
+  - name: Stop service packetbeat
+    service: name=packetbeat state=stopped
+    when: service_status.stat.exists
+    register: service_stopped
+
+  - name: Check if Service Exists metricbeat
+    stat: path=/etc/init.d/metricbeat
+    register: service_status
+
+  - name: Stop service metricbeats
+    service: name=metricbeat state=stopped
+    when: service_status.stat.exists
+    register: service_stopped
+
+  - name: Check if Service Exists filebeat
+    stat: path=/etc/init.d/filebeat
+    register: service_status
+
+  - name: Stop service filebeat
+    service: name=filebeat state=stopped
+    when: service_status.stat.exists
+    register: service_stopped
+
+  - name: Check if Service Exists execbeat
+    stat: path=/etc/init.d/execbeat
+    register: service_status_execbeat
+
+  - name: Stop service execbeat
+    service: name=execbeat state=stopped
+    when: service_status_execbeat.stat.exists == true
+    register: service_execbeat
+
+  - name: "Remove execbeat dependencies"
+    file:
+      path: /etc/execbeat/
+      state: absent
+    when: service_status_execbeat.stat.exists == true
+
+  - name: remove packetbeat
+    apt:
+      name: packetbeat
+      state: absent
+    when: service_status.stat.exists
+
+  - name: remove metricbeat
+    apt:
+      name: metricbeat
+      state: absent
+    when: service_status.stat.exists
+
+  - name: remove filebeat
+    apt:
+      name: filebeat
+      state: absent
+    when: service_status.stat.exists
+
 # pending to delete also folder and conf files of each beat located in /etc/<beat_name>

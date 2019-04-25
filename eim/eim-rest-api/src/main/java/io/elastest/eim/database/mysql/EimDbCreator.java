@@ -36,11 +36,15 @@ public class EimDbCreator {
 	
 	public void createSchema() {
 		createDatabase();
+		
 		if (!existsTableAgent()) {
 			createTableAgent();	
 		}
 		if (!existsTableAgentCfg()) {
 			createTableAgentCfg();	
+		}
+		if (!existsTableAgentCfgControl()) {
+			createTableAgentCfgControl();
 		}
 	}
 	
@@ -89,6 +93,20 @@ public class EimDbCreator {
 		createTable(mysqlCreateCmd, Dictionary.DBTABLE_AGENT_CONFIGURATION);
 	}
 	
+	private void createTableAgentCfgControl() {
+		String mysqlCreateCmd = "CREATE TABLE " + Dictionary.DBTABLE_AGENT_CONFIGURATION_CONTROL + " (" 
+				  + "AGENT_ID varchar(255) NOT NULL,"
+				  + "EXEC_NAME varchar(255) NOT NULL,"
+				  + "COMPONENT_NAME varchar(255) NOT NULL,"
+				  + "PACKETLOSS text NOT NULL,"
+				  + "STRESSNG text NOT NULL,"
+				  + "DOCKERIZED varchar(255) NOT NULL,"
+				  + "CRONEXPRESSION text NOT NULL,"
+				  + "PRIMARY KEY (`agent_id`)"
+			+ ") ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		createTable(mysqlCreateCmd, Dictionary.DBTABLE_AGENT_CONFIGURATION_CONTROL);
+	}
+	
 	private void dropTableAgent() {
 		String mysqlDropCmd = "DROP TABLE IF EXISTS " + Dictionary.DBTABLE_AGENT;
 		dropTableIfExists(mysqlDropCmd, Dictionary.DBTABLE_AGENT);
@@ -98,6 +116,12 @@ public class EimDbCreator {
 		String mysqlDropCmd = "DROP TABLE IF EXISTS " + Dictionary.DBTABLE_AGENT_CONFIGURATION;
 		dropTableIfExists(mysqlDropCmd, Dictionary.DBTABLE_AGENT_CONFIGURATION);
 	}
+	
+	private void dropTableAgentCfgControl() {
+		String mysqlDropCmd = "DROP TABLE IF EXISTS " + Dictionary.DBTABLE_AGENT_CONFIGURATION_CONTROL;
+		dropTableIfExists(mysqlDropCmd, Dictionary.DBTABLE_AGENT_CONFIGURATION_CONTROL);
+	}
+	
 	
 	private void createTable(String mysqlCreateCmd, String tableName) { 
         try {
@@ -111,6 +135,10 @@ public class EimDbCreator {
         catch (SQLException e ) {
             System.out.println("Error has occurred on table " + tableName + " creation");
             logger.error("Error has occurred on table " + tableName + " creation");
+            System.out.println("Error code: " + e.getErrorCode());
+            System.out.println("Error Message " + e.getMessage());
+            logger.error(e.getMessage());
+            logger.error(e.getNextException());
         }
         catch (ClassNotFoundException e) {
             System.out.println("MariaDB drivers were not found");
@@ -143,6 +171,10 @@ public class EimDbCreator {
 	
 	public boolean existsTableAgentCfg() {
 		return existsTable(Dictionary.DBTABLE_AGENT_CONFIGURATION);
+	}
+	
+	public boolean existsTableAgentCfgControl() {
+		return existsTable(Dictionary.DBTABLE_AGENT_CONFIGURATION_CONTROL);
 	}
 	
 	private boolean existsTable(String tableName) { 
@@ -178,10 +210,16 @@ public class EimDbCreator {
 		EimDbCreator creator = new EimDbCreator();
 		creator.existsTableAgent();
 		creator.existsTableAgentCfg();
+		creator.existsTableAgentCfgControl();
+		
 		creator.createTableAgent();
 		creator.createTableAgentCfg();
+		creator.createTableAgentCfgControl();
+		
 		creator.existsTableAgent();
 		creator.existsTableAgentCfg();
+		creator.existsTableAgentCfgControl();
+		
 	}
 	
 }

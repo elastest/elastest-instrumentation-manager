@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import io.elastest.eim.config.Dictionary;
 import io.elastest.eim.config.Properties;
 import io.swagger.model.AgentConfiguration;
+import io.swagger.model.AgentConfigurationControl;
 import io.swagger.model.AgentFull;
 
 public class TemplateUtils {
@@ -210,6 +211,131 @@ public class TemplateUtils {
 		 
 	}
 	
+	public static String generatesBeatsPlaybookPacketLossCommand(String executionDate, AgentFull agent, String action, AgentConfigurationControl agentCfg) {
+		if (action.equalsIgnoreCase(Dictionary.SUT_ACTION_PACKETLOSS)){
+
+			String playbookTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_PLAYBOOKPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_INSTALL_PLAYBOOK_EXECBEAT);
+			String playbookToExecutePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_PLAYBOOKPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_INSTALL_EXECUTION_PLAYBOOK_PREFIX) + agent.getAgentId() + 
+					"-" + executionDate + ".yml";
+			logger.info("playbookTemplatePath" + playbookTemplatePath);
+			logger.info("playbookToExecutePath" + playbookToExecutePath);
+			
+			String jokerTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_PLAYBOOK_JOKER);
+			String jokerUser = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_USER_JOKER);
+			String jokerLogstashIp = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_LOGSTASH_IP);
+			String jokerLogstashPort = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_LOGSTASH_PORT);			
+			String jokerExecId = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_EXEC);
+			String jokerComponent = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_COMPONENT);
+			String jokerCommandExecbeat = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_EXECBEAT);
+			String jokerArgsExecbeat = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_ARGS_EXECBEAT);
+			String jokerCronExpressionExecbeat=Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_CRONEXPRESSION_EXECBEAT);
+
+			
+			try {
+				//Generate the execution playbook
+				FileTextUtils.copyFile(playbookTemplatePath, playbookToExecutePath);
+				logger.info("Generated successfully the beats installation playbook for agent" + agent.getAgentId() + ": " + playbookToExecutePath);
+				//Fill the playbook with the agentId of the agent
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerTemplates, agent.getAgentId());
+				//Fill the playbook with the user of the current host
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerUser, agent.getUser());
+				//Fill the playbook with the logstash IP of the agent
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerLogstashIp, agent.getLogstashIp());
+				//Fill the playbook with the logstash port of the agent
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerLogstashPort, agent.getLogstashPort());
+				//Fill the playbook with the exec-id of the agent
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerExecId, agentCfg.getExec());
+				//Fill the playbook with the component
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerComponent, agentCfg.getComponent());
+				//Fill the playbook with the stream for execbeat
+				//FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerStreamExecbeat, agentCfg.getPacketLoss().getStream());
+				//Fill the playbook with the command for execbeat
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerCommandExecbeat, "iptables");
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerArgsExecbeat, agentCfg.getPacketLoss());
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerCronExpressionExecbeat, agentCfg.getCronExpression());
+
+				
+				return  playbookToExecutePath;				
+
+			}catch (IOException e) {
+				// TODO: handle exception
+				logger.error("ERROR while triying to generate beats installation playbook for agent " + agent.getAgentId() + " with execution date: " + executionDate);
+				e.printStackTrace();
+				return "";
+			}
+		}
+		else {
+			logger.error("ERROR on action" + action + " for the agent" + agent.getAgentId() + " with execution date: " + executionDate);
+		}
+		
+		return "Execbeat generated for agent" + agent.getAgentId();
+		
+	}
+	
+	public static String generatesBeatsPlaybookStressCommand(String executionDate, AgentFull agent, String action, AgentConfigurationControl agentCfg) {
+		if (action.equalsIgnoreCase(Dictionary.SUT_ACTION_STRESS_CPU)) {
+			
+			String playbookTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_PLAYBOOKPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_INSTALL_PLAYBOOK_EXECBEAT);
+			String playbookToExecutePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_PLAYBOOKPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_INSTALL_EXECUTION_PLAYBOOK_PREFIX) + agent.getAgentId() + 
+					"-" + executionDate + ".yml";
+			String jokerTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_PLAYBOOK_JOKER);
+			String jokerUser = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_USER_JOKER);
+			String jokerLogstashIp = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_LOGSTASH_IP);
+			String jokerLogstashPort = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_LOGSTASH_PORT);			
+			String jokerExecId = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_EXEC);
+			String jokerComponent = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_COMPONENT);
+			String jokerStreamExecbeat = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_EXECBEAT);
+			String jokerCommandExecbeat = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_EXECBEAT);
+			String jokerArgsExecbeat = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_ARGS_EXECBEAT);
+			String jokerCronExpressionExecbeat=Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_CRONEXPRESSION_EXECBEAT);
+
+			
+			try {
+				//Generate the execution playbook
+				FileTextUtils.copyFile(playbookTemplatePath, playbookToExecutePath);
+				logger.info("Generated successfully the beats installation playbook for agent" + agent.getAgentId() + ": " + playbookToExecutePath);
+				//Fill the playbook with the agentId of the agent
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerTemplates, agent.getAgentId());
+				//Fill the playbook with the user of the current host
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerUser, agent.getUser());
+				//Fill the playbook with the logstash IP of the agent
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerLogstashIp, agent.getLogstashIp());
+				//Fill the playbook with the logstash port of the agent
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerLogstashPort, agent.getLogstashPort());
+				//Fill the playbook with the exec-id of the agent
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerExecId, agentCfg.getExec());
+				//Fill the playbook with the component
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerComponent, agentCfg.getComponent());
+				//Fill the playbook with the stream for execbeat
+				//FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerStreamExecbeat, agentCfg.getStressNg().getStream());
+				//Fill the playbook with the command for execbeat
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerArgsExecbeat, agentCfg.getStressNg());
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerCommandExecbeat, "stress-ng");
+				//Fill the playbook with the cron expression for execbeat
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerCronExpressionExecbeat, agentCfg.getCronExpression());
+				
+				return playbookToExecutePath;				
+
+			}catch (IOException e) {
+				// TODO: handle exception
+				logger.error("ERROR while triying to generate beats installation playbook for agent " + agent.getAgentId() + " with execution date: " + executionDate);
+				e.printStackTrace();
+				return "";
+			}
+		}
+		else {
+			logger.error("ERROR on action" + action + " for the agent" + agent.getAgentId() + " with execution date: " + executionDate);
+		}
+		
+		return "Execbeat generated for agent" + agent.getAgentId();
+		
+	}
+	
+	
 	public static String generateSshScript(String executionDate, AgentFull agent, String playbookPath, String ansibleCfgFilePath, String action) {
 		if (action.equalsIgnoreCase(Dictionary.INSTALL)) {
 			
@@ -264,6 +390,34 @@ public class TemplateUtils {
 				
 			} catch (IOException e) {
 				logger.error("ERROR while triying to generate delete SSH script for agent " + agent.getAgentId() + " with execution date: " + executionDate);
+				e.printStackTrace();
+				return "";
+			}				
+			
+		}
+		else if(action.equalsIgnoreCase(Dictionary.SUT_ACTION_STRESS_CPU) || action.equalsIgnoreCase(Dictionary.SUT_ACTION_PACKETLOSS)) {
+			String scriptTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_INSTALL_LAUNCHER);
+			String scriptToExecutePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_INSTALL_EXECUTION_LAUNCHER_PREFIX) + agent.getAgentId() +"-" + executionDate + ".sh";
+			String jokerPlaybookTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER_PLAYBOOK);
+			String jokerCfgFileTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER_CONFIG);
+			
+			try {
+				//Generate the execution playbook
+				FileTextUtils.copyFile(scriptTemplatePath, scriptToExecutePath);
+				logger.info("Generated successfully the SSH script for agent" + agent.getAgentId() + ": " + scriptToExecutePath);
+				//Fill the script with the playbook path
+				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerPlaybookTemplates, playbookPath);
+				//Fill the playbook with the specific ansible config file of the agent
+				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerCfgFileTemplates, ansibleCfgFilePath);
+				//set the file as executable
+				FileTextUtils.setAsExecutable(scriptToExecutePath);
+				logger.info("Modified successfully the generated SSH script for agent " + agent.getAgentId() + ". Ready to execute!");
+				return scriptToExecutePath;
+				
+			} catch (IOException e) {
+				logger.error("ERROR while triying to generate SSH script for agent " + agent.getAgentId() + " with execution date: " + executionDate);
 				e.printStackTrace();
 				return "";
 			}				
@@ -332,11 +486,40 @@ public class TemplateUtils {
 			}	
 			
 		}
+		else if (action.equalsIgnoreCase(Dictionary.SUT_ACTION_PACKETLOSS) || action.equalsIgnoreCase(Dictionary.SUT_ACTION_STRESS_CPU)) {
+			String scriptTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_EXECUTIONPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_INSTALL_LAUNCHER);
+			String scriptToExecutePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_EXECUTIONPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_INSTALL_EXECUTION_LAUNCHER_PREFIX) + agent.getAgentId() +"-" + executionDate + ".sh";
+			String jokerTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER_PLAYBOOK);
+			String jokerCfgFileTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SCRIPT_JOKER_CONFIG);
+			
+			try {
+				//Generate the execution playbook
+				FileTextUtils.copyFile(scriptTemplatePath, scriptToExecutePath);
+				logger.info("Generated successfully the beats installation script for agent" + agent.getAgentId() + ": " + scriptToExecutePath);
+				//Fill the script with the playbook path
+				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerTemplates, playbookPath);
+				//Fill the playbook with the specific ansible config file of the agent
+				FileTextUtils.replaceTextInFile(scriptToExecutePath, jokerCfgFileTemplates, ansibleCfgFilePath);
+				//set the file as executable
+				FileTextUtils.setAsExecutable(scriptToExecutePath);
+				logger.info("Modified successfully the generated beats installation script for agent " + agent.getAgentId() + ". Ready to execute!");
+				return scriptToExecutePath;
+				
+			} catch (IOException e) {
+				logger.error("ERROR while triying to generate beats installation script for agent " + agent.getAgentId() + " with execution date: " + executionDate);
+				e.printStackTrace();
+				return "";
+			}	
+		}
 		return "";
 			 
 	}
 
-
+	
+	
+	
 	public static int executeScript(String type, String scriptPath, String executionDate, AgentFull agent) {
 		// TODO Auto-generated method stub
 		int resultCode = -1;
@@ -360,6 +543,8 @@ public class TemplateUtils {
     	Process p;
     	try {
             p = Runtime.getRuntime().exec(scriptPath);
+            logger.info("script path is" + scriptPath);
+            
             BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
       
             File logFile = new File(logFilePath);

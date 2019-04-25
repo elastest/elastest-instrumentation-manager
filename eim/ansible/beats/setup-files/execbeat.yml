@@ -1,0 +1,21 @@
+# location /etc/filebeat/
+
+# Custom fields
+
+# Execbeat
+
+#================================ Logging =====================================
+
+# Sets log level. The default log level is info.
+# Available log levels are: critical, error, warning, info, debug
+
+logging:
+    level: error
+    files:
+      path: "/tmp/beats/logs"
+      name: execbeat_error.log
+      rotateeverybytes: 2048
+      keepfiles: 7
+
+
+# Logstash output

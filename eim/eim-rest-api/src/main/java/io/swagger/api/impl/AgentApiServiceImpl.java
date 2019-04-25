@@ -30,15 +30,18 @@ import org.apache.log4j.Logger;
 
 import io.elastest.eim.config.Dictionary;
 import io.elastest.eim.config.Properties;
+import io.elastest.eim.database.AgentConfigurationControlRepository;
 import io.elastest.eim.database.AgentConfigurationRepository;
 import io.elastest.eim.database.AgentRepository;
 import io.elastest.eim.templates.BeatsTemplateManager;
+import io.elastest.eim.templates.BeatsTemplateManagerControl;
 import io.elastest.eim.templates.SshTemplateManager;
 import io.elastest.eim.utils.FileTextUtils;
 import io.swagger.api.AgentApiService;
 import io.swagger.api.ApiResponseMessage;
 import io.swagger.api.NotFoundException;
 import io.swagger.model.AgentConfiguration;
+import io.swagger.model.AgentConfigurationControl;
 import io.swagger.model.AgentDeleted;
 import io.swagger.model.AgentFull;
 import io.swagger.model.Host;
@@ -49,6 +52,8 @@ public class AgentApiServiceImpl extends AgentApiService {
 
 	private AgentRepository agentDb = new AgentRepository();
 	private AgentConfigurationRepository agentCfgDb = new AgentConfigurationRepository();
+	
+	private AgentConfigurationControlRepository agentCfgControlDB = new AgentConfigurationControlRepository();
 	
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd-HH.mm.ss");
 	
@@ -75,9 +80,15 @@ public class AgentApiServiceImpl extends AgentApiService {
 	            	
 	            	//delete agent configuration
 	            	boolean deleted = agentCfgDb.deleteAgentCfg(agentId);
+	            	// delete agent configuration control
+	            	boolean deleted_execbeat = agentCfgControlDB.deleteAgentCfg(agentId);
+	            	
 	        		if (deleted) {
-	        			logger.info("Successful deleted from database -->  agent configuration" + agent.getAgentId());
+	        			logger.info("Successful deleted from database agent_configuration table -->  agent " + agent.getAgentId());
 	        			//return Response.ok().entity(agent).build();	        		
+	        		}
+	        		if (deleted_execbeat) {
+	        			logger.info("Successful deleted from database agent_configuration_control table -->  agent configuration" + agent.getAgentId());
 	        		}
 	        		else {
 	        			logger.error("ERROR deleting agent configuration " + agent.getAgentId() + " from database");
@@ -105,13 +116,15 @@ public class AgentApiServiceImpl extends AgentApiService {
 	            }
     		}
     		
-    		
-    		
     		//delete from db
+    		boolean deleted_execbeat = agentCfgControlDB.deleteAgentCfg(agentId);
     		boolean deleted = agentDb.deleteAgent(agentId);
     		if (deleted) {
-    			logger.info("Successful deleted from database -->  agent " + agent.getAgentId());
+    			logger.info("Successful deleted from database agent_configuration table -->  agent " + agent.getAgentId());
     			//return Response.ok().entity(agent).build();    		
+    		}
+    		if (deleted_execbeat) {
+    			logger.info("Successful deleted from database agent_configuration_control table -->  agent configuration" + agent.getAgentId());
     		}
     		else {
     			logger.error("ERROR deleting agent " + agent.getAgentId() + " from database");
@@ -251,6 +264,103 @@ public class AgentApiServiceImpl extends AgentApiService {
         
     }
     
+    @Override
+    public Response postControlAction(String agentId, String actionId, AgentConfigurationControl body, SecurityContext securityContext) throws NotFoundException {    	
+    	
+    	logger.info("PostAction method invoked for agent " + agentId + " with action " + actionId + " and body: " + body);
+    	System.out.println("PostAction method invoked for agent " + agentId + " with action " + actionId + " and body: " + body);
+    	
+    	//set Dockerized default value if not specified
+    	if (body.getDockerized() == null) {
+    		body.setDockerized(Dictionary.DOCKERIZED_NO);
+    	}
+    	
+    	
+    	if (actionId.equals(Dictionary.SUT_ACTION_PACKETLOSS)){
+	    	//verify that agent exists in database and it is not monitored
+	    	AgentFull agent = agentDb.getAgentByAgentId(agentId);
+	    	if (agent == null) {
+	    		//agent not exists in db
+	    		logger.error("No exists any agent in the system with agentId " + agentId);
+	    		return Response.status(Response.Status.NOT_FOUND).entity("No exists any agent in the system with agentId " + agentId).build();
+	    	}
+	    	else if (agent.isMonitored()) {
+	    		logger.error("Agent " + agentId + " is already monitored");
+	    		return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Agent " + agentId + " is already monitored").build();
+	    	}
+	    	else {
+	        	//exits and it is not monitored --> launch process
+	    		int status = -1;
+	    		//beats installation
+	    		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+	            String executionDate = sdf.format(timestamp);
+	            BeatsTemplateManagerControl beatsTemplateManager = new BeatsTemplateManagerControl(agent, executionDate, Dictionary.SUT_ACTION_PACKETLOSS, getAnsibleCfgFilePathForAgent(agent));
+	            logger.info("BeatsTemplateManagerControl" + beatsTemplateManager);
+	            logger.info("getAnsibleCfgFilePathForAgent(agent)" + getAnsibleCfgFilePathForAgent(agent));
+	            logger.info("beatsTemplateManagerControl is" + beatsTemplateManager);
+	            
+	            beatsTemplateManager.setConfigurationControl(body);
+	            status = beatsTemplateManager.execute();
+	            if (status == 0) {
+	            	logger.info("Successful execution for the beats script generated to agent " + agent.getAgentId());
+	            	// store agent configuration in db
+	            	logger.info("Store agent in db " + agentCfgControlDB.addAgentCfgControl(agentId, body));
+	            	agentCfgControlDB.addAgentCfgControl(agentId, body);
+	            	//set host as monitored in db    	
+		        	agent = agentDb.setMonitored(agentId, true);
+		        	logger.info("iAgent " + agent.getAgentId() + " monitored succesfully");
+		        	
+		        	logger.info("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
+		        	System.out.println("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
+		          	
+		        	return Response.ok().entity(agent).build();
+	            }
+	            else {
+	            	
+	            	logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
+	            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
+	            }		
+	    	}
+    	}
+    	else if (actionId.equals(Dictionary.SUT_ACTION_STRESS_CPU)) {
+    		AgentFull agent = agentDb.getAgentByAgentId(agentId);
+    		//exits and it is not monitored --> launch process
+    		int status = -1;
+    		//beats installation
+    		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            String executionDate = sdf.format(timestamp);
+            BeatsTemplateManagerControl beatsTemplateManager = new BeatsTemplateManagerControl(agent, executionDate, Dictionary.SUT_ACTION_STRESS_CPU, getAnsibleCfgFilePathForAgent(agent));
+            beatsTemplateManager.setConfigurationControl(body);
+            status = beatsTemplateManager.execute();
+            if (status == 0) {
+            	logger.info("Successful execution for the beats script generated to agent " + agent.getAgentId());
+            	// store agent configuration in db
+            	
+            	logger.info("Store agent in db " + agentCfgControlDB.addAgentCfgControl(agentId, body));
+            	
+            	agentCfgControlDB.addAgentCfgControl(agentId, body);
+            	//set host as monitored in db    	
+	        	agent = agentDb.setMonitored(agentId, true);
+	        	logger.info("iAgent " + agent.getAgentId() + " monitored succesfully");
+	        	
+	        	logger.info("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
+	        	System.out.println("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
+	          	
+	        	return Response.ok().entity(agent).build();
+            }
+            else {
+            	
+            	logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
+            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
+            }		
+    	}
+    	else {
+    		
+    		return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "This method will execute the action " + actionId +  "!")).build();
+    	}    	
+        
+    }
+    
     
     @Override
     public Response postAgent(Host body, SecurityContext securityContext) throws NotFoundException {
@@ -354,15 +464,20 @@ public class AgentApiServiceImpl extends AgentApiService {
     }
     
     private String getAnsibleCfgFilePathForAgent(AgentFull agent) {
-    	return Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
+    	String a  = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
     			Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_HOSTS_FOLDER) +
     			agent.getAgentId() + "/" + "host_" + agent.getAgentId() + "_cfg";
+    	logger.info("getAnsibleCfgFilePathForAgent, class AgentApiServiceImpl"+a);
+    	return a;
     }
     
     private String getConfigDirForAgent(AgentFull agent) {
-    	return Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
+    	String a = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
     			Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_HOSTS_FOLDER) +
     			agent.getAgentId();
+    	logger.info("getConfigDirForAgent, class AgentApiServiceImpl" + a);
+    	
+    	return a;
     }
 
 	@Override
@@ -424,4 +539,6 @@ public class AgentApiServiceImpl extends AgentApiService {
 
 	}
     
+
+	
 }

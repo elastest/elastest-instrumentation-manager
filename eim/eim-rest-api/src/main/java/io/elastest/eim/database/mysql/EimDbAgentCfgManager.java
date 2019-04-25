@@ -25,10 +25,11 @@ import org.apache.log4j.Logger;
 
 import io.elastest.eim.config.Dictionary;
 import io.swagger.model.AgentConfiguration;
+import io.swagger.model.AgentConfigurationControl;
 import io.swagger.model.AgentConfigurationDatabase;
 import io.swagger.model.AgentConfigurationFilebeat;
-import io.swagger.model.AgentConfigurationPacketbeat;
 import io.swagger.model.AgentConfigurationMetricbeat;
+import io.swagger.model.AgentConfigurationPacketbeat;
 
 public class EimDbAgentCfgManager {
 
@@ -111,6 +112,7 @@ public class EimDbAgentCfgManager {
     	}
 		return agentCfg;
     }
+    
     
     
     private AgentConfigurationDatabase addAgentConfiguration( Connection conn, String agentId, AgentConfiguration agentCfgObj) throws SQLException{

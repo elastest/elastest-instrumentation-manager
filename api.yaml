@@ -212,6 +212,101 @@ paths:
           description: Agent not found
           schema:
             $ref: '#/definitions/AgentFull'
+  '/agent/controllability/{agentId}/stress':
+    post:
+      tags:
+        - Agent
+      summary: Submit an action ti an agent
+      description: A client submit an action to an agent
+      operationId: postActionStress
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: agentId
+          in: path
+          description: Id of agent to that receives the action
+          required: true
+          type: string
+        - name: actionId
+          in: path
+          description: action to apply
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Configuration of the agent
+          required: true
+          schema:
+            $ref: '#/definitions/AgentConfigurationStress'
+      responses:
+        '200':
+          description: Action applied OK
+          schema:
+            $ref: '#/definitions/AgentFull'
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/AgentFull'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Agent not found
+          schema:
+            $ref: '#/definitions/AgentFull'
+  '/agent/controllability/{agentId}/packetloss':
+    post:
+      tags:
+        - Agent
+      summary: Submit an action ti an agent
+      description: A client submit an action to an agent
+      operationId: postActionPacketloss
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: agentId
+          in: path
+          description: Id of agent to that receives the action
+          required: true
+          type: string
+        - name: actionId
+          in: path
+          description: action to apply
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Configuration of the agent
+          required: true
+          schema:
+            $ref: '#/definitions/AgentConfigurationPacketloss'
+      responses:
+        '200':
+          description: Action applied OK
+          schema:
+            $ref: '#/definitions/AgentFull'
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/AgentFull'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Agent not found
+          schema:
+            $ref: '#/definitions/AgentFull'
+  
   /agentconfiguration:
     get:
       tags:
@@ -339,6 +434,64 @@ definitions:
       password:
         type: string
         example: myPassword
+    description: This entity defines an agent with all information available.
+  AgentConfigurationPacketloss:
+    type: object
+    required:
+      - exec
+      - component
+      - packetLoss
+      - stressNg
+      - dockerized
+      - cronExpression
+    properties:
+      exec:
+        type: string
+        example: exec_name
+      component:
+        type: string
+        example: component_name
+      packetLoss:
+        type: string
+        example: "0.01"
+      stressNg:
+        type: string
+        example: ""
+      dockerized:
+        type: string
+        example: yes
+      cronExpression:
+        type: string
+        example: "@every 10s"
+    description: This entity defines an agent with all information available.
+  AgentConfigurationStress:
+    type: object
+    required:
+      - exec
+      - component
+      - packetLoss
+      - stressNg
+      - dockerized
+      - cronExpression
+    properties:
+      exec:
+        type: string
+        example: exec_name
+      component:
+        type: string
+        example: component_name
+      packetLoss:
+        type: string
+        example: ""
+      stressNg:
+        type: string
+        example: "4"
+      dockerized:
+        type: string
+        example: yes
+      cronExpression:
+        type: string
+        example: "@every 10s"
     description: This entity defines an agent with all information available.
   AgentConfiguration:
     type: object
