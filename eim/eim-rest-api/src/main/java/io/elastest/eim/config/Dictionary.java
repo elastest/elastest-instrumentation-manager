@@ -72,7 +72,8 @@ public class Dictionary {
 	public static String SUT_ACTION_STRESS_CPU = "stress";
 	public static String NO_ACTION_PACKETLOSS = "";
 	public static String NO_ACTION_STRESS_CPU = "";
-	
+	public static String PROPERTY_TEMPLATES_BEATS_ITEM_ANSIBLE = "templates.beats.item.ansible";
+
 	
 	// USED TO INSTALL/REMOVE FEATURES IN SUT
 	public static String INSTALL = "install";
@@ -96,7 +97,7 @@ public class Dictionary {
 	 //public static final String DBURL ="jdbc:mariadb://" + System.getenv("ET_EIM_MONGO_HOST") + ":" + DBPORT + "/eim";
 	 public static final String DBURL ="jdbc:mariadb://" + System.getenv("ET_EDM_MYSQL_HOST") + ":" + System.getenv("ET_EDM_MYSQL_PORT") + "/" + DBNAME;
 	 //public static final String DBURL ="jdbc:mariadb://" + "172.17.0.2" + ":" + "3306" + "/" + DBNAME;
-
+	
 	 // PREFIX FOR AGENTS ID
 	 public static String PREFIX_AGENTS_ID = "iagent";
 }

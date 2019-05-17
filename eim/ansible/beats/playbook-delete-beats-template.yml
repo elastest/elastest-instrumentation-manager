@@ -2,6 +2,8 @@
 # file: playbook-delete-beats-output-logstash-template.yml
 
 - hosts: ##targethost##
+  vars:
+    AGENT_ID: ##targethost##
   remote_user: ##user##
   become: yes
   tasks:
@@ -47,6 +49,16 @@
       path: /etc/execbeat/
       state: absent
     when: service_status_execbeat.stat.exists == true
+
+  - name: Check if iptables list is not empty
+    command: sudo iptables --list --line-numbers
+    register: iptables_lists_exists
+  
+  - name: "Restore default iptables rules of SUT"
+    shell: sudo iptables -D {{ item }}
+    with_items: 
+      -  "##item##"
+    when: iptables_lists_exists!="0"
 
   - name: remove packetbeat
     apt:

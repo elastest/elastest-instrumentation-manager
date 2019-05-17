@@ -316,6 +316,7 @@ public class EimDbAgentCfgManager {
 		PreparedStatement pstDeleteAgent = null;
 		
 		try {
+			
 			String deleteSQL = "DELETE FROM " + Dictionary.DBTABLE_AGENT_CONFIGURATION + " WHERE AGENT_ID = ?";
 			pstDeleteAgent = conn.prepareStatement(deleteSQL);
 			pstDeleteAgent.setString(1, agentId);

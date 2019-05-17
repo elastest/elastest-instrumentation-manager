@@ -18,12 +18,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import io.elastest.eim.config.Dictionary;
+import io.elastest.eim.database.AgentConfigurationControlRepository;
 import io.swagger.model.AgentConfiguration;
 import io.swagger.model.AgentConfigurationControl;
 import io.swagger.model.AgentConfigurationDatabase;
@@ -300,8 +302,9 @@ public class EimDbAgentCfgControlManager {
 			logger.info("Deleting agent configuration in DB for agent with agentId = " + agentId);
 			System.out.println("Deleting agent configuration in DB for agent with agentId = " + agentId);
 			PreparedStatement pstDeleteAgent = null;
-			
+		
 			try {
+				
 				String deleteSQL = "DELETE FROM " + Dictionary.DBTABLE_AGENT_CONFIGURATION_CONTROL + " WHERE AGENT_ID = ?";
 				pstDeleteAgent = conn.prepareStatement(deleteSQL);
 				pstDeleteAgent.setString(1, agentId);
@@ -351,7 +354,69 @@ public class EimDbAgentCfgControlManager {
 	    	}
 			return false;
 		}
+		
+		
+		public List<AgentConfigurationDatabaseControl> getPacketLoss(String agentId){
+			Connection conn = null;
+			
+			try {
+				conn = getConnection();
+				return getPacketLoss(conn,agentId);
+				
+			} catch(SQLException ex) {
+				logger.error("Error " +ex.getErrorCode() + ": "+ ex.getMessage());
+			}finally {
+				try {
+					if(conn!=null)
+						conn.close();
+				}catch (SQLException e) {
+					logger.error(e.getMessage());
+					e.printStackTrace();
+				}
+			}
+			return null;
 
+		}
+		
+
+		private List<AgentConfigurationDatabaseControl> getPacketLoss(Connection conn, String agentId) throws SQLException {
+			logger.info("Searching packetloss property in agent_configuration_control DB for agent: "+agentId);
+			System.out.println("Searching packetloss property in agent_configuration_control DB for agent: "+agentId);
+			List<AgentConfigurationDatabaseControl> agentsCfg = null;
+			PreparedStatement pstSelectPacketLoss = null;
+			
+			try {
+				String sql = "SELECT PACKETLOSS FROM " + Dictionary.DBTABLE_AGENT_CONFIGURATION + " WHERE AGENT_ID = ?";
+				logger.info("Sql is: "+sql);
+				System.out.println("SQL is: "+sql);
+				
+				pstSelectPacketLoss = conn.prepareStatement(sql);
+				pstSelectPacketLoss.setString(1, agentId);
+				
+				logger.info("Sql is: "+sql);
+				System.out.println("SQL is: "+sql);
+				ResultSet rs = pstSelectPacketLoss.executeQuery();
+				
+				while (rs.next()) {
+					logger.info("PACKETLOSS property for agentId: "+agentId);
+					System.out.println("PACKETLOSS property for agentId: "+agentId );
+					agentsCfg = new ArrayList<AgentConfigurationDatabaseControl>();
+					AgentConfigurationDatabaseControl agentCfg = toAgentCfgDb(rs);
+					agentsCfg.add(agentCfg);
+					//listaComandosPacketloss.add(rs.getString(rs.getRow()));
+					logger.info("Lista Comandos packetloss : "+agentsCfg.add(agentCfg));
+					System.out.println("Lista Comandos packetloss: "+agentsCfg.add(agentCfg));
+				}
+			}
+			finally{
+				if(pstSelectPacketLoss!=null)
+					pstSelectPacketLoss.close();
+			}
+			logger.info("listaComandosPacketloss: " + agentsCfg);
+			
+			return agentsCfg;
+		}
+		
 		private String getStringFromArrayList(List<String> list, String separator) {
 			String result = "";
 			for (String s: list) {
@@ -408,4 +473,5 @@ public class EimDbAgentCfgControlManager {
 			System.out.println(agentCfgDb.getAgentId());
 		
 		}
+	
 }

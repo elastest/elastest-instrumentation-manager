@@ -26,6 +26,7 @@ services:
             - ET_EDM_MYSQL_HOST=eim-mysql
             - ET_EDM_MYSQL_PORT=3306
             - WAIT_HOSTS=eim-mysql:3306
+            - PASS=elastest
         expose:
             - 8080
         ports:

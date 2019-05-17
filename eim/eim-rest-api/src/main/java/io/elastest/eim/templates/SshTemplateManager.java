@@ -76,9 +76,8 @@ public class SshTemplateManager {
 			else {
 				logger.error("ERROR generating playbook for delete execution for agent " + agent.getAgentId( )+ ". Check logs please");
 				return -1;
-			}	
-			
-		}	
+			}
+		}
 		return -1;
 
 	}

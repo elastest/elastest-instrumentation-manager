@@ -849,3 +849,213 @@
 2019-04-24 15:30:36 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration_control creation
 2019-04-24 15:30:36 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
 2019-04-24 15:30:36 ERROR EimDbCreator:141 - null
+2019-04-25 20:11:24 INFO  Properties:41 - Properties loaded from /WEB-INF/bootstrap.properties
+2019-04-25 20:11:24 ERROR EimDbCreator:60 - Error creating EIM database: error parsing url : Incorrect port value : null
+2019-04-25 20:11:24 ERROR EimDbCreator:199 - Error has occurred on table agent check
+2019-04-25 20:11:24 ERROR EimDbCreator:137 - Error has occurred on table agent creation
+2019-04-25 20:11:24 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-04-25 20:11:24 ERROR EimDbCreator:141 - null
+2019-04-25 20:11:24 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration check
+2019-04-25 20:11:24 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration creation
+2019-04-25 20:11:24 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-04-25 20:11:24 ERROR EimDbCreator:141 - null
+2019-04-25 20:11:24 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration_control check
+2019-04-25 20:11:24 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration_control creation
+2019-04-25 20:11:24 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-04-25 20:11:24 ERROR EimDbCreator:141 - null
+2019-05-14 11:44:59 INFO  Properties:41 - Properties loaded from /WEB-INF/bootstrap.properties
+2019-05-14 11:44:59 ERROR EimDbCreator:60 - Error creating EIM database: error parsing url : Incorrect port value : null
+2019-05-14 11:44:59 ERROR EimDbCreator:199 - Error has occurred on table agent check
+2019-05-14 11:44:59 ERROR EimDbCreator:137 - Error has occurred on table agent creation
+2019-05-14 11:44:59 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-14 11:44:59 ERROR EimDbCreator:141 - null
+2019-05-14 11:44:59 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration check
+2019-05-14 11:44:59 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration creation
+2019-05-14 11:44:59 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-14 11:44:59 ERROR EimDbCreator:141 - null
+2019-05-14 11:44:59 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration_control check
+2019-05-14 11:44:59 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration_control creation
+2019-05-14 11:44:59 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-14 11:44:59 ERROR EimDbCreator:141 - null
+2019-05-14 11:46:13 INFO  Properties:41 - Properties loaded from /WEB-INF/bootstrap.properties
+2019-05-14 11:46:13 ERROR EimDbCreator:60 - Error creating EIM database: error parsing url : Incorrect port value : null
+2019-05-14 11:46:13 ERROR EimDbCreator:199 - Error has occurred on table agent check
+2019-05-14 11:46:13 ERROR EimDbCreator:137 - Error has occurred on table agent creation
+2019-05-14 11:46:13 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-14 11:46:13 ERROR EimDbCreator:141 - null
+2019-05-14 11:46:13 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration check
+2019-05-14 11:46:13 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration creation
+2019-05-14 11:46:13 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-14 11:46:13 ERROR EimDbCreator:141 - null
+2019-05-14 11:46:13 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration_control check
+2019-05-14 11:46:13 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration_control creation
+2019-05-14 11:46:13 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-14 11:46:13 ERROR EimDbCreator:141 - null
+2019-05-14 13:18:49 INFO  Properties:41 - Properties loaded from /WEB-INF/bootstrap.properties
+2019-05-14 13:18:49 ERROR EimDbCreator:60 - Error creating EIM database: error parsing url : Incorrect port value : null
+2019-05-14 13:18:49 ERROR EimDbCreator:199 - Error has occurred on table agent check
+2019-05-14 13:18:49 ERROR EimDbCreator:137 - Error has occurred on table agent creation
+2019-05-14 13:18:49 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-14 13:18:49 ERROR EimDbCreator:141 - null
+2019-05-14 13:18:49 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration check
+2019-05-14 13:18:49 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration creation
+2019-05-14 13:18:49 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-14 13:18:49 ERROR EimDbCreator:141 - null
+2019-05-14 13:18:49 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration_control check
+2019-05-14 13:18:49 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration_control creation
+2019-05-14 13:18:49 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-14 13:18:49 ERROR EimDbCreator:141 - null
+2019-05-15 12:06:17 INFO  Properties:41 - Properties loaded from /WEB-INF/bootstrap.properties
+2019-05-15 12:06:18 ERROR EimDbCreator:60 - Error creating EIM database: error parsing url : Incorrect port value : null
+2019-05-15 12:06:18 ERROR EimDbCreator:199 - Error has occurred on table agent check
+2019-05-15 12:06:18 ERROR EimDbCreator:137 - Error has occurred on table agent creation
+2019-05-15 12:06:18 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-15 12:06:18 ERROR EimDbCreator:141 - null
+2019-05-15 12:06:18 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration check
+2019-05-15 12:06:18 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration creation
+2019-05-15 12:06:18 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-15 12:06:18 ERROR EimDbCreator:141 - null
+2019-05-15 12:06:18 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration_control check
+2019-05-15 12:06:18 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration_control creation
+2019-05-15 12:06:18 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-15 12:06:18 ERROR EimDbCreator:141 - null
+2019-05-15 12:24:29 INFO  Properties:41 - Properties loaded from /WEB-INF/bootstrap.properties
+2019-05-15 12:24:30 ERROR EimDbCreator:60 - Error creating EIM database: error parsing url : Incorrect port value : null
+2019-05-15 12:24:30 ERROR EimDbCreator:199 - Error has occurred on table agent check
+2019-05-15 12:24:30 ERROR EimDbCreator:137 - Error has occurred on table agent creation
+2019-05-15 12:24:30 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-15 12:24:30 ERROR EimDbCreator:141 - null
+2019-05-15 12:24:30 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration check
+2019-05-15 12:24:30 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration creation
+2019-05-15 12:24:30 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-15 12:24:30 ERROR EimDbCreator:141 - null
+2019-05-15 12:24:30 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration_control check
+2019-05-15 12:24:30 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration_control creation
+2019-05-15 12:24:30 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-15 12:24:30 ERROR EimDbCreator:141 - null
+2019-05-15 15:47:52 INFO  Properties:41 - Properties loaded from /WEB-INF/bootstrap.properties
+2019-05-15 15:47:52 ERROR EimDbCreator:60 - Error creating EIM database: error parsing url : Incorrect port value : null
+2019-05-15 15:47:52 ERROR EimDbCreator:199 - Error has occurred on table agent check
+2019-05-15 15:47:52 ERROR EimDbCreator:137 - Error has occurred on table agent creation
+2019-05-15 15:47:52 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-15 15:47:52 ERROR EimDbCreator:141 - null
+2019-05-15 15:47:52 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration check
+2019-05-15 15:47:52 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration creation
+2019-05-15 15:47:52 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-15 15:47:52 ERROR EimDbCreator:141 - null
+2019-05-15 15:47:52 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration_control check
+2019-05-15 15:47:52 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration_control creation
+2019-05-15 15:47:52 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-15 15:47:52 ERROR EimDbCreator:141 - null
+2019-05-15 15:49:06 INFO  Properties:41 - Properties loaded from /WEB-INF/bootstrap.properties
+2019-05-15 15:49:06 ERROR EimDbCreator:60 - Error creating EIM database: error parsing url : Incorrect port value : null
+2019-05-15 15:49:06 ERROR EimDbCreator:199 - Error has occurred on table agent check
+2019-05-15 15:49:06 ERROR EimDbCreator:137 - Error has occurred on table agent creation
+2019-05-15 15:49:06 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-15 15:49:06 ERROR EimDbCreator:141 - null
+2019-05-15 15:49:06 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration check
+2019-05-15 15:49:06 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration creation
+2019-05-15 15:49:06 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-15 15:49:06 ERROR EimDbCreator:141 - null
+2019-05-15 15:49:06 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration_control check
+2019-05-15 15:49:06 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration_control creation
+2019-05-15 15:49:06 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-15 15:49:06 ERROR EimDbCreator:141 - null
+2019-05-15 19:22:53 INFO  Properties:41 - Properties loaded from /WEB-INF/bootstrap.properties
+2019-05-15 19:22:53 ERROR EimDbCreator:60 - Error creating EIM database: error parsing url : Incorrect port value : null
+2019-05-15 19:22:53 ERROR EimDbCreator:199 - Error has occurred on table agent check
+2019-05-15 19:22:53 ERROR EimDbCreator:137 - Error has occurred on table agent creation
+2019-05-15 19:22:53 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-15 19:22:53 ERROR EimDbCreator:141 - null
+2019-05-15 19:22:53 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration check
+2019-05-15 19:22:53 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration creation
+2019-05-15 19:22:53 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-15 19:22:53 ERROR EimDbCreator:141 - null
+2019-05-15 19:22:53 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration_control check
+2019-05-15 19:22:53 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration_control creation
+2019-05-15 19:22:53 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-15 19:22:53 ERROR EimDbCreator:141 - null
+2019-05-16 10:09:53 INFO  Properties:41 - Properties loaded from /WEB-INF/bootstrap.properties
+2019-05-16 10:09:53 ERROR EimDbCreator:60 - Error creating EIM database: error parsing url : Incorrect port value : null
+2019-05-16 10:09:53 ERROR EimDbCreator:199 - Error has occurred on table agent check
+2019-05-16 10:09:53 ERROR EimDbCreator:137 - Error has occurred on table agent creation
+2019-05-16 10:09:53 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-16 10:09:53 ERROR EimDbCreator:141 - null
+2019-05-16 10:09:53 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration check
+2019-05-16 10:09:53 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration creation
+2019-05-16 10:09:53 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-16 10:09:53 ERROR EimDbCreator:141 - null
+2019-05-16 10:09:53 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration_control check
+2019-05-16 10:09:53 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration_control creation
+2019-05-16 10:09:53 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-16 10:09:53 ERROR EimDbCreator:141 - null
+2019-05-16 11:47:11 INFO  Properties:41 - Properties loaded from /WEB-INF/bootstrap.properties
+2019-05-16 11:47:11 ERROR EimDbCreator:60 - Error creating EIM database: error parsing url : Incorrect port value : null
+2019-05-16 11:47:11 ERROR EimDbCreator:199 - Error has occurred on table agent check
+2019-05-16 11:47:11 ERROR EimDbCreator:137 - Error has occurred on table agent creation
+2019-05-16 11:47:11 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-16 11:47:11 ERROR EimDbCreator:141 - null
+2019-05-16 11:47:11 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration check
+2019-05-16 11:47:11 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration creation
+2019-05-16 11:47:11 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-16 11:47:11 ERROR EimDbCreator:141 - null
+2019-05-16 11:47:11 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration_control check
+2019-05-16 11:47:11 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration_control creation
+2019-05-16 11:47:11 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-16 11:47:11 ERROR EimDbCreator:141 - null
+2019-05-16 12:39:34 INFO  Properties:41 - Properties loaded from /WEB-INF/bootstrap.properties
+2019-05-16 12:39:34 ERROR EimDbCreator:60 - Error creating EIM database: error parsing url : Incorrect port value : null
+2019-05-16 12:39:34 ERROR EimDbCreator:199 - Error has occurred on table agent check
+2019-05-16 12:39:34 ERROR EimDbCreator:137 - Error has occurred on table agent creation
+2019-05-16 12:39:34 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-16 12:39:34 ERROR EimDbCreator:141 - null
+2019-05-16 12:39:34 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration check
+2019-05-16 12:39:34 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration creation
+2019-05-16 12:39:34 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-16 12:39:34 ERROR EimDbCreator:141 - null
+2019-05-16 12:39:34 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration_control check
+2019-05-16 12:39:34 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration_control creation
+2019-05-16 12:39:34 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-16 12:39:34 ERROR EimDbCreator:141 - null
+2019-05-16 12:53:49 INFO  Properties:41 - Properties loaded from /WEB-INF/bootstrap.properties
+2019-05-16 12:53:49 ERROR EimDbCreator:60 - Error creating EIM database: error parsing url : Incorrect port value : null
+2019-05-16 12:53:49 ERROR EimDbCreator:199 - Error has occurred on table agent check
+2019-05-16 12:53:49 ERROR EimDbCreator:137 - Error has occurred on table agent creation
+2019-05-16 12:53:49 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-16 12:53:49 ERROR EimDbCreator:141 - null
+2019-05-16 12:53:49 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration check
+2019-05-16 12:53:49 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration creation
+2019-05-16 12:53:49 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-16 12:53:49 ERROR EimDbCreator:141 - null
+2019-05-16 12:53:49 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration_control check
+2019-05-16 12:53:49 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration_control creation
+2019-05-16 12:53:49 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-16 12:53:49 ERROR EimDbCreator:141 - null
+2019-05-16 17:11:19 INFO  Properties:41 - Properties loaded from /WEB-INF/bootstrap.properties
+2019-05-16 17:11:19 ERROR EimDbCreator:60 - Error creating EIM database: error parsing url : Incorrect port value : null
+2019-05-16 17:11:19 ERROR EimDbCreator:199 - Error has occurred on table agent check
+2019-05-16 17:11:19 ERROR EimDbCreator:137 - Error has occurred on table agent creation
+2019-05-16 17:11:19 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-16 17:11:19 ERROR EimDbCreator:141 - null
+2019-05-16 17:11:19 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration check
+2019-05-16 17:11:19 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration creation
+2019-05-16 17:11:19 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-16 17:11:19 ERROR EimDbCreator:141 - null
+2019-05-16 17:11:19 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration_control check
+2019-05-16 17:11:19 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration_control creation
+2019-05-16 17:11:19 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-16 17:11:19 ERROR EimDbCreator:141 - null
+2019-05-16 20:26:24 INFO  Properties:41 - Properties loaded from /WEB-INF/bootstrap.properties
+2019-05-16 20:26:24 ERROR EimDbCreator:60 - Error creating EIM database: error parsing url : Incorrect port value : null
+2019-05-16 20:26:24 ERROR EimDbCreator:199 - Error has occurred on table agent check
+2019-05-16 20:26:24 ERROR EimDbCreator:137 - Error has occurred on table agent creation
+2019-05-16 20:26:24 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-16 20:26:24 ERROR EimDbCreator:141 - null
+2019-05-16 20:26:24 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration check
+2019-05-16 20:26:24 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration creation
+2019-05-16 20:26:24 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-16 20:26:24 ERROR EimDbCreator:141 - null
+2019-05-16 20:26:24 ERROR EimDbCreator:199 - Error has occurred on table agent_configuration_control check
+2019-05-16 20:26:24 ERROR EimDbCreator:137 - Error has occurred on table agent_configuration_control creation
+2019-05-16 20:26:24 ERROR EimDbCreator:140 - error parsing url : Incorrect port value : null
+2019-05-16 20:26:24 ERROR EimDbCreator:141 - null
