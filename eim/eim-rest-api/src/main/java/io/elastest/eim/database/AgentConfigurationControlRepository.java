@@ -43,6 +43,10 @@ public class AgentConfigurationControlRepository {
 	
 	public boolean deleteAgentCfg(String agentId) {
 		return eimDbCfgManager.deleteAgentConfiguration(agentId);    
+	}
+
+	public List<AgentConfigurationDatabaseControl> getPacketLoss(String agentId) {
+		return eimDbCfgManager.getPacketLoss(agentId);
 	}	
 	
 

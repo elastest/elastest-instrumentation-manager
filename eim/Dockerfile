@@ -75,6 +75,7 @@ COPY ansible/beats/setup-files/packetbeat.yml /var/ansible/beats/setup-files
 # beats - EXECBEAT
 COPY ansible/beats/playbook-install-beat-execbeat.yml /var/ansible/beats
 COPY ansible/beats/setup-files/execbeat.yml /var/ansible/beats/setup-files
+COPY ansible/beats/remove_iptables_rules.sh /var/ansible/beats
 
 # restart tomcat server to refresh the value of the properties 
 COPY tomcat/restart_tomcat.sh /var/tomcat/restart_tomcat.sh

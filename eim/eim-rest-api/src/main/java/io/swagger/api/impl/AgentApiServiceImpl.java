@@ -19,6 +19,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -73,29 +76,30 @@ public class AgentApiServiceImpl extends AgentApiService {
     			//remove beats
     			status = -1;
 	    		//beats uninstallation
-	            BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate, Dictionary.REMOVE, getAnsibleCfgFilePathForAgent(agent));	            
+	            BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate, Dictionary.REMOVE, getAnsibleCfgFilePathForAgent(agent));
+	            logger.info("beatsTemplateManager" + beatsTemplateManager.toString());
+	            System.out.println("beatsTemplateManager"+ beatsTemplateManager.toString());
+	            
 	            status = beatsTemplateManager.execute();
 	            if (status == 0) {
 	            	logger.info("Successful execution for the delete script generated to agent " + agent.getAgentId());
 	            	
 	            	//delete agent configuration
 	            	boolean deleted = agentCfgDb.deleteAgentCfg(agentId);
-	            	// delete agent configuration control
+	            	//delete agent configuration control
 	            	boolean deleted_execbeat = agentCfgControlDB.deleteAgentCfg(agentId);
 	            	
 	        		if (deleted) {
-	        			logger.info("Successful deleted from database agent_configuration table -->  agent " + agent.getAgentId());
-	        			//return Response.ok().entity(agent).build();	        		
+	        			logger.info("Successful deleted from database agent_configuration table -->  agent " + agent.getAgentId());	        		
 	        		}
-	        		if (deleted_execbeat) {
+	        		if (deleted_execbeat) {		
 	        			logger.info("Successful deleted from database agent_configuration_control table -->  agent configuration" + agent.getAgentId());
 	        		}
 	        		else {
 	        			logger.error("ERROR deleting agent configuration " + agent.getAgentId() + " from database");
 	        			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be deleted from database, check logs please")).build();
 	        		}
-	        	
-	            }
+	        	}
 	            else {	            	
 	            	logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
 	            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
@@ -115,20 +119,19 @@ public class AgentApiServiceImpl extends AgentApiService {
 	            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
 	            }
     		}
-    		
-    		//delete from db
-    		boolean deleted_execbeat = agentCfgControlDB.deleteAgentCfg(agentId);
+    
+    		//Delete agent from db
     		boolean deleted = agentDb.deleteAgent(agentId);
+        	boolean deleted_execbeat = agentCfgControlDB.deleteAgentCfg(agentId);
+
+    		
     		if (deleted) {
     			logger.info("Successful deleted from database agent_configuration table -->  agent " + agent.getAgentId());
     			//return Response.ok().entity(agent).build();    		
     		}
     		if (deleted_execbeat) {
-    			logger.info("Successful deleted from database agent_configuration_control table -->  agent configuration" + agent.getAgentId());
-    		}
-    		else {
-    			logger.error("ERROR deleting agent " + agent.getAgentId() + " from database");
-    			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be deleted from database, check logs please")).build();
+    			logger.info("Successful deleted from database agent_configuration_control table -->  agent " + agent.getAgentId());
+
     		}
     		
     		try {
@@ -464,6 +467,8 @@ public class AgentApiServiceImpl extends AgentApiService {
     }
     
     private String getAnsibleCfgFilePathForAgent(AgentFull agent) {
+    	
+    	//var/ansible/ssh/hosts/iagent01/host_iagent01_cfg"
     	String a  = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
     			Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_HOSTS_FOLDER) +
     			agent.getAgentId() + "/" + "host_" + agent.getAgentId() + "_cfg";
