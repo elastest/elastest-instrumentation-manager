@@ -49,16 +49,32 @@
       path: /etc/execbeat/
       state: absent
     when: service_status_execbeat.stat.exists == true
-
-  - name: Check if iptables list is not empty
-    command: sudo iptables --list --line-numbers
-    register: iptables_lists_exists
   
+  - name: "Get iptables list tam"
+    shell: sudo iptables --list --line-numbers | sed '/^num\|^$\|^Chain/d' | wc -l
+    register: iptables_list_numbers
+
+  - name: Check if iptables rules exists
+    shell: sudo iptables -C {{ item }}
+    loop:
+      - "##item##"
+    when: iptables_list_numbers!= "0"
+    register: iptables_lists_exists
+
+  - set_fact:
+      iptables_list_numbers="{{ iptables_list_numbers.stdout | int }}"
+
+  - debug: var=iptables_list_numbers
+
   - name: "Restore default iptables rules of SUT"
     shell: sudo iptables -D {{ item }}
-    with_items: 
+    loop: 
       -  "##item##"
-    when: iptables_lists_exists!="0"
+    register: results
+    when: iptables_list_numbers>=0
+    until: results.rc == 1
+    retries: "{{ iptables_list_numbers|int -1 }}"
+    ignore_errors: yes
 
   - name: remove packetbeat
     apt:
