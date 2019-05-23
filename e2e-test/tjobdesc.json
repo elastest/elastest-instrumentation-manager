@@ -1,238 +1,208 @@
 {
-  "id":0,
-  "name":"eim tjob",
-  "execDashboardConfig":"{\"showAllInOne\":false,\"allMetricsFields\":{\"fieldsList\":[{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"activated\":false,\"name\":\"et_dockbeat_cpu_totalUsage\",\"etType\":\"cpu\",\"subtype\":\"totalUsage\",\"unit\":\"percent\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"activated\":false,\"name\":\"et_dockbeat_memory_usage\",\"etType\":\"memory\",\"subtype\":\"usage\",\"unit\":\"percent\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"activated\":false,\"name\":\"et_dockbeat_memory_maxUsage\",\"etType\":\"memory\",\"subtype\":\"maxUsage\",\"unit\":\"bytes\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"activated\":false,\"name\":\"et_dockbeat_blkio_read_ps\",\"etType\":\"blkio\",\"subtype\":\"read_ps\",\"unit\":\"bytes\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"activated\":false,\"name\":\"et_dockbeat_blkio_write_ps\",\"etType\":\"blkio\",\"subtype\":\"write_ps\",\"unit\":\"bytes\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"activated\":false,\"name\":\"et_dockbeat_blkio_total_ps\",\"etType\":\"blkio\",\"subtype\":\"total_ps\",\"unit\":\"bytes\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"activated\":false,\"name\":\"et_dockbeat_net_rxBytes_ps\",\"etType\":\"net\",\"subtype\":\"rxBytes_ps\",\"unit\":\"amount/sec\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"activated\":false,\"name\":\"et_dockbeat_net_rxErrors_ps\",\"etType\":\"net\",\"subtype\":\"rxErrors_ps\",\"unit\":\"amount/sec\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"activated\":false,\"name\":\"et_dockbeat_net_rxPackets_ps\",\"etType\":\"net\",\"subtype\":\"rxPackets_ps\",\"unit\":\"amount/sec\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"activated\":false,\"name\":\"et_dockbeat_net_txBytes_ps\",\"etType\":\"net\",\"subtype\":\"txBytes_ps\",\"unit\":\"amount/sec\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"activated\":false,\"name\":\"et_dockbeat_net_txErrors_ps\",\"etType\":\"net\",\"subtype\":\"txErrors_ps\",\"unit\":\"amount/sec\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"activated\":false,\"name\":\"et_dockbeat_net_txPackets_ps\",\"etType\":\"net\",\"subtype\":\"txPackets_ps\",\"unit\":\"amount/sec\"}]},\"allLogsTypes\":{\"logsList\":[{\"component\":\"test\",\"stream\":\"default_log\",\"streamType\":\"log\",\"activated\":true,\"name\":\"test_default_log_log\"},{\"component\":\"sut\",\"stream\":\"default_log\",\"streamType\":\"log\",\"activated\":true,\"name\":\"sut_default_log_log\"}]}}",
-  "execDashboardConfigModel":{
-    "showAllInOne":false,
-    "allMetricsFields":{
-      "fieldsList":[
+  "id": 0,
+  "name": "EIM e2e tjob",
+  "execDashboardConfig": "{\"showAllInOne\":true,\"allMetricsFields\":{\"fieldsList\":[{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"name\":\"et_dockbeat_cpu_totalUsage\",\"activated\":false,\"etType\":\"cpu\",\"subtype\":\"totalUsage\",\"unit\":\"percent\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"name\":\"et_dockbeat_memory_usage\",\"activated\":false,\"etType\":\"memory\",\"subtype\":\"usage\",\"unit\":\"percent\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"name\":\"et_dockbeat_memory_maxUsage\",\"activated\":false,\"etType\":\"memory\",\"subtype\":\"maxUsage\",\"unit\":\"bytes\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"name\":\"et_dockbeat_blkio_read_ps\",\"activated\":false,\"etType\":\"blkio\",\"subtype\":\"read_ps\",\"unit\":\"bytes\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"name\":\"et_dockbeat_blkio_write_ps\",\"activated\":false,\"etType\":\"blkio\",\"subtype\":\"write_ps\",\"unit\":\"bytes\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"name\":\"et_dockbeat_blkio_total_ps\",\"activated\":false,\"etType\":\"blkio\",\"subtype\":\"total_ps\",\"unit\":\"bytes\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"name\":\"et_dockbeat_net_rxBytes_ps\",\"activated\":false,\"etType\":\"net\",\"subtype\":\"rxBytes_ps\",\"unit\":\"amount/sec\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"name\":\"et_dockbeat_net_rxErrors_ps\",\"activated\":false,\"etType\":\"net\",\"subtype\":\"rxErrors_ps\",\"unit\":\"amount/sec\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"name\":\"et_dockbeat_net_rxPackets_ps\",\"activated\":false,\"etType\":\"net\",\"subtype\":\"rxPackets_ps\",\"unit\":\"amount/sec\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"name\":\"et_dockbeat_net_txBytes_ps\",\"activated\":false,\"etType\":\"net\",\"subtype\":\"txBytes_ps\",\"unit\":\"amount/sec\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"name\":\"et_dockbeat_net_txErrors_ps\",\"activated\":false,\"etType\":\"net\",\"subtype\":\"txErrors_ps\",\"unit\":\"amount/sec\"},{\"component\":\"\",\"stream\":\"et_dockbeat\",\"streamType\":\"composed_metrics\",\"name\":\"et_dockbeat_net_txPackets_ps\",\"activated\":false,\"etType\":\"net\",\"subtype\":\"txPackets_ps\",\"unit\":\"amount/sec\"}]},\"allLogsTypes\":{\"logsList\":[{\"component\":\"test\",\"stream\":\"default_log\",\"streamType\":\"log\",\"name\":\"test_default_log_log\",\"activated\":true},{\"component\":\"sut\",\"stream\":\"default_log\",\"streamType\":\"log\",\"name\":\"sut_default_log_log\",\"activated\":true}]}}",
+  "execDashboardConfigModel": {
+    "showAllInOne": true,
+    "allMetricsFields": {
+      "fieldsList": [
         {
-          "component":"",
-          "stream":"et_dockbeat",
-          "streamType":"composed_metrics",
-          "activated":false,
-          "name":"et_dockbeat_cpu_totalUsage",
-          "etType":"cpu",
-          "subtype":"totalUsage",
-          "unit":"percent"
+          "component": "",
+          "stream": "et_dockbeat",
+          "streamType": "composed_metrics",
+          "name": "et_dockbeat_cpu_totalUsage",
+          "activated": false,
+          "etType": "cpu",
+          "subtype": "totalUsage",
+          "unit": "percent"
         },
         {
-          "component":"",
-          "stream":"et_dockbeat",
-          "streamType":"composed_metrics",
-          "activated":false,
-          "name":"et_dockbeat_memory_usage",
-          "etType":"memory",
-          "subtype":"usage",
-          "unit":"percent"
+          "component": "",
+          "stream": "et_dockbeat",
+          "streamType": "composed_metrics",
+          "name": "et_dockbeat_memory_usage",
+          "activated": false,
+          "etType": "memory",
+          "subtype": "usage",
+          "unit": "percent"
         },
         {
-          "component":"",
-          "stream":"et_dockbeat",
-          "streamType":"composed_metrics",
-          "activated":false,
-          "name":"et_dockbeat_memory_maxUsage",
-          "etType":"memory",
-          "subtype":"maxUsage",
-          "unit":"bytes"
+          "component": "",
+          "stream": "et_dockbeat",
+          "streamType": "composed_metrics",
+          "name": "et_dockbeat_memory_maxUsage",
+          "activated": false,
+          "etType": "memory",
+          "subtype": "maxUsage",
+          "unit": "bytes"
         },
         {
-          "component":"",
-          "stream":"et_dockbeat",
-          "streamType":"composed_metrics",
-          "activated":false,
-          "name":"et_dockbeat_blkio_read_ps",
-          "etType":"blkio",
-          "subtype":"read_ps",
-          "unit":"bytes"
+          "component": "",
+          "stream": "et_dockbeat",
+          "streamType": "composed_metrics",
+          "name": "et_dockbeat_blkio_read_ps",
+          "activated": false,
+          "etType": "blkio",
+          "subtype": "read_ps",
+          "unit": "bytes"
         },
         {
-          "component":"",
-          "stream":"et_dockbeat",
-          "streamType":"composed_metrics",
-          "activated":false,
-          "name":"et_dockbeat_blkio_write_ps",
-          "etType":"blkio",
-          "subtype":"write_ps",
-          "unit":"bytes"
+          "component": "",
+          "stream": "et_dockbeat",
+          "streamType": "composed_metrics",
+          "name": "et_dockbeat_blkio_write_ps",
+          "activated": false,
+          "etType": "blkio",
+          "subtype": "write_ps",
+          "unit": "bytes"
         },
         {
-          "component":"",
-          "stream":"et_dockbeat",
-          "streamType":"composed_metrics",
-          "activated":false,
-          "name":"et_dockbeat_blkio_total_ps",
-          "etType":"blkio",
-          "subtype":"total_ps",
-          "unit":"bytes"
+          "component": "",
+          "stream": "et_dockbeat",
+          "streamType": "composed_metrics",
+          "name": "et_dockbeat_blkio_total_ps",
+          "activated": false,
+          "etType": "blkio",
+          "subtype": "total_ps",
+          "unit": "bytes"
         },
         {
-          "component":"",
-          "stream":"et_dockbeat",
-          "streamType":"composed_metrics",
-          "activated":false,
-          "name":"et_dockbeat_net_rxBytes_ps",
-          "etType":"net",
-          "subtype":"rxBytes_ps",
-          "unit":"amount/sec"
+          "component": "",
+          "stream": "et_dockbeat",
+          "streamType": "composed_metrics",
+          "name": "et_dockbeat_net_rxBytes_ps",
+          "activated": false,
+          "etType": "net",
+          "subtype": "rxBytes_ps",
+          "unit": "amount/sec"
         },
         {
-          "component":"",
-          "stream":"et_dockbeat",
-          "streamType":"composed_metrics",
-          "activated":false,
-          "name":"et_dockbeat_net_rxErrors_ps",
-          "etType":"net",
-          "subtype":"rxErrors_ps",
-          "unit":"amount/sec"
+          "component": "",
+          "stream": "et_dockbeat",
+          "streamType": "composed_metrics",
+          "name": "et_dockbeat_net_rxErrors_ps",
+          "activated": false,
+          "etType": "net",
+          "subtype": "rxErrors_ps",
+          "unit": "amount/sec"
         },
         {
-          "component":"",
-          "stream":"et_dockbeat",
-          "streamType":"composed_metrics",
-          "activated":false,
-          "name":"et_dockbeat_net_rxPackets_ps",
-          "etType":"net",
-          "subtype":"rxPackets_ps",
-          "unit":"amount/sec"
+          "component": "",
+          "stream": "et_dockbeat",
+          "streamType": "composed_metrics",
+          "name": "et_dockbeat_net_rxPackets_ps",
+          "activated": false,
+          "etType": "net",
+          "subtype": "rxPackets_ps",
+          "unit": "amount/sec"
         },
         {
-          "component":"",
-          "stream":"et_dockbeat",
-          "streamType":"composed_metrics",
-          "activated":false,
-          "name":"et_dockbeat_net_txBytes_ps",
-          "etType":"net",
-          "subtype":"txBytes_ps",
-          "unit":"amount/sec"
+          "component": "",
+          "stream": "et_dockbeat",
+          "streamType": "composed_metrics",
+          "name": "et_dockbeat_net_txBytes_ps",
+          "activated": false,
+          "etType": "net",
+          "subtype": "txBytes_ps",
+          "unit": "amount/sec"
         },
         {
-          "component":"",
-          "stream":"et_dockbeat",
-          "streamType":"composed_metrics",
-          "activated":false,
-          "name":"et_dockbeat_net_txErrors_ps",
-          "etType":"net",
-          "subtype":"txErrors_ps",
-          "unit":"amount/sec"
+          "component": "",
+          "stream": "et_dockbeat",
+          "streamType": "composed_metrics",
+          "name": "et_dockbeat_net_txErrors_ps",
+          "activated": false,
+          "etType": "net",
+          "subtype": "txErrors_ps",
+          "unit": "amount/sec"
         },
         {
-          "component":"",
-          "stream":"et_dockbeat",
-          "streamType":"composed_metrics",
-          "activated":false,
-          "name":"et_dockbeat_net_txPackets_ps",
-          "etType":"net",
-          "subtype":"txPackets_ps",
-          "unit":"amount/sec"
+          "component": "",
+          "stream": "et_dockbeat",
+          "streamType": "composed_metrics",
+          "name": "et_dockbeat_net_txPackets_ps",
+          "activated": false,
+          "etType": "net",
+          "subtype": "txPackets_ps",
+          "unit": "amount/sec"
         }
       ]
     },
-    "allLogsTypes":{
-      "logsList":[
+    "allLogsTypes": {
+      "logsList": [
         {
-          "component":"test",
-          "stream":"default_log",
-          "streamType":"log",
-          "activated":true,
-          "name":"test_default_log_log"
+          "component": "test",
+          "stream": "default_log",
+          "streamType": "log",
+          "name": "test_default_log_log",
+          "activated": true
         },
         {
-          "component":"sut",
-          "stream":"default_log",
-          "streamType":"log",
-          "activated":true,
-          "name":"sut_default_log_log"
+          "component": "sut",
+          "stream": "default_log",
+          "streamType": "log",
+          "name": "sut_default_log_log",
+          "activated": true
         }
       ]
     }
   },
- "imageName": "imdeasoftware/e2etjob",
-  "sut":{
-    "id":SUTID,
-    "name":"EIMe2esut"
+  "imageName": "imdeasoftware/e2etjob",
+  "sut": {
+    "id": SUTID,
+    "name": "EIMe2esut"
   },
-  "project":{
-    "id":PROJID,
-    "name":"EIMe2e",
+  "project": {
+    "id": PROJID,
+    "name": "EIMe2e",
     "suts": [],
     "tjobs": []
   },
-  "tjobExecs":[],
-  "parameters":[],
-  "commands":"git clone https://github.com/elastest/demo-projects\ncd demo-projects/unit/junit4-unit-test/\nmvn -B test",
-  "resultsPath":"",
-  "esmServicesString":"[{\"id\":\"bab3ae67-8c1d-46ec-a940-94183a443825\",\"name\":\"EMS\",\"selected\":false},{\"id\":\"a1920b13-7d11-4ebc-a732-f86a108ea49c\",\"name\":\"EBS\",\"selected\":false},{\"id\":\"fe5e0531-b470-441f-9c69-721c2b4875f2\",\"name\":\"EDS\",\"selected\":false},{\"id\":\"af7947d9-258b-4dd1-b1ca-17450db25ef7\",\"name\":\"ESS\",\"selected\":false},{\"id\":\"29216b91-497c-43b7-a5c4-6613f13fa0e9\",\"name\":\"EUS\",\"selected\":false,\"manifest\":{\"id\":\"2bd62bc2-f768-42d0-8194-562924b494ff\",\"endpoints\":{\"elastest-eus\":{\"description\":\"W3C WebDriver standard sessions operations\",\"main\":true,\"api\":[{\"protocol\":\"http\",\"port\":8040,\"path\":\"/eus/v1/\",\"definition\":{\"type\":\"openapi\",\"path\":\"/eus/v1/api.yaml\"}},{\"name\":\"eusWS\",\"protocol\":\"ws\",\"port\":8040,\"path\":\"/eus/v1/eus-ws\"}],\"gui\":{\"protocol\":\"angular\",\"path\":\"app-elastest-eus\"}}},\"config\":{\"webRtcStats\":{\"name\":\"webRtcStats\",\"type\":\"boolean\",\"label\":\"Gather WebRTC Statistics\",\"default\":false,\"value\":false}}}}]",
-  "esmServices":[
+  "tjobExecs": [],
+  "parameters": [],
+  "commands": "cd /go\n./tjob",
+  "resultsPath": "",
+  "esmServicesString": "[{\"id\":\"a1920b13-7d11-4ebc-a732-f86a108ea49c\",\"name\":\"EBS\",\"selected\":false,\"config\":{}},{\"id\":\"fe5e0531-b470-441f-9c69-721c2b4875f2\",\"name\":\"EDS\",\"selected\":false,\"config\":{}},{\"id\":\"bab3ae67-8c1d-46ec-a940-94183a443825\",\"name\":\"EMS\",\"selected\":true,\"config\":{}},{\"id\":\"29216b91-497c-43b7-a5c4-6613f13fa0e9\",\"name\":\"EUS\",\"selected\":false,\"config\":{\"webRtcStats\":{\"name\":\"webRtcStats\",\"type\":\"boolean\",\"label\":\"Gather WebRTC Statistics\",\"default\":false,\"value\":false}}},{\"id\":\"af7947d9-258b-4dd1-b1ca-17450db25ef7\",\"name\":\"ESS\",\"selected\":false,\"config\":{}}]",
+  "esmServices": [
     {
-      "id":"bab3ae67-8c1d-46ec-a940-94183a443825",
-      "name":"EMS",
-      "selected":false
+      "id": "a1920b13-7d11-4ebc-a732-f86a108ea49c",
+      "name": "EBS",
+      "selected": false,
+      "config": {}
     },
     {
-      "id":"a1920b13-7d11-4ebc-a732-f86a108ea49c",
-      "name":"EBS",
-      "selected":false
+      "id": "fe5e0531-b470-441f-9c69-721c2b4875f2",
+      "name": "EDS",
+      "selected": false,
+      "config": {}
     },
     {
-      "id":"fe5e0531-b470-441f-9c69-721c2b4875f2",
-      "name":"EDS",
-      "selected":false
+      "id": "bab3ae67-8c1d-46ec-a940-94183a443825",
+      "name": "EMS",
+      "selected": true,
+      "config": {}
     },
     {
-      "id":"af7947d9-258b-4dd1-b1ca-17450db25ef7",
-      "name":"ESS",
-      "selected":false
-    },
-    {
-      "id":"29216b91-497c-43b7-a5c4-6613f13fa0e9",
-      "name":"EUS",
-      "selected":false,
-      "manifest":{
-        "id":"2bd62bc2-f768-42d0-8194-562924b494ff",
-        "endpoints":{
-          "elastest-eus":{
-            "description":"W3C WebDriver standard sessions operations",
-            "main":true,
-            "api":[
-              {
-                "protocol":"http",
-                "port":8040,
-                "path":"/eus/v1/",
-                "definition":{
-                  "type":"openapi",
-                  "path":"/eus/v1/api.yaml"
-                }
-              },
-              {
-                "name":"eusWS",
-                "protocol":"ws",
-                "port":8040,
-                "path":"/eus/v1/eus-ws"
-              }
-            ],
-            "gui":{
-              "protocol":"angular",
-              "path":"app-elastest-eus"
-            }
-          }
-        },
-        "config":{
-          "webRtcStats":{
-            "name":"webRtcStats",
-            "type":"boolean",
-            "label":"Gather WebRTC Statistics",
-            "default":false,
-            "value":false
-          }
+      "id": "29216b91-497c-43b7-a5c4-6613f13fa0e9",
+      "name": "EUS",
+      "selected": false,
+      "config": {
+        "webRtcStats": {
+          "name": "webRtcStats",
+          "type": "boolean",
+          "label": "Gather WebRTC Statistics",
+          "default": false,
+          "value": false
         }
       }
+    },
+    {
+      "id": "af7947d9-258b-4dd1-b1ca-17450db25ef7",
+      "name": "ESS",
+      "selected": false,
+      "config": {}
     }
   ],
-  "esmServicesChecked":0,
-  "external":false,
-  "multi":false,
-  "multiConfigurations":[
-
-  ]
+  "esmServicesChecked": 0,
+  "external": false
 }
