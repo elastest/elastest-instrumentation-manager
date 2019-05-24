@@ -44,9 +44,13 @@ checknonempty "$SUTID"
 
 # T-Job creation
 echo Creating T-Job
-sed -i -e "s|PROJID|$PROJID|g" -e "s|SUTID|$SUTID|g" tjobdesc.json
-TJOB=$(curl -s -H "Content-Type: application/json" -d @tjobdesc.json "$ELASTESTURL/api/tjob")
-echo $TJOB
+#sed -i -e "s|PROJID|$PROJID|g" -e "s|SUTID|$SUTID|g" tjobdesc.json
+#TJOB=$(curl -s -H "Content-Type: application/json" -d @tjobdesc.json "$ELASTESTURL/api/tjob")
+DESC=`sed "s/PROJID/$PROJID/;s/SUTID/$SUTID/" tjobdesc.txt`
+TJOB=$(curl -s -H "Content-Type: application/json" -d "$DESC" "$ELASTESTURL/api/tjob")
+
+#echo $TJOB
+
 
 TJOBID=`echo "$TJOB" | grep -wo .id.:[0-9]*,.name.:.eim.tjob | cut -d ',' -f 1 | cut -d ':' -f 2`
 echo TJob ID: $TJOBID
