@@ -3,7 +3,7 @@ def elastestURL = ""
 
 node("et_in_et"){
     
-    elastest(tss: ['EUS'], surefireReportsPattern: '**/target/surefire-reports/TEST-*.xml', project: 'ETinET_EIM', sut:11){
+    elastest(tss: ['EUS'], surefireReportsPattern: '**/target/surefire-reports/TEST-*.xml', project: 'ETinET', sut:11){
         echo "...STARTING..."
     
         stage ('docker container')
@@ -14,6 +14,8 @@ node("et_in_et"){
             elastestContainer.pull()
             elastestContainer.inside("-u jenkins -v /var/run/docker.sock:/var/run/docker.sock:rw -v /dev/shm:/dev/shm")  {
                 sh '/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf &'
+                elastestURL =  env.ET_SUT_PROTOCOL + '://elastest:3xp3r1m3nt47@' + env.ET_SUT_HOST + ':' + env.ET_SUT_PORT
+
     
                 // referencia a la libreria... def sutContainer = elastest.ctx.docker.image('elastest/eim-sut')
                 
