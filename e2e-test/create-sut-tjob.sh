@@ -51,14 +51,12 @@ TJOB=$(curl -s -H "Content-Type: application/json" -d "$DESC" "$ELASTESTURL/api/
 echo $TJOB
 
 
-#TJOBID=`echo "$TJOB" | grep -wo .id.:[0-9]*,.name.:.eim.tjob | cut -d ',' -f 1 | cut -d ':' -f 2`
-
-TJOBID=`echo "$TJOB" | tr '\n' ' ' | jq '.id'`
+TJOBID=`echo "$TJOB" | grep -wo .id.:[0-9]*,.name.:.eim.tjob | cut -d ',' -f 1 | cut -d ':' -f 2`
 echo TJob ID: $TJOBID
 checknonempty "$TJOBID"
 
 # T-Job execution
-echo Executing T-Job
+echo Executing T-Job... 
 TJOBEXEC=$(curl -s -H "Content-Type: application/json" -d '{"tJobParams": []}' "$ELASTESTURL/api/tjob/$TJOBID/exec")
 echo $TJOBEXEC
 TJOBEXECID=`echo "$TJOBEXEC" | tr '\n' ' ' | jq '.monitoringIndex' | sed 's/"//g'`
