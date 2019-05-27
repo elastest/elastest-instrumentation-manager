@@ -46,6 +46,7 @@ checknonempty "$SUTID"
 echo Creating T-Job
 #sed -i -e "s|PROJID|$PROJID|g" -e "s|SUTID|$SUTID|g" tjobdesc.json
 #TJOB=$(curl -s -H "Content-Type: application/json" -d @tjobdesc.json "$ELASTESTURL/api/tjob")
+
 DESC=`sed "s/PROJID/$PROJID/;s/SUTID/$SUTID/" tjobdesc.txt`
 TJOB=$(curl -s -H "Content-Type: application/json" -d "$DESC" "$ELASTESTURL/api/tjob")
 echo $TJOB
@@ -54,39 +55,4 @@ echo $TJOB
 TJOBID=`echo "$TJOB" | grep -wo .id.:[0-9]*,.name.:.eim.tjob | cut -d ',' -f 1 | cut -d ':' -f 2`
 echo TJob ID: $TJOBID
 checknonempty "$TJOBID"
-
-# T-Job execution
-echo Executing T-Job... 
-TJOBEXEC=$(curl -s -H "Content-Type: application/json" -d '{"tJobParams": []}' "$ELASTESTURL/api/tjob/$TJOBID/exec")
-echo $TJOBEXEC
-TJOBEXECID=`echo "$TJOBEXEC" | tr '\n' ' ' | jq '.monitoringIndex' | sed 's/"//g'`
-echo TJobEXEC ID: $TJOBEXECID
-checknonempty "$TJOBEXECID"
-
-# Getting result
-n=0
-while [ $n -le 3000 ]
-do
-	n=$(( n+1 ))	 # increments $n
-	sleep 1
-	TJOBEXEC=$(curl -s "$ELASTESTURL/api/tjob/$TJOBID/exec/$TJOBEXECID/result")
-	#echo curl -s "$ELASTESTURL/api/tjob/$TJOBID/exec/$TJOBEXECID/result"
-	#echo $TJOBEXEC
-    if [[ $TJOBEXEC = *"SUCCESS"* ]]; then
-        echo Test successful
-        cleanexit 0
-    fi
-    if [[ $TJOBEXEC = *"FAIL"* ]]; then
-        echo Test failed
-        cleanexit -2
-    fi
-    if [[ $TJOBEXEC = *"ERROR"* ]]; then
-        echo Test erroneous
-        cleanexit -3
-    fi
-done
-
-echo Test took too long
-cleanexit -4
-
 
