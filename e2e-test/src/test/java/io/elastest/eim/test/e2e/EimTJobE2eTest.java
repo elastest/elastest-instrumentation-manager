@@ -110,7 +110,7 @@ public class EimTJobE2eTest extends EimBaseTest {
         // Setting up the TJob used in the test
         this.createProjectAndSut(driver);
         navigateToETProject(driver, projectName);
-        String tJobName = "EMS e2e tjob";
+        String tJobName = "EIM e2e tjob";
         if (!etTJobExistsIntoProject(driver, projectName, tJobName)) {
             String tJobTestResultPath = "";
             String tJobImage = "elastest/test-etm-alpinegitjava";
@@ -118,7 +118,7 @@ public class EimTJobE2eTest extends EimBaseTest {
             String projID=System.getenv("projID");
             String privateKey=System.getenv("privateKey");
             		
-            String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; cd e2e-test/; mvn -Dtest=RegisterAgent.java -DipAddr="+ipAddr+" -DprojID="+projID+" -DprivateKey="+privateKey+" -Dbrowser=chrome test;";
+            String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; cd e2e-test/; mvn -Dtest=EimApiRestTest.java -DipAddr="+ipAddr+" -DprojID="+projID+" -DprivateKey="+privateKey+" -Dbrowser=chrome test;";
             createNewTJob(driver, tJobName, tJobTestResultPath, sutName,
                     tJobImage, false, commands, null, tssMap, null, null);
         }
