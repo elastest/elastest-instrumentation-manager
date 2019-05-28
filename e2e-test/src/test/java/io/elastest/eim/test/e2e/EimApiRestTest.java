@@ -10,39 +10,29 @@ import junit.framework.Assert;
 
 public class EimApiRestTest {
 
-	
 	private String private_key = System.getenv("privateKey");
 	private String sut_address = System.getenv("ipAddr");
 	private String eim_api_rest = "http://nightly.elastest.io:37004/";
-	private String user ="root";
+	private String user = "root";
 	private String password = "elastest";
 	private boolean secureElastest = false;
-	
-	
+	private String uri = "http://" + eim_api_rest + "/eim/api/agent/";
+
+	public RestClient client = new RestClient(eim_api_rest, user, password, secureElastest);
+
+	// TODO - registerAgent_then200OK()
 	@Test
 	public void registerAgent_then200OK() {
-		RestClient client = new RestClient(eim_api_rest, user, password, secureElastest);
-		String uri = "http://"+eim_api_rest+"/eim/api/agent/";
-		String payload = "{\"address\":"+sut_address+",\"user\":"+user+",\"private_key\":"+private_key+",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\5044\",\"password\":\"elastest\"}";
-		
+		String payload = "{\"address\":" + sut_address + ",\"user\":" + user + ",\"private_key\":" + private_key
+				+ ",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\5044\",\"password\":\"elastest\"}";
+
 		JsonParser parser = new JsonParser();
-		JsonObject jsonObj = (JsonObject)parser.parse(payload);
-		
-		Assert.assertEquals(200,client.post(uri, payload).getStatusCode());
+		JsonObject jsonObj = (JsonObject) parser.parse(payload);
+
+		Assert.assertEquals(200, client.post(uri, payload).getStatusCode());
 	}
-	// TODO - Register Agent:
-	/**
-	 * curl -i -X POST -H "Content-Type:application/json" -H
-	 * "Accept:application/json" http://localhost:8080/eim/api/agent/ -d
-	 * '{"address": "172.20.0.6","user": "root","private_key":"-----BEGIN RSA
-	 * PRIVATE
-	 * KEY-----\nMIIEpAIBAAKCAQEA6lVvhQmi3zW0LH1YfhmXSqf105n5OJEaaQlBVv4lqdrAIcmn\nnqr05RkpBjC5Odoym/mVHDJd0i+j4JQ6FvB9Gq2be5RPxClZp3zMP0kdznZBYRmS\nSYPNtukROf/swKA9D411bnDi8tIoglMQ9Hp6ZnWPChMvwoS02gpVEEyBkD3S6EWd\nPkIuLp21SRAyeH+TGIxawbkbWZSGXF9BD/N3b2G8Dy7t8mp2M1JLrRrmNDPLM+tw\nBZUEm5OAcIrbDONVCB4EGXrLQ4N0GKkY2gQgPCZ3Z3ct1Woy1R6xzSM9lDTL8nap\nUimCBGC6pMqHIqLrXSTBrke49J3nu353cxQj9wIDAQABAoIBAAPclJHkrsJu6CEz\nj5nEYjHgwrRR/UFpYr4IYQNF/OjnqfLkl9aNiqub1ok7lFHXvq3DVym3ysQD9Pdm\nee6W1/jwk3dd4lKhO9D+xX7lfZBBcqJfAYIkoec5wAbsqMIj4d23vw+q3JKT1AcR\nx13ABvRZS5om5sqV1UUilnRGTnxKAHUoS4ICcu+kN11BIAc7oYWS5EqVxeXR5b4q\nMzBbo/938abzjd5c5SOrJIKfWZWIhndMDXEkjGJSfQQIxWTzqsAX1r73V6x8+j11\nOhpBWk5jK41BsoR4vsNXO7rt1qvdkZpIjdDdAVjFT/NRvuz5xX2McuDOuZINK2Tc\nNlul8QECgYEA9kXp6YM2u2EvEC/BQQMt0age9L2+/yR8Mzr2ta0SK2vV0cXsHSpE\nYUMAPFCV70ApGVox/DJ92OUTg33goVrWGw6JwFZo992CxiGEKy8S0LLZyw7EGPxC\nQ3fXhXjilJm4dfQRfzCoUFMhX8HMwDLNtr+GE3L7tGAlCaUh2EdBANECgYEA85bN\nUnkonev5T2q7rRtTeRgmyx4JKoavLxYLThkzs5K7DpPg9kDbS8w5XaOp5LqnI6ud\nx+0quE54j1Abqh3jlBsZR9Z8VzsuffsQLF5FkBJuWM7sBhymOFn12kabTY1kSMEz\n1lufAs/n9FZDaGzSuYSCIo5an+RqTXza6SjoykcCgYEAg+90nztCiSRJeFx9Jf00\nAMwWuXsl5b6AI1oFbdMolsaQqG9mTUGlnI2uhKGPkbtHyWM+wCO0tAwVZi57tzXY\n2mnxdm9UkOXE96xhCFmRtOj8MQLaH6CVR1vexIy8pmusHNUCwqcopM/EY26J6LXO\n64azp5vEKSAQ95fWB+40buECgYEAvmAZ0F9I00Pd8aelTkGRF488onqzBz2EJPTB\nmSQxOCNxdo80vsEpoy/Vlc2Xtl/6yPITunEtdiY+KyOcu3PorZQQSgjj3Pkv+N4D\nYem7zEHbZCU0agJyFpCYiSOttQrQWdxFuz6YJAaBboEM5cxHVR6u5nsDcPt/6Vev\nb5K9fXkCgYAgo/bz+LMMGmWFT1yWLBNKEEPpmtCiBFp5pLrToEN0hMqRnjXpAKrJ\nRG0K/1o4HzTnC6kh1aZm9MhEG3BDdp20IpiJth5tRw4a6YHerLkNGbvT4amk/iqW\nqFchooKilv7pa5lb9SJuMTrWbsDprEi6RNAmf293Lm3NSiYiV33M+A==\n-----END
-	 * RSA PRIVATE KEY-----","logstash_ip": "172.20.0.4", "logstash_port":
-	 * "5044","password": "elastest"}'
-	 **/
 
-	// TODO - Request command using action: PacketLoss Command
-
+	// TODO - request_packetloss_action_then200OK
 	/**
 	 * curl -i -X POST -H "Content-Type:application/json" -H
 	 * "Accept:application/json"
@@ -51,7 +41,16 @@ public class EimApiRestTest {
 	 * "dockerized": "yes", "cronExpression": "@every 60s" }'
 	 */
 
-	// TODO - Request command using action: Stress Command
+	@Test
+	public void request_packetloss_action_then200OK() {
+		String uri_packetloss_action = uri + "controllability/iagent0/packetloss";
+		String payload = "{\"exec\":\"EXECBEAT\",\"component\":\"EIM\",\"packetLoss\":\"0.01\",\"stressNg\":\"\",\"dockerized\":\"yes\",\"cronExpression\":\"@every 60s\"}";
+
+		Assert.assertEquals(200, client.post(uri_packetloss_action, payload).getStatusCode());
+
+	}
+
+	// TODO - request_stress_action_then200OK()
 
 	/**
 	 * curl -i -X POST -H "Content-Type:application/json" -H
@@ -61,7 +60,15 @@ public class EimApiRestTest {
 	 * "dockerized": "yes", "cronExpression": "@every 60s" }'
 	 **/
 
-	// TODO - Unistall Agent
+	@Test
+	public void request_stress_action_then200OK() {
+		String uri_stress_action = uri + "controllability/iagent0/stress";
+		String payload = "{\"exec\":\"EXECBEAT\",\"component\":\"EIM\",\"packetLoss\":\"\",\"stressNg\":\"4\",\"dockerized\":\"yes\",\"cronExpression\":\"@every 60s\"}";
+
+		Assert.assertEquals(200, client.post(uri_stress_action, payload).getStatusCode());
+	}
+
+	// TODO - Unistall Agent - request_unistall_agent
 
 	/**
 	 * curl -i -X DELETE -H "Content-Type:application/json" -H
@@ -69,11 +76,23 @@ public class EimApiRestTest {
 	 * http://localhost:8080/eim/api/agent/iagent0/unmonitor
 	 */
 
+	public void request_unistall_agent() {
+		String uri_unistall_agent = uri + "iagent0/unmonitor";
+		Assert.assertEquals(200, client.delete(uri_unistall_agent).getStatusCode());
+
+	}
+
 	// TODO - Remove Agent
 
 	/**
 	 * curl -i -X DELETE -H "Content-Type:application/json" -H
 	 * "Accept:application/json" http://localhost:8080/eim/api/agent/iagent0
 	 */
+
+	public void request_delete_agent() {
+		String uri_delete_agent = uri + "iagent0";
+		Assert.assertEquals(200, client.delete(uri_delete_agent).getStatusCode());
+
+	}
 
 }
