@@ -1,7 +1,35 @@
 package io.elastest.eim.test.e2e;
 
+import org.junit.jupiter.api.Test;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import io.elastest.eim.test.utils.RestClient;
+import junit.framework.Assert;
+
 public class EimApiRestTest {
 
+	
+	private String private_key = System.getenv("privateKey");
+	private String sut_address = System.getenv("ipAddr");
+	private String eim_api_rest = "http://nightly.elastest.io:37004/";
+	private String user ="root";
+	private String password = "elastest";
+	private boolean secureElastest = false;
+	
+	
+	@Test
+	public void registerAgent_then200OK() {
+		RestClient client = new RestClient(eim_api_rest, user, password, secureElastest);
+		String uri = "http://"+eim_api_rest+"/eim/api/agent/";
+		String payload = "{\"address\":"+sut_address+",\"user\":"+user+",\"private_key\":"+private_key+",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\5044\",\"password\":\"elastest\"}";
+		
+		JsonParser parser = new JsonParser();
+		JsonObject jsonObj = (JsonObject)parser.parse(payload);
+		
+		Assert.assertEquals(200,client.post(uri, payload).getStatusCode());
+	}
 	// TODO - Register Agent:
 	/**
 	 * curl -i -X POST -H "Content-Type:application/json" -H
