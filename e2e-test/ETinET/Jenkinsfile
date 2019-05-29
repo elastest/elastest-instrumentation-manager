@@ -47,13 +47,19 @@ node("et_in_et"){
     
                 stage ("API tests")
                     try {
-                         writeFile file: "e2e-test/pKey", text: privateKey
-                         sh "cd e2e-test; bash ./create-sut-tjob.sh "+elastestURL+" "+ipAddr
+	                    
+	                    writeFile file: "e2e-test/pKey", text: privateKey
+	                    #sh "cd e2e-test; bash ./create-sut-tjob.sh "+elastestURL+" "+ipAddr
+						
+						def projID = sh returnStdout: true, script: 'cat e2e-test/projid_file'
+						def ipAddr = sh returnStdout: true, script: 'cat e2e-test/pKey'
+						
+						sh "cd e2e-test; mvn -B clean test -DipAddr="+ipAddr+" -DprojID="+projID+"  -DprivateKey="+privateKey+" -DeusUrl=${env.ET_EUS_API} -DetEtmApi="+elastest_url+" -DeUser="+'elastest'+" -DePass="+'3xp3r1m3nt47'+" -Dsel.jup.recording=true -Dsel.jup.screenshot.at.the.end.of.tests=true -Dsel.jup.screenshot.format=png -Dsel.jup.output.folder=surefire-reports"
+	                    
+	                    sleep(180)
     
-                        sleep(180)
-    
-                        def projID = sh returnStdout: true, script: 'cat e2e-test/projid_file'
-                        sh "cd e2e-test; bash ./check-beat-status.sh "+elastestURL+" "+projID
+                        #def projID = sh returnStdout: true, script: 'cat e2e-test/projid_file'
+                        #sh "cd e2e-test; bash ./check-beat-status.sh "+elastestURL+" "+projID
     
                         sh "echo TEST_SUCCESSFULL"
     
