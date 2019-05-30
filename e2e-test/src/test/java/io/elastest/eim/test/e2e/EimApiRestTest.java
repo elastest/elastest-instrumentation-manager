@@ -92,7 +92,8 @@ public class EimApiRestTest {
 	 * http://localhost:8080/eim/api/agent/iagent0/unmonitor
 	 * @throws InterruptedException 
 	 */
-
+	
+	@Test
 	public void request_unistall_agent() throws InterruptedException {
 		String uri_unistall_agent = uri + "iagent0/unmonitor";
 		TimeUnit.SECONDS.sleep(160);
@@ -107,7 +108,7 @@ public class EimApiRestTest {
 	 * "Accept:application/json" http://localhost:8080/eim/api/agent/iagent0
 	 * @throws InterruptedException 
 	 */
-
+	@Test
 	public void request_delete_agent() throws InterruptedException {
 		String uri_delete_agent = uri + "iagent0";
 		TimeUnit.SECONDS.sleep(160);
