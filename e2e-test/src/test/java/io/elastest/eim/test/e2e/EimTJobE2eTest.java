@@ -19,6 +19,7 @@
 
 package io.elastest.eim.test.e2e;
 
+import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -35,13 +36,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 
-
-
 import io.elastest.eim.test.base.EimBaseTest;
 import io.github.bonigarcia.seljup.BrowserType;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
-import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 
 /**
  * Check that the EMS works properly together with a TJob.
@@ -104,7 +102,7 @@ public class EimTJobE2eTest extends EimBaseTest {
 			String ipAddr = System.getenv("ipAddr");
 			String privateKey = System.getenv("privateKey");
 
-			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; cd e2e-test/; mvn -Dtest=EimApiRestTest.java -DipAddr="
+			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; cd e2e-test/; mvn -B clean test -Dtest=io.elastest.eim.test.e2e.EimTJobE2eTest.java -DipAddr="
 					+ ipAddr + " -DprivateKey=" + privateKey + " -Dbrowser=chrome test;";
 			createNewTJob(driver, tJobName, tJobTestResultPath, sutName, tJobImage, false, commands, null, tssMap, null,
 					null);
