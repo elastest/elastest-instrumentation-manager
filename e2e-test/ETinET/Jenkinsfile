@@ -1,5 +1,6 @@
 def elastestURL = ""
-
+def privateKey = ""
+def ipAddr = ""
 
 node("et_in_et"){
     
@@ -28,8 +29,7 @@ node("et_in_et"){
                     // referencia a la librería elastestURL = elastest.getEtmUrl() => 
                     //sustituir por la env.SUT_PROTOCOL y env.SUT_URL (o algo así mirad en el pipeline del torm)
     
-                    def privateKey = ""
-                    def ipAddr = ""
+                   
                     sutContainer.pull()
                     sutContainer.inside("-u root --name=sut-dockerized -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/containers/:/var/lib/docker/containers/") {
     
@@ -40,18 +40,18 @@ node("et_in_et"){
                         // Removing last two characters
                         sh "sed -i -e '\$ s|.\$||' -e '\$ s|.\$||' id_rsa"
                         privateKey = readFile 'id_rsa'
+                        //writeFile file: "e2e-test/pKey", text: privateKey
                         ipAddr = sh returnStdout: true, script: 'hostname -I'
-                        sh "echo $ipAddr"
+                        privateKey = sh returnStdout: true, script: 'cat e2e-test/pKey'
                     }
     
                 stage ("API tests")
                     try {
 	                    
-	                    writeFile file: "e2e-test/pKey", text: privateKey
+						sh "echo $ipAddr"
+						sh "echo $privateKey"
 						
-						ipAddr = sh returnStdout: true, script: 'cat e2e-test/pKey'
-						
-						sh "cd e2e-test; mvn -B clean test -Dtest=io.elastest.eim.test.e2e.EimTJobE2eTest.java -DipAddr="+ipAddr+" -DprivateKey="+privateKey+" -DeusUrl=${env.ET_EUS_API} -DetEtmApi="+elastest_url+" -DeUser="+'elastest'+" -DePass="+'3xp3r1m3nt47'+" -Dsel.jup.recording=true -Dsel.jup.screenshot.at.the.end.of.tests=true -Dsel.jup.screenshot.format=png -Dsel.jup.output.folder=surefire-reports"
+						sh "cd e2e-test; mvn -B clean test -Dtest=io.elastest.eim.test.e2e.EimTJobE2eTest.java -DipAddr="+ipAddr+" -DprivateKey="+privateKey+" -DeusUrl=${env.ET_EUS_API} -DetEtmApi="+elastest_url+" -DeUser="+'elastest'+" -DePass="+'3xp3r1m3nt47'+" -Dsel.jup.recording=true -Dsel.jup.screenshot.at.the.end.of.tests=true -Dsel.jup.screenshot.format=png -Dsel.jup.output.folder=/target/surefire-reports/TEST-*.xml"
 	            
 	                    sleep(180)
     
@@ -67,5 +67,5 @@ node("et_in_et"){
                         //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
                     }
             }
-    	}
+    }
   }
