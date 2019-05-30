@@ -47,7 +47,7 @@ import static io.github.bonigarcia.seljup.BrowserType.CHROME;
  * Check that the EMS works properly together with a TJob.
  */
 @Tag("e2e")
-@DisplayName("E2E tests of EMS through TORM")
+@DisplayName("E2E tests of EIM through TORM")
 @ExtendWith(SeleniumExtension.class)
 
 public class EimTJobE2eTest extends EimBaseTest {
