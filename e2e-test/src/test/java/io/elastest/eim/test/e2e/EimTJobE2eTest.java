@@ -17,17 +17,11 @@
  * Developed in the context of ElasTest EU project http://elastest.io 
  */
 
-
 package io.elastest.eim.test.e2e;
 
-
-
 import static java.lang.invoke.MethodHandles.lookup;
-import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 import static org.slf4j.LoggerFactory.getLogger;
 
-import java.io.FileReader;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,25 +31,17 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+
 
 import io.elastest.eim.test.base.EimBaseTest;
-import io.github.bonigarcia.*;
 import io.github.bonigarcia.seljup.BrowserType;
 import io.github.bonigarcia.seljup.DockerBrowser;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 import static io.github.bonigarcia.seljup.BrowserType.CHROME;
-
-
 
 /**
  * Check that the EMS works properly together with a TJob.
@@ -65,68 +51,67 @@ import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 @ExtendWith(SeleniumExtension.class)
 
 public class EimTJobE2eTest extends EimBaseTest {
-	
+
+	private String sutName = "EIMe2esut";
+
 	final Logger log = getLogger(lookup().lookupClass());
-    String projectName = "EIMe2e";
+	String projectName = "EIMe2e";
 
-    private static final Map<String, List<String>> tssMap;
-    static {
-        tssMap = new HashMap<String, List<String>>();
-        tssMap.put("EIM", null);
-    }
-    
-    void createProject(WebDriver driver) throws Exception {
-        navigateToTorm(driver);
-        if (!etProjectExists(driver, projectName)) {
-            createNewETProject(driver, projectName);
-        }
-    }
-    
-    private String sutName = "EIMe2esut";
-    
-    
-    void createProjectAndSut(WebDriver driver) throws Exception {
-        navigateToTorm(driver);       		
-        
-        if (!etProjectExists(driver, projectName)) {
-            createNewETProject(driver, projectName);
-        }
-        if (!etSutExistsIntoProject(driver, projectName, sutName)) {
-            
-        	// Create SuT
-            String sutDesc = "SuT for E2E test";
-            String sutImage="elastest/eim-sut:latest";
-            String port="8080";
-            
-            createNewSutDeployedByElastestWithImage(driver, sutName,sutDesc,sutImage,port,null,false);
-        }
+	private static final Map<String, List<String>> tssMap;
+	static {
+		tssMap = new HashMap<String, List<String>>();
+		tssMap.put("EIM", null);
+	}
 
-    }
-    
-    @Test
-    @DisplayName("EIM in a TJob")
-    void testTJob(@DockerBrowser(type = CHROME) RemoteWebDriver localDriver,
-            TestInfo testInfo) throws Exception {
-        setupTestBrowser(testInfo, BrowserType.CHROME, localDriver);
+	void createProject(WebDriver driver) throws Exception {
+		navigateToTorm(driver);
+		if (!etProjectExists(driver, projectName)) {
+			createNewETProject(driver, projectName);
+		}
+	}
 
-        // Setting up the TJob used in the test
-        this.createProjectAndSut(driver);
-        navigateToETProject(driver, projectName);
-        String tJobName = "EIM e2e tjob";
-        if (!etTJobExistsIntoProject(driver, projectName, tJobName)) {
-            String tJobTestResultPath = "";
-            String tJobImage = "elastest/test-etm-alpinegitjava";
-            String ipAddr= System.getenv("ipAddr");
-            String projID=System.getenv("projID");
-            String privateKey=System.getenv("privateKey");
-            		
-            String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; cd e2e-test/; mvn -Dtest=EimApiRestTest.java -DipAddr="+ipAddr+" -DprojID="+projID+" -DprivateKey="+privateKey+" -Dbrowser=chrome test;";
-            createNewTJob(driver, tJobName, tJobTestResultPath, sutName,
-                    tJobImage, false, commands, null, tssMap, null, null);
-        }
-        // Run the TJob
-        runTJobFromProjectPage(driver, tJobName);
+	void createProjectAndSut(WebDriver driver) throws Exception {
+		navigateToTorm(driver);
 
-    }
+		if (!etProjectExists(driver, projectName)) {
+			createNewETProject(driver, projectName);
+		}
+		if (!etSutExistsIntoProject(driver, projectName, sutName)) {
+
+			// Create SuT
+			String sutDesc = "SuT for E2E test";
+			String sutImage = "elastest/eim-sut:latest";
+			String port = "8080";
+
+			createNewSutDeployedByElastestWithImage(driver, sutName, sutDesc, sutImage, port, null, false);
+		}
+
+	}
+
+	@Test
+	@DisplayName("EIM in a TJob")
+	void testTJob(@DockerBrowser(type = CHROME) RemoteWebDriver localDriver, TestInfo testInfo) throws Exception {
+		setupTestBrowser(testInfo, BrowserType.CHROME, localDriver);
+
+		// Setting up the TJob used in the test
+		this.createProjectAndSut(driver);
+		navigateToETProject(driver, projectName);
+		String tJobName = "EIM e2e tjob";
+		if (!etTJobExistsIntoProject(driver, projectName, tJobName)) {
+
+			String tJobTestResultPath = "";
+			String tJobImage = "elastest/test-etm-alpinegitjava";
+			String ipAddr = System.getenv("ipAddr");
+			String privateKey = System.getenv("privateKey");
+
+			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; cd e2e-test/; mvn -Dtest=EimApiRestTest.java -DipAddr="
+					+ ipAddr + " -DprivateKey=" + privateKey + " -Dbrowser=chrome test;";
+			createNewTJob(driver, tJobName, tJobTestResultPath, sutName, tJobImage, false, commands, null, tssMap, null,
+					null);
+		}
+		// Run the TJob
+		runTJobFromProjectPage(driver, tJobName);
+
+	}
 
 }

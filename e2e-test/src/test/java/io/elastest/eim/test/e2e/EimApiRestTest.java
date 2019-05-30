@@ -19,10 +19,9 @@
 
 package io.elastest.eim.test.e2e;
 
-import org.junit.jupiter.api.Test;
+import java.util.concurrent.TimeUnit;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import org.junit.jupiter.api.Test;
 
 import io.elastest.eim.test.utils.RestClient;
 import junit.framework.Assert;
@@ -45,8 +44,8 @@ public class EimApiRestTest {
 		String payload = "{\"address\":" + sut_address + ",\"user\":" + user + ",\"private_key\":" + private_key
 				+ ",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\5044\",\"password\":\"elastest\"}";
 
-		JsonParser parser = new JsonParser();
-		JsonObject jsonObj = (JsonObject) parser.parse(payload);
+		//JsonParser parser = new JsonParser();
+		//JsonObject jsonObj = (JsonObject) parser.parse(payload);
 
 		Assert.assertEquals(200, client.post(uri, payload).getStatusCode());
 	}
@@ -64,7 +63,6 @@ public class EimApiRestTest {
 	public void request_packetloss_action_then200OK() {
 		String uri_packetloss_action = uri + "controllability/iagent0/packetloss";
 		String payload = "{\"exec\":\"EXECBEAT\",\"component\":\"EIM\",\"packetLoss\":\"0.01\",\"stressNg\":\"\",\"dockerized\":\"yes\",\"cronExpression\":\"@every 60s\"}";
-
 		Assert.assertEquals(200, client.post(uri_packetloss_action, payload).getStatusCode());
 
 	}
@@ -83,7 +81,6 @@ public class EimApiRestTest {
 	public void request_stress_action_then200OK() {
 		String uri_stress_action = uri + "controllability/iagent0/stress";
 		String payload = "{\"exec\":\"EXECBEAT\",\"component\":\"EIM\",\"packetLoss\":\"\",\"stressNg\":\"4\",\"dockerized\":\"yes\",\"cronExpression\":\"@every 60s\"}";
-
 		Assert.assertEquals(200, client.post(uri_stress_action, payload).getStatusCode());
 	}
 
@@ -93,10 +90,12 @@ public class EimApiRestTest {
 	 * curl -i -X DELETE -H "Content-Type:application/json" -H
 	 * "Accept:application/json"
 	 * http://localhost:8080/eim/api/agent/iagent0/unmonitor
+	 * @throws InterruptedException 
 	 */
 
-	public void request_unistall_agent() {
+	public void request_unistall_agent() throws InterruptedException {
 		String uri_unistall_agent = uri + "iagent0/unmonitor";
+		TimeUnit.SECONDS.sleep(160);
 		Assert.assertEquals(200, client.delete(uri_unistall_agent).getStatusCode());
 
 	}
@@ -106,10 +105,12 @@ public class EimApiRestTest {
 	/**
 	 * curl -i -X DELETE -H "Content-Type:application/json" -H
 	 * "Accept:application/json" http://localhost:8080/eim/api/agent/iagent0
+	 * @throws InterruptedException 
 	 */
 
-	public void request_delete_agent() {
+	public void request_delete_agent() throws InterruptedException {
 		String uri_delete_agent = uri + "iagent0";
+		TimeUnit.SECONDS.sleep(160);
 		Assert.assertEquals(200, client.delete(uri_delete_agent).getStatusCode());
 
 	}
