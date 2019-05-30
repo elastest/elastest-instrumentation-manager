@@ -40,7 +40,7 @@ public class EimApiRestTest {
 
 	// TODO - registerAgent_then200OK()
 	@Test
-	public void registerAgent_then200OK() {
+	public void registerAgentTest() {
 		String payload = "{\"address\":" + sut_address + ",\"user\":" + user + ",\"private_key\":" + private_key
 				+ ",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\5044\",\"password\":\"elastest\"}";
 
@@ -60,7 +60,7 @@ public class EimApiRestTest {
 	 */
 
 	@Test
-	public void request_packetloss_action_then200OK() {
+	public void requestActionPacketLossTest() {
 		String uri_packetloss_action = uri + "controllability/iagent0/packetloss";
 		String payload = "{\"exec\":\"EXECBEAT\",\"component\":\"EIM\",\"packetLoss\":\"0.01\",\"stressNg\":\"\",\"dockerized\":\"yes\",\"cronExpression\":\"@every 60s\"}";
 		Assert.assertEquals(200, client.post(uri_packetloss_action, payload).getStatusCode());
@@ -78,7 +78,7 @@ public class EimApiRestTest {
 	 **/
 
 	@Test
-	public void request_stress_action_then200OK() {
+	public void requestActionStressTest() {
 		String uri_stress_action = uri + "controllability/iagent0/stress";
 		String payload = "{\"exec\":\"EXECBEAT\",\"component\":\"EIM\",\"packetLoss\":\"\",\"stressNg\":\"4\",\"dockerized\":\"yes\",\"cronExpression\":\"@every 60s\"}";
 		Assert.assertEquals(200, client.post(uri_stress_action, payload).getStatusCode());
@@ -94,7 +94,7 @@ public class EimApiRestTest {
 	 */
 	
 	@Test
-	public void request_unistall_agent() throws InterruptedException {
+	public void requestUnistallAgentTest() throws InterruptedException {
 		String uri_unistall_agent = uri + "iagent0/unmonitor";
 		TimeUnit.SECONDS.sleep(160);
 		Assert.assertEquals(200, client.delete(uri_unistall_agent).getStatusCode());
@@ -109,7 +109,7 @@ public class EimApiRestTest {
 	 * @throws InterruptedException 
 	 */
 	@Test
-	public void request_delete_agent() throws InterruptedException {
+	public void requestDeleteAgentTest() throws InterruptedException {
 		String uri_delete_agent = uri + "iagent0";
 		TimeUnit.SECONDS.sleep(160);
 		Assert.assertEquals(200, client.delete(uri_delete_agent).getStatusCode());
