@@ -22,9 +22,9 @@ package io.elastest.eim.test.e2e;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import io.elastest.eim.test.utils.RestClient;
-import junit.framework.Assert;
 
 public class EimApiRestTest {
 
@@ -47,7 +47,7 @@ public class EimApiRestTest {
 		//JsonParser parser = new JsonParser();
 		//JsonObject jsonObj = (JsonObject) parser.parse(payload);
 
-		Assert.assertEquals(200, client.post(uri, payload).getStatusCode());
+		Assertions.assertEquals(200, client.post(uri, payload).getStatusCode());
 	}
 
 	// TODO - request_packetloss_action_then200OK
@@ -63,7 +63,7 @@ public class EimApiRestTest {
 	public void requestActionPacketLossTest() {
 		String uri_packetloss_action = uri + "controllability/iagent0/packetloss";
 		String payload = "{\"exec\":\"EXECBEAT\",\"component\":\"EIM\",\"packetLoss\":\"0.01\",\"stressNg\":\"\",\"dockerized\":\"yes\",\"cronExpression\":\"@every 60s\"}";
-		Assert.assertEquals(200, client.post(uri_packetloss_action, payload).getStatusCode());
+		Assertions.assertEquals(200, client.post(uri_packetloss_action, payload).getStatusCode());
 
 	}
 
@@ -81,7 +81,7 @@ public class EimApiRestTest {
 	public void requestActionStressTest() {
 		String uri_stress_action = uri + "controllability/iagent0/stress";
 		String payload = "{\"exec\":\"EXECBEAT\",\"component\":\"EIM\",\"packetLoss\":\"\",\"stressNg\":\"4\",\"dockerized\":\"yes\",\"cronExpression\":\"@every 60s\"}";
-		Assert.assertEquals(200, client.post(uri_stress_action, payload).getStatusCode());
+		Assertions.assertEquals(200, client.post(uri_stress_action, payload).getStatusCode());
 	}
 
 	// TODO - Unistall Agent - request_unistall_agent
@@ -97,7 +97,7 @@ public class EimApiRestTest {
 	public void requestUnistallAgentTest() throws InterruptedException {
 		String uri_unistall_agent = uri + "iagent0/unmonitor";
 		TimeUnit.SECONDS.sleep(160);
-		Assert.assertEquals(200, client.delete(uri_unistall_agent).getStatusCode());
+		Assertions.assertEquals(200, client.delete(uri_unistall_agent).getStatusCode());
 
 	}
 
@@ -112,7 +112,7 @@ public class EimApiRestTest {
 	public void requestDeleteAgentTest() throws InterruptedException {
 		String uri_delete_agent = uri + "iagent0";
 		TimeUnit.SECONDS.sleep(160);
-		Assert.assertEquals(200, client.delete(uri_delete_agent).getStatusCode());
+		Assertions.assertEquals(200, client.delete(uri_delete_agent).getStatusCode());
 
 	}
 

@@ -19,7 +19,6 @@
 
 package io.elastest.eim.test.e2e;
 
-import static io.github.bonigarcia.seljup.BrowserType.CHROME;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -88,7 +87,7 @@ public class EimTJobE2eTest extends EimBaseTest {
 
 	@Test
 	@DisplayName("EIM in a TJob")
-	void testTJob(@DockerBrowser(type = CHROME) RemoteWebDriver localDriver, TestInfo testInfo) throws Exception {
+	void testTJob(@DockerBrowser(type = BrowserType.CHROME) RemoteWebDriver localDriver, TestInfo testInfo) throws Exception {
 		setupTestBrowser(testInfo, BrowserType.CHROME, localDriver);
 
 		// Setting up the TJob used in the test
