@@ -100,11 +100,13 @@ public class EimTJobE2eTest extends EimBaseTest {
 			String tJobImage = "elastest/test-etm-alpinegitjava";
 			String ipAddr = System.getenv("ipAddr");
 			String privateKey = System.getenv("privateKey");
-
+			//tssMap parameter is null cause EIM is not a test support service
+			
 			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; cd e2e-test/; mvn -B clean test -Dtest=io.elastest.eim.test.e2e.EimTJobE2eTest.java -DipAddr="
 					+ ipAddr + " -DprivateKey=" + privateKey + " -Dbrowser=chrome test;";
-			createNewTJob(driver, tJobName, tJobTestResultPath, sutName, tJobImage, false, commands, null, tssMap, null,
+			createNewTJob(driver, tJobName, tJobTestResultPath, sutName, tJobImage, false, commands, null, null, null,
 					null);
+			
 		}
 		// Run the TJob
 		runTJobFromProjectPage(driver, tJobName);
