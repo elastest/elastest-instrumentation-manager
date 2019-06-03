@@ -52,7 +52,7 @@ node("et_in_et"){
 						sh "echo PRIVATE KEY SUT:"
 						sh "echo $privateKey"
 						
-						sh "cd e2e-test; mvn -B clean test -Dtest=io.elastest.eim.test.e2e.EimTJobE2eTest -DipAddr="+ipAddr+" -DprivateKey="+privateKey+" -DeusUrl=${env.ET_EUS_API} -DetEtmApi="+elastestURL+" -DeUser="+'elastest'+" -DePass="+'3xp3r1m3nt47'+" -Dsel.jup.recording=true -Dsel.jup.screenshot.at.the.end.of.tests=true -Dsel.jup.screenshot.format=png -Dsel.jup.output.folder=/target/surefire-reports/TEST-*.xml"
+						sh "cd e2e-test; mvn -B clean test -Dtest=io.elastest.eim.test.e2e.EimTJobE2eTest -DipAddr="+ipAddr+" -DprivateKey="+privateKey+" -DeusUrl=${env.ET_EUS_API} -DetEtmApi="+elastestURL+"  -DeUser=${DEV_USER} -DePass=${DEV_PASS} -Dsel.jup.recording=true -Dsel.jup.screenshot.at.the.end.of.tests=true -Dsel.jup.screenshot.format=png -Dsel.jup.output.folder=/target/surefire-reports/TEST-*.xml"
 						
 						//sh "cd e2e-test; mvn -B clean test -Dtest=io.elastest.eim.test.e2e.EimTJobE2eTest.java -DipAddr="+ipAddr+" -DprivateKey="+privateKey+" -DeusUrl=${env.ET_EUS_API} -DetEtmApi="+elastestURL+" -DeUser="+'elastest'+" -DePass="+'3xp3r1m3nt47'+" -Dsel.jup.recording=true -Dsel.jup.screenshot.at.the.end.of.tests=true -Dsel.jup.screenshot.format=png"
 
