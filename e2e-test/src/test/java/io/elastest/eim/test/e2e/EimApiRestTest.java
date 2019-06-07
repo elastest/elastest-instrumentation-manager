@@ -34,7 +34,7 @@ public class EimApiRestTest {
 	private String user = "root";
 	private String password = "elastest";
 	private boolean secureElastest = false;
-	private String uri = "http://" + eim_api_rest + "/eim/api/agent/";
+	private String uri = eim_api_rest + "eim/api/agent/";
 
 	public RestClient client = new RestClient(eim_api_rest, user, password, secureElastest);
 
