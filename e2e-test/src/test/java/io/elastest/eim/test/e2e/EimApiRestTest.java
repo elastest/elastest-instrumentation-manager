@@ -36,7 +36,7 @@ public class EimApiRestTest {
 	private boolean secureElastest = false;
 	private String uri = eim_api_rest + "eim/api/agent/";
 
-	public RestClient client = new RestClient(eim_api_rest, user, password, secureElastest);
+	public RestClient client = new RestClient(uri, user, password, secureElastest);
 
 	// TODO - registerAgent_then200OK()
 	@Test
@@ -46,7 +46,8 @@ public class EimApiRestTest {
 
 		//JsonParser parser = new JsonParser();
 		//JsonObject jsonObj = (JsonObject) parser.parse(payload);
-
+		System.out.println("Path request: "+uri);
+		System.out.println("Payload: "+payload);
 		Assertions.assertEquals(201, client.post(uri, payload).getStatusCode());
 	}
 
@@ -61,8 +62,12 @@ public class EimApiRestTest {
 
 	@Test
 	public void requestActionPacketLossTest() {
-		String uri_packetloss_action = uri + "controllability/iagent0/packetloss";
+		String uri_packetloss_action = "controllability/iagent0/packetloss";
 		String payload = "{\"exec\":\"EXECBEAT\",\"component\":\"EIM\",\"packetLoss\":\"0.01\",\"stressNg\":\"\",\"dockerized\":\"yes\",\"cronExpression\":\"@every 60s\"}";
+		
+		System.out.println("Path request: "+uri_packetloss_action);
+		System.out.println("Payload:"+payload);
+		
 		Assertions.assertEquals(201, client.post(uri_packetloss_action, payload).getStatusCode());
 
 	}
@@ -79,8 +84,13 @@ public class EimApiRestTest {
 
 	@Test
 	public void requestActionStressTest() {
-		String uri_stress_action = uri + "controllability/iagent0/stress";
+		String uri_stress_action = "controllability/iagent0/stress";
 		String payload = "{\"exec\":\"EXECBEAT\",\"component\":\"EIM\",\"packetLoss\":\"\",\"stressNg\":\"4\",\"dockerized\":\"yes\",\"cronExpression\":\"@every 60s\"}";
+		
+		System.out.println("Path request: "+uri_stress_action);
+		System.out.println("Payload: "+payload);
+		
+		
 		Assertions.assertEquals(201, client.post(uri_stress_action, payload).getStatusCode());
 	}
 
@@ -95,8 +105,11 @@ public class EimApiRestTest {
 	
 	@Test
 	public void requestUnistallAgentTest() throws InterruptedException {
-		String uri_unistall_agent = uri + "iagent0/unmonitor";
+		String uri_unistall_agent = "iagent0/unmonitor";
 		TimeUnit.SECONDS.sleep(160);
+		
+		System.out.println("Path request: "+uri_unistall_agent);
+		
 		Assertions.assertEquals(201, client.delete(uri_unistall_agent).getStatusCode());
 
 	}
@@ -110,8 +123,11 @@ public class EimApiRestTest {
 	 */
 	@Test
 	public void requestDeleteAgentTest() throws InterruptedException {
-		String uri_delete_agent = uri + "iagent0";
+		String uri_delete_agent = "iagent0";
 		TimeUnit.SECONDS.sleep(160);
+		
+		System.out.println("Path request: "+uri_delete_agent);
+
 		Assertions.assertEquals(201, client.delete(uri_delete_agent).getStatusCode());
 
 	}
