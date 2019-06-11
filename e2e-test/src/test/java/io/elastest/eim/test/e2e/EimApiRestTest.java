@@ -23,13 +23,14 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 
 import io.elastest.eim.test.utils.RestClient;
 
 public class EimApiRestTest {
 
-	private String private_key = System.getenv("DprivateKey");
-	private String sut_address = System.getenv("DipAddr");
+	private String private_key = "";
+	private String sut_address = "";
 	private String eim_api_rest = "http://nightly.elastest.io:37004/";
 	private String user = "root";
 	private String password = "elastest";
@@ -37,6 +38,14 @@ public class EimApiRestTest {
 	private String uri = eim_api_rest + "eim/api/agent/";
 
 	public RestClient client = new RestClient(uri, user, password, secureElastest);
+	
+	
+	
+	@BeforeEach
+	public void before() {
+		this.private_key = System.getenv("privateKey");
+		this.sut_address = System.getenv("ipAddr");
+	}
 
 	// TODO - registerAgent_then200OK()
 	@Test
