@@ -28,8 +28,8 @@ import io.elastest.eim.test.utils.RestClient;
 
 public class EimApiRestTest {
 
-	private String private_key = System.getenv("privateKey");
-	private String sut_address = System.getenv("ipAddr");
+	private String private_key = System.getProperty("privateKey");
+	private String sut_address = System.getProperty("ipAddr");
 	private String eim_api_rest = "http://nightly.elastest.io:37004/";
 	private String user = "root";
 	private String password = "elastest";
