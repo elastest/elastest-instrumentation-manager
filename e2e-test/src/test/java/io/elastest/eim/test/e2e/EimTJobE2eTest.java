@@ -104,6 +104,9 @@ public class EimTJobE2eTest extends EimBaseTest {
 			
 			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; cd e2e-test/; mvn -B clean test -Dtest=io.elastest.eim.test.e2e.EimTJobE2eTest.java -DipAddr="
 					+ ipAddr + " -DprivateKey=" + privateKey + " -Dbrowser=chrome test;";
+			
+			System.out.println("Commands: "+commands);
+			
 			createNewTJob(driver, tJobName, tJobTestResultPath, sutName, tJobImage, false, commands, null, null, null,
 					null);
 			
