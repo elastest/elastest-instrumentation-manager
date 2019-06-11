@@ -98,8 +98,8 @@ public class EimTJobE2eTest extends EimBaseTest {
 
 			String tJobTestResultPath = "";
 			String tJobImage = "elastest/test-etm-alpinegitjava";
-			String ipAddr = System.getenv("DipAddr");
-			String privateKey = System.getenv("DprivateKey");
+			String ipAddr = System.getenv("ipAddr");
+			String privateKey = System.getenv("privateKey");
 			//tssMap parameter is null cause EIM is not a test support service
 			
 			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; cd e2e-test/; mvn -B clean test -Dtest=io.elastest.eim.test.e2e.EimTJobE2eTest.java -DipAddr="
