@@ -48,7 +48,7 @@ public class EimApiRestTest {
 		//JsonObject jsonObj = (JsonObject) parser.parse(payload);
 		System.out.println("Path request: "+uri);
 		System.out.println("Payload: "+payload);
-		Assertions.assertEquals(201, client.post(uri, payload).getStatusCode());
+		Assertions.assertEquals(200, client.post(uri, payload).getStatusCode());
 	}
 
 	// TODO - request_packetloss_action_then200OK
@@ -68,7 +68,7 @@ public class EimApiRestTest {
 		System.out.println("Path request: "+uri_packetloss_action);
 		System.out.println("Payload:"+payload);
 		
-		Assertions.assertEquals(201, client.post(uri_packetloss_action, payload).getStatusCode());
+		Assertions.assertEquals(200, client.post(uri_packetloss_action, payload).getStatusCode());
 
 	}
 
@@ -91,7 +91,7 @@ public class EimApiRestTest {
 		System.out.println("Payload: "+payload);
 		
 		
-		Assertions.assertEquals(201, client.post(uri_stress_action, payload).getStatusCode());
+		Assertions.assertEquals(200, client.post(uri_stress_action, payload).getStatusCode());
 	}
 
 	// TODO - Unistall Agent - request_unistall_agent
@@ -110,7 +110,7 @@ public class EimApiRestTest {
 		
 		System.out.println("Path request: "+uri_unistall_agent);
 		
-		Assertions.assertEquals(201, client.delete(uri_unistall_agent).getStatusCode());
+		Assertions.assertEquals(200, client.delete(uri_unistall_agent).getStatusCode());
 
 	}
 
@@ -128,7 +128,7 @@ public class EimApiRestTest {
 		
 		System.out.println("Path request: "+uri_delete_agent);
 
-		Assertions.assertEquals(201, client.delete(uri_delete_agent).getStatusCode());
+		Assertions.assertEquals(200, client.delete(uri_delete_agent).getStatusCode());
 
 	}
 
