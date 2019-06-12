@@ -91,8 +91,8 @@ public class EimTJobE2eTest extends EimBaseTest {
 	
 	@BeforeEach
 	public void before() {
-		this.ipAddr = System.getenv("ipAddr");
-		this.privateKey = System.getenv("privateKey");
+		this.ipAddr = System.getProperty("ipAddr");
+		this.privateKey = System.getProperty("privateKey");
 		System.out.println(this.ipAddr);
 		System.out.println(this.privateKey);
 	}
