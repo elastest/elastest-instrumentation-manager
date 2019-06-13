@@ -43,8 +43,8 @@ public class EimApiRestTest {
 	
 	@BeforeEach
 	public void before() {
-		this.private_key = System.getProperty("privateKey");
-		this.sut_address = System.getProperty("ipAddr");
+		this.private_key = System.getenv("privateKey");
+		this.sut_address = System.getenv("ipAddr");
 	}
 
 	// TODO - registerAgent_then200OK()
