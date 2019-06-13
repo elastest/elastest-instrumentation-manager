@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,10 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 @ExtendWith(SeleniumExtension.class)
 
 public class EimTJobE2eTest extends EimBaseTest {
-
+	
+	private String ipAddr = "";
+	private String privateKey = "";
+	
 	private String sutName = "EIMe2esut";
 
 	final Logger log = getLogger(lookup().lookupClass());
@@ -84,7 +88,14 @@ public class EimTJobE2eTest extends EimBaseTest {
 		}
 
 	}
-
+	
+	@BeforeEach
+	public void before() {
+		this.ipAddr = System.getProperty("ipAddr");
+		this.privateKey = System.getProperty("privateKey");
+		System.out.println(this.ipAddr);
+		System.out.println(this.privateKey);
+	}
 	@Test
 	@DisplayName("EIM in a TJob")
 	void testTJob(@DockerBrowser(type = BrowserType.CHROME) RemoteWebDriver localDriver, TestInfo testInfo) throws Exception {
@@ -98,11 +109,10 @@ public class EimTJobE2eTest extends EimBaseTest {
 
 			String tJobTestResultPath = "";
 			String tJobImage = "elastest/test-etm-alpinegitjava";
-			String ipAddr = System.getenv("ipAddr");
-			String privateKey = System.getenv("privateKey");
+			
 			//tssMap parameter is null cause EIM is not a test support service
 			
-			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; cd e2e-test/; mvn -B clean test -Dtest=io.elastest.eim.test.e2e.EimTJobE2eTest.java -DipAddr="
+			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; cd e2e-test/; mvn -B clean test -Dtest=io.elastest.eim.test.e2e.EIMApiRestTest.java -DipAddr="
 					+ ipAddr + " -DprivateKey=" + privateKey + " -Dbrowser=chrome test;";
 			
 			System.out.println("Commands: "+commands);
