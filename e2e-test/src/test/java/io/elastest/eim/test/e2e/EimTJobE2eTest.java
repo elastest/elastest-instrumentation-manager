@@ -93,8 +93,8 @@ public class EimTJobE2eTest extends EimBaseTest {
 	public void before() {
 		this.ipAddr = System.getProperty("ipAddr");
 		this.privateKey = System.getProperty("privateKey");
-		System.out.println(this.ipAddr);
-		System.out.println(this.privateKey);
+		System.out.println("IpAddres of SUT:"+this.ipAddr);
+		System.out.println("PrivateKey of SUT:"+this.privateKey);
 	}
 	@Test
 	@DisplayName("EIM in a TJob")
