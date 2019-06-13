@@ -129,8 +129,8 @@
 				<version>${maven-surefire-plugin.version}</version>
 				<configuration>
 					<systemPropertyVariables>
-						<environment>${env.privateKey}</environment>
-						<environment>${env.ipAddr}</environment>
+						<privateKey>${env.privateKey}</privateKey>
+						<ipAddr>${env.ipAddr}</ipAddr>
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>
