@@ -89,16 +89,9 @@ public class EimTJobE2eTest extends EimBaseTest {
 
 	}
 	
-	@BeforeEach
-	public void before() {
-		this.ipAddr = System.getProperty("ipAddr");
-		this.privateKey = System.getProperty("privateKey");
-		System.out.println("IpAddres of SUT:"+this.ipAddr);
-		System.out.println("PrivateKey of SUT:"+this.privateKey);
-	}
 	@Test
 	@DisplayName("EIM in a TJob")
-	void testTJob(@DockerBrowser(type = BrowserType.CHROME) RemoteWebDriver localDriver, TestInfo testInfo) throws Exception {
+		void testTJob(@DockerBrowser(type = BrowserType.CHROME) RemoteWebDriver localDriver, TestInfo testInfo) throws Exception {
 		setupTestBrowser(testInfo, BrowserType.CHROME, localDriver);
 
 		// Setting up the TJob used in the test
@@ -112,8 +105,7 @@ public class EimTJobE2eTest extends EimBaseTest {
 			
 			//tssMap parameter is null cause EIM is not a test support service
 			
-			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; cd e2e-test/; mvn -B clean test -Dtest=io.elastest.eim.test.e2e.EimApiRestTest.java -DipAddr="
-					+ ipAddr + " -DprivateKey=" + privateKey + " -Dbrowser=chrome test;";
+			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; cd e2e-test/; mvn -DSkipTests=true -B package; mvn -B clean test -Dtest=io.elastest.eim.test.e2e.EimApiRestTest.java";
 			
 			System.out.println("Commands: "+commands);
 			
