@@ -127,6 +127,12 @@
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven-surefire-plugin.version}</version>
+				<configuration>
+					<systemPropertyVariables>
+						<environment>${env.privateKey}</environment>
+						<environment>${env.ipAddr}</environment>
+					</systemPropertyVariables>
+				</configuration>
 			</plugin>
 
 			<plugin>
