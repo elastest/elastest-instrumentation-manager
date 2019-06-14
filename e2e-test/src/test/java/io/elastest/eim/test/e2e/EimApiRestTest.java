@@ -29,8 +29,8 @@ import io.elastest.eim.test.utils.RestClient;
 
 public class EimApiRestTest {
 
-	private String private_key = "";
-	private String sut_address = "";
+	private String private_key = System.getProperty("privateKey");
+	private String sut_address = System.getProperty("ipAddr");
 	private String eim_api_rest = "http://nightly.elastest.io:37004/";
 	private String user = "root";
 	private String password = "elastest";
@@ -39,13 +39,6 @@ public class EimApiRestTest {
 
 	public RestClient client = new RestClient(uri, user, password, secureElastest);
 	
-	
-	
-	@BeforeEach
-	public void before() {
-		this.private_key = System.getProperty("privateKey");
-		this.sut_address = System.getProperty("ipAddr");
-	}
 
 	// TODO - registerAgent_then200OK()
 	@Test
