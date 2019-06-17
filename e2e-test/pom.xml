@@ -133,7 +133,7 @@
 	</dependencies>
 	<!-- Plugins -->
 	<build>
-		<sourceDirectory>src/test/java</sourceDirectory>
+		<sourceDirectory>src/main/java</sourceDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
