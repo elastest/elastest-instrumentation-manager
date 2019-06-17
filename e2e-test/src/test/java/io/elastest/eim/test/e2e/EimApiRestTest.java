@@ -31,29 +31,28 @@ public class EimApiRestTest {
 
 	private String private_key = System.getProperty("privateKey");
 	private String sut_address = System.getProperty("ipAddr");
-	private String eim_api_rest = "http://nightly.elastest.io:37004/";
+	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";
 	private String user = "root";
 	private String password = "elastest";
 	private boolean secureElastest = false;
-	private String uri = eim_api_rest + "eim/api/agent/";
+	
 
-	public RestClient client = new RestClient(uri, user, password, secureElastest);
+	public RestClient client = new RestClient(server, user, password, secureElastest);
 	
 	
 	
 	// TODO - registerAgent_then200OK()
 	@Test
 	public void registerAgentTest() {
-		String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":\""+private_key+"\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\5044\",\"password\":\"elastest\"}";
-
+		String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":\""+private_key+"\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
+		
 		//JsonParser parser = new JsonParser();
 		//JsonObject jsonObj = (JsonObject) parser.parse(payload);
-		System.out.println("Path request: "+uri);
+		System.out.println("Endpoint request "+server);
 		System.out.println("Payload: "+payload);
 		
-		System.out.println("Client to request: "+ client.toString());
 		
-		Assertions.assertEquals(200, client.post(uri, payload).getStatusCode());
+		Assertions.assertEquals(200, client.post("", payload).getStatusCode());
 	}
 
 	// TODO - request_packetloss_action_then200OK
@@ -69,8 +68,8 @@ public class EimApiRestTest {
 	public void requestActionPacketLossTest() {
 		String uri_packetloss_action = "controllability/iagent0/packetloss";
 		String payload = "{\"exec\":\"EXECBEAT\",\"component\":\"EIM\",\"packetLoss\":\"0.01\",\"stressNg\":\"\",\"dockerized\":\"yes\",\"cronExpression\":\"@every 60s\"}";
-		
-		System.out.println("Path request: "+uri_packetloss_action);
+
+		System.out.println("Endpoint request "+server+uri_packetloss_action);
 		System.out.println("Payload:"+payload);
 		
 		Assertions.assertEquals(200, client.post(uri_packetloss_action, payload).getStatusCode());
@@ -92,7 +91,7 @@ public class EimApiRestTest {
 		String uri_stress_action = "controllability/iagent0/stress";
 		String payload = "{\"exec\":\"EXECBEAT\",\"component\":\"EIM\",\"packetLoss\":\"\",\"stressNg\":\"4\",\"dockerized\":\"yes\",\"cronExpression\":\"@every 60s\"}";
 		
-		System.out.println("Path request: "+uri_stress_action);
+		System.out.println("Endpoint request "+server+uri_stress_action);
 		System.out.println("Payload: "+payload);
 		
 		
@@ -112,7 +111,8 @@ public class EimApiRestTest {
 	public void requestUnistallAgentTest() throws InterruptedException {
 		String uri_unistall_agent = "iagent0/unmonitor";
 		TimeUnit.SECONDS.sleep(160);
-		
+		System.out.println("Endpoint request "+server+uri_unistall_agent);
+
 		System.out.println("Path request: "+uri_unistall_agent);
 		
 		Assertions.assertEquals(200, client.delete(uri_unistall_agent).getStatusCode());
@@ -130,6 +130,8 @@ public class EimApiRestTest {
 	public void requestDeleteAgentTest() throws InterruptedException {
 		String uri_delete_agent = "iagent0";
 		TimeUnit.SECONDS.sleep(160);
+		System.out.println("Endpoint request "+server+uri_delete_agent);
+
 		
 		System.out.println("Path request: "+uri_delete_agent);
 
