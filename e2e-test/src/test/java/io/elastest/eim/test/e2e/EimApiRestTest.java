@@ -39,16 +39,20 @@ public class EimApiRestTest {
 
 	public RestClient client = new RestClient(uri, user, password, secureElastest);
 	
-
+	
+	
 	// TODO - registerAgent_then200OK()
 	@Test
 	public void registerAgentTest() {
-		String payload = "{\"address\":'"+sut_address+"',\"user\":"+user+",\"private_key\":'"+private_key+"',\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\5044\",\"password\":\"elastest\"}";
+		String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":\""+private_key+"\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\5044\",\"password\":\"elastest\"}";
 
 		//JsonParser parser = new JsonParser();
 		//JsonObject jsonObj = (JsonObject) parser.parse(payload);
 		System.out.println("Path request: "+uri);
 		System.out.println("Payload: "+payload);
+		
+		System.out.println("Client to request: "+ client.toString());
+		
 		Assertions.assertEquals(200, client.post(uri, payload).getStatusCode());
 	}
 
