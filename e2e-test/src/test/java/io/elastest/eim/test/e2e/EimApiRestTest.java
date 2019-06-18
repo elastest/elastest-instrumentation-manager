@@ -24,15 +24,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.collections.map.MultiValueMap;
-import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 public class EimApiRestTest {
@@ -44,40 +41,41 @@ public class EimApiRestTest {
 	private String password = "elastest";
 	private boolean secureElastest = false;
 
-	//public RestClient client = new RestClient(server, user, password, secureElastest);
-	
+	// public RestClient client = new RestClient(server, user, password,
+	// secureElastest);
+
 	public RestTemplate restTemplate = new RestTemplate();
 	public HttpHeaders headers = new HttpHeaders();
 
-
-	
 	// TODO - registerAgent_then200OK()
 	@Test
 	public void registerAgentTest() {
-		
-		//Remove "\" last character
-		String privateKey_modified = private_key.substring(0,private_key.length()-1);
-		//String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":\""+privateKey_modified+"\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
-		
-		Map<String,String> body = new HashMap<>();
-		body.put("address",sut_address);
-		body.put("user",user);
-		body.put("private_key",privateKey_modified);
-		body.put("logstash_ip","172.20.0.4");
-		body.put("logstash_port","5044");
-		body.put("password","elastest");
-		
-		System.out.println("Endpoint request "+server);
-		System.out.println("Payload: "+body);
-		
+
+		// Remove "\" last character
+		String privateKey_modified = private_key.substring(0, private_key.length() - 1);
+		// String payload =
+		// "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":\""+privateKey_modified+"\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
+
+		Map<String, String> body = new HashMap<>();
+		body.put("address", sut_address);
+		body.put("user", user);
+		body.put("private_key", privateKey_modified);
+		body.put("logstash_ip", "172.20.0.4");
+		body.put("logstash_port", "5044");
+		body.put("password", "elastest");
+
+		String URL = server;
+
+		System.out.println("Endpoint request " + URL);
+		System.out.println("Payload: " + body);
+
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		
-		HttpEntity<Map<String,String>> request = new HttpEntity<Map<String,String>>(body, headers);
-		
-		Assertions.assertEquals(200,restTemplate.exchange(server, HttpMethod.POST, request, Map.class).getStatusCodeValue());
-		
-		
+
+		HttpEntity<Map<String, String>> request = new HttpEntity<Map<String, String>>(body, headers);
+		Assertions.assertEquals(200,
+				restTemplate.exchange(URL, HttpMethod.POST, request, Map.class).getStatusCodeValue());
+
 	}
 
 	// TODO - request_packetloss_action_then200OK
@@ -88,20 +86,37 @@ public class EimApiRestTest {
 	 * "exec": "EXECBEAT", "component": "EIM", "packetLoss": "0.01", "stressNg": "",
 	 * "dockerized": "yes", "cronExpression": "@every 60s" }'
 	 */
-	
-	/*
+
 	@Test
 	public void requestActionPacketLossTest() {
 		String uri_packetloss_action = "controllability/iagent0/packetloss";
-		String payload = "{\"exec\":\"EXECBEAT\",\"component\":\"EIM\",\"packetLoss\":\"0.01\",\"stressNg\":\"\",\"dockerized\":\"yes\",\"cronExpression\":\"@every 60s\"}";
+		// String payload =
+		// "{\"exec\":\"EXECBEAT\",\"component\":\"EIM\",\"packetLoss\":\"0.01\",\"stressNg\":\"\",\"dockerized\":\"yes\",\"cronExpression\":\"@every
+		// 60s\"}";
 
-		System.out.println("Endpoint request "+server+uri_packetloss_action);
-		System.out.println("Payload:"+payload);
-		
-		Assertions.assertEquals(200, client.post(uri_packetloss_action, payload).getStatusCode());
+		Map<String, String> body = new HashMap<>();
+		body.put("exec", "EXECBEAT");
+		body.put("component", "EIM");
+		body.put("packetLoss", "0.01");
+		body.put("stressNg", "");
+		body.put("dockerized", "yes");
+		body.put("cronExpression", "@every 60s");
+
+		String URL = server + uri_packetloss_action;
+
+		System.out.println("Endpoint request " + server + uri_packetloss_action);
+		System.out.println("Payload:" + body);
+
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+		HttpEntity<Map<String, String>> request = new HttpEntity<Map<String, String>>(body, headers);
+
+		Assertions.assertEquals(200,
+				restTemplate.exchange(URL, HttpMethod.POST, request, Map.class).getStatusCodeValue());
 
 	}
-	*/
+
 	// TODO - request_stress_action_then200OK()
 
 	/**
@@ -111,17 +126,32 @@ public class EimApiRestTest {
 	 * "exec": "EXECBEAT", "component": "EIM", "packetLoss": "", "stressNg": "4",
 	 * "dockerized": "yes", "cronExpression": "@every 60s" }'
 	 **/
-	/*
+
 	@Test
 	public void requestActionStressTest() {
 		String uri_stress_action = "controllability/iagent0/stress";
-		String payload = "{\"exec\":\"EXECBEAT\",\"component\":\"EIM\",\"packetLoss\":\"\",\"stressNg\":\"4\",\"dockerized\":\"yes\",\"cronExpression\":\"@every 60s\"}";
-		
-		System.out.println("Endpoint request "+server+uri_stress_action);
-		System.out.println("Payload: "+payload);
-		
-		
-		Assertions.assertEquals(200, client.post(uri_stress_action, payload).getStatusCode());
+		// String payload =
+		// "{\"exec\":\"EXECBEAT\",\"component\":\"EIM\",\"packetLoss\":\"\",\"stressNg\":\"4\",\"dockerized\":\"yes\",\"cronExpression\":\"@every
+		// 60s\"}";
+		Map<String, String> body = new HashMap<>();
+		body.put("exec", "EXECBEAT");
+		body.put("component", "EIM");
+		body.put("packetLoss", "");
+		body.put("stressNg", "4");
+		body.put("dockerized", "yes");
+		body.put("cronExpression", "@every 60s");
+
+		String URL = server + uri_stress_action;
+
+		System.out.println("Endpoint request: " + URL);
+		System.out.println("Payload: " + body);
+
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+		HttpEntity<Map<String, String>> request = new HttpEntity<Map<String, String>>(body, headers);
+		Assertions.assertEquals(200,
+				restTemplate.exchange(URL, HttpMethod.POST, request, Map.class).getStatusCodeValue());
 	}
 
 	// TODO - Unistall Agent - request_unistall_agent
@@ -130,18 +160,27 @@ public class EimApiRestTest {
 	 * curl -i -X DELETE -H "Content-Type:application/json" -H
 	 * "Accept:application/json"
 	 * http://localhost:8080/eim/api/agent/iagent0/unmonitor
-	 * @throws InterruptedException 
+	 * 
+	 * @throws InterruptedException
 	 */
-	/*
+
 	@Test
 	public void requestUnistallAgentTest() throws InterruptedException {
 		String uri_unistall_agent = "iagent0/unmonitor";
 		TimeUnit.SECONDS.sleep(160);
-		System.out.println("Endpoint request "+server+uri_unistall_agent);
 
-		System.out.println("Path request: "+uri_unistall_agent);
-		
-		Assertions.assertEquals(200, client.delete(uri_unistall_agent).getStatusCode());
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+		Map<String, String> body = new HashMap<>();
+		String URL = server + uri_unistall_agent;
+
+		System.out.println("Endpoint request: " + URL);
+
+		HttpEntity<Map<String, String>> request = new HttpEntity<Map<String, String>>(body, headers);
+
+		Assertions.assertEquals(200,
+				restTemplate.exchange(URL, HttpMethod.DELETE, request, Map.class).getStatusCodeValue());
 
 	}
 
@@ -150,20 +189,24 @@ public class EimApiRestTest {
 	/**
 	 * curl -i -X DELETE -H "Content-Type:application/json" -H
 	 * "Accept:application/json" http://localhost:8080/eim/api/agent/iagent0
-	 * @throws InterruptedException 
+	 * 
+	 * @throws InterruptedException
 	 */
-	/*
+
 	@Test
 	public void requestDeleteAgentTest() throws InterruptedException {
 		String uri_delete_agent = "iagent0";
 		TimeUnit.SECONDS.sleep(160);
-		System.out.println("Endpoint request "+server+uri_delete_agent);
 
-		
-		System.out.println("Path request: "+uri_delete_agent);
+		Map<String, String> body = new HashMap<>();
+		String URL = server + uri_delete_agent;
 
-		Assertions.assertEquals(200, client.delete(uri_delete_agent).getStatusCode());
+		System.out.println("Endpoint request: " + URL);
+
+		HttpEntity<Map<String, String>> request = new HttpEntity<Map<String, String>>(body, headers);
+		Assertions.assertEquals(200,
+				restTemplate.exchange(URL, HttpMethod.DELETE, request, Map.class).getStatusCodeValue());
 
 	}
-	*/
+
 }
