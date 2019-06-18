@@ -75,17 +75,10 @@ public class EimApiRestTest {
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
 		HttpEntity<String> request = new HttpEntity<String>(payload, headers);
-		
-		try{
-			ResponseEntity<String> response = restTemplate.exchange(URL, HttpMethod.POST, request, String.class);
-			int statusCodeResponse = response.getStatusCodeValue();
-			Assertions.assertEquals(200, statusCodeResponse);
-					
-		}
-		catch(HttpClientErrorException e) {
-			System.out.println(e.getStatusCode());
-			System.out.println(e.getResponseBodyAsString());
-		}
+		ResponseEntity<String> response = restTemplate.exchange(URL, HttpMethod.POST, request, String.class);
+		System.out.println(response.getBody());
+
+		Assertions.assertEquals(200, response.getStatusCodeValue());
 		
 		
 	}
