@@ -44,7 +44,10 @@ public class EimApiRestTest {
 	// TODO - registerAgent_then200OK()
 	@Test
 	public void registerAgentTest() {
-		String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":\""+private_key+"\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
+		
+		
+		String privateKey_modified = this.private_key.replace("-----END RSA PRIVATE KEY-----\"", "-----END RSA PRIVATE KEY-----");
+		String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":\""+privateKey_modified+"\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
 		
 		//JsonParser parser = new JsonParser();
 		//JsonObject jsonObj = (JsonObject) parser.parse(payload);
