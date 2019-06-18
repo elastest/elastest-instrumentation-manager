@@ -20,12 +20,8 @@
 package io.elastest.eim.test.e2e;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
-import org.apache.http.protocol.HTTP;
-import org.jsoup.parser.Parser;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
@@ -33,10 +29,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -46,9 +40,7 @@ public class EimApiRestTest {
 	private String sut_address = System.getProperty("ipAddr");
 	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";
 	private String user = "root";
-	private String password = "elastest";
-	private boolean secureElastest = false;
-
+	
 	// public RestClient client = new RestClient(server, user, password,
 	// secureElastest);
 
@@ -65,7 +57,7 @@ public class EimApiRestTest {
 		
 		//String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":\""+privateKey_modified+"\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
 		
-		String payload = "{\"address\":\"+sut_address+\",\"user\":\"+user+\",\"private_key\":\"+privateKey_modified+\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
+		String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":\""+privateKey_modified+"\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
 		
 		
 		JsonObject jsonObject = new JsonParser().parse(payload).getAsJsonObject();
