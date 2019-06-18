@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.http.protocol.HTTP;
+import org.jsoup.parser.Parser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
@@ -33,6 +35,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class EimApiRestTest {
 
@@ -55,29 +61,26 @@ public class EimApiRestTest {
 
 		// Remove "\" last character
 		String privateKey_modified = private_key.substring(0, private_key.length() - 1);
-		String privateKeyLong = privateKey_modified.replaceAll("\n", "");
+		//String privateKeyLong = privateKey_modified.replaceAll("\n", "");
 		
-		//String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":\""+privateKeyLong+"\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
-
-		Map<String, String> body = new HashMap<>();
-		body.put("address", "sut_address");
-		body.put("user", user);
-		body.put("private_key", privateKeyLong);
-		body.put("logstash_ip", "172.20.0.4");
-		body.put("logstash_port", "5044");
-		body.put("password", "elastest");
-
+		//String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":\""+privateKey_modified+"\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
+		
+		String payload = "{\"address\":\"+sut_address+\",\"user\":\"+user+\",\"private_key\":\"+privateKey_modified+\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
+		
+		
+		JsonObject jsonObject = new JsonParser().parse(payload).getAsJsonObject();
+		
 		String URL = server;
-
 		System.out.println("Endpoint request " + URL);
-		System.out.println("Payload: " + body);
+		System.out.println("Json: " + jsonObject);
 
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-		HttpEntity<Map<String,String>> request = new HttpEntity<Map<String,String>>(body, headers);
+		HttpEntity<JsonObject> request = new HttpEntity<JsonObject>(jsonObject, headers);
 		ResponseEntity<String> response = restTemplate.exchange(URL, HttpMethod.POST, request, String.class);
-		System.out.println(response.getBody());
+		
+		System.out.println("Response for Test1: "+response);
 
 		Assertions.assertEquals(200, response.getStatusCodeValue());
 		
