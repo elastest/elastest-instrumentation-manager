@@ -30,6 +30,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 public class EimApiRestTest {
@@ -73,9 +75,19 @@ public class EimApiRestTest {
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
 		HttpEntity<String> request = new HttpEntity<String>(payload, headers);
-		Assertions.assertEquals(200,
-				restTemplate.exchange(URL, HttpMethod.POST, request, String.class).getStatusCodeValue());
-
+		
+		try{
+			ResponseEntity<String> response = restTemplate.exchange(URL, HttpMethod.POST, request, String.class);
+			int statusCodeResponse = response.getStatusCodeValue();
+			Assertions.assertEquals(200, statusCodeResponse);
+					
+		}
+		catch(HttpClientErrorException e) {
+			System.out.println(e.getStatusCode());
+			System.out.println(e.getResponseBodyAsString());
+		}
+		
+		
 	}
 
 	/*
