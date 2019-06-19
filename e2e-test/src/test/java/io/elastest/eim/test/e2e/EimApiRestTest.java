@@ -31,6 +31,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -53,7 +54,6 @@ public class EimApiRestTest {
 
 		// Remove "\" last character
 		String privateKey_modified = private_key.substring(0, private_key.length() - 1);
-		//String privateKeyLong = privateKey_modified.replaceAll("\n", "");
 		
 		//String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":\""+privateKey_modified+"\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
 		
@@ -69,8 +69,10 @@ public class EimApiRestTest {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-		HttpEntity<JsonObject> request = new HttpEntity<JsonObject>(jsonObject, headers);
-		ResponseEntity<String> response = restTemplate.exchange(URL, HttpMethod.POST, request, String.class);
+		HttpEntity<String> request = new HttpEntity<String>(jsonObject.toString(), headers);
+		
+		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
+		
 		
 		System.out.println("Response for Test1: "+response);
 
