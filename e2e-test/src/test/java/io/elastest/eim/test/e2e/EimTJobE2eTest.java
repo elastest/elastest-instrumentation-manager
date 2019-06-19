@@ -105,8 +105,7 @@ public class EimTJobE2eTest extends EimBaseTest {
 			String private_key = System.getProperty("privateKey");
 			String sut_address = System.getProperty("ipAddr");
 			
-			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; cd e2e-test/; mvn -DSkipTests=true -B package; "
-					+ "mvn -B clean test -Dtest=io.elastest.eim.test.e2e.EimApiRestTest.java -Dprivate_key_sut="+private_key+" -DipAddres_sut="+sut_address+";";
+			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; cd e2e-test/; mvn -DSkipTests=true -B package; mvn -B clean test -Dtest=io.elastest.eim.test.e2e.EimApiRestTest.java -Dprivate_key_sut="+private_key+" -DipAddres_sut="+sut_address+"";
 			
 			System.out.println("Commands: "+commands);
 			
