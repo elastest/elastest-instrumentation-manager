@@ -106,7 +106,9 @@ public class EimTJobE2eTest extends EimBaseTest {
 			//tssMap parameter is null cause EIM is not a test support service
 
 			
-			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; cd e2e-test/; mvn -DskipTests=true -B package; mvn -B test -Dtest=io.elastest.eim.test.e2e.EimApiRestTest -Dprivate_key_sut="+private_key+" -Dsut_addres="+sut_address+"";
+			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git;"
+					+ "cd e2e-test/; mvn -DskipTests=true -B package -Dprivate_key_sut="+private_key+" -Dsut_addres="+sut_address+";"
+							+ "mvn -B -Dtest=io.elastest.eim.test.e2e.EimApiRestTest test";
 			
 			System.out.println("Commands: "+commands);
 			
