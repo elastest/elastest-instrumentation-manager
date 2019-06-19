@@ -39,7 +39,7 @@ public class EimApiRestTest {
 
 	private String private_key = System.getProperty("privateKey");
 	private String sut_address = System.getProperty("ipAddr");
-	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";
+	private String server = System.getProperty("elastestUrl")+"/eim/api/agent/";
 	private String user = "root";
 	
 	// public RestClient client = new RestClient(server, user, password,
@@ -67,7 +67,7 @@ public class EimApiRestTest {
 		System.out.println("############ Json to String: ############" );
 		System.out.println(jsonObject.toString());
 
-		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setContentType(MediaType.TEXT_HTML);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
 		HttpEntity<String> request = new HttpEntity<String>(jsonObject.toString(), headers);
