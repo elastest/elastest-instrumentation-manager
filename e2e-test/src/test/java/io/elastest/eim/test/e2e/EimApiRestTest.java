@@ -39,7 +39,7 @@ public class EimApiRestTest {
 
 	private String private_key = System.getProperty("privateKey");
 	private String sut_address = System.getProperty("ipAddr");
-	private String server = System.getProperty("elastestUrl")+"/eim/api/agent/";
+	private String server = "http://stable.elastest.io:37004/eim/api/agent/";
 	private String user = "root";
 	
 	// public RestClient client = new RestClient(server, user, password,

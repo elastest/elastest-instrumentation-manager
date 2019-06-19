@@ -50,9 +50,6 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 
 public class EimTJobE2eTest extends EimBaseTest {
 	
-	private String ipAddr = "";
-	private String privateKey = "";
-	
 	private String sutName = "EIMe2esut";
 
 	final Logger log = getLogger(lookup().lookupClass());
