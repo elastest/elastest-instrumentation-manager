@@ -51,6 +51,9 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 public class EimTJobE2eTest extends EimBaseTest {
 	
 	private String sutName = "EIMe2esut";
+	private String private_key = System.getProperty("privateKey");
+	private String sut_address = System.getProperty("ipAddr");
+	
 
 	final Logger log = getLogger(lookup().lookupClass());
 	String projectName = "EIMe2e";
@@ -102,10 +105,8 @@ public class EimTJobE2eTest extends EimBaseTest {
 			
 			//tssMap parameter is null cause EIM is not a test support service
 
-			String private_key = System.getProperty("privateKey");
-			String sut_address = System.getProperty("ipAddr");
 			
-			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; cd e2e-test/; mvn -DskipTests=true -B package; mvn -B clean test -Dtest=io.elastest.eim.test.e2e.EimApiRestTest -Dprivate_key_sut="+private_key+" -Dsut_addres="+sut_address+"";
+			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; cd e2e-test/; mvn -DskipTests=true -B package; mvn -B test -Dtest=io.elastest.eim.test.e2e.EimApiRestTest -Dprivate_key_sut="+private_key+" -Dsut_addres="+sut_address+"";
 			
 			System.out.println("Commands: "+commands);
 			
