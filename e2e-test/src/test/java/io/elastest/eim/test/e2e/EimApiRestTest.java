@@ -53,26 +53,24 @@ public class EimApiRestTest {
 	public void registerAgentTest() {
 
 		// Remove "\" last character
-		String privateKey_modified = private_key.substring(0, private_key.length() - 1);
-		
-		//String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":\""+privateKey_modified+"\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
+		String privateKey_modified = private_key.substring(0, private_key.length() - 1).replaceAll("\\s","");
 		
 		String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":\""+privateKey_modified+"\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
-		
 		
 		JsonObject jsonObject = new JsonParser().parse(payload).getAsJsonObject();
 		
 		String URL = server;
 		System.out.println("Endpoint request " + URL);
 		System.out.println("Json: " + jsonObject);
+		System.out.println("Json to String: " + jsonObject.toString());
 
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
 		HttpEntity<String> request = new HttpEntity<String>(jsonObject.toString(), headers);
+		System.out.println("This is the request: "+request.toString());
 		
 		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
-		
 		
 		System.out.println("Response for Test1: "+response);
 
