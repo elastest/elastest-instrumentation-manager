@@ -67,7 +67,7 @@ public class EimApiRestTest {
 		System.out.println("############ Json to String: ############" );
 		System.out.println(jsonObject.toString());
 
-		headers.setContentType(MediaType.TEXT_HTML);
+		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
 		HttpEntity<String> request = new HttpEntity<String>(jsonObject.toString(), headers);
