@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -108,7 +107,7 @@ public class EimTJobE2eTest extends EimBaseTest {
 			
 			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git;"
 					+ "cd e2e-test/; mvn -DskipTests=true -B package -Dprivate_key_sut="+private_key+" -Dsut_addres="+sut_address+";"
-							+ "mvn -B -Dtest=io.elastest.eim.test.e2e.EimApiRestTest test";
+					+ "mvn -B -Dtest=io.elastest.eim.test.e2e.EimApiRestTest test";
 			
 			System.out.println("Commands: "+commands);
 			
