@@ -53,31 +53,31 @@ public class EimApiRestTest {
 	public void registerAgentTest() {
 
 		// Remove "\" last character
-		String privateKey_modified = private_key.substring(0, private_key.length() - 1);
-		//String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":\""+privateKey_modified+"\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
+		String privateKey_modified = private_key.substring(0, private_key.length() - 1);		
 		
-		String privateKey = "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEA8QLo3wMheTGbIxay4gRxQzoQncf+Qy5uHbMWGLdjRrwFNKF+\\npQGhHNns+Dbe7UYPvTw6cFWoqW82yBHvL+y0jALTmduGZlBHJ2lF5L3S7m30xPD4\\n8eZ0Ppi7Cbj1WA8gSqdx9Tdiamv6vNCg03pKnytumYjD+O77OSFKHP945R9zwFpV\\nPA89Tn5VdnGKffexakE/39puOSz8+P+1odsb566N+Oe3qjuEYAdAKbP944+vO/LD\\neacrYCGOE40/pLpilkonroc9eDuxTnsraXwukWLR4BJ655Mu7uyqG5GlHzVrJOwb\\nJsVIOePDvt/158NJVXLoMZ/GG+d/yNqbYYajnQIDAQABAoIBAQCiqo0UIB/SlamY\\nuDRKGid78U/PvnEdVNQblYjfa79EuZhl2m4I3p2oRGoNabNyv+vVlDX5JcdtfFOk\\nG36tgPym1y2MVb9ThPFRZ1s2NOyN4obm+aF8W0ewDBOJT13Abo0j9foTQKtbGsAj\\n+kfiFFMTNRQz6jwi4uGKwK4t/jvRn+aDWQV6g7ZQYcbSEfhAmAuvevChO2JNO90E\\n5PzRdsbr/xktDFuGvCoh5rrtGbWeNt+pcHfQfnJTZJCbsDhI/i30LiV4uwecex1P\\njYjdxrHr4gXnki1n02ebK5s9cXQkJe+ebv8lIw1TL3uxlWrJHTiOhfXKWe3xe9Iu\\ndsJe1WP9AoGBAPuGt5mMgPWiFRln2uYljz99iyfZyCV7lm/cPx8on6ZdT9bH8VmB\\ncBSIlZqrMuJBgh+Pj0/qd1DhOkU4hX9vtTIOoltauQ6SXovVArJBeIZPayPVw6K9\\nwn9GvB3w1AdGbvYtYMGdeGwfJFEz1xh1QUO10CJHKrEfEuqN0tx7X0rXAoGBAPVM\\nUJMGddWcufDKflgS7sWmXbHEwNPJzfuWDxjsBklt4jUWLix2FUxUMe08xwRm/QPv\\n9oXTM1U1sRiNJf8iPK5GCSttyGHRyF7Ox52I8kpl3LMYWpZh2GvtjVBEBEF/VY+R\\n88Jh7S7yJMPD1TWKxOqLkUUQ8LatZ1Vl8fZefsqrAoGAA//GV4imXEFxeG/wSQx7\\n1JSYa8/IoN/wKmMkFci9kRWWuWGAct3d/FWXm1fxfStxeDL+IlUmBIEwPf2CEd6i\\n0OLurekpXBPzsOF4I4Fq+ye0GmPBsoq11vQ29XroxBzYks1x5mIskfuExk2+s8LZ\\ngMwZPRJImXxW/qe2nI7Rmw0CgYBomVQ6faS9pAk9/nsFv30F1z1Y0pePOByXzZM+\\ng1bi9PJixMSHvQqz86seiK4s2GXHygmLY1YeXbjYyUeMleLeRYsfc77gx33zv6Ur\\nLfxzcSA9VoM6YRrSWwfJVFekPlIT2J7jIrLrM+ItgFJodHYntcAKfYDHxQWtSr10\\n2zKh5QKBgDY74gGCK9RpUOOzrPzTzSNS116F6i/rFJPoZWGBnrUlDTl1mWcwB0yo\\nU1ggRSZ0QXN3XRz/XxjOac5kh74OYU13j8HcLLcI9cOCnmDab8d+Jjz53UKhA3S6\\nNMa7jWq2TR1eYEyRshwjyHE/ZZ1acfu4XFqvMLaaUsfkFo33J/gA\\n-----END RSA PRIVATE KEY-----";
+		String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":\""+privateKey_modified+"\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
 		
-		//String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":\""+privateKey_modified+"\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
-		
-		String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":\""+privateKey+"\",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
-
 		JsonObject jsonObject = new JsonParser().parse(payload).getAsJsonObject();
 		
 		String URL = server;
-		System.out.println("Endpoint request " + URL);
-		System.out.println("Json: " + jsonObject);
-		System.out.println("Json to String: " + jsonObject.toString());
+		System.out.println("############ Endpoint request ############ ");
+		System.out.println(URL);
+		System.out.println("############ Json: ############");
+		System.out.println(jsonObject);
+		System.out.println("############ Json to String: ############" );
+		System.out.println(jsonObject.toString());
 
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
 		HttpEntity<String> request = new HttpEntity<String>(jsonObject.toString(), headers);
-		System.out.println("This is the request: "+request.toString());
+		System.out.println("############ This is the request: ############");
+		System.out.println(request.toString());
 		
 		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
 		
-		System.out.println("Response for Test1: "+response);
+		System.out.println("############ Response for Test1: ############");
+		System.out.println(response);
 
 		Assertions.assertEquals(200, response.getStatusCodeValue());
 		
