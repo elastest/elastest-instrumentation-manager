@@ -17,8 +17,8 @@ def elastestURL = ""
                 
                 stage ("API tests")
                     try {
-                    	sh "git 'https://github.com/elastest/elastest-instrumentation-manager.git;"
-                        sh "cd e2e-test/; mvn package -DskipTests=true; mvn -B test -Dtest=io.elastest.eim.test.e2e.EimTJobE2eTest -DargLine'-DeusUrl=${env.ET_EUS_API} -DetEtmApi='"+elastestURL+"' -DeUser=${DEV_USER} -DePass=${DEV_PASS}';"
+                    	git 'https://github.com/elastest/elastest-instrumentation-manager.git'
+                    	sh "cd e2e-test/; mvn package -DskipTests=true; mvn -B test -Dtest=io.elastest.eim.test.e2e.EimTJobE2eTest -DeusUrl=${env.ET_EUS_API} -DetEtmApi="+elastestURL+" -DeUser=${DEV_USER} -DePass=${DEV_PASS};"
                         
 	                    sleep(60)
                         sh "echo TEST_SUCCESSFULL COMPLETED !!"
@@ -26,9 +26,7 @@ def elastestURL = ""
                     } catch(e) {
                         sh "echo TESTS NOT COMPLETED !! "
                         sh '''\
-                          docker container ls -a;
-                          docker stop $(docker ps -a -q);
-                          docker rm $(docker ps -a -q);
+                          docker rm -f $(docker ps -a -q);
                         '''
                         throw e
                     } finally {
