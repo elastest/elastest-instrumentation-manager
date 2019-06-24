@@ -50,7 +50,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 public class EimTJobE2eTest extends EimBaseTest {
 	
 	private String sutName = "EIMe2eSut";
-	final int timeOut  = 600;
+	final int timeOut  = 3000;
 	private String sut_ip = System.getenv("ET_SUT_HOST");
 	
 
