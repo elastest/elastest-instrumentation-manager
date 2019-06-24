@@ -14,7 +14,6 @@ LABEL version=$VERSION
 RUN \
 	apt-get update && \
 	apt-get -y install apt-transport-https && \
-	apt-get -y install openssh-client && \
 	apt-get -y install openssh-server && \
 	apt-get -y install vim && \
         apt-get -y install curl &&\
@@ -37,16 +36,14 @@ EXPOSE 22
 #CMD ["/usr/sbin/sshd", "-D"]
 # RUN echo "service ssh start" >> /etc/bash.bashrc
 
-# Block comment from:
-#COPY entrypoint.sh /entrypoint.sh
-#COPY print_date.sh /print_date.sh
+COPY entrypoint.sh /entrypoint.sh
+COPY print_date.sh /print_date.sh
 
-#RUN chmod 777 entrypoint.sh
-#RUN chmod 777 print_date.sh
+RUN chmod 777 entrypoint.sh
+RUN chmod 777 print_date.sh
 
-# Block comment to:
-# RUN watch -n 10 /print_date.sh
-# ENTRYPOINT ["/entrypoint.sh"]
+#ENTRYPOINT ["/entrypoint.sh"]
 
-
-CMD ["/bin/bash"]
+RUN /entrypoint.sh
+CMD watch -n -10 /print-date.sh
+#CMD ["/bin/bash"]
