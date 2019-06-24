@@ -2,6 +2,8 @@ FROM kibana:6.8.1
 
 MAINTAINER  Fernando Mendez <fernando.mendez@atos.net>
 
+USER root
+
 # Set Image Labels
 ARG GIT_COMMIT=unspecified
 LABEL git_commit=$GIT_COMMIT
