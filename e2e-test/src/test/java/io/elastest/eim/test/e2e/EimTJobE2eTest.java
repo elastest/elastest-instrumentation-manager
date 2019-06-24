@@ -49,8 +49,9 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 
 public class EimTJobE2eTest extends EimBaseTest {
 	
-	private String sutName = "EIMe2esut";
+	private String sutName = "EIMe2eSut";
 	final int timeOut  = 600;
+	private String sut_ip = System.getenv("ET_SUT_HOST");
 	
 
 	final Logger log = getLogger(lookup().lookupClass());
@@ -109,24 +110,33 @@ public class EimTJobE2eTest extends EimBaseTest {
 			String tJobImage = "elastest/test-etm-alpinedockerjava";
 			
 			//tssMap parameter is null cause EIM is not a test support service
-
 			
-			String commands = "docker run -itd --network=elastest_elastest --name=sut-dockerized -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/containers/:/var/lib/docker/containers/ elastest/eim-sut;"
-					+ "docker exec -i sut-dockerized sh -c 'cd /root/.ssh/; cp id_rsa.pub authorized_keys; awk \\\"{printf \\\\\\\"%s\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n\\\\\\\", \\\\$0}\\\" id_rsa; cat id_rsa > /var/lib/docker/containers/id_rsa; touch ipAddr; hostname -I | sed -e 's/ //g' > /var/lib/docker/containers/ipAddr; exit'    "
-					+ "cd /var/lib/docker/containers/;"
-					+ "export privateKey=$(cat id_rsa);"
-					+ "sh 'echo $privateKey';"
-					+ "export ipAddr=$(cat ipAddr);"
-					+ "sh 'echo $ipAddr';"
-					+ "git clone https://github.com/elastest/elastest-instrumentation-manager.git;"
-					+ "cd e2e-test/; mvn -DskipTests=true -B package -Dprivate_key_sut=${privateKey} -Dsut_addres=${ipAddr};"
+			
+			String privateKey = "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEAvHZDbd9Ecl4SL/5SrOSF6NyzaSUrncH5oJ/7DoqyDWuei5HC\no/NDpa5ww5oyfrnwGFpcYl"
+					+ "dC65e2J67kN5XkbLKO8pDq6MYXPgse6/01Qqk48hO0\nVL08C1nmX+AMT+7rGi724Y6BHLinO/N5pjP+KIllWRGY/RulVTED2GK5ODh4WGvq\n3RjeLS8lJb4HisKrcq2oiP"
+					+ "69tRgubykqI7pA3VpP+utTU/solvDsGNxZzIlB8fdP\ndLWdGfor8L1WgBcM8Q2J6OcrNbMsKuxmtAEXGcxMsszu9Sjko/DCc2Ds05T0D+sw\nfgyueJ82Ny8jy/a16F7PIg/"
+					+ "g7TOyc78IST4viQIDAQABAoIBAFrBeOdIRWXt90Q1\nbQrlYbcp0RwpUj++UcAQSo5OLEBaOxdrMhhR5Zm7z4Hil75/PCf+G88fxpI9lPK3\nPh+mh0HxGvWk4/sEqdyu7k0m"
+					+ "uqdHZqzs4EKOfoPY3x/8fPFhVMZfJ3Snc3WpVp+A\nOGzZTOOohq3F067PyWalG/zwTdHMS9uxLsXwG1grbLCYVu0j0O+7UI5zvpVBMOwG\nplknHC/SaEnfjSOhbhNVAXDs/"
+					+ "Rcnor5BpLJdKjI4LiVncTHgv5Q7o3VxQYoxf8WW\ndIxXyujP7BszXfEsOlvAj+1FakANWsfLVAa5R3042zrnOtHrr9B7hPTHbnKZYq3X\njrPjyECgYEA6zRk6EmLZGICHXZj"
+					+ "WV2c7hfPH00qqLXp+IrmefY1cglwI4IZsRgp\nGXuDyV4UGJ0+xGvWTHG/9IwkFZ4PKb7r855/isX6/SvyAuW0cgtck3LUOunL/zdl\naRP"
+					+ "6cWc1MTuq6hA3v0Yw3+mVfnwq0cjS2kTmf154AJeidurvZAUO41sCgYEAzR/l\n9bwekIDy+hcC4pCa4sTeZ2kWnuJ//VQCKoBXiOHxYDikSDPJFwzdjiSiX6aGTjwN\nIXp53"
+					+ "zLF7RIyb8cOy0gUtymA2zUkj2sQrbV0wnaJUsgqEaSh+Dh2tWN49V46auf3\nOUOw3Njh72CquPypt3WxodmvmcemNv+K2vKqYesCgYEApVCTKA0hEzIryGeAlrxM\nY7CKXLbR"
+					+ "J/mMdKu0KL7be8aUcfCsfCO+J3IAA9XDDDXhew9MdThyMcEaT7NjdvUB\nRJ7/iBt1OOLdXBn1hT7lF6Ha93mCb2SRO5TWL0TaRztn+tHhTOhZy9eSwm8lbYPY\nZ5+L3rQYZlot"
+					+ "z6V7EvLXLwcCgYBg06XhkaN74uLPWv1ppYj3cqbpeZnL9m8kTfuX\nxG2Nl9ow6Yvi6U8LKm+LIY/kRt8vHvmzy/Srf3QerHBSg0xgeO4OZ/EDiNpxOMDu\nvrEW+o1oHkR9f5FVc"
+					+ "pHWndYDPS+mN0lkJqfeGCLOtHriR6J1j4ECPZe+p5e2bnpF\nUDdNcQKBgQCrulfWQ2cbbaNTXxwa+j+TPWHVi7K2HaplCkRUBVOHanyFr/Cq0slj\nrDFDZRA8KXMtE2fELpcgVK"
+					+ "t390PEPEyG+HS0hkc9l2pnsx53WJ8Z59FjPqMj8Mez\nLUtB0FAiwrQTdkQNiUjXU37AXoLXPAjo4bOIGPdvpDRU9JBsyj53Tw==\n-----END RSA PRIVATE KEY-----";
+
+			String SUT_IP = sut_ip;
+			
+			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git;"
+					+ "cd e2e-test/; mvn -DskipTests=true -B package -Dprivate_key_sut="+privateKey+" -Dsut_addres="+SUT_IP+";"
 					+ "mvn -B -Dtest=io.elastest.eim.test.e2e.EimApiRestTest test;"
 					+ "docker stop -f sut-dockerized  && docker rm -f sut-dockerized;"
 					+ "exit";
 			
 			System.out.println("Commands: "+commands);
 			
-			createNewTJob(driver, tJobName, tJobTestResultPath, null, tJobImage, false, commands, null, null, null,null);
+			createNewTJob(driver, tJobName, tJobTestResultPath, sutName, tJobImage, false, commands, null, null, null,null);
 			
 		}
 		// Run the TJob
