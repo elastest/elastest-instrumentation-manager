@@ -62,6 +62,10 @@ public class EimTJobE2eTest extends EimBaseTest {
 		tssMap = new HashMap<String, List<String>>();
 		tssMap.put("EIM", null);
 	}
+	
+	
+	
+	
 
 	void createProject(WebDriver driver) throws Exception {
 		navigateToTorm(driver);
@@ -84,6 +88,9 @@ public class EimTJobE2eTest extends EimBaseTest {
 			String port = "8080";
 
 			createNewSutDeployedByElastestWithImage(driver, sutName, sutDesc, sutImage, port, null, false);
+			
+			
+			
 		}
 
 	}
@@ -105,8 +112,21 @@ public class EimTJobE2eTest extends EimBaseTest {
 			//tssMap parameter is null cause EIM is not a test support service
 
 			
-			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git;"
-					+ "cd e2e-test/; mvn -DskipTests=true -B package -Dprivate_key_sut="+private_key+" -Dsut_addres="+sut_address+";"
+			String commands = "docker run -itd --network=elastest_elastest --name=sut-dockerized -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/containers/:/var/lib/docker/containers/ elastest/eim-sut;"
+					+ "docker exec -i sut-dockerized /bin/bash;"
+					+ "cd /root/.ssh/;"
+					+ "cp id_rsa.pub authorized_keys;"
+					+ "awk \"{printf \\\"%s\\\\\\\\\\\\\\\\n\\\", \\$0}\" id_rsa;"
+					+ "sed -i -e '\\$ s|.\\$||' -e '\\$ s|.\\$|| ' id_rsa;"
+					+ "cat id_rsa > /var/lib/docker/containers/id_rsa;"
+					+ "touch ipAddr;"
+					+ "hostname -I | sed -e 's/ //g' >/var/lib/docker/containers/ipAddr;"
+					+ "exit;"
+					+ "cd /var/lib/docker/containers/;"
+					+ "export privateKey=$(cat id_rsa);"
+					+ "export ipAddr=$(cat ipAddr);"
+					+ "git clone https://github.com/elastest/elastest-instrumentation-manager.git;"
+					+ "cd e2e-test/; mvn -DskipTests=true -B package -Dprivate_key_sut=echo $privateKey -Dsut_addres=echo $ipAddr;"
 					+ "mvn -B -Dtest=io.elastest.eim.test.e2e.EimApiRestTest test";
 			
 			System.out.println("Commands: "+commands);
