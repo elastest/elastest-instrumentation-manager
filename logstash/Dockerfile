@@ -1,4 +1,4 @@
-FROM logstash:7.1.1
+FROM logstash:6.8.1
 
 MAINTAINER  Fernando Mendez <fernando.mendez@atos.net>
 
@@ -12,7 +12,8 @@ LABEL commit_date=$COMMIT_DATE
 ARG VERSION=unspecified
 LABEL version=$VERSION 
 
-RUN apt-get update && apt-get -y install net-tools
+# RUN apt-get update && apt-get -y install net-tools
+RUN yum install -y net-tools
 
 COPY logstash.conf /logstash/
 
