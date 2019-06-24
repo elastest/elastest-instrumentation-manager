@@ -1,9 +1,7 @@
-def elastestURL = ""
-def privateKey = ""
-def ipAddr = ""
-
 node("et_in_et"){
     
+def elastestURL = ""
+
     elastest(tss: ['EUS'], surefireReportsPattern: '**/target/surefire-reports/TEST-*.xml', project: 'ETinET', sut:11){
         echo "...STARTING..."
     
@@ -15,62 +13,25 @@ node("et_in_et"){
             elastestContainer.pull()
             elastestContainer.inside("-u jenkins -v /var/run/docker.sock:/var/run/docker.sock:rw -v /dev/shm:/dev/shm")  {
                 sh '/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf &'
-                elastestURL =  env.ET_SUT_PROTOCOL + '://elastest:3xp3r1m3nt47@' + env.ET_SUT_HOST + ':' + env.ET_SUT_PORT
-
-                // referencia a la libreria... def sutContainer = elastest.ctx.docker.image('elastest/eim-sut')
+                elastestURL = env.ET_SUT_PROTOCOL + '://' + env.ET_SUT_HOST + ':' + env.ET_SUT_PORT
                 
-                def sutContainer = docker.image('elastest/eim-sut:latest')
-                
-                stage ('prepare')
-    
-                    git 'https://github.com/elastest/elastest-instrumentation-manager.git'
-                    //library reference delete elastest.connect2ElastestNetwork()
-                    
-                    // referencia a la librería elastestURL = elastest.getEtmUrl() => 
-                    //sustituir por la env.SUT_PROTOCOL y env.SUT_URL (o algo así mirad en el pipeline del torm)
-    
-                   
-                    sutContainer.pull()
-                    sutContainer.inside("-u root --name=sut-dockerized -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/containers/:/var/lib/docker/containers/") {
-    
-                        sh "cat /root/.ssh/id_rsa"
-                        sh "touch id_rsa"
-                        // Replacing newline characters with literal \n
-                        sh "awk '{printf \"%s\\\\\\\\n\", \$0}' /root/.ssh/id_rsa > id_rsa"
-                        // Removing last two characters
-                        sh "sed -i -e '\$ s|.\$||' -e '\$ s|.\$||' id_rsa"
-                        privateKey = readFile 'id_rsa'
-                        //writeFile file: "e2e-test/pKey", text: privateKey
-                        ipAddr = sh returnStdout: true, script: 'hostname -I'
-                        //privateKey = sh returnStdout: true, script: 'cat e2e-test/pKey'
-                    }
-    
                 stage ("API tests")
                     try {
-	                    sh "echo IP SUT ADDRESS: "
-						sh "echo $ipAddr"
-						sh "echo PRIVATE KEY SUT:"
-						sh "echo $privateKey"
-						
-						sh "cd e2e-test; mvn -B clean test -Dtest=io.elastest.eim.test.e2e.EimTJobE2eTest -DipAddr="+ipAddr+" -DprivateKey="+privateKey+" -DeusUrl=${env.ET_EUS_API} -DetEtmApi="+elastestURL+"  -DeUser=${DEV_USER} -DePass=${DEV_PASS} -Dsel.jup.recording=true -Dsel.jup.screenshot.at.the.end.of.tests=true -Dsel.jup.screenshot.format=png -Dsel.jup.output.folder=/target/surefire-reports/TEST-*.xml"
-						
-						//sh "cd e2e-test; mvn -B clean test -Dtest=io.elastest.eim.test.e2e.EimTJobE2eTest.java -DipAddr="+ipAddr+" -DprivateKey="+privateKey+" -DeusUrl=${env.ET_EUS_API} -DetEtmApi="+elastestURL+" -DeUser="+'elastest'+" -DePass="+'3xp3r1m3nt47'+" -Dsel.jup.recording=true -Dsel.jup.screenshot.at.the.end.of.tests=true -Dsel.jup.screenshot.format=png"
-
-	            
-	                    sleep(180)
-    
+                        sh "cd e2e-test/; mvn package -DskipTests=true; mvn -B test -Dtest=io.elastest.eim.test.e2e.EimTJobE2eTest -DargLine'-DeusUrl=${env.ET_EUS_API} -DetEtmApi='"+elastestURL+"' -DeUser=${DEV_USER} -DePass=${DEV_PASS}';"
+                        
+	                    sleep(60)
                         sh "echo TEST_SUCCESSFULL COMPLETED !!"
                         
                     } catch(e) {
                         sh "echo TESTS NOT COMPLETED !! "
                         sh '''\
-                           docker ps --all
+                          docker container ls -a
                         '''
                         throw e
                     } finally {
                         //step([$class: 'JUnitResultArchiver', testDataPublishers: [[$class: 'AttachmentPublisher']], testResults: '**/target/surefire-reports/TEST-*.xml'])
                         step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
-                    }
-            }
+                   }
+           }
     }
   }
