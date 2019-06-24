@@ -50,8 +50,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 public class EimTJobE2eTest extends EimBaseTest {
 	
 	private String sutName = "EIMe2esut";
-	private String private_key = System.getProperty("privateKey");
-	private String sut_address = System.getProperty("ipAddr");
+	final int timeOut  = 600;
 	
 
 	final Logger log = getLogger(lookup().lookupClass());
@@ -132,12 +131,12 @@ public class EimTJobE2eTest extends EimBaseTest {
 			
 			System.out.println("Commands: "+commands);
 			
-			createNewTJob(driver, tJobName, tJobTestResultPath, sutName, tJobImage, false, commands, null, null, null,
-					null);
+			createNewTJob(driver, tJobName, tJobTestResultPath, null, tJobImage, false, commands, null, null, null,null);
 			
 		}
 		// Run the TJob
 		runTJobFromProjectPage(driver, tJobName);
+		this.checkFinishTJobExec(driver, timeOut, "SUCCESS", true);
 
 	}
 
