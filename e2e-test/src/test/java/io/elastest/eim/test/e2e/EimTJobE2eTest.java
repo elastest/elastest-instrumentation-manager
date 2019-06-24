@@ -120,13 +120,13 @@ public class EimTJobE2eTest extends EimBaseTest {
 					+ "sed -i -e '\\$ s|.\\$||' -e '\\$ s|.\\$|| ' id_rsa;"
 					+ "cat id_rsa > /var/lib/docker/containers/id_rsa;"
 					+ "touch ipAddr;"
-					+ "hostname -I | sed -e 's/ //g' >/var/lib/docker/containers/ipAddr;"
+					+ "hostname -I | sed -e 's/ //g' > /var/lib/docker/containers/ipAddr;"
 					+ "exit;"
 					+ "cd /var/lib/docker/containers/;"
 					+ "export privateKey=$(cat id_rsa);"
 					+ "export ipAddr=$(cat ipAddr);"
 					+ "git clone https://github.com/elastest/elastest-instrumentation-manager.git;"
-					+ "cd e2e-test/; mvn -DskipTests=true -B package -Dprivate_key_sut=echo $privateKey -Dsut_addres=echo $ipAddr;"
+					+ "cd e2e-test/; mvn -DskipTests=true -B package -Dprivate_key_sut=${privateKey} -Dsut_addres=${ipAddr};"
 					+ "mvn -B -Dtest=io.elastest.eim.test.e2e.EimApiRestTest test"
 					+ "docker stop -f sut-dockerized stop && docker rm -f sut-dockerized";
 			
