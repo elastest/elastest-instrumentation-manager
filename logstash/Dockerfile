@@ -1,5 +1,6 @@
-FROM logstash
-MAINTAINER  David Rojo <david.rojoa@atos.net>
+FROM logstash:7.1.1
+
+MAINTAINER  Fernando Mendez <fernando.mendez@atos.net>
 
 # Set Image Labels
 ARG GIT_COMMIT=unspecified

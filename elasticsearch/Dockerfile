@@ -1,4 +1,4 @@
-FROM elasticsearch:6.5.0
+FROM elasticsearch:7.1.1
 
 MAINTAINER  Fernando Mendez <fernando.mendez@atos.net>
 
