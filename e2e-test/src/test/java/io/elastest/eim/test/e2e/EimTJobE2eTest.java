@@ -127,9 +127,9 @@ public class EimTJobE2eTest extends EimBaseTest {
 
 			String SUT_IP = sut_ip;
 			
-			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git;"
-					+ "cd elastest-instrumentation-manager/e2e-test/; mvn -DskipTests=true -B package;"
-					+ "mvn -B -Dprivate_key="+privateKey+" -Dsut_address="+SUT_IP+" -Dtest=io.elastest.eim.test.e2e.EimApiRestTest test;"
+			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; "
+					+ "cd elastest-instrumentation-manager/e2e-test/; mvn package -DskipTests=true; "
+					+ "mvn -B -Dtest=io.elastest.eim.test.e2e.EimApiRestTest test -DargLine='-Dprivate_key="+privateKey+" -Dsut_address="+SUT_IP+"'; "
 					+ "docker stop $(docker ps -a -q);"
 					+ "docker rm $(docker ps -a -q);"
 					+ "exit";
