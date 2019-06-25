@@ -36,8 +36,9 @@ import com.google.gson.JsonParser;
 
 public class EimApiRestTest {
 
-	private String private_key = System.getProperty("private_key_sut");
-	private String sut_address = System.getProperty("sut_addres");
+	private String private_key = System.getenv("private_key");
+	private String sut_address = System.getenv("sut_address");
+
 	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";
 	private String user = "root";
 	
