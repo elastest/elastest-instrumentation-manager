@@ -36,9 +36,8 @@ import com.google.gson.JsonParser;
 
 public class EimApiRestTest {
 
-	private String private_key = System.getenv("private_key");
-	private String sut_address = System.getenv("sut_address");
-
+	private String private_key = System.getProperty("private_key");
+	private String sut_address = System.getProperty("sut_address");
 	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";
 	private String user = "root";
 	
@@ -51,7 +50,10 @@ public class EimApiRestTest {
 	// TODO - registerAgent_then200OK()
 	@Test
 	public void registerAgentTest() {
-
+		
+		System.out.println("SUT Private key: "+private_key);
+		System.out.println("SUT Address: "+sut_address);
+		
 		// Remove "\" last character
 		String privateKey_modified = private_key.substring(0, private_key.length() - 1);		
 		

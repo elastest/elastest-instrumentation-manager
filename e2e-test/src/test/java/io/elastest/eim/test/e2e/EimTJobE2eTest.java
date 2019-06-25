@@ -128,11 +128,10 @@ public class EimTJobE2eTest extends EimBaseTest {
 			String SUT_IP = sut_ip;
 			
 			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git;"
-					+ "export private_key="+privateKey+";"
-					+ "export Dsut_address="+SUT_IP+";"
-					+ "cd elastest-instrumentation-manager/e2e-test/; mvn -DskipTests=true -B package -Dprivate_key="+privateKey+" -Dsut_address="+SUT_IP+";"
-					+ "mvn -B -Dtest=io.elastest.eim.test.e2e.EimApiRestTest test;"
-					+ "docker stop -f sut-dockerized  && docker rm -f sut-dockerized;"
+					+ "cd elastest-instrumentation-manager/e2e-test/; mvn -DskipTests=true -B package;"
+					+ "mvn -B -Dprivate_key="+privateKey+" -Dsut_address="+SUT_IP+" -Dtest=io.elastest.eim.test.e2e.EimApiRestTest test;"
+					+ "docker stop $(docker ps -a -q);"
+					+ "docker rm $(docker ps -a -q);"
 					+ "exit";
 			
 			System.out.println("Commands: "+commands);
