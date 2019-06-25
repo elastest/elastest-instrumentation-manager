@@ -85,9 +85,8 @@ public class EimTJobE2eTest extends EimBaseTest {
 			// Create SuT
 			String sutDesc = "SuT for E2E test";
 			String sutImage = "elastest/eim-sut:latest";
-			String port = "null";
 
-			createNewSutDeployedByElastestWithImage(driver, sutName, sutDesc, sutImage, port, null, false);
+			createNewSutDeployedByElastestWithImage(driver, sutName, sutDesc, sutImage, null, null, false);
 			
 			
 			
