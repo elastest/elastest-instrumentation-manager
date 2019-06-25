@@ -12,6 +12,6 @@ LABEL commit_date=$COMMIT_DATE
 ARG VERSION=unspecified
 LABEL version=$VERSION 
 
-RUN apt-get update \ 
-    && apt-get install -y \
+RUN yum update \ 
+    && yum install -y \
     net-tools
