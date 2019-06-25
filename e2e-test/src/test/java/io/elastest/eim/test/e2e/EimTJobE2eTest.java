@@ -50,7 +50,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 public class EimTJobE2eTest extends EimBaseTest {
 	
 	private String sutName = "EIMe2eSut";
-	final int timeOut  = 3000;
+	final int timeOut  = 800;
 	private String sut_ip = System.getenv("ET_SUT_HOST");
 	
 
@@ -128,7 +128,9 @@ public class EimTJobE2eTest extends EimBaseTest {
 			String SUT_IP = sut_ip;
 			
 			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git;"
-					+ "cd elastest-instrumentation-manager/e2e-test/; mvn -DskipTests=true -B package -Dprivate_key_sut="+privateKey+" -Dsut_addres="+SUT_IP+";"
+					+ "export private_key="+privateKey+";"
+					+ "export Dsut_address="+SUT_IP+";"
+					+ "cd elastest-instrumentation-manager/e2e-test/; mvn -DskipTests=true -B package -Dprivate_key="+privateKey+" -Dsut_address="+SUT_IP+";"
 					+ "mvn -B -Dtest=io.elastest.eim.test.e2e.EimApiRestTest test;"
 					+ "docker stop -f sut-dockerized  && docker rm -f sut-dockerized;"
 					+ "exit";
