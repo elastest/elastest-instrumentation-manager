@@ -50,7 +50,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 public class EimTJobE2eTest extends EimBaseTest {
 	
 	private String sutName = "EIMe2esut";
-	final int timeOut  = 600;
+	final int timeOut  = 3000;
 	
 
 	final Logger log = getLogger(lookup().lookupClass());
@@ -112,22 +112,15 @@ public class EimTJobE2eTest extends EimBaseTest {
 
 			
 			String commands = "docker run -itd --network=elastest_elastest --name=sut-dockerized -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/containers/:/var/lib/docker/containers/ elastest/eim-sut;"
-					+ "docker exec -i sut-dockerized && "
-					+ "cd /root/.ssh/ &&"
-					+ "cp id_rsa.pub authorized_keys &&"
-					+ "awk \"{printf \\\"%s\\\\\\\\\\\\\\\\n\\\", \\$0}\" id_rsa &&"
-					+ "sed -i -e '\\$ s|.\\$||' -e '\\$ s|.\\$|| ' id_rsa && "
-					+ "cat id_rsa > /var/lib/docker/containers/id_rsa && "
-					+ "touch ipAddr && "
-					+ "hostname -I | sed -e 's/ //g' > /var/lib/docker/containers/ipAddr &&"
-					+ "exit;"
+					+ "docker exec -i sut-dockerized sh -c 'cd /root/.ssh/; cp id_rsa.pub authorized_keys; awk \\\"{printf \\\\\\\"%s\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n\\\\\\\", \\\\$0}\\\" id_rsa; cat id_rsa > /var/lib/docker/containers/id_rsa; touch ipAddr; hostname -I | sed -e 's/ //g' > /var/lib/docker/containers/ipAddr; exit'    "
 					+ "cd /var/lib/docker/containers/;"
 					+ "export privateKey=$(cat id_rsa);"
 					+ "export ipAddr=$(cat ipAddr);"
 					+ "git clone https://github.com/elastest/elastest-instrumentation-manager.git;"
 					+ "cd e2e-test/; mvn -DskipTests=true -B package -Dprivate_key_sut=${privateKey} -Dsut_addres=${ipAddr};"
 					+ "mvn -B -Dtest=io.elastest.eim.test.e2e.EimApiRestTest test;"
-					+ "docker stop -f sut-dockerized stop && docker rm -f sut-dockerized";
+					+ "docker stop -f sut-dockerized  && docker rm -f sut-dockerized;"
+					+ "exit";
 			
 			System.out.println("Commands: "+commands);
 			
