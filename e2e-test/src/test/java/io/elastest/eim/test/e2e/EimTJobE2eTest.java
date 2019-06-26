@@ -105,7 +105,7 @@ public class EimTJobE2eTest extends EimBaseTest {
 		String tJobName = "EIM e2e tjob";
 		if (!etTJobExistsIntoProject(driver, projectName, tJobName)) {
 
-			String tJobTestResultPath = "";
+			String tJobTestResultPath = "/elastest-instrumentation-manager";
 			String tJobImage = "elastest/test-etm-alpinegitjava";
 			
 			//tssMap parameter is null cause EIM is not a test support service
@@ -115,8 +115,9 @@ public class EimTJobE2eTest extends EimBaseTest {
 			String SUT_IP = sut_ip;
 			
 			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; "
-					+ "cd elastest-instrumentation-manager/e2e-test/; mvn package -DskipTests=true; "
-					+ "mvn -B test -Dtest=io.elastest.eim.test.e2e.EimApiRestTest -DargLine='-Dprivate_key="+privateKey+" -Dsut_address="+SUT_IP+"'; "
+					+ "cd elastest-instrumentation-manager/e2e-test/; "
+					+ "mvn package -DskipTests=true; "
+					+ "mvn test -Dtest=io.elastest.eim.test.e2e.EimApiRestTest -DargLine='-Dprivate_key="+privateKey+" -Dsut_address="+SUT_IP+"'; "
 					+ "exit";
 			
 			System.out.println("Commands: "+commands);
