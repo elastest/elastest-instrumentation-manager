@@ -1,9 +1,9 @@
 version: '2'
 
 services:
-        eim-mysql:
+        edm-mysql:
                 #image: elastest/eim-elasticsearch:0.9.0
-                image: elastest/eim-mysql:latest
+                image: elastest/edm-mysql:latest
                 #expose: 
                 #        - 3306
                 # environment:
@@ -11,7 +11,7 @@ services:
                 ports: 
                         - "3306:3306"
                 #        - "52000:3306"
-                hostname: eim-mysql 
+                hostname: edm-mysql 
                 stdin_open: true
                 tty: true
                 networks:
@@ -23,7 +23,7 @@ services:
                         - "9200:9200"
                         - "9300:9300"
                 depends_on:
-                        - eim-mysql
+                        - edm-mysql
                 hostname: elasticsearch
                 networks:
                         - elastest
@@ -74,13 +74,13 @@ services:
                 #       - static-content:/tmp/ssh 
                 depends_on:
                         - sut
-                        - eim-mysql
+                        - edm-mysql
                 links:
-                        - eim-mysql
+                        - edm-mysql
                 stdin_open: true
                 tty: true
                 environment:
-                        - ET_EDM_MYSQL_HOST=eim-mysql
+                        - ET_EDM_MYSQL_HOST=edm-mysql
                         - ET_EDM_MYSQL_PORT=3306
                 expose:
                         - 8080
