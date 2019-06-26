@@ -106,7 +106,7 @@ public class EimTJobE2eTest extends EimBaseTest {
 		if (!etTJobExistsIntoProject(driver, projectName, tJobName)) {
 
 			String tJobTestResultPath = "";
-			String tJobImage = "elastest/test-etm-alpinedockerjava";
+			String tJobImage = "elastest/test-etm-alpinegitjava";
 			
 			//tssMap parameter is null cause EIM is not a test support service
 			
@@ -130,8 +130,6 @@ public class EimTJobE2eTest extends EimBaseTest {
 			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; "
 					+ "cd elastest-instrumentation-manager/e2e-test/; mvn package -DskipTests=true; "
 					+ "mvn -B -Dtest=io.elastest.eim.test.e2e.EimApiRestTest test -DargLine='-Dprivate_key="+privateKey+" -Dsut_address="+SUT_IP+"'; "
-					+ "docker stop $(docker ps -a -q);"
-					+ "docker rm $(docker ps -a -q);"
 					+ "exit";
 			
 			System.out.println("Commands: "+commands);
@@ -141,8 +139,7 @@ public class EimTJobE2eTest extends EimBaseTest {
 		}
 		// Run the TJob
 		runTJobFromProjectPage(driver, tJobName);
-		this.checkFinishTJobExec(driver, timeOut, "SUCCESS", true);
-
+		this.checkFinishTJobExec(driver, timeOut, "SUCCESS", false);
 	}
 
 }
