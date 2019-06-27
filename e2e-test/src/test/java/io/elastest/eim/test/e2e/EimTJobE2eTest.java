@@ -51,7 +51,6 @@ public class EimTJobE2eTest extends EimBaseTest {
 	
 	private String sutName = "EIMe2eSut";
 	final int timeOut  = 800;
-	private String sut_ip = System.getenv("ET_SUT_HOST");
 	
 
 	final Logger log = getLogger(lookup().lookupClass());
@@ -107,14 +106,11 @@ public class EimTJobE2eTest extends EimBaseTest {
 
 			String tJobTestResultPath = "/elastest-instrumentation-manager";
 			String tJobImage = "elastest/test-etm-alpinegitjava";
-			
-			String privateKey = "\"-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAu3j8Zep/0/XHa2Bld1LntS0HtQolkd8Rqcwd41ZTaMjdlORh\nu7ppMNhAUAbG+lzNEdBP+WSIE/WX71FA0kSs3UnCJomDDnHQWjkvFvoVyRpBxQ6P\ndkiRfRi9Q10oMZmkfjP0V/+FU3ICEOiXJtwhmzLF0tHHYfrhLNU59s1L7I1E15Zt\nTVB1HE3V1gPymJO19AhDJMz5CRXvJR0QLcSo1Ej7FgAE3eePPOjOxZQ3pc9FEnGl\nHTM2zRAOIbqdXWkdtnevmP7PgNOg//rdnT1+WMOTSIZgIXX6DiwrBJSzG541F5JM\n1nlgzHDzUeB9iY4w8EE+h8aM3mBInKkfNVZ43QIDAQABAoIBACX8/igovH5W73Hy\ntpzXT9yGo2ksBTDp4splcij+9Sfmi///x04jF+2t5FpTBT72Txes/oeqt2hT+9Wi\nwV/aSq0MpSrp8oSay3182O3u/zsg9vLXYHq3ecO/n5pm5h4m5A4uuPSb8ohWMdT7\nTKWzNZwdTbjKiXxxOe+7xWMddqUYIbWXVo2i9TpB9gX4U46kgSdvnz3uoRO0amGB\nZ7jW5oLzfux2nm5V2Yt0PeKobAzn4mh4Bi9g1uXNHjKgys6+7MgRWQBEp0LyCXSC\nQ4B6dZ2eGQWj+H7HUt/SDSa+GC/q+aKMCViRKe6wEZYIzOb+eDCX0rySJoLkp44T\nACoHKIECgYEA+SyoJPbR87MOerkG/NXA/Q6T8DvX+nxuybz0O1ElLAvUiag+WoBw\npVHPHpeMp7/N79YHqhWTu87UMZOfxaR3BOfZNbUc7MgETp5O4zA5AL5RvJxI+MBt\nnhZTRbT6BQ12WhWVQChd/krDhGCY4lJ1GudGReGtUDLtn3LzT2Ku3l8CgYEAwJuk\npCe8wQCMxHHW1siHKO+eJGI2ZsFKCTmq0AmuTgUF/NdxQ0CymRVl/+5e364aVE3L\nKcTdqb88Zr0Bmbx1k23OkjmsErDrdWqy6vOIsPS+grTvGPvesFdd45lpWeQl0hxn\nidDB5A00haYhTc1k+fxVlix7Qm7Hlku+LGkHekMCgYAN+uhwMnzzHF+6mPkAZInQ\naOn595GVlzesD/LwBQx93SgOlSbycvRfAikJwVz96HAIfcyuSUmhpugW4/5521Fm\nMA/qyH+X9VzwgEdSzdjU5ti1KVuawUklLoF7jrzcXbX/NejK0bj8VHuFyNmrEQ9K\n9CDoONI9hq34XT2zfYjsJwKBgDn536ol5/Q0hSrQlXmbbMvOrMyI35U4k1+JgzgR\n4ezMKEw+UXKL8/aOcWCDUP2Fe5lqvT+6aXqh/L10IRo0lzOkduye/YO2y3lRf7+n\nRLr3QK05Z0se7Z4o/jL3R7XuLdA8CpJ6SxKpQukD47x2mfGBmgWVKBkMHXnJHNpj\nVwPfAoGBANtqpHU8lWUI2Ex0IR0SlRKK8XC7OGvRVnpkX3cBfuGNN8iJaPFz/17+\nLfPVxdtNS2l+cq2vLJCma4GvrXZCuV4Gm0H1Gp5FIheFsns82cxARatHnf5rTjEh\ncAGCP+fTE6+8yR1zok7nRKpo3172KMw1vRfutPws/y68mBq7EBxO\n-----END RSA PRIVATE KEY-----\"";
-			String SUT_IP = "\""+sut_ip+"\"";
-						
+									
 			String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; "
 					+ "cd elastest-instrumentation-manager/e2e-test/; "
 					+ "mvn package -DskipTests=true; "
-					+ "mvn test -Dtest=io.elastest.eim.test.e2e.EimApiRestTest -DargLine='-Dprivate_key="+privateKey+" -Dsut_address="+SUT_IP+"'; "
+					+ "mvn test -Dtest=io.elastest.eim.test.e2e.EimApiRestTest'; "
 					+ "exit";
 			
 			System.out.println("Commands: "+commands);
