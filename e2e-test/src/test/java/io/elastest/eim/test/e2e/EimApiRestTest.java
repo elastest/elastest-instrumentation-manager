@@ -31,6 +31,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -57,8 +58,9 @@ public class EimApiRestTest {
 		
 		// Remove "\" last character
 		String privateKey_modified = privateKey.substring(0, privateKey.length() - 1);		
-		
 		String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":"+privateKey_modified+",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
+
+		System.out.println("Payload: "+payload);
 		
 		JsonObject jsonObject = new JsonParser().parse(payload).getAsJsonObject();
 		
