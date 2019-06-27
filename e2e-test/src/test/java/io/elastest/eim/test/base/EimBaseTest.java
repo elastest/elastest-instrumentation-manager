@@ -636,7 +636,7 @@ public class EimBaseTest {
 
 	protected String getSutXpathFromProjectPage(String sutName) {
 		String xpath = getSutsTableXpathFromProjectPage();
-		xpath += "//*/td/span[text()='" + sutName + "']";
+		xpath += "//*/td/*/span[text()='" + sutName + "']";
 
 		return xpath;
 	}
