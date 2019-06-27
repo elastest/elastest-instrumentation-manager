@@ -39,12 +39,6 @@ node('docker') {
                         sh 'cd kibana; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-kibana:latest'
                         def kibana_image = docker.image('elastest/eim-kibana:latest')
 
-               stage "Build EIM SuT image - Package"
-                        echo ("building sut..")
-                        //def sut_image = docker.build("elastest/eim-sut:latest","./sut")
-                        sh 'cd sut; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-sut:latest'
-                        def sut_image = docker.image('elastest/eim-sut:latest')
-
                 stage "Build EIM image - Package"
                         echo ("building eim..")
                         //def eim_image = docker.build("elastest/eim:latest","./eim")
@@ -68,7 +62,6 @@ node('docker') {
                                 elasticsearch_image.push()
                                 logstash_image.push()
                                 kibana_image.push()
-                                sut_image.push()
                                 eim_image.push()
                         }   
             }
