@@ -50,8 +50,8 @@ public class EimApiRestTest {
 	@Test
 	public void registerAgentTest() {
 		
-		String privateKey = "\"-----BEGIN RSA PRIVATE KEY-----"+String.format("%n")+
-				"MIIEpQIBAAKCAQEAwX6nZRrCrBIBFQHT0EJOrloK/BBmm5GssTEl7vVVIZr4rn23"+String.format("%n")
+		String privateKey = "\"-----BEGIN RSA PRIVATE KEY-----"+String.format("%n")
+				+"MIIEpQIBAAKCAQEAwX6nZRrCrBIBFQHT0EJOrloK/BBmm5GssTEl7vVVIZr4rn23"+String.format("%n")
 				+"b14whvmkYHOYxlqK818/9Gjvi1Q0e+DHBWEVWFd9WAnccvptEOElRIb3pz/V794y"+String.format("%n")
 				+"9fx83yQXKaC4eJj+3YDuoXXilpYHZnismgMml3rP+v2jgsUi6m6S8TfzfIhTW0qi"+String.format("%n")
 				+"FeNom3JytpUJgpht6WIjJF3IL+uT2x8Xm6NuNrARf5mRsMzZivap0dmPVE1LYaAP"+String.format("%n")
