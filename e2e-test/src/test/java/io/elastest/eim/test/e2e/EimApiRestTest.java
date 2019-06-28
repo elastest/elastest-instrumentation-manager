@@ -65,12 +65,12 @@ public class EimApiRestTest {
 		RestTemplate restTemplate = new RestTemplate();
 		Map<String,String> body = new HashMap<>();
 		
-		body.put("address", sut_address);
-		body.put("user","user");
-		body.put("private_key", privateKey);
-		body.put("logstash_ip"," 172.20.0.4" );
-		body.put("logstash_port", "5044");
-		body.put("password", "elastest");
+		body.put("\"address\"", sut_address);
+		body.put("\"user\"","user");
+		body.put("\"private_key\"", privateKey);
+		body.put("\"logstash_ip\""," 172.20.0.4");
+		body.put("\"logstash_port\"", "5044");
+		body.put("\"password\"", "elastest");
 		
 		
 		String URL = server;
