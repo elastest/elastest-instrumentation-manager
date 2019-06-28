@@ -80,7 +80,7 @@ public class EimApiRestTest {
 		System.out.println("############ This is the request: ############");
 		System.out.println(request.toString());
 		
-		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
+		ResponseEntity<JsonObject> response = restTemplate.exchange(URL,  HttpMethod.POST, request, JsonObject.class);
 		
 		System.out.println("############ Response for Test1: ############");
 		System.out.println(response);
