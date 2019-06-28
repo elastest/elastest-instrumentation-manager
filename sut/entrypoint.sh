@@ -21,5 +21,6 @@ service ssh restart;
 #FREQ_TIME_PRINT_DATE="${FREQ_TIME:10}"
 #echo "FREQ_TIME_PRINT_DATE = " $FREQ_TIME_PRINT_DATE
 #watch -n $FREQ_TIME_PRINT_DATE ./print_date.sh 
+export TERM=xterm
 cd /
 watch -n 10 ./print_date.sh
