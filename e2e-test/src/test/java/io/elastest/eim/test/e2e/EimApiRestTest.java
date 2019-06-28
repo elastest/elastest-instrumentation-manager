@@ -51,7 +51,7 @@ public class EimApiRestTest {
 	@Test
 	public void registerAgentTest() {
 		
-		String privateKey = "-----BEGIN RSA PRIVATE KEY-----MIIEpQIBAAKCAQEAwX6nZRrCrBIBFQHT0EJOrloK/BBmm5GssTEl7vVVIZr4rn23b14whvmkYHOYxlqK818/9Gjvi1Q0e+DHBWEVWFd9WAnccvptEOElRIb3pz/V794y9fx83yQXKaC4eJj+3YDuoXXilpYHZnismgMml3rP+v2jgsUi6m6S8TfzfIhTW0qiFeNom3JytpUJgpht6WIjJF3IL+uT2x8Xm6NuNrARf5mRsMzZivap0dmPVE1LYaAPJNWm6TOSGvpbnzJcrvCtIZTvJ1SMUbmjmk1lJaP+knlEAJ9IYqfa22GSdarCsuEF4qZhiD+xsJrdy0MWQjcsVNnrBgLRphF4Vc5WyQIDAQABAoIBAQC1T1rH0HWOCyjcaGP0B832bgVRAIVFTRGGz8j9ywFEhhR0XPTf9GCAebhfcLI9W2ZMenpRKWsdIYA0fAHBtqDrsL+RGVxqmOJOKMplFhtFqvlq1Mjn2vmflg/mP+Xbi3F2WXRB81apSFgS2wzRHBazZq8wPy9SQCthhM9IHOeZTfvDXOEjAvR2vzNEqJQiJJzLakoPHsoX1UHYr+f+ZcTUNbM+8mFXC0217dD2YcrC87T43PKbSmWMo5EAlQUCO9bRXn0XIqnLEMmpAowLaaEhB2no1v7+9LkzKERPbewvZ4jf5iPAik0zIY68t8oagIcOxawxme2uXQBu7BPeRSUBAoGBAN6Ye4G+4zQ04lm9jrMsq57vG9rpzreKRSP/0VRI1sjUmQ/AnaUoJiWeoqV3fV9EyU4CLtmffiDOkGxWAfEC3iKfe+RtIFOH+eLMs8OgcyhzLiH3c8G5KmAGtomlwx+8p666QJlP6J7BNJLET66HAUEAK+eDXw+elyFuW4ul5c/xAoGBAN6IMcffQjStUMQ9hGU/jXupbjhy0OzrL9JwOBufpXA9mmo4JzPFXqw/YyuyRDzp7bmaoTn0k0qLsBaz/s36nPl/sny6Su8FzT+aIeR8l7o0pY5dxWuCh0H0EbOxL8du/EHBFkQ1gPt1IjUmPqqxPbdYpupxn8+42We/zMpvhcxZAoGBALYrrrBxi7pXKYPuKZIjldT9tRtEzCPTqmAa5bMH5Zf4vcdxiNL4d7fECzJGBznnrqQED1mVOQEabIHtJaucADXvtdItKQ6TswNVKi2I65YIJZIw1PCPXMm31L30Biu8FrNdxK50AlminycaOGgKHxGWVVgkYLEExoTar1sri1fRAoGAbtDr2Vi4o3rbiZ4I3FK1pitNlBa5LAJCokz34+mwfSBwUQz9mK5k4un9/LideqgTliYGu9Grt6ewXN3tua1flm+c9rfesQD2oQGkdyAEftnQyACyW0N5D8L3PcCyxmHihOwepoDuZkqCam1NL7trvG4NURqcNtkaiqvc08KNoqECgYEAtCcslkjIzmYYXyGmiE5hSvy6GvLslamJgnZks9kr/XzdoVpwW0OTHS8gNT33F22reQQX/XwSia0ZZskKKB8t7f79GoccVwL9HbsbkYhU4p3lem49J+p0oIZn/7KUhUOjtPPqIavjr1kx5Bg5vVAl3tk6/RkZk2hY/xftb/vgxMg=-----END RSA PRIVATE KEY-----";
+		String privateKey = "\"-----BEGIN RSA PRIVATE KEY-----\\nMIIEpQIBAAKCAQEAwX6nZRrCrBIBFQHT0EJOrloK/BBmm5GssTEl7vVVIZr4rn23\\nb14whvmkYHOYxlqK818/9Gjvi1Q0e+DHBWEVWFd9WAnccvptEOElRIb3pz/V794y\\n9fx83yQXKaC4eJj+3YDuoXXilpYHZnismgMml3rP+v2jgsUi6m6S8TfzfIhTW0qi\\nFeNom3JytpUJgpht6WIjJF3IL+uT2x8Xm6NuNrARf5mRsMzZivap0dmPVE1LYaAP\\nJNWm6TOSGvpbnzJcrvCtIZTvJ1SMUbmjmk1lJaP+knlEAJ9IYqfa22GSdarCsuEF\\n4qZhiD+xsJrdy0MWQjcsVNnrBgLRphF4Vc5WyQIDAQABAoIBAQC1T1rH0HWOCyjc\\naGP0B832bgVRAIVFTRGGz8j9ywFEhhR0XPTf9GCAebhfcLI9W2ZMenpRKWsdIYA0\\nfAHBtqDrsL+RGVxqmOJOKMplFhtFqvlq1Mjn2vmflg/mP+Xbi3F2WXRB81apSFgS\\n2wzRHBazZq8wPy9SQCthhM9IHOeZTfvDXOEjAvR2vzNEqJQiJJzLakoPHsoX1UHY\\nr+f+ZcTUNbM+8mFXC0217dD2YcrC87T43PKbSmWMo5EAlQUCO9bRXn0XIqnLEMmp\\nAowLaaEhB2no1v7+9LkzKERPbewvZ4jf5iPAik0zIY68t8oagIcOxawxme2uXQBu\\n7BPeRSUBAoGBAN6Ye4G+4zQ04lm9jrMsq57vG9rpzreKRSP/0VRI1sjUmQ/AnaUo\\nJiWeoqV3fV9EyU4CLtmffiDOkGxWAfEC3iKfe+RtIFOH+eLMs8OgcyhzLiH3c8G5\\nKmAGtomlwx+8p666QJlP6J7BNJLET66HAUEAK+eDXw+elyFuW4ul5c/xAoGBAN6I\\nMcffQjStUMQ9hGU/jXupbjhy0OzrL9JwOBufpXA9mmo4JzPFXqw/YyuyRDzp7bma\\noTn0k0qLsBaz/s36nPl/sny6Su8FzT+aIeR8l7o0pY5dxWuCh0H0EbOxL8du/EHB\\nFkQ1gPt1IjUmPqqxPbdYpupxn8+42We/zMpvhcxZAoGBALYrrrBxi7pXKYPuKZIj\\nldT9tRtEzCPTqmAa5bMH5Zf4vcdxiNL4d7fECzJGBznnrqQED1mVOQEabIHtJauc\\nADXvtdItKQ6TswNVKi2I65YIJZIw1PCPXMm31L30Biu8FrNdxK50AlminycaOGgK\\nHxGWVVgkYLEExoTar1sri1fRAoGAbtDr2Vi4o3rbiZ4I3FK1pitNlBa5LAJCokz3\\n4+mwfSBwUQz9mK5k4un9/LideqgTliYGu9Grt6ewXN3tua1flm+c9rfesQD2oQGk\\ndyAEftnQyACyW0N5D8L3PcCyxmHihOwepoDuZkqCam1NL7trvG4NURqcNtkaiqvc\\n08KNoqECgYEAtCcslkjIzmYYXyGmiE5hSvy6GvLslamJgnZks9kr/XzdoVpwW0OT\\nHS8gNT33F22reQQX/XwSia0ZZskKKB8t7f79GoccVwL9HbsbkYhU4p3lem49J+p0\\noIZn/7KUhUOjtPPqIavjr1kx5Bg5vVAl3tk6/RkZk2hY/xftb/vgxMg=\\n-----END RSA PRIVATE KEY-----\"";
 
 		System.out.println("SUT Address: "+sut_address);
 		System.out.print("Private key: "+privateKey);
@@ -62,20 +62,23 @@ public class EimApiRestTest {
 
 		System.out.println("Payload: "+payload);
 		
-		JsonObject jsonObject = new JsonParser().parse(payload).getAsJsonObject();
+		JsonParser parser = new JsonParser();
+		JsonObject json = (JsonObject)parser.parse(payload);
+		
 		
 		String URL = server;
 		System.out.println("############ Endpoint request ############ ");
 		System.out.println(URL);
 		System.out.println("############ Json: ############");
-		System.out.println(jsonObject);
+		System.out.println(json);
 		System.out.println("############ Json to String: ############" );
-		System.out.println(jsonObject.toString());
+		System.out.println(json.toString());
 
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-		HttpEntity<String> request = new HttpEntity<String>(jsonObject.toString(), headers);
+		HttpEntity<JsonObject> request = new HttpEntity<JsonObject>(json, headers);
+		
 		System.out.println("############ This is the request: ############");
 		System.out.println(request.toString());
 		
