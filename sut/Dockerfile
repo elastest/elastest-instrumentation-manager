@@ -22,8 +22,8 @@ RUN \
     mkdir -p /var/run/sshd && \
     mkdir -p /root/.ssh && \
 ##  mkdir -p /tmp/ssh && \
-    ssh-keygen -q -t rsa -N '' -f /root/.ssh/id_rsa && \
-    echo "service ssh start" >> /etc/bash.bashrc 
+    ssh-keygen -q -t rsa -N '' -f /root/.ssh/id_rsa
+##  echo "service ssh start" >> /etc/bash.bashrc 
 
 ## && \
 #   printf "if [[ $EUID -eq 0 ]]; then\ncp /tmp/ssh/id_rsa.pub /root/.ssh/authorized_keys\nfi\n" >> /etc/bash.bashrc
@@ -42,8 +42,8 @@ COPY print_date.sh /print_date.sh
 RUN chmod 777 entrypoint.sh
 RUN chmod 777 print_date.sh
 
-RUN /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 
-CMD export TERM=xterm; watch -n -10 /print_date.sh
+#CMD export TERM=xterm; watch -n -10 /print_date.sh
 
 

@@ -20,8 +20,7 @@
 package io.elastest.eim.test.e2e;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -39,9 +38,6 @@ public class EimApiRestTest {
 	private String sut_address = System.getenv("ET_SUT_HOST");
 	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";
 	
-	// public RestClient client = new RestClient(server, user, password,
-	// secureElastest);
-
 	public RestTemplate restTemplate = new RestTemplate();
 	public HttpHeaders headers = new HttpHeaders();
 
@@ -49,179 +45,141 @@ public class EimApiRestTest {
 	@Test
 	public void registerAgentTest() {
 		
-		String privateKey = "\"-----BEGIN RSA PRIVATE KEY-----\\nMIIEpQIBAAKCAQEAwX6nZRrCrBIBFQHT0EJOrloK/BBmm5GssTEl7vVVIZr4rn23\\nb14whvmkYHOYxlqK818/9Gjvi1Q0e+DHBWEVWFd9WAnccvptEOElRIb3pz/V794y\\n9fx83yQXKaC4eJj+3YDuoXXilpYHZnismgMml3rP+v2jgsUi6m6S8TfzfIhTW0qi\\nFeNom3JytpUJgpht6WIjJF3IL+uT2x8Xm6NuNrARf5mRsMzZivap0dmPVE1LYaAP\\nJNWm6TOSGvpbnzJcrvCtIZTvJ1SMUbmjmk1lJaP+knlEAJ9IYqfa22GSdarCsuEF\\n4qZhiD+xsJrdy0MWQjcsVNnrBgLRphF4Vc5WyQIDAQABAoIBAQC1T1rH0HWOCyjc\\naGP0B832bgVRAIVFTRGGz8j9ywFEhhR0XPTf9GCAebhfcLI9W2ZMenpRKWsdIYA0\\nfAHBtqDrsL+RGVxqmOJOKMplFhtFqvlq1Mjn2vmflg/mP+Xbi3F2WXRB81apSFgS\\n2wzRHBazZq8wPy9SQCthhM9IHOeZTfvDXOEjAvR2vzNEqJQiJJzLakoPHsoX1UHY\\nr+f+ZcTUNbM+8mFXC0217dD2YcrC87T43PKbSmWMo5EAlQUCO9bRXn0XIqnLEMmp\\nAowLaaEhB2no1v7+9LkzKERPbewvZ4jf5iPAik0zIY68t8oagIcOxawxme2uXQBu\\n7BPeRSUBAoGBAN6Ye4G+4zQ04lm9jrMsq57vG9rpzreKRSP/0VRI1sjUmQ/AnaUo\\nJiWeoqV3fV9EyU4CLtmffiDOkGxWAfEC3iKfe+RtIFOH+eLMs8OgcyhzLiH3c8G5\\nKmAGtomlwx+8p666QJlP6J7BNJLET66HAUEAK+eDXw+elyFuW4ul5c/xAoGBAN6I\\nMcffQjStUMQ9hGU/jXupbjhy0OzrL9JwOBufpXA9mmo4JzPFXqw/YyuyRDzp7bma\\noTn0k0qLsBaz/s36nPl/sny6Su8FzT+aIeR8l7o0pY5dxWuCh0H0EbOxL8du/EHB\\nFkQ1gPt1IjUmPqqxPbdYpupxn8+42We/zMpvhcxZAoGBALYrrrBxi7pXKYPuKZIj\\nldT9tRtEzCPTqmAa5bMH5Zf4vcdxiNL4d7fECzJGBznnrqQED1mVOQEabIHtJauc\\nADXvtdItKQ6TswNVKi2I65YIJZIw1PCPXMm31L30Biu8FrNdxK50AlminycaOGgK\\nHxGWVVgkYLEExoTar1sri1fRAoGAbtDr2Vi4o3rbiZ4I3FK1pitNlBa5LAJCokz3\\n4+mwfSBwUQz9mK5k4un9/LideqgTliYGu9Grt6ewXN3tua1flm+c9rfesQD2oQGk\\ndyAEftnQyACyW0N5D8L3PcCyxmHihOwepoDuZkqCam1NL7trvG4NURqcNtkaiqvc\\n08KNoqECgYEAtCcslkjIzmYYXyGmiE5hSvy6GvLslamJgnZks9kr/XzdoVpwW0OT\\nHS8gNT33F22reQQX/XwSia0ZZskKKB8t7f79GoccVwL9HbsbkYhU4p3lem49J+p0\\noIZn/7KUhUOjtPPqIavjr1kx5Bg5vVAl3tk6/RkZk2hY/xftb/vgxMg=\\n-----END RSA PRIVATE KEY-----\"";
-
+		String privateKey = "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEA36r0UFyRg6n9tiyx6mkFAZMhuRoSw/CXLC0XQj1B7EOpkxwv\nnY8JPnk1j4y6qiYhNUd06Rnniyv16ZmZ809EO1f+gQNKzLmQN08i4sUrE3eWUvJl\nNEpYr+jy/XqnQSyDGqlcXlnD3Lo8oTvH4p0DpMVSzIGcf+xXYiYhEeLJBX6D1uCT\nVYo3DSVcKGRDcHP17aEdQARuacqRAxaIl42kwDo+vUQRUxumk6e7HzAVFJA1t63i\nAcKbzpxoqvttLOELg7Bq29XeG7696fhllcQYMG0FHdHiEiQ3BqrdP/6EaC+iytg+\nBBq7Uwuxtsg97RZgWZC05ORwGxILb+BVP9l2uQIDAQABAoIBABjRd1qTavIZIrXc\nL8G69Xs/QDax1fM39w5H0pTfBzmYKHDSZ9Yr0PLFsFPFYdEPeg/XZfmXjkG7FwZc\nrOB6oy+SjAL0wpAE5yO7/Dr9ddIrKtr5WpF6zmx2hL/rpDNvJP0IXd96RmlvoNqj\nL4LNuWHHI3Dd0OfA6dFSOckqSPP66KXTG088N+VvL7wNCkO08qXS9w2YERPwdHdC\nkg0oZyAjwK0ISsk6O2sP/+PfMxFjx1iZxVh1jNLvMciwIhzmu2bN9pJ5YlNtfys4\nXG1ZK1MfcOFbs8RJdfKNu3BS7Ftnjnsoy5smnyMCnU2BWwNuqOlcv8Y5MhU2CG1K\nCGLV7KECgYEA/TbDjopcBWwGiYCqehYqL6MrVcqAHobdgYOBRCRKHET8fpklrYhv\nSlVFY2EwgrnpxOoGBAZmIhiiLRHcP5yhqHd0IhJdS5fxrQ0O+xQnkcx/L1QoMFX2\nyjEvTFnevxNNhiF8qMGgCN/idnPJfp4SJvDEnEDgbsSBvhqbYa2b7HsCgYEA4iD3\nhbJp7fr9+Ne3T6m8LGyfAbyEo/PFDhmq6BX1XxAfBj0mSCN9umcZlCfsLTqVzHW/\nmJ9y0dfpu3Yh5UoXqqsGlfAOOsJUJ+5jp7NDOaLqmKV0ASeTS736Xo5QU+TwaJsF\nKqpSV/1g+5wJblAViEO0ZkPyQHqbpn4E0nMKBVsCgYA5pGjaHwcZuOC4FpE4X6lU\n1Nk9m26VBHCSViRsJbK1QsMT8rsQCPoEuuqj1/EaIUZlLD0YV3iSlHb+uY0g8gAf\nAKpwQyv31GwQz+M0Jv9nAl2FoavQbRFUL+Qrhl3ds4A3Y5IkPIe43XaJLoyVBVju\ngmrPgzlUHenHI/lxP/s51wKBgE+StkeP7wLVrgWhM1qPKi6f0pxz0GE5aQB7O88L\n2xqmu6QgZJZCFv4/RZsDKXMJCKm4TcHRakA5sIBNI8Rh/E4MfPbKUNeQhri+hMcA\nqAliMReiMV4upQCkS7R2dAHxsD+/PWQ0J2HbQgOIdzEgcVNQL+1Ev7y86IUAF4ZP\nARm9AoGBAPK2kO8MLAYxemsk5vm11aJgYYNWqV8YOkObPn37CT0AWgYCEwlrFqti\nPHcNjRSX20g6ohb3owzSgsC3Aqzut3fdtjgT8J621jGBUvAqMoCzirkRSdL3fIpJ\n1FNU01UkF5/8a4PCVr+QT6YbtqNGGXVG5ce0GuWyRlJj824JW4jP\n-----END RSA PRIVATE KEY-----";
+		
 		System.out.println("SUT Address: "+sut_address);
-		System.out.print("Private key: "+privateKey);
+		System.out.println("Private key: "+privateKey);
 		
-		//String payload = "{\"address\":\""+sut_address+"\",\"user\":\"user\",\"private_key\":"+privateKey+",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
-
-		//System.out.println("Payload: "+payload);
+		JsonObject obj = new JsonObject();
+		obj.addProperty("address", new String(sut_address));
+		obj.addProperty("user", "root");
+		obj.addProperty("private_key", new String(privateKey));
+		obj.addProperty("logstash_ip", "172.20.0.4");
+		obj.addProperty("logstash_port", "5044");
+		obj.addProperty("password", "elastest");
 		
-		//JsonParser parser = new JsonParser();
-		//JsonObject json = (JsonObject)parser.parse(payload);
-		
-		RestTemplate restTemplate = new RestTemplate();
-		Map<String,String> body = new HashMap<>();
-		
-			
-		body.put("\"address\"","\"192.168.16.39\"");
-		body.put("\"user\"","\"user\"");
-		body.put("\"private_key\"", privateKey);
-		body.put("\"logstash_ip\"","\"172.20.0.4\"");
-		body.put("\"logstash_port\"", "\"5044\"");
-		body.put("\"password\"", "\"elastest\"");
-		
+		System.out.println("Payload: "+obj.toString());
 		
 		String URL = server;
-		System.out.println("############ Endpoint request ############ ");
-		System.out.println(URL);
-		//System.out.println("############ Json: ############");
-		//System.out.println(json);
 		
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-		//HttpEntity<JsonObject> request = new HttpEntity<JsonObject>(json, headers);
-		HttpEntity<Map<String, String>> request = new HttpEntity<Map<String, String>>(
-				body, headers);
 		
-		System.out.println("############ This is the request: ############");
-		System.out.println(request.toString());
-				
+
+		HttpEntity<String> request = new HttpEntity<String>(
+				obj.toString(), headers);
+		
 		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
 		
 		System.out.println("############ Response for Test1: ############");
 		System.out.println(response);
 
-		Assertions.assertEquals("200", response.getStatusCode());
+		Assertions.assertEquals(200, response.getStatusCode().value());
 		
 		
 	}
 
-	/*
-	 * // TODO - request_packetloss_action_then200OK
-	 *//**
-		 * curl -i -X POST -H "Content-Type:application/json" -H
-		 * "Accept:application/json"
-		 * http://localhost:8080/eim/api/agent/controllability/iagent0/packetloss -d '{
-		 * "exec": "EXECBEAT", "component": "EIM", "packetLoss": "0.01", "stressNg": "",
-		 * "dockerized": "yes", "cronExpression": "@every 60s" }'
-		 */
-	/*
-	 * 
-	 * @Test public void requestActionPacketLossTest() { String
-	 * uri_packetloss_action = "controllability/iagent0/packetloss"; // String
-	 * payload = //
-	 * "{\"exec\":\"EXECBEAT\",\"component\":\"EIM\",\"packetLoss\":\"0.01\",\"stressNg\":\"\",\"dockerized\":\"yes\",\"cronExpression\":\"
-	 * @every // 60s\"}";
-	 * 
-	 * Map<String, String> body = new HashMap<>(); body.put("exec", "EXECBEAT");
-	 * body.put("component", "EIM"); body.put("packetLoss", "0.01");
-	 * body.put("stressNg", ""); body.put("dockerized", "yes");
-	 * body.put("cronExpression", "@every 60s");
-	 * 
-	 * String URL = server + uri_packetloss_action;
-	 * 
-	 * System.out.println("Endpoint request " + server + uri_packetloss_action);
-	 * System.out.println("Payload:" + body);
-	 * 
-	 * headers.setContentType(MediaType.APPLICATION_JSON);
-	 * headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-	 * 
-	 * HttpEntity<Map<String, String>> request = new HttpEntity<Map<String,
-	 * String>>(body, headers);
-	 * 
-	 * Assertions.assertEquals(200, restTemplate.exchange(URL, HttpMethod.POST,
-	 * request, Map.class).getStatusCodeValue());
-	 * 
-	 * }
-	 * 
-	 * // TODO - request_stress_action_then200OK()
-	 * 
-	 *//**
-		 * curl -i -X POST -H "Content-Type:application/json" -H
-		 * "Accept:application/json"
-		 * http://localhost:8080/eim/api/agent/controllability/iagent0/stress -d '{
-		 * "exec": "EXECBEAT", "component": "EIM", "packetLoss": "", "stressNg": "4",
-		 * "dockerized": "yes", "cronExpression": "@every 60s" }'
-		 **/
-	/*
-	 * 
-	 * @Test public void requestActionStressTest() { String uri_stress_action =
-	 * "controllability/iagent0/stress"; // String payload = //
-	 * "{\"exec\":\"EXECBEAT\",\"component\":\"EIM\",\"packetLoss\":\"\",\"stressNg\":\"4\",\"dockerized\":\"yes\",\"cronExpression\":\"
-	 * @every // 60s\"}"; Map<String, String> body = new HashMap<>();
-	 * body.put("exec", "EXECBEAT"); body.put("component", "EIM");
-	 * body.put("packetLoss", ""); body.put("stressNg", "4"); body.put("dockerized",
-	 * "yes"); body.put("cronExpression", "@every 60s");
-	 * 
-	 * String URL = server + uri_stress_action;
-	 * 
-	 * System.out.println("Endpoint request: " + URL);
-	 * System.out.println("Payload: " + body);
-	 * 
-	 * headers.setContentType(MediaType.APPLICATION_JSON);
-	 * headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-	 * 
-	 * HttpEntity<Map<String, String>> request = new HttpEntity<Map<String,
-	 * String>>(body, headers); Assertions.assertEquals(200,
-	 * restTemplate.exchange(URL, HttpMethod.POST, request,
-	 * Map.class).getStatusCodeValue()); }
-	 * 
-	 * // TODO - Unistall Agent - request_unistall_agent
-	 * 
-	 *//**
-		 * curl -i -X DELETE -H "Content-Type:application/json" -H
-		 * "Accept:application/json"
-		 * http://localhost:8080/eim/api/agent/iagent0/unmonitor
-		 * 
-		 * @throws InterruptedException
-		 */
-	/*
-	 * 
-	 * @Test public void requestUnistallAgentTest() throws InterruptedException {
-	 * String uri_unistall_agent = "iagent0/unmonitor"; TimeUnit.SECONDS.sleep(160);
-	 * 
-	 * headers.setContentType(MediaType.APPLICATION_JSON);
-	 * headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-	 * 
-	 * Map<String, String> body = new HashMap<>(); String URL = server +
-	 * uri_unistall_agent;
-	 * 
-	 * System.out.println("Endpoint request: " + URL);
-	 * 
-	 * HttpEntity<Map<String, String>> request = new HttpEntity<Map<String,
-	 * String>>(body, headers);
-	 * 
-	 * Assertions.assertEquals(200, restTemplate.exchange(URL, HttpMethod.DELETE,
-	 * request, Map.class).getStatusCodeValue());
-	 * 
-	 * }
-	 * 
-	 * // TODO - Remove Agent
-	 * 
-	 *//**
-		 * curl -i -X DELETE -H "Content-Type:application/json" -H
-		 * "Accept:application/json" http://localhost:8080/eim/api/agent/iagent0
-		 * 
-		 * @throws InterruptedException
-		 *//*
-			 * 
-			 * @Test public void requestDeleteAgentTest() throws InterruptedException {
-			 * String uri_delete_agent = "iagent0"; TimeUnit.SECONDS.sleep(160);
-			 * 
-			 * Map<String, String> body = new HashMap<>(); String URL = server +
-			 * uri_delete_agent;
-			 * 
-			 * System.out.println("Endpoint request: " + URL);
-			 * 
-			 * HttpEntity<Map<String, String>> request = new HttpEntity<Map<String,
-			 * String>>(body, headers); Assertions.assertEquals(200,
-			 * restTemplate.exchange(URL, HttpMethod.DELETE, request,
-			 * Map.class).getStatusCodeValue());
-			 * 
-			 * }
-			 */
+	 @Test
+	 public void requestActionPacketLossTest() {
+		 
+		String uri_packetloss_action = "controllability/iagent0/packetloss";
+		String URL = server + uri_packetloss_action;
+		 
+		JsonObject obj = new JsonObject();
+		obj.addProperty("exec", "EXECBEAT");
+		obj.addProperty("component", "EIM");
+		obj.addProperty("packetLoss", "0.01");
+		obj.addProperty("stressNg", "");
+		obj.addProperty("dockerized", "yes");
+		obj.addProperty("cronExpression", "@every 60s");
+		
+		System.out.println("Payload: "+obj.toString());
+		
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		
+
+		HttpEntity<String> request = new HttpEntity<String>(
+				obj.toString(), headers);
+		
+		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
+		System.out.println("############ Response for Test2: ############");
+		System.out.println(response);
+
+		
+		Assertions.assertEquals(200, response.getStatusCode().value());
+	  
+	 }
+	 
+	 @Test
+	 public void requestActionStressTest() {
+		 
+		String uri_packetloss_action = "controllability/iagent0/packetloss";
+		String URL = server + uri_packetloss_action;
+		 
+		JsonObject obj = new JsonObject();
+		obj.addProperty("exec", "EXECBEAT");
+		obj.addProperty("component", "EIM");
+		obj.addProperty("packetLoss", "");
+		obj.addProperty("stressNg", "4");
+		obj.addProperty("dockerized", "yes");
+		obj.addProperty("cronExpression", "@every 60s");
+		
+		System.out.println("Payload: "+obj.toString());
+		
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		
+
+		HttpEntity<String> request = new HttpEntity<String>(
+				obj.toString(), headers);
+		
+		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
+		System.out.println("############ Response for Test3: ############");
+		System.out.println(response);
+
+		
+		Assertions.assertEquals(200, response.getStatusCode().value());
+	  
+	 }
+	
+	 @Test
+	 public void requestUnistallAgentTest() throws InterruptedException {
+		String uri_unistall_agent = "iagent0/unmonitor"; 
+		TimeUnit.SECONDS.sleep(160);
+		 
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		 
+		String URL = server +  uri_unistall_agent;
+		 
+		HttpEntity<String> request = new HttpEntity<String>("", headers);
+		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
+		
+		System.out.println("############ Response for Test4: ############");
+		System.out.println(response);
+		
+		
+		Assertions.assertEquals(200, response.getStatusCode().value());
+ 
+	 }
+	 
+	 @Test
+	 public void requestDeleteAgentTest() throws InterruptedException {
+		 String uri_unistall_agent = "iagent0/unmonitor"; 
+		 TimeUnit.SECONDS.sleep(160);
+		 
+		 headers.setContentType(MediaType.APPLICATION_JSON);
+		 headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		 
+		 String URL = server +  uri_unistall_agent;
+		 
+		 HttpEntity<String> request = new HttpEntity<String>("", headers);
+		 ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
+		 
+		 System.out.println("############ Response for Test5: ############");
+		 System.out.println(response);
+		 
+	 }
 
 }
