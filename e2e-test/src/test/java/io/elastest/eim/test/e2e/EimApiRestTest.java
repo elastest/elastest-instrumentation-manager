@@ -56,9 +56,7 @@ public class EimApiRestTest {
 		System.out.println("SUT Address: "+sut_address);
 		System.out.print("Private key: "+privateKey);
 		
-		// Remove "\" last character
-		String privateKey_modified = privateKey.substring(0, privateKey.length() - 1);		
-		String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":"+privateKey_modified+",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
+		String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":"+privateKey+",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
 
 		System.out.println("Payload: "+payload);
 		
