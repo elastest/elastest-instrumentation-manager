@@ -20,7 +20,8 @@
 package io.elastest.eim.test.e2e;
 
 import java.util.Collections;
-
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -31,9 +32,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 public class EimApiRestTest {
 
@@ -56,36 +55,46 @@ public class EimApiRestTest {
 		System.out.println("SUT Address: "+sut_address);
 		System.out.print("Private key: "+privateKey);
 		
-		String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":"+privateKey+",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
+		//String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":"+privateKey+",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
 
-		System.out.println("Payload: "+payload);
+		//System.out.println("Payload: "+payload);
 		
-		JsonParser parser = new JsonParser();
-		JsonObject json = (JsonObject)parser.parse(payload);
+		//JsonParser parser = new JsonParser();
+		//JsonObject json = (JsonObject)parser.parse(payload);
+		
+		RestTemplate restTemplate = new RestTemplate();
+		Map<String,String> body = new HashMap<>();
+		
+		body.put("address", sut_address);
+		body.put("user","user");
+		body.put("private_key", privateKey);
+		body.put("logstash_ip"," 172.20.0.4" );
+		body.put("logstash_port", "5044");
+		body.put("password", "elastest");
 		
 		
 		String URL = server;
 		System.out.println("############ Endpoint request ############ ");
 		System.out.println(URL);
-		System.out.println("############ Json: ############");
-		System.out.println(json);
-		System.out.println("############ Json to String: ############" );
-		System.out.println(json.toString());
-
+		//System.out.println("############ Json: ############");
+		//System.out.println(json);
+		
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-		HttpEntity<JsonObject> request = new HttpEntity<JsonObject>(json, headers);
+		//HttpEntity<JsonObject> request = new HttpEntity<JsonObject>(json, headers);
+		HttpEntity<Map<String, String>> request = new HttpEntity<Map<String, String>>(
+				body, headers);
 		
 		System.out.println("############ This is the request: ############");
 		System.out.println(request.toString());
-		
-		ResponseEntity<JsonObject> response = restTemplate.exchange(URL,  HttpMethod.POST, request, JsonObject.class);
+				
+		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
 		
 		System.out.println("############ Response for Test1: ############");
 		System.out.println(response);
 
-		Assertions.assertEquals(200, response.getStatusCodeValue());
+		Assertions.assertEquals("200", response.getStatusCode());
 		
 		
 	}
