@@ -38,7 +38,6 @@ public class EimApiRestTest {
 
 	private String sut_address = System.getenv("ET_SUT_HOST");
 	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";
-	private String user = "root";
 	
 	// public RestClient client = new RestClient(server, user, password,
 	// secureElastest);
@@ -55,7 +54,7 @@ public class EimApiRestTest {
 		System.out.println("SUT Address: "+sut_address);
 		System.out.print("Private key: "+privateKey);
 		
-		//String payload = "{\"address\":\""+sut_address+"\",\"user\":\""+user+"\",\"private_key\":"+privateKey+",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
+		//String payload = "{\"address\":\""+sut_address+"\",\"user\":\"user\",\"private_key\":"+privateKey+",\"logstash_ip\":\"172.20.0.4\",\"logstash_port\":\"5044\",\"password\":\"elastest\"}";
 
 		//System.out.println("Payload: "+payload);
 		
@@ -65,12 +64,13 @@ public class EimApiRestTest {
 		RestTemplate restTemplate = new RestTemplate();
 		Map<String,String> body = new HashMap<>();
 		
-		body.put("\"address\"", sut_address);
-		body.put("\"user\"","user");
+			
+		body.put("\"address\"","\"192.168.16.39\"");
+		body.put("\"user\"","\"user\"");
 		body.put("\"private_key\"", privateKey);
-		body.put("\"logstash_ip\""," 172.20.0.4");
-		body.put("\"logstash_port\"", "5044");
-		body.put("\"password\"", "elastest");
+		body.put("\"logstash_ip\"","\"172.20.0.4\"");
+		body.put("\"logstash_port\"", "\"5044\"");
+		body.put("\"password\"", "\"elastest\"");
 		
 		
 		String URL = server;
