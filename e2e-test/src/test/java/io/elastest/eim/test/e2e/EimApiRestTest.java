@@ -31,15 +31,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 
 public class EimApiRestTest {
 
 	private String sut_address = System.getenv("ET_SUT_HOST");
-	//private String server = "http://nightly.elastest.io:37004/eim/api/agent/";
+	public JsonElement agentID ;
 	
-	private String server = "http://localhost:8080/eim/api/agent/";
+	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";
+	
 	
 	public RestTemplate restTemplate = new RestTemplate();
 	public HttpHeaders headers = new HttpHeaders();
@@ -72,7 +74,8 @@ public class EimApiRestTest {
 		HttpEntity<String> request = new HttpEntity<String>(
 				obj.toString(), headers);
 		
-		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
+		ResponseEntity<JsonObject> response = restTemplate.exchange(URL,  HttpMethod.POST, request, JsonObject.class);
+		agentID = response.getBody().get("agentId");
 		
 		System.out.println("############ Response for Test1: ############");
 		System.out.println(response);
@@ -88,7 +91,7 @@ public class EimApiRestTest {
 	 @Test
 	 public void b_Test() throws InterruptedException {
 		 
-		String uri_packetloss_action = "controllability/iagent0/packetloss";
+		String uri_packetloss_action = "controllability/"+agentID+"/packetloss";
 		String URL = server + uri_packetloss_action;
 		 
 		JsonObject obj = new JsonObject();
@@ -121,7 +124,7 @@ public class EimApiRestTest {
 	 @Test
 	 public void c_Test() throws InterruptedException {
 		 
-		String uri_packetloss_action = "controllability/iagent0/packetloss";
+		String uri_packetloss_action = "controllability/"+agentID+"/packetloss";
 		String URL = server + uri_packetloss_action;
 		 
 		JsonObject obj = new JsonObject();
@@ -153,7 +156,7 @@ public class EimApiRestTest {
 	
 	 @Test
 	 public void d_Test() throws InterruptedException {
-		String uri_unistall_agent = "iagent0/unmonitor"; 
+		String uri_unistall_agent = agentID+"/unmonitor"; 
 		TimeUnit.SECONDS.sleep(160);
 		 
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -180,7 +183,7 @@ public class EimApiRestTest {
 		 headers.setContentType(MediaType.APPLICATION_JSON);
 		 headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		 
-		 String URL = server;
+		 String URL = server+agentID;
 		 
 		 HttpEntity<String> request = new HttpEntity<String>("", headers);
 		 ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
