@@ -20,7 +20,6 @@
 package io.elastest.eim.test.e2e;
 
 import java.util.Collections;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Assertions;
@@ -34,6 +33,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 
 public class EimApiRestTest {
@@ -71,15 +71,18 @@ public class EimApiRestTest {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		
-		// HttpEntity<String> request = new HttpEntity<String>(obj.toString(), headers);
+		HttpEntity<String> request = new HttpEntity<String>(obj.toString(), headers);
 		
 		
-		HttpEntity<JsonObject> request = new HttpEntity<JsonObject>(
-				obj, headers);
 		
+		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
+		String body = response.getBody();
 		
-		ResponseEntity<JsonObject> response = restTemplate.exchange(URL,  HttpMethod.POST, request, JsonObject.class);
-		agentID = response.getBody().get("agentId");
+		//String toJson
+		
+		JsonParser parser = new JsonParser();
+		JsonObject json = (JsonObject) parser.parse(body);
+		agentID=json.get("agentId");
 		
 		System.out.println("AgentID:" +agentID);
 		
