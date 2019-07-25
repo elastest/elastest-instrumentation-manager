@@ -37,18 +37,19 @@ import com.google.gson.JsonObject;
 public class EimApiRestTest {
 
 	private String sut_address = System.getenv("ET_SUT_HOST");
-	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";
+	//private String server = "http://nightly.elastest.io:37004/eim/api/agent/";
+	
+	private String server = "http://localhost:8080/eim/api/agent/";
 	
 	public RestTemplate restTemplate = new RestTemplate();
 	public HttpHeaders headers = new HttpHeaders();
 
 	// TODO - registerAgent_then200OK()
 	@Test
-	public void a_Test() {
+	public void a_Test() throws InterruptedException {
 		
 		String privateKey = "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEAyon9m2lne1ZYrTyZPkc5AF/He040ymCGNfsKYhGgRsyKhkM2\nt8hHryrOEwink9ts3UlfFdVu3w3AHGD3N6vm9AepIDlHHVZziC3Pz9JO3V0CT0VF\nl89k15tNKgAVlXfY9Ya5255TAL44D031u4cdRXo4HMv3SZimujras0sTfhhQDVpg\npjpb1BTcOCyXbQHUJJeL81sbMxMWo/ojSUlpVqQQemPtY7iz/+JEsct9J29xyCAq\nab0t2d/CAOA+kO2fwmxIxShJvugYcnlwTZS1wCeolv/ZFvfVCoSCeWtCmi9Hw4Td\nFoLXKQKdHU3mgrC6cWG+duHX5mdUesSbkcAWawIDAQABAoIBAQCOvenKWeLgfd5J\nWWf3CGMX7Gi+ckOqTZTI/oA21Y1L2GPYdA5gP/qlbVmG+JaCEicLXeZxkNZuxVYb\nqgsRZUmDutJrL3L7Li6GTyMiqGmEgURbccq2TygW/BDKBP0xNiHmCGl8any9DVKd\nFqiU3Yi3qodZZDaH29nFbi0sJ0E5n8+vsM3fOS6SlWQcKgNjVlhxA3aU76u38rGQ\nu6hMJ2ZfXN4E1oZ0EKViZuH73edeC34u/44aXYZ6TWHQ8rsUuiIFKuRRI8o4E7c5\nzr/vlscn+pFOUhmM1tAc2wOx5CNHGLpavZm9xim4wIwy+xub8SNYxmu166CqbxQz\nJAHjuuQhAoGBAO1CRhbH4M9ew6y38gx+g1jm8WInct8O7WpFkXT4/f+cxOZjk81A\nFEih6U955U2RrxhzlFbyQwl3z3cV4c++xOycUOfE1t1znMZ1xCJg+QwUmPo8BiLd\nWC7UWhXdC3Eye18EYWF3EvJnWeBU2Vhxjv2pBk9MbABs58OpoSDbUVvfAoGBANqJ\noUK1GJ/KwvLKQ/1d9N8wGoPZkuA0B6V6HW3o+5u0Zl+IO6e9h/HbbrljQ8r/r+tl\nc9TrV0kqG0+ENaL9lXOt5Q21GAFvJ6yiBVn+fAK2ekyrFHMqerVVYuOMnLaVVEI0\n4pZ/IrMUNWcH9GstG0SFQpnRzhv9z9RhLXjwwhb1AoGBAMLNBGEV8ZYx13VLfngV\ns+BdldkiTKWqSvJTdk9VVK73147WOXdvYngUQEyZ59SdhecMlsIgnTv73CKJm+MH\nXgZrfd4d9tDSaOllrgkQF8t8afIjMGKV3B5vChwjZo6lhTgJj68Hpk3S369Z2y5L\n5ryMd/rJ428h+9ThxMMGb7F/AoGBAL4A82ggM+yaSaz2Fu7vBbwXAraoMH8mPY+u\nAHBTJI9X5bohpFxO+Sda9YXRvFt+uuEbL/5rL1S5e01DUa8IcyxEgOXOEbUNg50g\nsS5xiDiDlwmZpQoMYOvP9U6KLqbAZqW5fVgD6ZNxeoy96dBVQ2PryOAb/etwXYX1\nh6ejC90RAoGADAzpLFggmyJi6Aga7ja2zDyFWe2js4t+kp8QIRwrnp99Gd0JCbUv\n8Gc25iURw3LkuRlz57Uw9nac6qHCa4dyw390H81zfn/qX2VyYamGYObP6fcKgNkt\n5JH3RgZ7mUJFLlfNlAb+JVOmfBvVqGmze8C15n24G5ro3MDCcPM9F0E=\n-----END RSA PRIVATE KEY-----";
-		
-		
+
 		System.out.println("SUT Address: "+sut_address);
 		System.out.println("Private key: "+privateKey);
 		
@@ -75,14 +76,17 @@ public class EimApiRestTest {
 		
 		System.out.println("############ Response for Test1: ############");
 		System.out.println(response);
+		
+		TimeUnit.SECONDS.sleep(160); 
 
+		
 		Assertions.assertEquals(200, response.getStatusCode().value());
 		
 		
 	}
 
 	 @Test
-	 public void b_Test() {
+	 public void b_Test() throws InterruptedException {
 		 
 		String uri_packetloss_action = "controllability/iagent0/packetloss";
 		String URL = server + uri_packetloss_action;
@@ -108,13 +112,14 @@ public class EimApiRestTest {
 		System.out.println("############ Response for Test2: ############");
 		System.out.println(response);
 
+		TimeUnit.SECONDS.sleep(160); 
 		
 		Assertions.assertEquals(200, response.getStatusCode().value());
 	  
 	 }
 	 
 	 @Test
-	 public void c_Test() {
+	 public void c_Test() throws InterruptedException {
 		 
 		String uri_packetloss_action = "controllability/iagent0/packetloss";
 		String URL = server + uri_packetloss_action;
@@ -139,7 +144,8 @@ public class EimApiRestTest {
 		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
 		System.out.println("############ Response for Test3: ############");
 		System.out.println(response);
-
+		
+		TimeUnit.SECONDS.sleep(160); 
 		
 		Assertions.assertEquals(200, response.getStatusCode().value());
 	  
@@ -168,13 +174,13 @@ public class EimApiRestTest {
 	 
 	 @Test
 	 public void e_Test() throws InterruptedException {
-		 String uri_unistall_agent = "iagent0/unmonitor"; 
+		 
 		 TimeUnit.SECONDS.sleep(160);
 		 
 		 headers.setContentType(MediaType.APPLICATION_JSON);
 		 headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		 
-		 String URL = server +  uri_unistall_agent;
+		 String URL = server;
 		 
 		 HttpEntity<String> request = new HttpEntity<String>("", headers);
 		 ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
