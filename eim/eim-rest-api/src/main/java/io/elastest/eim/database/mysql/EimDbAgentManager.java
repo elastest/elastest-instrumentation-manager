@@ -285,7 +285,7 @@ public class EimDbAgentManager {
 		PreparedStatement pstSelectAgents = null;
 		
 		try {
-			String selectSQL = "SELECT AGENT_ID, HOST, MONITORED, LOGSTASH_IP, LOGSTASH_PORT FROM " + Dictionary.DBTABLE_AGENT;
+			String selectSQL = "SELECT AGENT_ID, HOST, MONITORED, LOGSTASH_IP, LOGSTASH_PORT, USER, PASSWORD FROM " + Dictionary.DBTABLE_AGENT;
 			pstSelectAgents = conn.prepareStatement(selectSQL);
 			ResultSet rs = pstSelectAgents.executeQuery();
 			agents = new ArrayList<AgentFull>();
