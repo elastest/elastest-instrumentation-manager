@@ -41,7 +41,7 @@ public class EimApiRestTest {
 	private String sut_address = System.getenv("ET_SUT_HOST");
 	//public static JsonElement agentID ;
 	
-	public static ThreadLocal<JsonElement> agentID = new ThreadLocal<JsonElement>();
+	public static ThreadLocal<String> agentID = new ThreadLocal<String>();
 	
 	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";
 	
@@ -84,7 +84,9 @@ public class EimApiRestTest {
 		
 		JsonParser parser = new JsonParser();
 		JsonObject json = (JsonObject) parser.parse(body);
-		agentID.set(json.get("agentId"));
+		
+		agentID.set(json.get("agentId").getAsString());
+		
 		
 		System.out.println("AgentID:" +agentID.get());
 		
