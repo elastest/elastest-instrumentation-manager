@@ -84,7 +84,7 @@ public class EimApiRestTest {
 		
 		JsonParser parser = new JsonParser();
 		JsonObject json = (JsonObject) parser.parse(body);
-		agentID.set(json.get("agentId"));
+		agentID.set(json.get("agentId").getAsJsonObject());
 		
 		System.out.println("AgentID:" +agentID);
 		
