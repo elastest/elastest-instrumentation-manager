@@ -39,7 +39,7 @@ import com.google.gson.JsonParser;
 public class EimApiRestTest {
 
 	private String sut_address = System.getenv("ET_SUT_HOST");
-	public JsonElement agentID ;
+	public static JsonElement agentID ;
 	
 	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";
 	
