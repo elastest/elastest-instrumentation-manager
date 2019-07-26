@@ -41,7 +41,7 @@ public class EimApiRestTest {
 	private String sut_address = System.getenv("ET_SUT_HOST");
 	//public static JsonElement agentID ;
 	
-	private static ThreadLocal<JsonElement> agentID = new ThreadLocal<JsonElement>();
+	public static ThreadLocal<JsonElement> agentID = new ThreadLocal<JsonElement>();
 	
 	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";
 	
@@ -102,7 +102,7 @@ public class EimApiRestTest {
 	 @Test
 	 public void b_Test() throws InterruptedException {
 		 
-		String uri_packetloss_action = "controllability/"+agentID.get()+"/packetloss";
+		String uri_packetloss_action = "controllability/"+agentID.get().getAsString()+"/packetloss";
 		String URL = server + uri_packetloss_action;
 		 
 		JsonObject obj = new JsonObject();
@@ -135,7 +135,7 @@ public class EimApiRestTest {
 	 @Test
 	 public void c_Test() throws InterruptedException {
 		 
-		String uri_packetloss_action = "controllability/"+agentID.get()+"/packetloss";
+		String uri_packetloss_action = "controllability/"+agentID.get().getAsString()+"/packetloss";
 		String URL = server + uri_packetloss_action;
 		 
 		JsonObject obj = new JsonObject();
@@ -167,7 +167,7 @@ public class EimApiRestTest {
 	
 	 @Test
 	 public void d_Test() throws InterruptedException {
-		String uri_unistall_agent = agentID.get()+"/unmonitor"; 
+		String uri_unistall_agent = agentID.get().getAsString()+"/unmonitor"; 
 		TimeUnit.SECONDS.sleep(160);
 		 
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -194,7 +194,7 @@ public class EimApiRestTest {
 		 headers.setContentType(MediaType.APPLICATION_JSON);
 		 headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		 
-		 String URL = server+agentID.get();
+		 String URL = server+agentID.get().getAsString();
 		 
 		 HttpEntity<String> request = new HttpEntity<String>("", headers);
 		 ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
