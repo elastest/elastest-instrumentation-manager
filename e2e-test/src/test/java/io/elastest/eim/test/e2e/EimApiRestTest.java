@@ -41,7 +41,7 @@ public class EimApiRestTest {
 	private String sut_address = System.getenv("ET_SUT_HOST");
 	//public static JsonElement agentID ;
 	
-	public static ThreadLocal<JsonElement> agentID = new ThreadLocal<JsonElement>();
+	public static ThreadLocal<String> agentID = new ThreadLocal<String>();
 	
 	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";
 	
@@ -84,7 +84,7 @@ public class EimApiRestTest {
 		
 		JsonParser parser = new JsonParser();
 		JsonObject json = (JsonObject) parser.parse(body);
-		agentID.set(json.get("agentId").getAsJsonObject());
+		agentID.set(json.get("agentId").toString());
 		
 		System.out.println("AgentID:" +agentID);
 		
@@ -102,7 +102,7 @@ public class EimApiRestTest {
 	 @Test
 	 public void b_Test() throws InterruptedException {
 		 
-		String uri_packetloss_action = "controllability/"+agentID.get().getAsString()+"/packetloss";
+		String uri_packetloss_action = "controllability/"+agentID.get().toString()+"/packetloss";
 		String URL = server + uri_packetloss_action;
 		 
 		JsonObject obj = new JsonObject();
@@ -135,7 +135,7 @@ public class EimApiRestTest {
 	 @Test
 	 public void c_Test() throws InterruptedException {
 		 
-		String uri_packetloss_action = "controllability/"+agentID.get().getAsString()+"/packetloss";
+		String uri_packetloss_action = "controllability/"+agentID.get().toString()+"/packetloss";
 		String URL = server + uri_packetloss_action;
 		 
 		JsonObject obj = new JsonObject();
@@ -167,7 +167,7 @@ public class EimApiRestTest {
 	
 	 @Test
 	 public void d_Test() throws InterruptedException {
-		String uri_unistall_agent = agentID.get().getAsString()+"/unmonitor"; 
+		String uri_unistall_agent = agentID.get().toString()+"/unmonitor"; 
 		TimeUnit.SECONDS.sleep(160);
 		 
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -194,7 +194,7 @@ public class EimApiRestTest {
 		 headers.setContentType(MediaType.APPLICATION_JSON);
 		 headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		 
-		 String URL = server+agentID.get().getAsString();
+		 String URL = server+agentID.get().toString();
 		 
 		 HttpEntity<String> request = new HttpEntity<String>("", headers);
 		 ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
