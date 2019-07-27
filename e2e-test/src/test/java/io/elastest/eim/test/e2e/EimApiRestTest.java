@@ -39,11 +39,12 @@ import com.google.gson.JsonParser;
 public class EimApiRestTest {
 
 	private String sut_address = System.getenv("ET_SUT_HOST");
-	//public static JsonElement agentID ;
 	
 	public static ThreadLocal<String> agentID = new ThreadLocal<String>();
 	
 	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";
+
+	//private String server = "http://localhost:8080/eim/api/agent/";
 	
 	
 	public RestTemplate restTemplate = new RestTemplate();
@@ -137,14 +138,14 @@ public class EimApiRestTest {
 	 @Test
 	 public void c_Test() throws InterruptedException {
 		 
-		String uri_packetloss_action = "controllability/"+agentID.get()+"/packetloss";
+		String uri_packetloss_action = "controllability/"+agentID.get()+"/stress";
 		String URL = server + uri_packetloss_action;
 		 
 		JsonObject obj = new JsonObject();
 		obj.addProperty("exec", "EXECBEAT");
 		obj.addProperty("component", "EIM");
 		obj.addProperty("packetLoss", "");
-		obj.addProperty("stressNg", "4");
+		obj.addProperty("stressNg", "1");
 		obj.addProperty("dockerized", "yes");
 		obj.addProperty("cronExpression", "@every 60s");
 		
@@ -153,7 +154,7 @@ public class EimApiRestTest {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		
-
+		TimeUnit.SECONDS.sleep(160);
 		HttpEntity<String> request = new HttpEntity<String>(
 				obj.toString(), headers);
 		
@@ -161,7 +162,7 @@ public class EimApiRestTest {
 		System.out.println("############ Response for Test3: ############");
 		System.out.println(response);
 		
-		TimeUnit.SECONDS.sleep(160); 
+
 		
 		Assertions.assertEquals(200, response.getStatusCode().value());
 	  
@@ -170,7 +171,7 @@ public class EimApiRestTest {
 	 @Test
 	 public void d_Test() throws InterruptedException {
 		String uri_unistall_agent = agentID.get()+"/unmonitor"; 
-		TimeUnit.SECONDS.sleep(160);
+
 		 
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -182,7 +183,7 @@ public class EimApiRestTest {
 		
 		System.out.println("############ Response for Test4: ############");
 		System.out.println(response);
-		
+		TimeUnit.SECONDS.sleep(160);
 		
 		Assertions.assertEquals(200, response.getStatusCode().value());
  
