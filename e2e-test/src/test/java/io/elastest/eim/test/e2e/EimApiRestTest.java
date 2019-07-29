@@ -94,8 +94,6 @@ public class EimApiRestTest {
 		System.out.println("############ Response for Test1: ############");
 		System.out.println(response);
 		
-		TimeUnit.SECONDS.sleep(160); 
-
 		
 		Assertions.assertEquals(200, response.getStatusCode().value());
 		
@@ -121,7 +119,7 @@ public class EimApiRestTest {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		
-
+		
 		HttpEntity<String> request = new HttpEntity<String>(
 				obj.toString(), headers);
 		
@@ -129,7 +127,6 @@ public class EimApiRestTest {
 		System.out.println("############ Response for Test2: ############");
 		System.out.println(response);
 
-		TimeUnit.SECONDS.sleep(160); 
 		
 		Assertions.assertEquals(200, response.getStatusCode().value());
 	  
@@ -154,15 +151,14 @@ public class EimApiRestTest {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		
-		TimeUnit.SECONDS.sleep(160);
+		TimeUnit.SECONDS.sleep(480);
+
 		HttpEntity<String> request = new HttpEntity<String>(
 				obj.toString(), headers);
 		
 		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
 		System.out.println("############ Response for Test3: ############");
 		System.out.println(response);
-		
-
 		
 		Assertions.assertEquals(200, response.getStatusCode().value());
 	  
@@ -177,13 +173,13 @@ public class EimApiRestTest {
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		 
 		String URL = server +  uri_unistall_agent;
-		 
+		TimeUnit.SECONDS.sleep(480);
+
 		HttpEntity<String> request = new HttpEntity<String>("", headers);
 		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
 		
 		System.out.println("############ Response for Test4: ############");
 		System.out.println(response);
-		TimeUnit.SECONDS.sleep(160);
 		
 		Assertions.assertEquals(200, response.getStatusCode().value());
  
@@ -192,13 +188,12 @@ public class EimApiRestTest {
 	 @Test
 	 public void e_Test() throws InterruptedException {
 		 
-		 TimeUnit.SECONDS.sleep(160);
 		 
 		 headers.setContentType(MediaType.APPLICATION_JSON);
 		 headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		 
 		 String URL = server+agentID.get();
-		 
+
 		 HttpEntity<String> request = new HttpEntity<String>("", headers);
 		 ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
 		 
