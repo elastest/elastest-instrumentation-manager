@@ -39,6 +39,8 @@ import com.google.gson.JsonParser;
 public class EimApiRestTest {
 
 	private String sut_address = System.getenv("ET_SUT_HOST");
+	private String logstash_ip = System.getenv("ET_MON_LSBEATS_HOST");
+	private String logstash_port = System.getenv("ET_MON_LSBEATS_PORT");
 	
 	public static ThreadLocal<String> agentID = new ThreadLocal<String>();
 	
@@ -63,8 +65,8 @@ public class EimApiRestTest {
 		obj.addProperty("address", new String(sut_address));
 		obj.addProperty("user", "root");
 		obj.addProperty("private_key", new String(privateKey));
-		obj.addProperty("logstash_ip", "172.20.0.4");
-		obj.addProperty("logstash_port", "5044");
+		obj.addProperty("logstash_ip", logstash_ip);
+		obj.addProperty("logstash_port", logstash_port);
 		obj.addProperty("password", "elastest");
 		
 		System.out.println("Payload: "+obj.toString());
