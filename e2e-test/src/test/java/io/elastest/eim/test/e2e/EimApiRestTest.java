@@ -173,7 +173,8 @@ public class EimApiRestTest {
 		String URL = server +  uri_unistall_agent;
 
 		HttpEntity<String> request = new HttpEntity<String>("", headers);
-		
+		TimeUnit.SECONDS.sleep(500);
+
 		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
 		
 		System.out.println("############ Response for Test4: ############");
@@ -194,7 +195,8 @@ public class EimApiRestTest {
 		 String URL = server+agentId;
 		 		 
 		 HttpEntity<String> request = new HttpEntity<String>("", headers);
-		
+		 TimeUnit.SECONDS.sleep(500);
+
 		 ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
 		 
 		 System.out.println("############ Response for Test5: ############");
