@@ -66,7 +66,9 @@ public class EimApiRestTest {
 		JsonParser parser = new JsonParser();
 		JsonObject json = (JsonObject) parser.parse(body);
 		
-		agentIDs.add(json.get("agentId").getAsString());
+		
+		String aux = json.get("agentId").getAsString().toString();
+		agentIDs.add(aux);
 		
 		System.out.println("AgentIDs in list: "+agentIDs);
 
@@ -113,9 +115,8 @@ public class EimApiRestTest {
 	 @Test
 	 public void b_Test() throws InterruptedException {
 		System.out.println("############ Running Test2: ############");
-		List<String> agentID = getAgentID();
 				
-		String uri_packetloss_action = "controllability/"+agentID.get(0)+"/packetloss";
+		String uri_packetloss_action = "controllability/"+agentIDs.get(0)+"/packetloss";
 		String URL = server + uri_packetloss_action;
 		
 		
@@ -147,9 +148,8 @@ public class EimApiRestTest {
 	 @Test
 	 public void c_Test() throws InterruptedException {
 		System.out.println("############ Running Test3: ############");
-		List<String> agentsID = getAgentID();
 		
-		String uri_packetloss_action = "controllability/"+agentsID.get(0)+"/stress";
+		String uri_packetloss_action = "controllability/"+agentIDs.get(0)+"/stress";
 		String URL = server + uri_packetloss_action;
 		 
 		JsonObject obj = new JsonObject();
@@ -181,9 +181,8 @@ public class EimApiRestTest {
 	 @Test
 	 public void d_Test() throws InterruptedException {
 		System.out.println("############ Running Test4: ############");
-		List<String> agentsID = getAgentID();
 
-		String uri_unistall_agent = agentsID.get(0)+"/unmonitor"; 
+		String uri_unistall_agent = agentIDs.get(0)+"/unmonitor"; 
 
 		 
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -206,12 +205,11 @@ public class EimApiRestTest {
 	 public void e_Test() throws InterruptedException {
 		 
 		 System.out.println("############ Running Test5: ############");
-		 List<String> agentsID = getAgentID();
 		 
 		 headers.setContentType(MediaType.APPLICATION_JSON);
 		 headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		 
-		 String URL = server+agentsID.get(0);
+		 String URL = server+agentIDs.get(0);
 		 
 		 agentIDs.clear();
 		 
