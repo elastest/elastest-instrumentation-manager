@@ -62,7 +62,7 @@ public class EimApiRestTest {
 		
 		JsonObject obj = new JsonObject();
 		obj.addProperty("address", new String(sut_address));
-		obj.addProperty("user", "root");
+		obj.addProperty("user", "elastest");
 		obj.addProperty("private_key", new String(privateKey));
 		obj.addProperty("logstash_ip", logstash_ip);
 		obj.addProperty("logstash_port", logstash_port);
