@@ -204,7 +204,7 @@ public class EimApiRestTest {
 		 
          Assertions.assertEquals(200, response.getStatusCode().value());
          
-         
+         agentId = "";
          
 	 }
 
