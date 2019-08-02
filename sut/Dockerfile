@@ -13,7 +13,7 @@ LABEL version=$VERSION
 RUN \
     apt-get update && \
     apt-get install sudo && \
-    apt-get install python && \
+    apt-get -y install python && \
     apt-get -y install apt-transport-https && \
     apt-get -y install openssh-server && \
     apt-get -y install vim && \
