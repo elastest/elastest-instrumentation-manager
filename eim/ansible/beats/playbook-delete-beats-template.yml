@@ -54,12 +54,13 @@
     shell: sudo iptables --list --line-numbers | sed '/^num\|^$\|^Chain/d' | wc -l
     register: iptables_list_numbers
 
-#  - name: Check if iptables rules exists
-#    shell: sudo iptables -C {{ item }}
-#    loop:
-#      - "##item##"
-#    when: iptables_list_numbers!= "0"
-#    register: iptables_lists_exists
+  - name: Check if iptables rules exists
+    shell: sudo iptables -C {{ item }}
+    loop:
+      - "##item##"
+    when: iptables_list_numbers!= "0"
+    register: iptables_lists_exists
+    ignore_errors: yes
 
   - set_fact:
       iptables_list_numbers="{{ iptables_list_numbers.stdout | int }}"
