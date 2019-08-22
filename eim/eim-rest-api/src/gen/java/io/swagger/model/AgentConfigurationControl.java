@@ -150,7 +150,7 @@ public AgentConfigurationControl exec(String exec) {
    * @return stressNg
    **/
   @JsonProperty("stressNg")
-  @ApiModelProperty(example = "stress-ng --cpu \"+stressNg+\" --vm 2 --hdd 1 --fork 8 --switch 4 --timeout 5m --metrics-brief", value = "")
+  @ApiModelProperty(example = "stress-ng --cpu \"+stressNg+\" --vm 2 --hdd 1 --fork 8 --switch 4 --timeout 30s --metrics-brief", value = "")
   @NotNull
   public String getStressNg() {
 	  String stressNgvalue = "";
@@ -159,7 +159,7 @@ public AgentConfigurationControl exec(String exec) {
 		  return stressNgvalue;
 	  }
 	  
-	  return "--cpu "+stressNg+" --vm 2 --hdd 1 --fork 8 --switch 4 --timeout 5m --metrics-brief";
+	  return "--cpu "+stressNg+" --cpu-method all --timeout 30s --metrics-brief";
   }
   
   public void setStressNg (String stressNg) {
