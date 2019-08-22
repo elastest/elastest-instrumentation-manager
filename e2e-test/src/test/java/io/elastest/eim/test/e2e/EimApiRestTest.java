@@ -115,13 +115,14 @@ public class EimApiRestTest {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		
-		
 		HttpEntity<String> request = new HttpEntity<String>(
 				obj.toString(), headers);
 		
 		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
 		System.out.println("############ Response for Test2: ############");
 		System.out.println(response);
+		
+		TimeUnit.SECONDS.sleep(120);;
 
 		Assertions.assertEquals(200, response.getStatusCode().value());
 	  
@@ -154,6 +155,8 @@ public class EimApiRestTest {
 		System.out.println("############ Response for Test3: ############");
 		System.out.println(response);
 		
+		TimeUnit.SECONDS.sleep(120);
+
 		Assertions.assertEquals(200, response.getStatusCode().value());
 	  
 	 }
@@ -171,13 +174,13 @@ public class EimApiRestTest {
 		String URL = server +  uri_unistall_agent;
 
 		HttpEntity<String> request = new HttpEntity<String>("", headers);
-		TimeUnit.SECONDS.sleep(180);
 
 		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
 		
 		System.out.println("############ Response for Test4: ############");
 		System.out.println(response);
-		
+		TimeUnit.SECONDS.sleep(180);
+
 		Assertions.assertEquals(200, response.getStatusCode().value());
  
 	 }
