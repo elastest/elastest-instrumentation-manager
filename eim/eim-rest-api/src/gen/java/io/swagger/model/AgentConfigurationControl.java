@@ -160,6 +160,8 @@ public AgentConfigurationControl exec(String exec) {
 	  }
 	  
 	  return "--cpu "+stressNg+" --cpu-method all --timeout 30s --metrics-brief";
+	  
+	  
   }
   
   public void setStressNg (String stressNg) {
