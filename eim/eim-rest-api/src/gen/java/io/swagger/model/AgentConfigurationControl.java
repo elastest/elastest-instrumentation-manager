@@ -19,8 +19,6 @@
 
 package io.swagger.model;
 
-import java.util.Objects;
-
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -160,7 +158,6 @@ public AgentConfigurationControl exec(String exec) {
 	  }
 	  
 	  return "--cpu "+stressNg+" --cpu-method all --timeout 30s --metrics-brief";
-	  
 	  
   }
   
