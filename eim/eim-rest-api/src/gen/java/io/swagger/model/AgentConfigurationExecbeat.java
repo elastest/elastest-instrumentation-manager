@@ -36,7 +36,7 @@ public class AgentConfigurationExecbeat {
 	  * @return stressNg
 	**/
 	 @JsonProperty("stressNg")
-	  @ApiModelProperty(example = "stress-ng --cpu 4 --vm 2 --hdd 1 --fork 8 --switch 4 --timeout 5m --metrics-brief", value = "")
+	  @ApiModelProperty(example = "stress-ng --cpu 4 --vm 2 --hdd 1 --fork 8 --switch 4 --timeout 30s --metrics-brief", value = "")
 	  @NotNull
 	  public String getStressNg() {
 		  return stressNg;
