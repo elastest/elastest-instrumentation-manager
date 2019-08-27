@@ -16,10 +16,10 @@ node('docker') {
                         sh 'cd ./eim/eim-rest-api; mvn clean package -DskipTests;'
 
                 
-               stage "Build EIM SuT image - Package"
+               stage "Build EIM SuT image Tester - Package"
                         echo ("building sut..")
                         //def sut_image = docker.build("elastest/eim-sut:latest","./sut")
-                        sh 'cd sut; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-sut:latest'
+                        sh 'cd sut1; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-sut-tester:latest'
                         def sut_image = docker.image('elastest/eim-sut-tester:latest')
 
                 stage "Execute docker compose"
