@@ -1,0 +1,42 @@
+node('docker') {
+    stage "Container Prep"
+        echo("The node is up")
+        def mycontainer = docker.image('elastest/ci-docker-compose-py-siblings:latest')
+        mycontainer.pull()
+        mycontainer.inside("-u jenkins -v /var/run/docker.sock:/var/run/docker.sock:rw") {
+
+                git 'https://github.com/elastest/elastest-instrumentation-manager'
+
+                stage "Tests"
+                        echo ("Starting tests")
+                        echo ("(No tests yet)")
+
+                stage "Build eim-rest-api"
+                        echo ("Build eim-rest-api")
+                        sh 'cd ./eim/eim-rest-api; mvn clean package -DskipTests;'
+
+                
+               stage "Build EIM SuT image - Package"
+                        echo ("building sut..")
+                        //def sut_image = docker.build("elastest/eim-sut:latest","./sut")
+                        sh 'cd sut; docker build --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg COMMIT_DATE=$(git log -1 --format=%cd --date=format:%Y-%m-%dT%H:%M:%S) . -t elastest/eim-sut:latest'
+                        def sut_image = docker.image('elastest/eim-sut-tester:latest')
+
+                stage "Execute docker compose"
+                        echo ("running docker compose..")
+                        //sh 'docker-compose -f deploy/docker-compose.yml up -d --build'
+                        sh 'docker-compose -f docker-compose-standalone.yml up -d --build'
+
+            stage "Publish"
+                echo ("Publishing")
+                withCredentials([[
+                        $class: 'UsernamePasswordMultiBinding', 
+                        credentialsId: 'elastestci-dockerhub',
+                        usernameVariable: 'USERNAME', 
+                        passwordVariable: 'PASSWORD']]) {
+                                sh 'docker login -u "$USERNAME" -p "$PASSWORD"'
+                                sut_image.push()
+                               
+                        }   
+            }
+}
