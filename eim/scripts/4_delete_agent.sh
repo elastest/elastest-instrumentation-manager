@@ -1,4 +1,4 @@
 #!/bin/bash
 
 
-curl -i -X DELETE -H "Content-Type:application/json" -H "Accept:application/json" http://localhost:8080/eim/api/agent/iagent0
+curl -i -X DELETE -H "Content-Type:application/json" -H "Accept:application/json" http://nightly.elastest.io:37004/eim/api/agent/iagent0
