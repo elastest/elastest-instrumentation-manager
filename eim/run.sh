@@ -7,8 +7,8 @@ cp /usr/share/zoneinfo/$HOST_TIMEZONE /etc/localtime
 
 echo $HOST_TIMEZONE >  /etc/timezone
 
-while  ! nc -z eim-mysql 3306 ; do
-    echo "MySQL server is not ready in address 'emi_mysql' and port 3306"
+while ! nc -z edm-mysql 3306 ; do
+    echo "MySQL server is not ready in address 'edm_mysql' and port 3306"
     sleep 2
 done
 
