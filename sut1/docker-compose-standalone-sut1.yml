@@ -1,0 +1,99 @@
+version: '2'
+
+services:
+        edm-mysql:
+                #image: elastest/eim-elasticsearch:0.9.0
+                image: elastest/edm-mysql:latest
+                #expose: 
+                #        - 3306
+                # environment:
+                #        - ET_EIM_SERVER=172.21.0.7
+                ports: 
+                        - "3306:3306"
+                #        - "52000:3306"
+                hostname: edm-mysql 
+                stdin_open: true
+                tty: true
+                networks:
+                        - elastest
+        elasticsearch:
+                #image: elastest/eim-elasticsearch:0.9.0
+                image: elastest/eim-elasticsearch:latest
+                ports:
+                        - "9200:9200"
+                        - "9300:9300"
+                depends_on:
+                        - edm-mysql
+                hostname: elasticsearch
+                networks:
+                        - elastest
+        logstash:
+                #image: elastest/eim-logstash:0.9.0
+                image: elastest/eim-logstash:latest
+                ports:
+                        - "5044:5044"
+                depends_on: 
+                        - elasticsearch
+                links:
+                        - elasticsearch
+                hostname: logstash
+                networks:
+                        - elastest
+
+        kibana:
+                #image: elastest/eim-kibana:0.9.0
+                image: elastest/eim-kibana:latest
+                ports: 
+                        - "5601:5601"
+                depends_on:
+                        - logstash
+                links:
+                        - elasticsearch
+                hostname: kibana
+                networks:
+                        - elastest
+
+        sut:
+                #image: elastest/eim-sut:0.9.0
+                image: elastest/eim-sut-tester:latest
+                #image: dev/sut-v3
+#                volumes:
+#                        - static-content:/tmp/ssh
+                depends_on:
+                        - kibana
+                stdin_open: true
+                tty: true
+                #hostname: sut
+                networks:
+                        - elastest
+
+        eim:
+                #image: elastest/eim:0.9.0
+                image: elastest/eim:latest              
+                # volumes:
+                #       - static-content:/tmp/ssh 
+                depends_on:
+                        - sut
+                        - edm-mysql
+                links:
+                        - edm-mysql
+                stdin_open: true
+                tty: true
+                environment:
+                        - ET_EDM_MYSQL_HOST=edm-mysql
+                        - ET_EDM_MYSQL_PORT=3306
+                expose:
+                        - 8080
+                ports:
+                        - "8080:8080" 
+                #hostname: eim
+                networks:
+                        - elastest
+
+#volumes:
+#        static-content:
+
+networks:
+        elastest:
+                # external: true
+                driver: bridge
