@@ -99,7 +99,7 @@ public class PacketLossTests {
 	 @Test
 	 public void c_Test() throws InterruptedException {
 		System.out.println("############ Running Test3 TCP 0.25%: ############");
-		System.out.println("Sent a command: iptables -A INPUT -m statistic --mode random --probability 0.50 -j DROP");
+		System.out.println("Inyection: Iptables -A INPUT -m statistic --mode random --probability 0.25 -j DROP");
 
 		String uri_packetloss_action = "controllability/"+agentId+"/packetloss";
 		String URL = server + uri_packetloss_action;
@@ -133,7 +133,7 @@ public class PacketLossTests {
 	 
 	 @Test
 	 public void d_Test() throws InterruptedException, IOException{
-			System.out.println("############ Running Test4: Timing for [0.25% packetloss]: ############");
+			System.out.println("############ Running Test4: Timing for [0.25% packetloss] Max.timing 5ms: ############");
 			long start = System.nanoTime();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -145,16 +145,16 @@ public class PacketLossTests {
 			
 			EntityUtils.consume((org.apache.http.HttpEntity) response);
 			long elapsedTime = System.nanoTime() - start ;
-			System.out.println("Timing of http request:" + elapsedTime);
-			System.out.println("Tester timing: 5000 miliseconds");
+			System.out.println("Timing of http request nanoseconds" + elapsedTime);
+			System.out.println("Timing of http request seconds:" + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS));
+			
 			
 			// 1 second  = 1_000ms
 			TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS);
 			double elapesedTimeInMiliSeconds = (elapsedTime / 1000);
 			
-			Assertions.assertTrue(elapesedTimeInMiliSeconds <= 5000.0, "Pass using 0.25% tcp packet loss" );
+			Assertions.assertTrue(elapesedTimeInMiliSeconds <= 5000.0, "Max Timing is 5ms. Reported: " +elapesedTimeInMiliSeconds+" miliseconds" );
 			
-
 		}
 	 
 	
