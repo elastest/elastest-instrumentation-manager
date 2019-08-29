@@ -134,7 +134,7 @@ public class PacketLossTests25 {
 	 
 	 @Test
 	 public void d_Test() throws InterruptedException, IOException{
-			System.out.println("############ Running Test4: Timing for [0.25% packetloss] Max.timing 1ms: ############");
+			System.out.println("############ Running Test4: Timing for [0.25% packetloss] Max.timing 100ms: ############");
 			long start = System.nanoTime();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -154,7 +154,7 @@ public class PacketLossTests25 {
 			TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS);
 			double elapesedTimeInMiliSeconds = (elapsedTime / 1000);
 			
-			Assertions.assertTrue(elapesedTimeInMiliSeconds <= 1000.0, "Max Timing is 1ms. Reported: " +elapesedTimeInMiliSeconds+" miliseconds" );
+			Assertions.assertTrue(elapesedTimeInMiliSeconds <= 100.0, "Max Timing is 1ms. Reported: " +elapesedTimeInMiliSeconds+" miliseconds" );
 			
 		}
 	 
