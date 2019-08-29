@@ -158,7 +158,7 @@ public class PacketLossTests50 {
 	
 	 @Test
 	 public void e_Test() throws InterruptedException {
-		System.out.println("############ Running Test4: ############");
+		System.out.println("############ Running Test5: ############");
 
 		String uri_unistall_agent = agentId+"/unmonitor"; 
 
@@ -172,7 +172,7 @@ public class PacketLossTests50 {
 
 		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
 		
-		System.out.println("############ Response for Test4: ############");
+		System.out.println("############ Response for Test5: ############");
 		System.out.println(response);
 		//TimeUnit.SECONDS.sleep(180);
 
@@ -183,7 +183,7 @@ public class PacketLossTests50 {
 	 @Test
 	 public void f_Test() throws InterruptedException {
 		 
-		 System.out.println("############ Running Test5: ############");
+		 System.out.println("############ Running Test6: ############");
 
 		 headers.setContentType(MediaType.APPLICATION_JSON);
 		 headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -195,7 +195,7 @@ public class PacketLossTests50 {
 
 		 ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
 		 
-		 System.out.println("############ Response for Test5: ############");
+		 System.out.println("############ Response for Test6: ############");
 		 System.out.println(response);
 		 
          Assertions.assertEquals(200, response.getStatusCode().value());
