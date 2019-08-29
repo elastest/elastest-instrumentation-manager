@@ -87,7 +87,6 @@ public class PacketLossTests75 {
 		ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
 		System.out.println(response);
 		
-		EntityUtils.consume((org.apache.http.HttpEntity) response);
 		long elapsedTime = System.nanoTime() - start ;
 		System.out.println("Timing of http request nanoseconds" + elapsedTime);
 		
@@ -144,7 +143,6 @@ public class PacketLossTests75 {
 			ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
 			System.out.println(response);
 			
-			EntityUtils.consume((org.apache.http.HttpEntity) response);
 			long elapsedTime = System.nanoTime() - start ;
 			System.out.println("Timing of http request nanoseconds" + elapsedTime);
 			System.out.println("Timing of http request seconds:" + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS));
@@ -153,7 +151,7 @@ public class PacketLossTests75 {
 			// 1 second  = 1_000ms
 			TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS);
 			double elapesedTimeInMiliSeconds = (elapsedTime / 1000);
-			
+			System.out.println("Max Timing is 1ms. Reported:" +elapesedTimeInMiliSeconds+" miliseconds" );
 			Assertions.assertTrue(elapesedTimeInMiliSeconds <= 100.0, "Max Timing is 1ms. Reported: " +elapesedTimeInMiliSeconds+" miliseconds" );
 			
 		}

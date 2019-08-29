@@ -144,7 +144,6 @@ public class PacketLossTests25 {
 			ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
 			System.out.println(response);
 			
-			EntityUtils.consume((org.apache.http.HttpEntity) response);
 			long elapsedTime = System.nanoTime() - start ;
 			System.out.println("Timing of http request nanoseconds" + elapsedTime);
 			System.out.println("Timing of http request seconds:" + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS));
