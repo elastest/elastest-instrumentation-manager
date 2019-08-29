@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class PacketLossTest75 {
+public class PacketLossTests75 {
 
 	private String sut_address = System.getenv("ET_SUT_HOST");
 	private String logstash_ip = System.getenv("ET_MON_LSBEATS_HOST");
