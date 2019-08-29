@@ -97,7 +97,7 @@ public class EimTJobPacketLoss extends EimBaseTest {
 				String commands = "git clone https://github.com/elastest/elastest-instrumentation-manager.git; "
 						+ "cd elastest-instrumentation-manager/e2e-test/; "
 						+ "mvn package -DskipTests=true;"
-						+ "mvn test -Dtest=PacketLossTests25,PacketLossTests50,PacketLossTests75 ;"
+						+ "mvn test -Dtest=io.elastest.eim.test.e2e.PacketLossTests*;"
 						+ "exit";
 				
 				System.out.println("Commands: "+commands);
