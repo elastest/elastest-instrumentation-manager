@@ -69,7 +69,7 @@ public class EimTJobPacketLoss extends EimBaseTest {
 				// Create SuT
 				//String sutDesc = "SuT for E2E test";
 				//String sutImage = "elastest/eim-sut:latest";
-				String commands = "docker pull elastest/eim-sut-tester:latest; docker run --rm --cap-add=NET_ADMIN --name $ET_SUT_CONTAINER_NAME elastest/eim-sut-tester:latest";
+				String commands = "docker pull elastest/eim-sut-tester:latest; docker run --rm --cap-add=NET_ADMIN -d -p 5000:5000 --name $ET_SUT_CONTAINER_NAME elastest/eim-sut-tester:latest";
 				SutCommandsOptionEnum option  = SutCommandsOptionEnum.IN_NEW_CONTAINER;
 				String desc = "SuT for E2E packetloss test";
 				String image = "elastest/test-etm-alpinedockerjava";
