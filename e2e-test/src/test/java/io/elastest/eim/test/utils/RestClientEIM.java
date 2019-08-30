@@ -1,7 +1,5 @@
 package io.elastest.eim.test.utils;
 
-import org.springframework.http.ResponseEntity;
-
 public class RestClientEIM {
 	
 	// To do SDK
