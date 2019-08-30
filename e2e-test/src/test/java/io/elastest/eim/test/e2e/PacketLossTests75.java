@@ -167,7 +167,6 @@ public class PacketLossTests75 {
 				TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS);
 				elapesedTimeInMiliSeconds = (elapsedTime / 1000);
 				
-				throw new Exception("Server request timeout latency >100");
 				
 			}catch (Exception e) {
 				// TODO: handle exception
