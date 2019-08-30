@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.http.util.EntityUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
