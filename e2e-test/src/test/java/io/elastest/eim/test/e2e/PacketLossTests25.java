@@ -52,27 +52,30 @@ public class PacketLossTests25 {
 		System.out.println("Payload: "+obj.toString());
 		
 		String URL = server;
-		
+		String body = "";
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		ResponseEntity<String> response = null;
 		
-		HttpEntity<String> request = new HttpEntity<String>(obj.toString(), headers);
-		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
-		
-		
-		String body = response.getBody();
-		JsonParser parser = new JsonParser();
-		JsonObject json = (JsonObject) parser.parse(body);
-		
-		agentId = json.get("agentId").getAsString();
-		
-		
-		System.out.println("############ Response for Test1: ############");
-		System.out.println(response);
+		try {
+			
+			HttpEntity<String> request = new HttpEntity<String>(obj.toString(), headers);
+			response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
+			body = response.getBody();
+			JsonParser parser = new JsonParser();
+			JsonObject json = (JsonObject) parser.parse(body);
+			agentId = json.get("agentId").getAsString();
+			System.out.println("############ Response for Test1: ############");
+			System.out.println(response);
+			
+		}catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+			System.out.println(e.getCause());
+		}
 		
 		Assertions.assertEquals(200, response.getStatusCode().value());
 
-		
 	}
 	
 	@Test
@@ -81,19 +84,23 @@ public class PacketLossTests25 {
 		long start = System.nanoTime();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		ResponseEntity<String> response = null;
 		
-		HttpEntity<String> request = new HttpEntity<String>("", headers);
-		
-		ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
-		System.out.println(response);
-		
-		long elapsedTime = System.nanoTime() - start ;
-		System.out.println("Timing of http request nanoseconds" + elapsedTime);
-		
-		System.out.println("Timing of http request seconds:" + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS));
+		try {
+			HttpEntity<String> request = new HttpEntity<String>("", headers);
+			response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
+			System.out.println(response);
+			long elapsedTime = System.nanoTime() - start ;
+			System.out.println("Timing of http request nanoseconds" + elapsedTime);
+			System.out.println("Timing of http request seconds:" + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS));
+			
+		}catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+			System.out.println(e.getCause());
+		}
 		
 		Assertions.assertEquals(200, response.getStatusCode().value());
-
 	}
 
 	 @Test
@@ -114,18 +121,24 @@ public class PacketLossTests25 {
 		
 		
 		System.out.println("Payload: "+obj.toString());
-		
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		ResponseEntity<String> response = null;
 		
-		HttpEntity<String> request = new HttpEntity<String>(
-				obj.toString(), headers);
-		
-		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
-		System.out.println("############ Response for Test2: ############");
-		System.out.println(response);
-		
-		TimeUnit.SECONDS.sleep(60);
+		try {
+			HttpEntity<String> request = new HttpEntity<String>(
+					obj.toString(), headers);
+			
+			response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
+			System.out.println("############ Response for Test2: ############");
+			System.out.println(response);
+			TimeUnit.SECONDS.sleep(60);
+			
+		}catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+			System.out.println(e.getCause());
+		}
 		
 		Assertions.assertEquals(200, response.getStatusCode().value());
 			  	  
@@ -137,46 +150,52 @@ public class PacketLossTests25 {
 			long start = System.nanoTime();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+			double elapesedTimeInMiliSeconds = 0;
+			try {
+				HttpEntity<String> request = new HttpEntity<String>("", headers);
+				ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
+				System.out.println(response);
+				long elapsedTime = System.nanoTime() - start ;
+				System.out.println("Timing of http request nanoseconds" + elapsedTime);
+				System.out.println("Timing of http request seconds:" + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS));
+				// 1 second  = 1_000ms
+				TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS);
+				elapesedTimeInMiliSeconds = (elapsedTime / 1000);
+				
+				throw new Exception("Server request timeout latency >100");
+				
+			}catch (Exception e) {
+				// TODO: handle exception
+				elapesedTimeInMiliSeconds = 1_000_000;
+			}
 			
-			HttpEntity<String> request = new HttpEntity<String>("", headers);
-			
-			ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
-			System.out.println(response);
-			
-			long elapsedTime = System.nanoTime() - start ;
-			System.out.println("Timing of http request nanoseconds" + elapsedTime);
-			System.out.println("Timing of http request seconds:" + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS));
-			
-			
-			// 1 second  = 1_000ms
-			TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS);
-			double elapesedTimeInMiliSeconds = (elapsedTime / 1000);
-			
-			Assertions.assertTrue(elapesedTimeInMiliSeconds <= 100.0, "Max Timing is 1ms. Reported: " +elapesedTimeInMiliSeconds+" miliseconds" );
-			
+			Assertions.assertTrue(elapesedTimeInMiliSeconds <= 100.0, 
+					"Max Timing is 100ms. Reported time is: " +elapesedTimeInMiliSeconds+" ms" );
 		}
 	 
 	
 	 @Test
 	 public void e_Test() throws InterruptedException {
 		System.out.println("############ Running Test4: ############");
-
 		String uri_unistall_agent = agentId+"/unmonitor"; 
-
-		 
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		 
 		String URL = server +  uri_unistall_agent;
-
-		HttpEntity<String> request = new HttpEntity<String>("", headers);
-
-		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
+		ResponseEntity<String> response = null;
 		
-		System.out.println("############ Response for Test4: ############");
-		System.out.println(response);
-		//TimeUnit.SECONDS.sleep(180);
+		try {
+			HttpEntity<String> request = new HttpEntity<String>("", headers);
+			response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
+			System.out.println("############ Response for Test4: ############");
+			System.out.println(response);
+			//TimeUnit.SECONDS.sleep(180);
 
+		}catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+			System.out.println(e.getCause());
+		}
+		
 		Assertions.assertEquals(200, response.getStatusCode().value());
  
 	 }
@@ -185,19 +204,22 @@ public class PacketLossTests25 {
 	 public void f_Test() throws InterruptedException {
 		 
 		 System.out.println("############ Running Test5: ############");
-
 		 headers.setContentType(MediaType.APPLICATION_JSON);
 		 headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		 
 		 String URL = server+agentId;
-		 		 
-		 HttpEntity<String> request = new HttpEntity<String>("", headers);
-		 //TimeUnit.SECONDS.sleep(500);
-
-		 ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
-		 
-		 System.out.println("############ Response for Test5: ############");
-		 System.out.println(response);
+		 ResponseEntity<String> response = null;
+		 try {
+			 HttpEntity<String> request = new HttpEntity<String>("", headers);
+			 //TimeUnit.SECONDS.sleep(500);
+			 response= restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
+			 System.out.println("############ Response for Test5: ############");
+			 System.out.println(response);
+			 
+		 }catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+			System.out.println(e.getCause());
+		}
 		 
          Assertions.assertEquals(200, response.getStatusCode().value());
          
