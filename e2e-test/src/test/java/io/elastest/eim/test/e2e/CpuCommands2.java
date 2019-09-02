@@ -114,7 +114,7 @@ public class CpuCommands2 {
 		JsonObject obj = new JsonObject();
 		obj.addProperty("exec", "EXECBEAT");
 		obj.addProperty("component", "EIM");
-		obj.addProperty("packetLoss", "0.25");
+		obj.addProperty("packetLoss", "");
 		obj.addProperty("stressNg", "68");
 		obj.addProperty("dockerized", "yes");
 		obj.addProperty("cronExpression", "@every 60s");
