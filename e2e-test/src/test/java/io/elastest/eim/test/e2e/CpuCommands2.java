@@ -91,7 +91,7 @@ public class CpuCommands2 {
 			System.out.println(response);
 			long elapsedTime = System.nanoTime() - start ;
 			System.out.println("Timing of http request nanoseconds" + elapsedTime);
-			System.out.println("Timing of http request seconds:" + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS));
+			System.out.println("Timing of http request miliseconds:" + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS));
 			responseCode= response.getStatusCode().value();
 
 			
@@ -106,7 +106,7 @@ public class CpuCommands2 {
 	
 	@Test
 	 public void c_Test() throws InterruptedException {
-		System.out.println("############ Running a Cpu test stress with stressor=68 over 30 seconds : ############");
+		System.out.println("############ Running a test3: Cpu test stress with stressor=68 over 30 seconds : ############");
 
 		String uri_packetloss_action = "controllability/"+agentId+"/stress";
 		String URL = server + uri_packetloss_action;
@@ -130,7 +130,7 @@ public class CpuCommands2 {
 					obj.toString(), headers);
 			
 			ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
-			System.out.println("############ Response for Test2: ############");
+			System.out.println("############ Response for Test3: ############");
 			System.out.println(response);
 			TimeUnit.SECONDS.sleep(60);
 			responseCode = response.getStatusCode().value();
@@ -157,12 +157,14 @@ public class CpuCommands2 {
 			try {
 				HttpEntity<String> request = new HttpEntity<String>("", headers);
 				ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
+				System.out.println("############ Response Test 4 ############");
 				System.out.println(response);
 				long elapsedTime = System.nanoTime() - start ;
 				System.out.println("Timing of http request nanoseconds:" + elapsedTime);
 				// 1 second  = 1_000ms
 				elapesedTimeInMiliSeconds = TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS);
-				
+				System.out.println("Timing of http request miliseconds:" + elapesedTimeInMiliSeconds);
+
 								
 			}catch (Exception e) {
 				// TODO: handle exception
@@ -175,7 +177,7 @@ public class CpuCommands2 {
 	
 	@Test
 	 public void e_Test() throws InterruptedException {
-		System.out.println("############ Running Test4: ############");
+		System.out.println("############ Running Test5: ############");
 		String uri_unistall_agent = agentId+"/unmonitor"; 
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -185,7 +187,7 @@ public class CpuCommands2 {
 		try {
 			HttpEntity<String> request = new HttpEntity<String>("", headers);
 			ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
-			System.out.println("############ Response for Test4: ############");
+			System.out.println("############ Response for Test5: ############");
 			System.out.println(response);
 			//TimeUnit.SECONDS.sleep(180);
 			responseCode = response.getStatusCode().value();
@@ -203,7 +205,7 @@ public class CpuCommands2 {
 	 @Test
 	 public void f_Test() throws InterruptedException {
 		 
-		 System.out.println("############ Running Test5: ############");
+		 System.out.println("############ Running Test6: ############");
 		 headers.setContentType(MediaType.APPLICATION_JSON);
 		 headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		 String URL = server+agentId;
@@ -213,7 +215,7 @@ public class CpuCommands2 {
 			 HttpEntity<String> request = new HttpEntity<String>("", headers);
 			 //TimeUnit.SECONDS.sleep(500);
 			 ResponseEntity<String>response= restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
-			 System.out.println("############ Response for Test5: ############");
+			 System.out.println("############ Response for Test6: ############");
 			 System.out.println(response);
 			 responseCode = response.getStatusCode().value();
 			 
