@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class PacketLossTests50 {
+public class CpuCommands2 {
 	private String sut_address = System.getenv("ET_SUT_HOST");
 	private String logstash_ip = System.getenv("ET_MON_LSBEATS_HOST");
 	private String logstash_port = System.getenv("ET_MON_LSBEATS_PORT");
@@ -77,10 +77,9 @@ public class PacketLossTests50 {
 		Assertions.assertEquals(200, responseCode);
 
 	}
-	
 	@Test
 	public void b_Test() throws InterruptedException, IOException{
-		System.out.println("############ Running Test2: No injection packetloss rule: ############");
+		System.out.println("############ Running Test2: No injection cpu commands : ############");
 		long start = System.nanoTime();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -104,20 +103,19 @@ public class PacketLossTests50 {
 		
 		Assertions.assertEquals(200, responseCode);
 	}
-
-	 @Test
+	
+	@Test
 	 public void c_Test() throws InterruptedException {
-		System.out.println("############ Running Test3 TCP 0.50%: ############");
-		System.out.println("Inyection: Iptables -A INPUT -m statistic --mode random --probability 0.50 -j DROP");
+		System.out.println("############ Running a Cpu test stress with stressor=68 over 30 seconds : ############");
 
-		String uri_packetloss_action = "controllability/"+agentId+"/packetloss";
+		String uri_packetloss_action = "controllability/"+agentId+"/stress";
 		String URL = server + uri_packetloss_action;
 				
 		JsonObject obj = new JsonObject();
 		obj.addProperty("exec", "EXECBEAT");
 		obj.addProperty("component", "EIM");
-		obj.addProperty("packetLoss", "0.50");
-		obj.addProperty("stressNg", "");
+		obj.addProperty("packetLoss", "0.25");
+		obj.addProperty("stressNg", "68");
 		obj.addProperty("dockerized", "yes");
 		obj.addProperty("cronExpression", "@every 60s");
 		
@@ -147,10 +145,10 @@ public class PacketLossTests50 {
 		Assertions.assertEquals(200, responseCode);
 			  	  
 	 }
-	 
-	 @Test
+	
+	@Test
 	 public void d_Test() throws InterruptedException, IOException{
-			System.out.println("############ Running Test4: Timing for [0.50% packetloss] Max.timing 100ms: ############");
+			System.out.println("############ Running Test4: Timing for a [cpu stressor=3]  Max.timing 150ms: ############");
 			long start = System.nanoTime();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -166,19 +164,17 @@ public class PacketLossTests50 {
 				// 1 second  = 1_000ms
 				TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS);
 				elapesedTimeInMiliSeconds = (elapsedTime / 1000);
-				
-				
+								
 			}catch (Exception e) {
 				// TODO: handle exception
 				elapesedTimeInMiliSeconds = 1_000_000;
 			}
 			
 			Assertions.assertTrue(elapesedTimeInMiliSeconds <= 150.0, 
-					"Max Timing is 150ms. Reported time by tester is: " +elapesedTimeInMiliSeconds+" ms" );
+					"Max Timing is 150ms. Reported time  by tester is: " +elapesedTimeInMiliSeconds+" ms" );
 		}
-	 
 	
-	 @Test
+	@Test
 	 public void e_Test() throws InterruptedException {
 		System.out.println("############ Running Test4: ############");
 		String uri_unistall_agent = agentId+"/unmonitor"; 
@@ -202,7 +198,7 @@ public class PacketLossTests50 {
 		}
 		
 		Assertions.assertEquals(200, responseCode);
- 
+
 	 }
 	 
 	 @Test
@@ -228,10 +224,12 @@ public class PacketLossTests50 {
 			System.out.println(e.getCause());
 		}
 		 
-         Assertions.assertEquals(200,responseCode);
-         
-         agentId = "";
-         
+        Assertions.assertEquals(200,responseCode);
+        
+        agentId = "";
+        
 	 }
+	 
+
 
 }

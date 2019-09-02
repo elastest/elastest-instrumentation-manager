@@ -172,8 +172,8 @@ public class PacketLossTests25 {
 				elapesedTimeInMiliSeconds = 1_000_000;
 			}
 			
-			Assertions.assertTrue(elapesedTimeInMiliSeconds <= 100.0, 
-					"Max Timing is 100ms. Reported time is: " +elapesedTimeInMiliSeconds+" ms" );
+			Assertions.assertTrue(elapesedTimeInMiliSeconds <= 150.0, 
+					"Max Timing is 150ms. Reported time  by tester is: " +elapesedTimeInMiliSeconds+" ms" );
 		}
 	 
 	
