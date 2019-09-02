@@ -30,12 +30,12 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 @ExtendWith(SeleniumExtension.class)
 
 public class EimTjobCpuCommands extends EimBaseTest {
-	private String sutName = "EIM-SUT-TESTER-CPU-COMMANDS";
+	private String sutName = "CpuCommands";
 	final int timeOut  = 1300;
 	
 
 	final Logger log = getLogger(lookup().lookupClass());
-	String projectName = "EIM_e2e_tester_cpu_commands";
+	String projectName = "EIM_E2E_TESTER_CPU_COMMANDS";
 
 	private static final Map<String, List<String>> tssMap;
 	static {
@@ -67,7 +67,7 @@ public class EimTjobCpuCommands extends EimBaseTest {
 			//String sutImage = "elastest/eim-sut:latest";
 			String commands = "docker pull elastest/eim-sut-tester:latest; docker run --rm --cap-add=NET_ADMIN -d -p 5000:5000 --name $ET_SUT_CONTAINER_NAME elastest/eim-sut-tester:latest";
 			SutCommandsOptionEnum option  = SutCommandsOptionEnum.IN_NEW_CONTAINER;
-			String desc = "SuT for E2E cpu commands test";
+			String desc = "SuT to test CPU commands";
 			String image = "elastest/test-etm-alpinedockerjava";
 
 			//createNewSutDeployedByElastestWithImage(driver, sutName, sutDesc, sutImage, null, null, false);
@@ -84,7 +84,7 @@ public class EimTjobCpuCommands extends EimBaseTest {
 		// Setting up the TJob used in the test
 		this.createProjectAndSut(driver);
 		navigateToETProject(driver, projectName);
-		String tJobName = "EIM e2e tjob cpu commands";
+		String tJobName = "Tjob_CPU_COMMANDS";
 		if (!etTJobExistsIntoProject(driver, projectName, tJobName)) {
 
 			String tJobTestResultPath = "/elastest-instrumentation-manager";
