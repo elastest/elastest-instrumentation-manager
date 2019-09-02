@@ -91,7 +91,7 @@ public class CpuCommands2 {
 			System.out.println(response);
 			long elapsedTime = System.nanoTime() - start ;
 			System.out.println("Timing of http request nanoseconds" + elapsedTime);
-			System.out.println("Timing of http request seconds:" + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS));
+			System.out.println("Timing of http request seconds:" + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS));
 			responseCode= response.getStatusCode().value();
 
 			
@@ -159,10 +159,9 @@ public class CpuCommands2 {
 				ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
 				System.out.println(response);
 				long elapsedTime = System.nanoTime() - start ;
-				System.out.println("Timing of http request nanoseconds" + elapsedTime);
-				System.out.println("Timing of http request seconds:" + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS));
+				System.out.println("Timing of http request nanoseconds:" + elapsedTime);
 				// 1 second  = 1_000ms
-				elapesedTimeInMiliSeconds = TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS) / 1000.0;
+				elapesedTimeInMiliSeconds = TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS);
 				
 								
 			}catch (Exception e) {

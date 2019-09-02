@@ -92,8 +92,8 @@ public class PacketLossTests0 {
 			ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
 			System.out.println(response);
 			long elapsedTime = System.nanoTime() - start ;
-			System.out.println("Timing of http request nanoseconds" + elapsedTime);
-			System.out.println("Timing of http request seconds:" + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS));
+			
+			System.out.println("Timing of http request ms:" + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS));
 			responseCode= response.getStatusCode().value();
 
 			
@@ -151,7 +151,7 @@ public class PacketLossTests0 {
 	 
 	 @Test
 	 public void d_Test() throws InterruptedException, IOException{
-			System.out.println("############ Running Test4: Timing for [0.00% packetloss] Max.timing 100ms: ############");
+			System.out.println("############ Running Test4: Timing for [0.00% packetloss] Max.timing 150ms: ############");
 			long start = System.nanoTime();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -162,11 +162,9 @@ public class PacketLossTests0 {
 				ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
 				System.out.println(response);
 				long elapsedTime = System.nanoTime() - start ;
-				System.out.println("Timing of http request nanoseconds" + elapsedTime);
-				System.out.println("Timing of http request seconds:" + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS));
+				System.out.println("Timing of http request nanoseconds: " + elapsedTime);
 				// 1 second  = 1_000ms
-				TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS);
-				elapesedTimeInMiliSeconds = TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS) / 1000.0;
+				elapesedTimeInMiliSeconds = TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS);
 				
 				
 			}catch (Exception e) {
@@ -175,7 +173,7 @@ public class PacketLossTests0 {
 			}
 			
 			Assertions.assertTrue(elapesedTimeInMiliSeconds <= 150.0, 
-					"Max Timing is 100ms. Reported time by tester is: " +elapesedTimeInMiliSeconds+" ms" );
+					"Max Timing is 150ms. Reported time by tester is: " +elapesedTimeInMiliSeconds+" ms" );
 		}
 	 
 	

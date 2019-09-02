@@ -91,8 +91,8 @@ public class PacketLossTests25 {
 			ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
 			System.out.println(response);
 			long elapsedTime = System.nanoTime() - start ;
-			System.out.println("Timing of http request nanoseconds" + elapsedTime);
-			System.out.println("Timing of http request seconds:" + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS));
+			System.out.println("Timing of http request nanoseconds: " + elapsedTime);
+			System.out.println("Timing of http request seconds:" + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS));
 			responseCode= response.getStatusCode().value();
 
 			
@@ -160,12 +160,11 @@ public class PacketLossTests25 {
 				HttpEntity<String> request = new HttpEntity<String>("", headers);
 				ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
 				System.out.println(response);
+				
 				long elapsedTime = System.nanoTime() - start ;
-				System.out.println("Timing of http request nanoseconds" + elapsedTime);
-				System.out.println("Timing of http request seconds:" + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS));
-				// 1 second  = 1_000ms
-				TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS);
-				elapesedTimeInMiliSeconds = TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS) / 1000.0;
+				System.out.println("Timing of http request nanoseconds: " + elapsedTime);
+				
+				elapesedTimeInMiliSeconds = TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS);
 								
 			}catch (Exception e) {
 				// TODO: handle exception
