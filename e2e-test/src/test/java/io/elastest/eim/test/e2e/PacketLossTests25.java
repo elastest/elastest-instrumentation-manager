@@ -92,7 +92,7 @@ public class PacketLossTests25 {
 			System.out.println(response);
 			long elapsedTime = System.nanoTime() - start ;
 			System.out.println("Timing of http request nanoseconds: " + elapsedTime);
-			System.out.println("Timing of http request seconds:" + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS));
+			System.out.println("Timing of http request miliseconds:" + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS));
 			responseCode= response.getStatusCode().value();
 
 			
@@ -163,8 +163,10 @@ public class PacketLossTests25 {
 				
 				long elapsedTime = System.nanoTime() - start ;
 				System.out.println("Timing of http request nanoseconds: " + elapsedTime);
-				
 				elapesedTimeInMiliSeconds = TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS);
+				
+				System.out.println("Timing of http request miliseconds: " + elapesedTimeInMiliSeconds);
+
 								
 			}catch (Exception e) {
 				// TODO: handle exception
@@ -178,7 +180,7 @@ public class PacketLossTests25 {
 	
 	 @Test
 	 public void e_Test() throws InterruptedException {
-		System.out.println("############ Running Test4: ############");
+		System.out.println("############ Running Test5: ############");
 		String uri_unistall_agent = agentId+"/unmonitor"; 
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -188,7 +190,7 @@ public class PacketLossTests25 {
 		try {
 			HttpEntity<String> request = new HttpEntity<String>("", headers);
 			ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
-			System.out.println("############ Response for Test4: ############");
+			System.out.println("############ Response for Test5: ############");
 			System.out.println(response);
 			//TimeUnit.SECONDS.sleep(180);
 			responseCode = response.getStatusCode().value();
@@ -206,7 +208,7 @@ public class PacketLossTests25 {
 	 @Test
 	 public void f_Test() throws InterruptedException {
 		 
-		 System.out.println("############ Running Test5: ############");
+		 System.out.println("############ Running Test6: ############");
 		 headers.setContentType(MediaType.APPLICATION_JSON);
 		 headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		 String URL = server+agentId;
@@ -216,7 +218,7 @@ public class PacketLossTests25 {
 			 HttpEntity<String> request = new HttpEntity<String>("", headers);
 			 //TimeUnit.SECONDS.sleep(500);
 			 ResponseEntity<String>response= restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
-			 System.out.println("############ Response for Test5: ############");
+			 System.out.println("############ Response for Test6: ############");
 			 System.out.println(response);
 			 responseCode = response.getStatusCode().value();
 			 
