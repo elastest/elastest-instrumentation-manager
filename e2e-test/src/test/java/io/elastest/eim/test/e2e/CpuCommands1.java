@@ -162,8 +162,7 @@ public class CpuCommands1 {
 				System.out.println("Timing of http request nanoseconds" + elapsedTime);
 				System.out.println("Timing of http request seconds:" + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS));
 				// 1 second  = 1_000ms
-				TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS);
-				elapesedTimeInMiliSeconds = (elapsedTime / 1000);
+				elapesedTimeInMiliSeconds = TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.SECONDS) / 1000.0;
 								
 			}catch (Exception e) {
 				// TODO: handle exception
