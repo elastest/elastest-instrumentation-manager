@@ -22,11 +22,12 @@ public class PacketLossTests50 {
 	private String logstash_port = System.getenv("ET_MON_LSBEATS_PORT");
 	private String URL_API = "http://"+sut_address+":"+"5000";
 	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";	
+	private Double latency = 150.0;
 	
 	public RestTemplate restTemplate = new RestTemplate();
 	public HttpHeaders headers = new HttpHeaders();
 	
-	static String agentId;
+	static String agentId = "";
 	
 	// TODO - registerAgent_then200OK()
 	@Test
@@ -77,22 +78,21 @@ public class PacketLossTests50 {
 		Assertions.assertEquals(200, responseCode);
 
 	}
-	
 	@Test
 	public void b_Test() throws InterruptedException, IOException{
-		System.out.println("############ Running Test2: No injection packetloss rule: ############");
+		System.out.println("############ Running Test2: No injection cpu commands : ############");
 		long start = System.nanoTime();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		int responseCode = -1;
-		
+		double elapesedTimeInMiliSeconds = 0;
 		try {
 			HttpEntity<String> request = new HttpEntity<String>("", headers);
 			ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
 			System.out.println(response);
 			long elapsedTime = System.nanoTime() - start ;
-			System.out.println("Timing of http request ms:" + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS));
-			
+			elapesedTimeInMiliSeconds = TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS);
+			System.out.println("SLO latency is <= "+latency+". Actual latency is: "+elapesedTimeInMiliSeconds+" ms");
 			responseCode= response.getStatusCode().value();
 
 			
@@ -104,11 +104,10 @@ public class PacketLossTests50 {
 		
 		Assertions.assertEquals(200, responseCode);
 	}
-
-	 @Test
+	
+	@Test
 	 public void c_Test() throws InterruptedException {
-		System.out.println("############ Running Test3 TCP 0.50%: ############");
-		System.out.println("Inyection: Iptables -A INPUT -m statistic --mode random --probability 0.50 -j DROP");
+		System.out.println("############ Running test 3: Droping 0.50% packet: ############");
 
 		String uri_packetloss_action = "controllability/"+agentId+"/packetloss";
 		String URL = server + uri_packetloss_action;
@@ -147,10 +146,10 @@ public class PacketLossTests50 {
 		Assertions.assertEquals(200, responseCode);
 			  	  
 	 }
-	 
-	 @Test
+	
+	@Test
 	 public void d_Test() throws InterruptedException, IOException{
-			System.out.println("############ Running Test4: Timing for [0.50% packetloss] Max.timing 100ms: ############");
+			System.out.println("############ Running Test4: Max.timing "+latency+" ms: ############");
 			long start = System.nanoTime();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -159,25 +158,25 @@ public class PacketLossTests50 {
 			try {
 				HttpEntity<String> request = new HttpEntity<String>("", headers);
 				ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
+				System.out.println("############ Response for Test4: ############");
 				System.out.println(response);
 				long elapsedTime = System.nanoTime() - start ;
 				System.out.println("Timing of http request nanoseconds:" + elapsedTime);
 				// 1 second  = 1_000ms
 				elapesedTimeInMiliSeconds = TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS);
-				System.out.println("Timing of http request miliseconds:" + TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS));
-
-				
+				System.out.println("SLO latency is <= "+latency+". Actual latency is: "+elapesedTimeInMiliSeconds+" ms");
+								
 			}catch (Exception e) {
 				// TODO: handle exception
 				elapesedTimeInMiliSeconds = 1_000_000;
 			}
 			
-			Assertions.assertTrue(elapesedTimeInMiliSeconds <= 150.0, 
-					"Max Timing is 150ms. Reported time by tester is: " +elapesedTimeInMiliSeconds+" ms" );
+			Assertions.assertTrue(elapesedTimeInMiliSeconds <= latency, 
+					"SLO latency is <= "+latency+" ms. Actual latency reported by user is: " +elapesedTimeInMiliSeconds+" ms" );
+			
 		}
-	 
 	
-	 @Test
+	@Test
 	 public void e_Test() throws InterruptedException {
 		System.out.println("############ Running Test5: ############");
 		String uri_unistall_agent = agentId+"/unmonitor"; 
@@ -201,7 +200,7 @@ public class PacketLossTests50 {
 		}
 		
 		Assertions.assertEquals(200, responseCode);
- 
+
 	 }
 	 
 	 @Test
@@ -227,10 +226,8 @@ public class PacketLossTests50 {
 			System.out.println(e.getCause());
 		}
 		 
-         Assertions.assertEquals(200,responseCode);
-         
-         agentId = "";
-         
+        Assertions.assertEquals(200,responseCode);
+        
 	 }
 
 }
