@@ -106,7 +106,7 @@ public class PacketLossTestSesion {
 		
 		System.out.println("Payload: "+obj.toString());
 		
-		String URL = server+"/monitor";
+		String URL = server+agentId+"/monitor";
 		String body = "";
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -117,6 +117,7 @@ public class PacketLossTestSesion {
 			HttpEntity<String> request = new HttpEntity<String>(obj.toString(), headers);
 			ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
 			body = response.getBody();
+			
 			JsonParser parser = new JsonParser();
 			JsonObject json = (JsonObject) parser.parse(body);
 			agentId = json.get("agentId").getAsString();
