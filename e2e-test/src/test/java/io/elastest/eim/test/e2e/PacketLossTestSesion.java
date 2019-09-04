@@ -118,7 +118,7 @@ public class PacketLossTestSesion {
 			JsonParser parser = new JsonParser();
 			JsonObject json = (JsonObject) parser.parse(body);
 			agentId = json.get("agentId").getAsString();
-			System.out.println("This is the agent", agentId);
+			System.out.println("This is the agent" + agentId);
 			System.out.println("############ Response for Test2: ############");
 			System.out.println(response);
 			responseCode= response.getStatusCode().value();
