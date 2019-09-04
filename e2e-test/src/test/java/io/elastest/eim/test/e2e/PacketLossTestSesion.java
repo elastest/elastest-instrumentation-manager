@@ -84,6 +84,8 @@ public class PacketLossTestSesion {
 	
 	@Test
 	public void b_Test()throws InterruptedException, IOException{
+		System.out.println("############ Test2 Monitoring beats: ############");
+
 		JsonObject obj = new JsonObject();
 		JsonObject packetbeat = new JsonObject();
 		packetbeat.addProperty("stream", "packebeat");
@@ -136,7 +138,7 @@ public class PacketLossTestSesion {
 	
 	@Test
 	public void c_Test() throws InterruptedException, IOException{
-		System.out.println("############ Running Test2: No injection cpu commands : ############");
+		System.out.println("############ Running Test3: No injection cpu commands : ############");
 		long start = System.nanoTime();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -163,7 +165,7 @@ public class PacketLossTestSesion {
 	
 	@Test
 	 public void d_Test() throws InterruptedException {
-		System.out.println("############ Running test 3: Droping 0.25% packet: ############");
+		System.out.println("############ Running test 4: Droping 0.25% packet: ############");
 
 		String uri_packetloss_action = "controllability/"+agentId+"/packetloss";
 		String URL = server + uri_packetloss_action;
@@ -187,7 +189,7 @@ public class PacketLossTestSesion {
 					obj.toString(), headers);
 			
 			ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
-			System.out.println("############ Response for Test3: ############");
+			System.out.println("############ Response for Test4: ############");
 			System.out.println(response);
 			TimeUnit.SECONDS.sleep(60);
 			responseCode = response.getStatusCode().value();
@@ -205,7 +207,7 @@ public class PacketLossTestSesion {
 	
 	@Test
 	 public void e_Test() throws InterruptedException, IOException{
-			System.out.println("############ Running Test4: Max.timing "+latency+" ms: ############");
+			System.out.println("############ Running Test5: Max.timing "+latency+" ms: ############");
 			long start = System.nanoTime();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -214,7 +216,7 @@ public class PacketLossTestSesion {
 			try {
 				HttpEntity<String> request = new HttpEntity<String>("", headers);
 				ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
-				System.out.println("############ Response for Test4: ############");
+				System.out.println("############ Response for Test5: ############");
 				System.out.println(response);
 				long elapsedTime = System.nanoTime() - start ;
 				System.out.println("Timing of http request nanoseconds:" + elapsedTime);
@@ -234,7 +236,7 @@ public class PacketLossTestSesion {
 	
 	@Test
 	 public void f_Test() throws InterruptedException {
-		System.out.println("############ Running Test5: ############");
+		System.out.println("############ Running Test6: ############");
 		String uri_unistall_agent = agentId+"/unmonitor"; 
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -244,7 +246,7 @@ public class PacketLossTestSesion {
 		try {
 			HttpEntity<String> request = new HttpEntity<String>("", headers);
 			ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
-			System.out.println("############ Response for Test5: ############");
+			System.out.println("############ Response for Test6: ############");
 			System.out.println(response);
 			//TimeUnit.SECONDS.sleep(180);
 			responseCode = response.getStatusCode().value();
@@ -262,7 +264,7 @@ public class PacketLossTestSesion {
 	 @Test
 	 public void g_Test() throws InterruptedException {
 		 
-		 System.out.println("############ Running Test6: ############");
+		 System.out.println("############ Running Test7: ############");
 		 headers.setContentType(MediaType.APPLICATION_JSON);
 		 headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		 String URL = server+agentId;
@@ -272,7 +274,7 @@ public class PacketLossTestSesion {
 			 HttpEntity<String> request = new HttpEntity<String>("", headers);
 			 //TimeUnit.SECONDS.sleep(500);
 			 ResponseEntity<String>response= restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
-			 System.out.println("############ Response for Test6: ############");
+			 System.out.println("############ Response for Test7: ############");
 			 System.out.println(response);
 			 responseCode = response.getStatusCode().value();
 			 
