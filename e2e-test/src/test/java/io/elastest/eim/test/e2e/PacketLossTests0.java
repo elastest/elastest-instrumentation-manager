@@ -28,7 +28,7 @@ public class PacketLossTests0 {
 	public RestTemplate restTemplate = new RestTemplate();
 	public HttpHeaders headers = new HttpHeaders();
 	
-	static String agentId = "";
+	static String agentId;
 	
 	// TODO - registerAgent_then200OK()
 	@Test
