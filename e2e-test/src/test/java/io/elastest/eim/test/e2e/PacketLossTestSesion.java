@@ -1,7 +1,7 @@
 package io.elastest.eim.test.e2e;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -89,11 +89,15 @@ public class PacketLossTestSesion {
 		JsonObject obj = new JsonObject();
 		JsonObject packetbeat = new JsonObject();
 		packetbeat.addProperty("stream", "packebeat");
-		
+				
+		List<String> paths = new ArrayList<String>();
+		paths.add("/var/log/.log");
+		paths.add("/var/log//*.log");
+		String paths_list=paths.toString();
 		
 		JsonObject filebeat = new JsonObject();
 		filebeat.addProperty("stream", "filebeat");
-		filebeat.addProperty("paths", "");
+		filebeat.addProperty("paths", paths_list);
 
 		JsonObject metricbeat = new JsonObject();
 		metricbeat.addProperty("stream", "metricbeat");
@@ -101,9 +105,9 @@ public class PacketLossTestSesion {
 		obj.addProperty("exec", exec_name);
 		obj.addProperty("component", "sut");
 		obj.addProperty("dockerized", "no");
-		obj.addProperty("packetbeat", packetbeat.getAsJsonArray().getAsString());
-		obj.addProperty("filebeat", filebeat.getAsJsonArray().getAsString());
-		obj.addProperty("metricbeat", metricbeat.getAsJsonArray().getAsString());
+		obj.addProperty("packetbeat", packetbeat.toString());
+		obj.addProperty("filebeat", filebeat.getAsJsonArray().toString());
+		obj.addProperty("metricbeat", metricbeat.getAsJsonArray().toString());
 		
 		System.out.println("Payload: "+obj.toString());
 		
