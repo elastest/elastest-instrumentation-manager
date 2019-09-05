@@ -113,7 +113,7 @@ public class PacketLossTestSesion {
 		
 		try {
 			
-			HttpEntity<JsonObject> request = new HttpEntity<JsonObject>(obj.getAsJsonObject(), headers);
+			HttpEntity<String> request = new HttpEntity<String>(obj.toString(), headers);
 			ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
 			body = response.getBody();
 			
