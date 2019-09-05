@@ -88,7 +88,7 @@ public class PacketLossTestSesion {
 
 		JsonObject obj = new JsonObject();
 		JsonObject packetbeat = new JsonObject();
-		packetbeat.addProperty("stream", "packebeat");
+		packetbeat.addProperty("stream", new String("packebeat"));
 				
 		List<String> paths = new ArrayList<String>();
 		paths.add("/var/log/.log");
@@ -96,18 +96,18 @@ public class PacketLossTestSesion {
 		String paths_list=paths.toString();
 		
 		JsonObject filebeat = new JsonObject();
-		filebeat.addProperty("stream", "filebeat");
-		filebeat.addProperty("paths", paths_list);
+		filebeat.addProperty("stream", new String("filebeat"));
+		filebeat.addProperty("paths", new String(paths_list));
 
 		JsonObject metricbeat = new JsonObject();
-		metricbeat.addProperty("stream", "metricbeat");
+		metricbeat.addProperty("stream", new String ("metricbeat"));
 		
-		obj.addProperty("exec", exec_name);
-		obj.addProperty("component", "sut");
-		obj.addProperty("dockerized", "no");
-		obj.addProperty("packetbeat", packetbeat.toString());
-		obj.addProperty("filebeat", filebeat.getAsJsonArray().toString());
-		obj.addProperty("metricbeat", metricbeat.getAsJsonArray().toString());
+		obj.addProperty("exec", new String(exec_name));
+		obj.addProperty("component", new String("sut"));
+		obj.addProperty("dockerized", new String("no"));
+		obj.addProperty("packetbeat", new String(packetbeat.toString()));
+		obj.addProperty("filebeat", new String(filebeat.getAsJsonArray().toString()));
+		obj.addProperty("metricbeat", new String(metricbeat.getAsJsonArray().toString()));
 		
 		System.out.println("Payload: "+obj.toString());
 		
