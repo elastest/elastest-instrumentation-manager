@@ -22,7 +22,7 @@ public class PacketLossTestSesion {
 	private String sut_address = System.getenv("ET_SUT_HOST");
 	private String logstash_ip = System.getenv("ET_MON_LSBEATS_HOST");
 	private String logstash_port = System.getenv("ET_MON_LSBEATS_PORT");
-	private String URL_API = "http://"+sut_address+":"+"5000";
+	private String URL_API = "http://"+sut_address+":"+"5030";
 	private String server = System.getenv("ET_EIM_API")+"/agent/";	
 	private Double latency = 150.0;
 	private String exec_name = System.getenv("ET_MON_EXEC");
@@ -109,7 +109,7 @@ public class PacketLossTestSesion {
 		obj.addProperty("filebeat", new String(filebeat.toString()));
 		obj.addProperty("metricbeat", new String(metricbeat.toString()));
 		
-		System.out.println("Payload: "+obj.toString());
+		System.out.println("Payload: "+obj);
 		
 		String URL = server+agentId+"/monitor";
 		String body = "";
@@ -119,7 +119,7 @@ public class PacketLossTestSesion {
 		
 		try {
 			
-			HttpEntity<String> request = new HttpEntity<String>(obj.toString(), headers);
+			HttpEntity<JsonObject> request = new HttpEntity<JsonObject>(obj, headers);
 			ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
 			body = response.getBody();
 			
