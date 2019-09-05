@@ -1,9 +1,7 @@
 package io.elastest.eim.test.e2e;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Assertions;
@@ -105,7 +103,7 @@ public class PacketLossTestSesion {
 		obj.addProperty("filebeat", filebeat.toString());
 		obj.addProperty("metricbeat", metricbeat.toString());
 		
-		System.out.println("Payload: "+obj);
+		System.out.println("Payload: "+obj.getAsJsonObject());
 		
 		String URL = server+agentId+"/monitor";
 		String body = "";
@@ -115,7 +113,7 @@ public class PacketLossTestSesion {
 		
 		try {
 			
-			HttpEntity<JsonObject> request = new HttpEntity<JsonObject>(obj, headers);
+			HttpEntity<JsonObject> request = new HttpEntity<JsonObject>(obj.getAsJsonObject(), headers);
 			ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
 			body = response.getBody();
 			
