@@ -90,19 +90,20 @@ public class PacketLossTestSesion {
 		JsonObject packetbeat = new JsonObject();
 		packetbeat.addProperty("stream", "packebeat");
 		
+		
 		JsonObject filebeat = new JsonObject();
 		filebeat.addProperty("stream", "filebeat");
-		filebeat.addProperty("paths", "[/var/log/.log\",\"/var/log//*.log]");
+		filebeat.addProperty("paths", "");
 
 		JsonObject metricbeat = new JsonObject();
-		packetbeat.addProperty("stream", "metricbeat");
+		metricbeat.addProperty("stream", "metricbeat");
 		
 		obj.addProperty("exec", exec_name);
 		obj.addProperty("component", "sut");
 		obj.addProperty("dockerized", "no");
-		obj.addProperty("packetbeat", packetbeat.toString());
-		obj.addProperty("filebeat", filebeat.toString());
-		obj.addProperty("metricbeat", metricbeat.toString());
+		obj.addProperty("packetbeat", packetbeat.getAsJsonArray().getAsString());
+		obj.addProperty("filebeat", filebeat.getAsJsonArray().getAsString());
+		obj.addProperty("metricbeat", metricbeat.getAsJsonArray().getAsString());
 		
 		System.out.println("Payload: "+obj.toString());
 		
