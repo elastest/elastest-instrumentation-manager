@@ -85,19 +85,15 @@ public class PacketLossTestSesion {
 	@Test
 	public void b_Test()throws InterruptedException, IOException{
 		System.out.println("############ Test2 Monitoring beats: ############");
-
+	
 		JsonObject obj = new JsonObject();
 		JsonObject packetbeat = new JsonObject();
 		packetbeat.addProperty("stream", new String("packebeat"));
 				
-		List<String> paths = new ArrayList<String>();
-		paths.add("/var/log/*.log");
-		paths.add("/var/log/*/*.log");
-		String paths_list=paths.toString();
 		
 		JsonObject filebeat = new JsonObject();
 		filebeat.addProperty("stream", new String("filebeat"));
-		filebeat.addProperty("paths", new String(paths_list));
+		filebeat.addProperty("path", new String("/var/log/*.log,/var/log/*/*.log") );
 
 		JsonObject metricbeat = new JsonObject();
 		metricbeat.addProperty("stream", new String ("metricbeat"));
@@ -105,9 +101,9 @@ public class PacketLossTestSesion {
 		obj.addProperty("exec", new String(exec_name));
 		obj.addProperty("component", new String("sut"));
 		obj.addProperty("dockerized", new String("no"));
-		obj.addProperty("packetbeat", new String(packetbeat.toString()));
-		obj.addProperty("filebeat", new String(filebeat.toString()));
-		obj.addProperty("metricbeat", new String(metricbeat.toString()));
+		obj.addProperty("packetbeat", packetbeat.getAsString());
+		obj.addProperty("filebeat", filebeat.getAsString());
+		obj.addProperty("metricbeat", metricbeat.getAsString());
 		
 		System.out.println("Payload: "+obj);
 		
