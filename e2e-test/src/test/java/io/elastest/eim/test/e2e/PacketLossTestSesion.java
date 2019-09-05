@@ -92,7 +92,7 @@ public class PacketLossTestSesion {
 		
 		JsonObject filebeat = new JsonObject();
 		filebeat.addProperty("stream", "filebeat");
-		filebeat.addProperty("patch", "[ \"/var/log/*.log\" ]");
+		filebeat.addProperty("paths", "[/var/log/.log\",\"/var/log//*.log]");
 
 		JsonObject metricbeat = new JsonObject();
 		packetbeat.addProperty("stream", "metricbeat");
