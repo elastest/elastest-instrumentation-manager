@@ -91,8 +91,8 @@ public class PacketLossTestSesion {
 		packetbeat.addProperty("stream", new String("packebeat"));
 				
 		List<String> paths = new ArrayList<String>();
-		paths.add("/var/log/.log");
-		paths.add("/var/log//*.log");
+		paths.add("/var/log/*.log");
+		paths.add("/var/log/*/*.log");
 		String paths_list=paths.toString();
 		
 		JsonObject filebeat = new JsonObject();
@@ -106,8 +106,8 @@ public class PacketLossTestSesion {
 		obj.addProperty("component", new String("sut"));
 		obj.addProperty("dockerized", new String("no"));
 		obj.addProperty("packetbeat", new String(packetbeat.toString()));
-		obj.addProperty("filebeat", new String(filebeat.getAsJsonArray().toString()));
-		obj.addProperty("metricbeat", new String(metricbeat.getAsJsonArray().toString()));
+		obj.addProperty("filebeat", new String(filebeat.toString()));
+		obj.addProperty("metricbeat", new String(metricbeat.toString()));
 		
 		System.out.println("Payload: "+obj.toString());
 		
