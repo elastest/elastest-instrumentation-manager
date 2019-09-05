@@ -101,9 +101,9 @@ public class PacketLossTestSesion {
 		obj.addProperty("exec", new String(exec_name));
 		obj.addProperty("component", new String("sut"));
 		obj.addProperty("dockerized", new String("no"));
-		obj.addProperty("packetbeat", packetbeat.getAsString());
-		obj.addProperty("filebeat", filebeat.getAsString());
-		obj.addProperty("metricbeat", metricbeat.getAsString());
+		obj.addProperty("packetbeat", packetbeat.toString());
+		obj.addProperty("filebeat", filebeat.toString());
+		obj.addProperty("metricbeat", metricbeat.toString());
 		
 		System.out.println("Payload: "+obj);
 		
