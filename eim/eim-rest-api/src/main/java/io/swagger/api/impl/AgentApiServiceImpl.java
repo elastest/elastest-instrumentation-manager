@@ -19,9 +19,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -269,7 +266,8 @@ public class AgentApiServiceImpl extends AgentApiService {
     
     @Override
     public Response postControlAction(String agentId, String actionId, AgentConfigurationControl body, SecurityContext securityContext) throws NotFoundException {    	
-    	
+		AgentFull agent = agentDb.getAgentByAgentId(agentId);
+
     	logger.info("PostAction method invoked for agent " + agentId + " with action " + actionId + " and body: " + body);
     	System.out.println("PostAction method invoked for agent " + agentId + " with action " + actionId + " and body: " + body);
     	
@@ -281,18 +279,18 @@ public class AgentApiServiceImpl extends AgentApiService {
     	
     	if (actionId.equals(Dictionary.SUT_ACTION_PACKETLOSS)){
 	    	//verify that agent exists in database and it is not monitored
-	    	AgentFull agent = agentDb.getAgentByAgentId(agentId);
 	    	if (agent == null) {
 	    		//agent not exists in db
 	    		logger.error("No exists any agent in the system with agentId " + agentId);
 	    		return Response.status(Response.Status.NOT_FOUND).entity("No exists any agent in the system with agentId " + agentId).build();
 	    	}
 	    	else if (agent.isMonitored()) {
-	    		logger.error("Agent " + agentId + " is already monitored");
-	    		return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Agent " + agentId + " is already monitored").build();
-	    	}
-	    	else {
-	        	//exits and it is not monitored --> launch process
+				/*
+				 * logger.error("Agent " + agentId + " is already monitored"); return
+				 * Response.status(Response.Status.NOT_ACCEPTABLE).entity("Agent " + agentId +
+				 * " is already monitored").build();
+				 */
+	    		//exits and it is not monitored --> launch process
 	    		int status = -1;
 	    		//beats installation
 	    		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -324,9 +322,9 @@ public class AgentApiServiceImpl extends AgentApiService {
 	            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
 	            }		
 	    	}
-    	}
-    	else if (actionId.equals(Dictionary.SUT_ACTION_STRESS_CPU)) {
-    		AgentFull agent = agentDb.getAgentByAgentId(agentId);
+	    }
+	    
+	    else if (actionId.equals(Dictionary.SUT_ACTION_STRESS_CPU)) {
     		//exits and it is not monitored --> launch process
     		int status = -1;
     		//beats installation
@@ -357,11 +355,73 @@ public class AgentApiServiceImpl extends AgentApiService {
             	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
             }		
     	}
-    	else {
-    		
-    		return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "This method will execute the action " + actionId +  "!")).build();
-    	}    	
-        
+    	else if (actionId.equals(Dictionary.SUT_ACTION_STRESS_CPU) && agent.isMonitored()) {
+    		int status = -1;
+    		//beats installation
+    		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            String executionDate = sdf.format(timestamp);
+            BeatsTemplateManagerControl beatsTemplateManager = new BeatsTemplateManagerControl(agent, executionDate, Dictionary.SUT_ACTION_STRESS_CPU, getAnsibleCfgFilePathForAgent(agent));
+            logger.info("BeatsTemplateManagerControl" + beatsTemplateManager);
+            logger.info("getAnsibleCfgFilePathForAgent(agent)" + getAnsibleCfgFilePathForAgent(agent));
+            logger.info("beatsTemplateManagerControl is" + beatsTemplateManager);
+            
+            beatsTemplateManager.setConfigurationControl(body);
+            status = beatsTemplateManager.execute();
+            if (status == 0) {
+            	logger.info("Successful execution for the beats script generated to agent " + agent.getAgentId());
+            	// store agent configuration in db
+            	logger.info("Store agent in db " + agentCfgControlDB.addAgentCfgControl(agentId, body));
+            	agentCfgControlDB.addAgentCfgControl(agentId, body);
+            	//set host as monitored in db    	
+	        	agent = agentDb.setMonitored(agentId, true);
+	        	logger.info("iAgent " + agent.getAgentId() + " monitored succesfully");
+	        	
+	        	logger.info("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
+	        	System.out.println("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
+	          	
+	        	return Response.ok().entity(agent).build();
+            }
+	    	else {
+	    		
+	    		return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "This method will execute the action " + actionId +  "!")).build();
+	    	}
+    	}
+        else {
+        	//exits and it is not monitored --> launch process
+    		int status = -1;
+    		//beats installation
+    		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            String executionDate = sdf.format(timestamp);
+            BeatsTemplateManagerControl beatsTemplateManager = new BeatsTemplateManagerControl(agent, executionDate, Dictionary.SUT_ACTION_PACKETLOSS, getAnsibleCfgFilePathForAgent(agent));
+            logger.info("BeatsTemplateManagerControl" + beatsTemplateManager);
+            logger.info("getAnsibleCfgFilePathForAgent(agent)" + getAnsibleCfgFilePathForAgent(agent));
+            logger.info("beatsTemplateManagerControl is" + beatsTemplateManager);
+            
+            beatsTemplateManager.setConfigurationControl(body);
+            status = beatsTemplateManager.execute();
+            if (status == 0) {
+            	logger.info("Successful execution for the beats script generated to agent " + agent.getAgentId());
+            	// store agent configuration in db
+            	logger.info("Store agent in db " + agentCfgControlDB.addAgentCfgControl(agentId, body));
+            	agentCfgControlDB.addAgentCfgControl(agentId, body);
+            	//set host as monitored in db    	
+	        	agent = agentDb.setMonitored(agentId, true);
+	        	logger.info("iAgent " + agent.getAgentId() + " monitored succesfully");
+	        	
+	        	logger.info("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
+	        	System.out.println("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
+	          	
+	        	return Response.ok().entity(agent).build();
+            }
+            else {
+            	
+            	logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
+            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
+            }
+        }
+    logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
+    return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been failure " )).build();
+    
     }
     
     
