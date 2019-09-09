@@ -143,9 +143,6 @@ public class ControllabilityMonitoring {
 		
 		Assertions.assertEquals(200, responseCode);
 		
-		
-		TimeUnit.SECONDS.sleep(500);
-
 	}
 	
 	
@@ -178,7 +175,7 @@ public class ControllabilityMonitoring {
 	
 	@Test
 	 public void d_Test() throws InterruptedException {
-		System.out.println("############ Running test 4: Droping 0.25% packet: ############");
+		System.out.println("############ Running test 4: Droping 0.45% packet: ############");
 
 		String uri_packetloss_action = "controllability/"+agentId+"/packetloss";
 		String URL = server + uri_packetloss_action;
@@ -186,7 +183,7 @@ public class ControllabilityMonitoring {
 		JsonObject obj = new JsonObject();
 		obj.addProperty("exec", "EXECBEAT");
 		obj.addProperty("component", "EIM");
-		obj.addProperty("packetLoss", "0.25");
+		obj.addProperty("packetLoss", "0.45");
 		obj.addProperty("stressNg", "");
 		obj.addProperty("dockerized", "yes");
 		obj.addProperty("cronExpression", "@every 60s");
@@ -215,7 +212,7 @@ public class ControllabilityMonitoring {
 		}
 		
 		Assertions.assertEquals(200, responseCode);
-			  	  
+	
 	 }
 	
 	@Test
@@ -244,6 +241,8 @@ public class ControllabilityMonitoring {
 			
 			Assertions.assertTrue(elapesedTimeInMiliSeconds <= latency, 
 					"SLO latency is <= "+latency+" ms. Actual latency reported by user is: " +elapesedTimeInMiliSeconds+" ms" );
+			
+			TimeUnit.SECONDS.sleep(240);
 			
 		}
 	
