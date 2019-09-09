@@ -228,6 +228,9 @@ public class ControllabilityMonitoring {
 				ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
 				System.out.println("############ Response for Test5: ############");
 				System.out.println(response);
+				
+				TimeUnit.MILLISECONDS.sleep(500);
+
 				long elapsedTime = System.nanoTime() - start ;
 				System.out.println("Timing of http request nanoseconds:" + elapsedTime);
 				// 1 second  = 1_000ms
@@ -239,10 +242,10 @@ public class ControllabilityMonitoring {
 				elapesedTimeInMiliSeconds = 1_000_000;
 			}
 			
+
 			Assertions.assertTrue(elapesedTimeInMiliSeconds <= latency, 
 					"SLO latency is <= "+latency+" ms. Actual latency reported by user is: " +elapesedTimeInMiliSeconds+" ms" );
 			
-			TimeUnit.SECONDS.sleep(240);
 			
 		}
 	
