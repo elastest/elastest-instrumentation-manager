@@ -97,7 +97,7 @@ public class ControllabilityMonitoring {
 		
 		JsonObject filebeat = new JsonObject();
 		filebeat.addProperty("stream", new String("filebeat"));
-		filebeat.addProperty("paths",   new String(jsonPathArray.toString()));
+		filebeat.add("paths",   jsonPathArray);
 		filebeat.addProperty("stream", new String("filebeat"));
 		
 		JsonObject metricbeat = new JsonObject();
