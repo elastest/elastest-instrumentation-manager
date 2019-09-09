@@ -229,7 +229,7 @@ public class ControllabilityMonitoring {
 				System.out.println("############ Response for Test5: ############");
 				System.out.println(response);
 				
-				TimeUnit.MILLISECONDS.sleep(500);
+				TimeUnit.SECONDS.sleep(500);
 
 				long elapsedTime = System.nanoTime() - start ;
 				System.out.println("Timing of http request nanoseconds:" + elapsedTime);
