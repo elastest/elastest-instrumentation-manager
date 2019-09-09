@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -90,13 +91,13 @@ public class ControllabilityMonitoring {
 		JsonObject packetbeat = new JsonObject();
 		packetbeat.addProperty("stream", new String("packebeat"));
 				
-		ArrayList<String> path = new ArrayList<>();
-		path.add("/var/log/*.log");
-		path.add("/var/log/*/*.log");
+		JsonArray jsonPathArray = new JsonArray();
+		jsonPathArray.add("/var/log/*.log");
+		jsonPathArray.add("/var/log/*/*.log");
 		
 		JsonObject filebeat = new JsonObject();
 		filebeat.addProperty("stream", new String("filebeat"));
-		filebeat.addProperty("path",   new String(path.toString()));
+		filebeat.addProperty("paths",   new String(jsonPathArray.toString()));
 		filebeat.addProperty("stream", new String("filebeat"));
 		
 		JsonObject metricbeat = new JsonObject();
