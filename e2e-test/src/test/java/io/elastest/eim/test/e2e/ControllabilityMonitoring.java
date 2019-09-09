@@ -142,6 +142,9 @@ public class ControllabilityMonitoring {
 		}
 		
 		Assertions.assertEquals(200, responseCode);
+		
+		
+		TimeUnit.SECONDS.sleep(500);
 
 	}
 	
