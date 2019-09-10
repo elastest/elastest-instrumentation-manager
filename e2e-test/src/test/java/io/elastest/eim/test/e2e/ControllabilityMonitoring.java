@@ -174,7 +174,7 @@ public class ControllabilityMonitoring {
 	
 	@Test
 	 public void d_Test() throws InterruptedException {
-		System.out.println("############ Running test 4: Droping 0.35% packet: ############");
+		System.out.println("############ Running test 4: Droping 0.05% packet: ############");
 
 		String uri_packetloss_action = "controllability/"+agentId+"/packetloss";
 		String URL = server + uri_packetloss_action;
@@ -182,7 +182,7 @@ public class ControllabilityMonitoring {
 		JsonObject obj = new JsonObject();
 		obj.addProperty("exec", "EXECBEAT");
 		obj.addProperty("component", "EIM");
-		obj.addProperty("packetLoss", "0.45");
+		obj.addProperty("packetLoss", "0.05");
 		obj.addProperty("stressNg", "");
 		obj.addProperty("dockerized", "yes");
 		obj.addProperty("cronExpression", "@every 60s");
