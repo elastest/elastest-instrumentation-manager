@@ -1,7 +1,6 @@
 package io.elastest.eim.test.e2e;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
@@ -175,7 +174,7 @@ public class ControllabilityMonitoring {
 	
 	@Test
 	 public void d_Test() throws InterruptedException {
-		System.out.println("############ Running test 4: Droping 0.45% packet: ############");
+		System.out.println("############ Running test 4: Droping 0.35% packet: ############");
 
 		String uri_packetloss_action = "controllability/"+agentId+"/packetloss";
 		String URL = server + uri_packetloss_action;
@@ -187,7 +186,6 @@ public class ControllabilityMonitoring {
 		obj.addProperty("stressNg", "");
 		obj.addProperty("dockerized", "yes");
 		obj.addProperty("cronExpression", "@every 60s");
-		
 		
 		System.out.println("Payload: "+obj.toString());
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -201,10 +199,9 @@ public class ControllabilityMonitoring {
 			ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
 			System.out.println("############ Response for Test4: ############");
 			System.out.println(response);
-			TimeUnit.SECONDS.sleep(60);
+			TimeUnit.SECONDS.sleep(100);
 			responseCode = response.getStatusCode().value();
 
-			
 		}catch (Exception e) {
 			// TODO: handle exception
 			System.out.println(e.getMessage());
@@ -229,7 +226,7 @@ public class ControllabilityMonitoring {
 				System.out.println("############ Response for Test5: ############");
 				System.out.println(response);
 				
-				TimeUnit.SECONDS.sleep(500);
+				//TimeUnit.SECONDS.sleep(500);
 
 				long elapsedTime = System.nanoTime() - start ;
 				System.out.println("Timing of http request nanoseconds:" + elapsedTime);
