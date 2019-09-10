@@ -249,7 +249,7 @@ public class ControllabilityMonitoring {
 			
 		}
 	
-/*	@Test
+	 @Test
 	 public void f_Test() throws InterruptedException {
 		System.out.println("############ Running Test6: ############");
 		String uri_unistall_agent = agentId+"/unmonitor"; 
@@ -274,9 +274,9 @@ public class ControllabilityMonitoring {
 		
 		Assertions.assertEquals(200, responseCode);
 
-	 }*/
+	 }
 	 
-	 /*@Test
+	 @Test
 	 public void g_Test() throws InterruptedException {
 		 
 		 System.out.println("############ Running Test7: ############");
@@ -302,7 +302,5 @@ public class ControllabilityMonitoring {
         Assertions.assertEquals(200,responseCode);
         
 	 }
-*/
-
 
 }
