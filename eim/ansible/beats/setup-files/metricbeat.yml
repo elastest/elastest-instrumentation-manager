@@ -5,12 +5,12 @@ metricbeat.modules:
 # Metricbeat modules
 
 logging:
-    level: error
+    level: debug
     #to_syslog: true
     to_files: true
     files:
       path: "/tmp/beats/logs"
       name: metricbeat_error.log
-      rotateeverybytes: 2048
-      keepfiles: 7
+      #rotateeverybytes: 2048
+      #keepfiles: 7
 # Logstash output
