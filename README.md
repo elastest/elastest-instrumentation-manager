@@ -43,6 +43,9 @@ installation and development guide.
 Source code for other ElasTest projects can be found in the [GitHub ElasTest
 Group].
 
+# Tests
+ // ToDo // 
+
 # Support
 If you need help and support with the EIM, please refer to the ElasTest [Bugtracker]. 
 Here you can find the help you need.
