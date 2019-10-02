@@ -94,17 +94,24 @@ public class ControllabilityMonitoring {
 		jsonPathArray.add("/var/log/*.log");
 		jsonPathArray.add("/var/log/*/*.log");
 		
+		JsonArray dockerPathContainers = new JsonArray();
+		dockerPathContainers.add("/var/lib/docker/containers/");
+		
+		JsonArray dockerPathSocket = new JsonArray();
+		dockerPathSocket.add("/var/lib/docker.sock");
+		
 		JsonObject filebeat = new JsonObject();
 		filebeat.addProperty("stream", new String("filebeat"));
 		filebeat.add("paths",   jsonPathArray);
 		filebeat.addProperty("stream", new String("filebeat"));
+		filebeat.add("dockerized", dockerPathContainers);
 		
 		JsonObject metricbeat = new JsonObject();
 		metricbeat.addProperty("stream", new String ("metricbeat"));
 		
 		obj.addProperty("exec", new String(exec_name));
 		obj.addProperty("component", new String("sut"));
-		obj.addProperty("dockerized", new String("no"));
+		obj.add("dockerized",dockerPathSocket);
 		
 		obj.add("packetbeat", packetbeat);
 		
