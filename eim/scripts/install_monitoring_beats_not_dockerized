@@ -1,0 +1,1 @@
+curl -i -X POST -H "Content-Type:application/json" -H "Accept:application/json" http://localhost:8080/eim/api/agent/iagent0/monitor -d '{"exec":"s2_e4","component":"sut","dockerized": "no","packetbeat":{"stream":"stream1"},"filebeat":{"stream":"stream2","paths":["/var/log/*.log","/var/log/*/*.log"]},"metricbeat":{"stream":"stream3"}}'
