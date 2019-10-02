@@ -108,10 +108,10 @@ public class ControllabilityMonitoring {
 		
 		JsonObject metricbeat = new JsonObject();
 		metricbeat.addProperty("stream", new String ("metricbeat"));
+		metricbeat.add("dockerized",dockerPathSocket);
 		
 		obj.addProperty("exec", new String(exec_name));
 		obj.addProperty("component", new String("sut"));
-		obj.add("dockerized",dockerPathSocket);
 		
 		obj.add("packetbeat", packetbeat);
 		
