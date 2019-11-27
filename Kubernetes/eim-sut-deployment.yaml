@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: eim-sut-deploy
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: elastest
+        elastest-component-type: core
+        elastest-component: eim-sut
+        elastest-service: eim-sut
+    spec:
+      containers:
+      - name: eim-sut
+        image: elastest/eim-sut-tester:latest
+        imagePullPolicy: Always
+        args:
+          - "--ignore-db-dir=lost+found"
+      restartPolicy: Always
+status: {}
