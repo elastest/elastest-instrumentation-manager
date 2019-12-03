@@ -203,7 +203,7 @@ public class EimApiRestTest {
 		 System.out.println("############ Response for Test5: ############");
 		 System.out.println(response);
 		 
-         Assertions.assertEquals(200, response.getStatusCode().value());
+		 Assertions.assertEquals(200, response.getStatusCode().value());
          
          agentId = "";
          
