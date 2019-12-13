@@ -9,6 +9,7 @@ public class Dictionary {
 	
 	public static String PROPERTY_PUBLICKEY_LOCATION = "publickey.location";
 	public static String PROPERTY_TEMPLATES_SSH_INSTALL_PLAYBOOK = "templates.ssh.install.playbook";
+	public static String PROPERTY_TEMPLATES_SSH_SEND_IPTABLES_RULE = "templates.ssh.rule.iptables";
 	public static String PROPERTY_TEMPLATES_SSH_REMOVE_PLAYBOOK = "templates.ssh.remove.playbook";
 	public static String PROPERTY_TEMPLATES_PLAYBOOK_JOKER = "templates.playbook.joker";
 	public static String PROPERTY_TEMPLATES_USER_JOKER = "templates.user.joker";
@@ -27,6 +28,7 @@ public class Dictionary {
 	public static String PROPERTY_TEMPLATES_BEATS_PLAYBOOKPATH = "templates.beats.playbookPath";
 	public static String PROPERTY_TEMPLATES_BEATS_INSTALL_PLAYBOOK = "templates.beats.install.playbook";
 	public static String PROPERTY_TEMPLATES_BEATS_REMOVE_PLAYBOOK = "templates.beats.remove.playbook";
+	public static String PROPERTY_TEMPLATES_BEATS_INSTALL_EXECUTION_PLAYBOOK_PREFIX_IPTABLES_RULE ="templates.beats.install.execution_playbook_prefix_iptables-rule";
 	public static String PROPERTY_TEMPLATES_BEATS_INSTALL_EXECUTION_PLAYBOOK_PREFIX = "templates.beats.install.execution_playbook_prefix";
 	public static String PROPERTY_TEMPLATES_BEATS_REMOVE_EXECUTION_PLAYBOOK_PREFIX = "templates.beats.remove.execution_playbook_prefix";
 	public static String PROPERTY_TEMPLATES_BEATS_EXECUTIONPATH = "templates.beats.executionPath";
@@ -50,6 +52,7 @@ public class Dictionary {
 	
 	
 	// Execbeat properties configuration & installation
+	public static String PROPERTY_TEMPLATES_BEATS_PLAYBOOK_IPTABLES_RULE="templates.ssh.rule.iptables";
 	public static String PROPERTY_TEMPLATES_BEATS_INSTALL_PLAYBOOK_EXECBEAT="templates.beats.install.plabook";
 	public static String PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_EXECBEAT = "templates.beats.joker.stream.execbeat";
 	public static String PROPERTY_TEMPLATES_BEATS_ARGS_EXECBEAT="templates.beats.joker.args.execbeat";

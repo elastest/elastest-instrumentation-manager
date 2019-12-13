@@ -77,6 +77,9 @@ COPY ansible/beats/playbook-install-beat-execbeat.yml /var/ansible/beats
 COPY ansible/beats/setup-files/execbeat.yml /var/ansible/beats/setup-files
 COPY ansible/beats/remove_iptables_rules.sh /var/ansible/beats
 
+# it works with ssh instead of execbeat rule injection
+COPY ansible/beats/playbook-ssh-rule-iptables.yml /var/ansible/beats
+
 # restart tomcat server to refresh the value of the properties 
 COPY tomcat/restart_tomcat.sh /var/tomcat/restart_tomcat.sh
 RUN chmod +x /var/tomcat/restart_tomcat.sh

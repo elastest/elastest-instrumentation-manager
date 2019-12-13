@@ -284,44 +284,41 @@ public class AgentApiServiceImpl extends AgentApiService {
 	    		logger.error("No exists any agent in the system with agentId " + agentId);
 	    		return Response.status(Response.Status.NOT_FOUND).entity("No exists any agent in the system with agentId " + agentId).build();
 	    	}
-	    	else if (agent.isMonitored()) {
-				/*
-				 * logger.error("Agent " + agentId + " is already monitored"); return
-				 * Response.status(Response.Status.NOT_ACCEPTABLE).entity("Agent " + agentId +
-				 * " is already monitored").build();
-				 */
-	    		//exits and it is not monitored --> launch process
-	    		int status = -1;
-	    		//beats installation
-	    		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-	            String executionDate = sdf.format(timestamp);
-	            BeatsTemplateManagerControl beatsTemplateManager = new BeatsTemplateManagerControl(agent, executionDate, Dictionary.SUT_ACTION_PACKETLOSS, getAnsibleCfgFilePathForAgent(agent));
-	            logger.info("BeatsTemplateManagerControl" + beatsTemplateManager);
-	            logger.info("getAnsibleCfgFilePathForAgent(agent)" + getAnsibleCfgFilePathForAgent(agent));
-	            logger.info("beatsTemplateManagerControl is" + beatsTemplateManager);
-	            
-	            beatsTemplateManager.setConfigurationControl(body);
-	            status = beatsTemplateManager.execute();
-	            if (status == 0) {
-	            	logger.info("Successful execution for the beats script generated to agent " + agent.getAgentId());
-	            	// store agent configuration in db
-	            	logger.info("Store agent in db " + agentCfgControlDB.addAgentCfgControl(agentId, body));
-	            	agentCfgControlDB.addAgentCfgControl(agentId, body);
-	            	//set host as monitored in db    	
-		        	agent = agentDb.setMonitored(agentId, true);
-		        	logger.info("iAgent " + agent.getAgentId() + " monitored succesfully");
-		        	
-		        	logger.info("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
-		        	System.out.println("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
-		          	
-		        	return Response.ok().entity(agent).build();
-	            }
-	            else {
-	            	
-	            	logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
-	            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
-	            }		
-	    	}
+			/*
+			 * logger.error("Agent " + agentId + " is already monitored"); return
+			 * Response.status(Response.Status.NOT_ACCEPTABLE).entity("Agent " + agentId +
+			 * " is already monitored").build();
+			 */
+    		//exits and it is not monitored --> launch process
+    		int status = -1;
+    		//beats installation
+    		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            String executionDate = sdf.format(timestamp);
+            BeatsTemplateManagerControl beatsTemplateManager = new BeatsTemplateManagerControl(agent, executionDate, Dictionary.SUT_ACTION_PACKETLOSS, getAnsibleCfgFilePathForAgent(agent));
+            logger.info("BeatsTemplateManagerControl" + beatsTemplateManager);
+            logger.info("getAnsibleCfgFilePathForAgent(agent)" + getAnsibleCfgFilePathForAgent(agent));
+            logger.info("beatsTemplateManagerControl is" + beatsTemplateManager);
+            
+            beatsTemplateManager.setConfigurationControl(body);
+            status = beatsTemplateManager.execute();
+            if (status == 0) {
+            	logger.info("Successful execution for the beats script generated to agent " + agent.getAgentId());
+            	// store agent configuration in db
+            	logger.info("Store agent in db " + agentCfgControlDB.addAgentCfgControl(agentId, body));
+            	agentCfgControlDB.addAgentCfgControl(agentId, body);
+            	//set host as monitored in db    	
+	        	agent = agentDb.setMonitored(agentId, true);
+	        	logger.info("iAgent " + agent.getAgentId() + " monitored succesfully");
+	        	
+	        	logger.info("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
+	        	System.out.println("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
+	          	
+	        	return Response.ok().entity(agent).build();
+            }
+            else {
+            	logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
+            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
+            }		
 	    }
 	    
 	    else if (actionId.equals(Dictionary.SUT_ACTION_STRESS_CPU)) {
@@ -419,8 +416,8 @@ public class AgentApiServiceImpl extends AgentApiService {
             	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
             }
         }
-    logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
-    return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been failure " )).build();
+    //logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
+    //return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been failure " )).build();
     
     }
     
@@ -527,7 +524,6 @@ public class AgentApiServiceImpl extends AgentApiService {
     }
     
     private String getAnsibleCfgFilePathForAgent(AgentFull agent) {
-    	
     	//var/ansible/ssh/hosts/iagent01/host_iagent01_cfg"
     	String a  = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
     			Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_HOSTS_FOLDER) +

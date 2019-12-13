@@ -46,23 +46,44 @@ private static Logger logger = Logger.getLogger(BeatsTemplateManager.class);
 			//generate files for execution: playbook and script
 			//the fourth argument is the user, that is not used in this playbook. The agent is also registrated, so in this case,
 			//elastest user is the one used.
-			String generatedPlaybookPath = TemplateUtils.generatesBeatsPlaybookPacketLossCommand(executionDate, agent, action, agentCfg);
-			if (generatedPlaybookPath != "") {
-				String generatedScriptPath = TemplateUtils.generateBeatsScript(executionDate, agent, generatedPlaybookPath, cfgFilePath, action);	
-				if (generatedScriptPath != null) {
-					//execute generated files
-					return TemplateUtils.executeScript("beats", generatedScriptPath, executionDate, agent);
+			if(!agentCfg.getCronExpression().isEmpty()) {
+				String generatedPlaybookPath = TemplateUtils.generatesBeatsPlaybookPacketLossCommand(executionDate, agent, action, agentCfg);
+				if (generatedPlaybookPath != "") {
+					String generatedScriptPath = TemplateUtils.generateBeatsScript(executionDate, agent, generatedPlaybookPath, cfgFilePath, action);	
+					if (generatedScriptPath != null) {
+						//execute generated files
+						return TemplateUtils.executeScript("beats", generatedScriptPath, executionDate, agent);
+					}
+					else {
+						logger.error("ERROR generating script for execution for agent " + agent.getAgentId( )+ ". Check logs please");
+						return -1;
+					}
 				}
 				else {
-					logger.error("ERROR generating script for execution for agent " + agent.getAgentId( )+ ". Check logs please");
+					logger.error("ERROR generating playbook for execution for agent " + agent.getAgentId( )+ ". Check logs please");
 					return -1;
+				}		
+				//TODO move template to history execution path
+			}else {
+				String generatedPlaybookPath = TemplateUtils.generatesBeatsPlaybookPacketLossCommand(executionDate, agent, action, agentCfg);
+				if (generatedPlaybookPath != "") {
+					String generatedScriptPath = TemplateUtils.generateBeatsScript(executionDate, agent, generatedPlaybookPath, cfgFilePath, action);	
+					if (generatedScriptPath != null) {
+						//execute generated files
+						return TemplateUtils.executeScript("beats", generatedScriptPath, executionDate, agent);
+					}
+					else {
+						logger.error("ERROR generating script for execution for agent " + agent.getAgentId( )+ ". Check logs please");
+						return -1;
+					}
 				}
+				else {
+					logger.error("ERROR generating playbook for execution for agent " + agent.getAgentId( )+ ". Check logs please");
+					return -1;
+				}		
+				//TODO move template to history execution path
 			}
-			else {
-				logger.error("ERROR generating playbook for execution for agent " + agent.getAgentId( )+ ". Check logs please");
-				return -1;
-			}		
-			//TODO move template to history execution path
+			
 		}
 		else if (action.equals(Dictionary.SUT_ACTION_STRESS_CPU)) {
 			logger.info("Preparing the execution of beats remove playbook for agent " + agent.getAgentId());
