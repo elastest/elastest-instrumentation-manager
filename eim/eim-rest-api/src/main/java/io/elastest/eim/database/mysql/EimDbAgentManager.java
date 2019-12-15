@@ -145,16 +145,17 @@ public class EimDbAgentManager {
     		logger.info("Adding new host to DB, host with ipAddress = " + host.getAddress());
     		System.out.println("Adding new host to DB, host with ipAddress = " + host.getAddress());
     		
-    		String sqlInsertHost = "INSERT INTO " + Dictionary.DBTABLE_AGENT + " VALUES (?,?,?,?,?,?,?)";
+    		String sqlInsertHost = "INSERT INTO " + Dictionary.DBTABLE_AGENT + " VALUES (?,?,?,?,?,?,?,?)";
     		pstInsertHost = conn.prepareStatement(sqlInsertHost);
     	
     		pstInsertHost.setString(1, getNewAgentId(conn));
     		pstInsertHost.setString(2, host.getAddress());
     		pstInsertHost.setBoolean(3, false);
-    		pstInsertHost.setString(4, host.getLogstashIp());
-    		pstInsertHost.setString(5, host.getLogstashPort());
-    		pstInsertHost.setString(6, host.getUser());
-    		pstInsertHost.setString(7, host.getPassword());
+    		pstInsertHost.setBoolean(4, false);
+    		pstInsertHost.setString(5, host.getLogstashIp());
+    		pstInsertHost.setString(6, host.getLogstashPort());
+    		pstInsertHost.setString(7, host.getUser());
+    		pstInsertHost.setString(8, host.getPassword());
     		pstInsertHost.executeUpdate();
     		logger.info("Agent inserted in database wiht ipAddress = " + host.getAddress());
     		
@@ -181,7 +182,7 @@ public class EimDbAgentManager {
 		PreparedStatement pstSelectAgent = null;
 		
 		try {
-			String selectSQL = "SELECT agent_id, host, monitored, logstash_ip, logstash_port, user, password FROM " + Dictionary.DBTABLE_AGENT + " WHERE host=?";
+			String selectSQL = "SELECT agent_id, host, monitored, checked, logstash_ip, logstash_port, user, password FROM " + Dictionary.DBTABLE_AGENT + " WHERE host=?";
 			pstSelectAgent = conn.prepareStatement(selectSQL);
 			pstSelectAgent.setString(1, ipAddress);
 			ResultSet rs = pstSelectAgent.executeQuery();
@@ -190,6 +191,7 @@ public class EimDbAgentManager {
 				agent.setAgentId(rs.getString("AGENT_ID"));
 				agent.setHost(rs.getString("HOST"));
 				agent.setMonitored(rs.getBoolean("MONITORED"));
+				agent.setCkecked(rs.getBoolean("CHECKED"));
 				agent.setLogstashIp(rs.getString("LOGSTASH_IP"));
 				agent.setLogstashPort(rs.getString("LOGSTASH_PORT"));
 				agent.setUser(rs.getString("USER"));
@@ -223,7 +225,7 @@ public class EimDbAgentManager {
 		PreparedStatement pstSelectAgent = null;
 		
 		try {
-			String selectSQL = "SELECT AGENT_ID, HOST, MONITORED, LOGSTASH_IP, LOGSTASH_PORT, USER, PASSWORD FROM " + Dictionary.DBTABLE_AGENT + " WHERE AGENT_ID = ?";
+			String selectSQL = "SELECT AGENT_ID, HOST, MONITORED, CHECKED, LOGSTASH_IP, LOGSTASH_PORT, USER, PASSWORD FROM " + Dictionary.DBTABLE_AGENT + " WHERE AGENT_ID = ?";
 			pstSelectAgent = conn.prepareStatement(selectSQL);
 			pstSelectAgent.setString(1, agentId);
 			ResultSet rs = pstSelectAgent.executeQuery();
@@ -232,6 +234,7 @@ public class EimDbAgentManager {
 				agent.setAgentId(rs.getString("AGENT_ID"));
 				agent.setHost(rs.getString("HOST"));
 				agent.setMonitored(rs.getBoolean("MONITORED"));
+				agent.setCkecked(rs.getBoolean("CHECKED"));
 				agent.setLogstashIp(rs.getString("LOGSTASH_IP"));
 				agent.setLogstashPort(rs.getString("LOGSTASH_PORT"));
 				agent.setUser(rs.getString("USER"));
@@ -285,7 +288,7 @@ public class EimDbAgentManager {
 		PreparedStatement pstSelectAgents = null;
 		
 		try {
-			String selectSQL = "SELECT AGENT_ID, HOST, MONITORED, LOGSTASH_IP, LOGSTASH_PORT, USER, PASSWORD FROM " + Dictionary.DBTABLE_AGENT;
+			String selectSQL = "SELECT AGENT_ID, HOST, MONITORED, CHECKED, LOGSTASH_IP, LOGSTASH_PORT, USER, PASSWORD FROM " + Dictionary.DBTABLE_AGENT;
 			pstSelectAgents = conn.prepareStatement(selectSQL);
 			ResultSet rs = pstSelectAgents.executeQuery();
 			agents = new ArrayList<AgentFull>();
@@ -294,6 +297,7 @@ public class EimDbAgentManager {
 				agent.setAgentId(rs.getString("AGENT_ID"));
 				agent.setHost(rs.getString("HOST"));
 				agent.setMonitored(rs.getBoolean("MONITORED"));
+				agent.setCkecked(rs.getBoolean("CHECKED"));
 				agent.setLogstashIp(rs.getString("LOGSTASH_IP"));
 				agent.setLogstashPort(rs.getString("LOGSTASH_PORT"));
 				agent.setUser(rs.getString("USER"));
@@ -468,6 +472,58 @@ public class EimDbAgentManager {
     	return modified;
 	}
 	
+	public AgentFull setChecked(String agentId, boolean checked) {
+		AgentFull agent = null;
+    	Connection conn = null;
+    	try {
+    		
+    		conn = getConnection();
+    		return setChecked(conn, agentId, checked);
+    		
+    	} catch (SQLException ex) {
+            logger.error("Error " + ex.getErrorCode() + ": " + ex.getMessage());
+        }
+    	finally {
+    		try{
+    			if(conn!=null)
+    				conn.close();
+    		} catch(SQLException se){
+    			logger.error(se.getMessage());
+    			se.printStackTrace();
+    		}
+    	}
+		return agent;
+	}
+
+	private AgentFull setChecked(Connection conn, String agentId, boolean checked) throws SQLException {
+		AgentFull modified = null;
+    	PreparedStatement pstSetChecked = null;
+    	try {
+    		logger.info("Setting agent " + agentId + " checked = " + checked);
+    		System.out.println("Setting agent " + agentId + " checked = " + checked);
+    		
+    		String sqlSetChecked = "UPDATE " + Dictionary.DBTABLE_AGENT + " SET checked = ? WHERE agent_Id = ?";
+    		pstSetChecked = conn.prepareStatement(sqlSetChecked);
+    	
+    		pstSetChecked.setBoolean(1, checked);
+    		pstSetChecked.setString(2, agentId);
+    		pstSetChecked.executeUpdate();
+    		logger.info("Agent modified in database wiht agentId = " + agentId);
+    		
+    		modified = getAgentByAgentId(conn, agentId);
+    		
+    	}
+		finally {
+    		try{
+    			if(pstSetChecked!=null)
+    				pstSetChecked.close();
+    		} catch(SQLException se){
+    			logger.error(se.getMessage());
+    			se.printStackTrace();
+    		}
+    	}
+    	return modified;
+	}
 	
 	public static void main (String args[]) throws SQLException {
 		EimDbAgentManager manager = new EimDbAgentManager();

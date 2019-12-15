@@ -64,6 +64,10 @@ public class AgentRepository {
 		return eimDbManager.setMonitored(agentId, monitored);
 	}
 	
+	public AgentFull setChecked(String agentId, boolean checked) {
+		return eimDbManager.setChecked(agentId, checked);
+	}
+	
 	public List<AgentFull> findAll(){
 		return eimDbManager.getAgents();
 	}

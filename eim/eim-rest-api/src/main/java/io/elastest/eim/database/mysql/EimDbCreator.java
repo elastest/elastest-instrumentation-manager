@@ -66,6 +66,7 @@ public class EimDbCreator {
 								  + "agent_id varchar(255) NOT NULL,"
 								  + "host varchar(255) NOT NULL,"
 								  + "monitored tinyint(1) NOT NULL,"
+								  + "checked tinyint(1) NOT NULL,"
 								  + "logstash_ip varchar(255) NOT NULL,"
 								  + "logstash_port varchar(255) NOT NULL,"
 								  + "user varchar(255) NOT NULL,"

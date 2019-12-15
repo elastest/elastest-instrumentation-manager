@@ -27,6 +27,7 @@ public class Dictionary {
 	
 	public static String PROPERTY_TEMPLATES_BEATS_PLAYBOOKPATH = "templates.beats.playbookPath";
 	public static String PROPERTY_TEMPLATES_BEATS_INSTALL_PLAYBOOK = "templates.beats.install.playbook";
+	public static String PROPERTY_TEMPLATES_BEATS_RESTORE_IPTABLES_RULES_PLAYBOOK="templates.beats.restore.iptablesRule.playbook";
 	public static String PROPERTY_TEMPLATES_BEATS_REMOVE_PLAYBOOK = "templates.beats.remove.playbook";
 	public static String PROPERTY_TEMPLATES_BEATS_INSTALL_EXECUTION_PLAYBOOK_PREFIX_IPTABLES_RULE ="templates.beats.install.execution_playbook_prefix_iptables-rule";
 	public static String PROPERTY_TEMPLATES_BEATS_INSTALL_EXECUTION_PLAYBOOK_PREFIX = "templates.beats.install.execution_playbook_prefix";
@@ -71,6 +72,8 @@ public class Dictionary {
 	public static String SUT_ACTION_UNMONITOR = "unmonitor";
 	
 	// ACTIONS AVAILABLE OVER SUT: CONTROLLABILITY
+	public static String SUT_ACTION_CHECKED = "checked";
+	public static String SUT_ACTION_UNCHECKED = "unchecked";
 	public static String SUT_ACTION_PACKETLOSS = "packetloss";
 	public static String SUT_ACTION_STRESS_CPU = "stress";
 	public static String NO_ACTION_PACKETLOSS = "";
@@ -81,6 +84,7 @@ public class Dictionary {
 	// USED TO INSTALL/REMOVE FEATURES IN SUT
 	public static String INSTALL = "install";
 	public static String REMOVE = "remove";
+	public static String REMOVE_CONTROL ="remove_control";
 	
 	// DOCKERIZED
 	public static String DOCKERIZED_YES = "yes";

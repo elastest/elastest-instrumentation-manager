@@ -25,10 +25,8 @@ import org.apache.log4j.Logger;
 import io.elastest.eim.config.Dictionary;
 import io.elastest.eim.database.AgentConfigurationControlRepository;
 import io.elastest.eim.database.mysql.EimDbAgentCfgControlManager;
-import io.elastest.eim.database.mysql.EimDbAgentCfgManager;
 import io.elastest.eim.utils.TemplateUtils;
 import io.swagger.model.AgentConfiguration;
-import io.swagger.model.AgentConfigurationDatabaseControl;
 import io.swagger.model.AgentFull;
 
 public class BeatsTemplateManager {
@@ -59,6 +57,33 @@ public class BeatsTemplateManager {
 		this.agentCfg = agentCfg;
 		System.out.println(this.agentCfg.toString());
 		logger.info(this.agentCfg.toString());
+	}
+	
+	private List<String> setDefaultIptablesRules(){
+		
+		List<String> defaultIptablesRules = new ArrayList<String>();
+		/*String a = "-P INPUT ACCEPT";
+		String b = "-P FORWARD ACCEPT";
+		String c = "-P OUTPUT ACCEPT";
+		String d = "-t nat -F";
+		String e = "-t mangle -F";
+		String f = "iptables -F";
+		String g = "iptables -X";*/
+		String f = "iptables -F";
+		
+		/*defaultIptablesRules.add(a);
+		defaultIptablesRules.add(b);
+		defaultIptablesRules.add(c);
+		defaultIptablesRules.add(d);
+		defaultIptablesRules.add(e);
+		defaultIptablesRules.add(f);
+		defaultIptablesRules.add(g);*/
+		
+		defaultIptablesRules.add(f);
+
+		
+		return defaultIptablesRules;
+		
 	}
 
 	private List<String> explorePacketLossCommand() {
@@ -177,7 +202,42 @@ public class BeatsTemplateManager {
 				}
 			}
 		}
+		else if(action.equals(Dictionary.REMOVE_CONTROL)) {
+			
+			List<String> setDefaultIptablesRules = setDefaultIptablesRules();
+			
+			if(!setDefaultIptablesRules.isEmpty()) {
+				
+			String generatedPlaybookPath = TemplateUtils.generateBeatsPlaybookRemoveRestoreIptableCommands(
+					executionDate, agent, action, setDefaultIptablesRules, null);
+			if (generatedPlaybookPath != "") {
+				String generatedScriptPath = TemplateUtils.generateBeatsScript(executionDate, agent,
+						generatedPlaybookPath, cfgFilePath, action);
+				return TemplateUtils.executeScript("beats", generatedScriptPath, executionDate, agent);
+			}
+			logger.error("ERROR generating script for execution for agent " + agent.getAgentId()
+					+ ". Check logs please");
+			return -1;
+			
+		}
+	   }else {
+			logger.info("Preparing the execution of beats remove playbook for agent " + agent.getAgentId());
+
+			String generatedPlaybookPath = TemplateUtils.generateBeatsPlaybook(executionDate, agent, action, null);
+
+			if (generatedPlaybookPath != "") {
+				String generatedScriptPath = TemplateUtils.generateBeatsScript(executionDate, agent,
+						generatedPlaybookPath, cfgFilePath, action);
+				if (generatedScriptPath != null) {
+					// execute generated files
+					return TemplateUtils.executeScript("beats", generatedScriptPath, executionDate, agent);
+				} else {
+					logger.error("ERROR generating script for execution for agent " + agent.getAgentId()
+							+ ". Check logs please");
+					return -1;
+				}
+			}
+		}
 		return -1;
 	}
-
 }

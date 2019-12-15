@@ -102,6 +102,39 @@ public class AgentApiServiceImpl extends AgentApiService {
 	            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
 	            }
     		}
+    		else if(agent.isCkecked()) {
+    			//remove beats
+    			status = -1;
+	    		//beats uninstallation
+	            BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate, Dictionary.REMOVE, getAnsibleCfgFilePathForAgent(agent));
+	            logger.info("beatsTemplateManager" + beatsTemplateManager.toString());
+	            System.out.println("beatsTemplateManager"+ beatsTemplateManager.toString());
+	            
+	            status = beatsTemplateManager.execute();
+	            if (status == 0) {
+	            	logger.info("Successful execution for the delete script generated to agent " + agent.getAgentId());
+	            	
+	            	//delete agent configuration
+	            	boolean deleted = agentCfgDb.deleteAgentCfg(agentId);
+	            	//delete agent configuration control
+	            	boolean deleted_execbeat = agentCfgControlDB.deleteAgentCfg(agentId);
+	            	
+	        		if (deleted) {
+	        			logger.info("Successful deleted from database agent_configuration table -->  agent " + agent.getAgentId());	        		
+	        		}
+	        		if (deleted_execbeat) {		
+	        			logger.info("Successful deleted from database agent_configuration_control table -->  agent configuration" + agent.getAgentId());
+	        		}
+	        		else {
+	        			logger.error("ERROR deleting agent configuration " + agent.getAgentId() + " from database");
+	        			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be deleted from database, check logs please")).build();
+	        		}
+	        	}
+	            else {	            	
+	            	logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
+	            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
+	            }
+    		}
     		
     		//remove ssh key
     		if (status==0) {
@@ -257,6 +290,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 	            }		
 	    	}
     	}
+    	
     	else {
     		
     		return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "This method will execute the action " + actionId +  "!")).build();
@@ -307,11 +341,11 @@ public class AgentApiServiceImpl extends AgentApiService {
             	logger.info("Store agent in db " + agentCfgControlDB.addAgentCfgControl(agentId, body));
             	agentCfgControlDB.addAgentCfgControl(agentId, body);
             	//set host as monitored in db    	
-	        	agent = agentDb.setMonitored(agentId, true);
-	        	logger.info("iAgent " + agent.getAgentId() + " monitored succesfully");
+	        	agent = agentDb.setChecked(agentId, true);
+	        	logger.info("iAgent " + agent.getAgentId() + " ckecked succesfully");
 	        	
-	        	logger.info("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
-	        	System.out.println("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
+	        	logger.info("postAction method with check param for agent " + agentId + " OK response: " + agent);
+	        	System.out.println("postAction method with check param for agent " + agentId + " OK response: " + agent);
 	          	
 	        	return Response.ok().entity(agent).build();
             }
@@ -338,7 +372,7 @@ public class AgentApiServiceImpl extends AgentApiService {
             	
             	agentCfgControlDB.addAgentCfgControl(agentId, body);
             	//set host as monitored in db    	
-	        	agent = agentDb.setMonitored(agentId, true);
+	        	agent = agentDb.setChecked(agentId, true);
 	        	logger.info("iAgent " + agent.getAgentId() + " monitored succesfully");
 	        	
 	        	logger.info("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
@@ -370,7 +404,7 @@ public class AgentApiServiceImpl extends AgentApiService {
             	logger.info("Store agent in db " + agentCfgControlDB.addAgentCfgControl(agentId, body));
             	agentCfgControlDB.addAgentCfgControl(agentId, body);
             	//set host as monitored in db    	
-	        	agent = agentDb.setMonitored(agentId, true);
+	        	agent = agentDb.setChecked(agentId, true);
 	        	logger.info("iAgent " + agent.getAgentId() + " monitored succesfully");
 	        	
 	        	logger.info("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
@@ -401,12 +435,12 @@ public class AgentApiServiceImpl extends AgentApiService {
             	// store agent configuration in db
             	logger.info("Store agent in db " + agentCfgControlDB.addAgentCfgControl(agentId, body));
             	agentCfgControlDB.addAgentCfgControl(agentId, body);
-            	//set host as monitored in db    	
-	        	agent = agentDb.setMonitored(agentId, true);
-	        	logger.info("iAgent " + agent.getAgentId() + " monitored succesfully");
+            	//set host as checked in db    	
+	        	agent = agentDb.setChecked(agentId, true);
+	        	logger.info("iAgent " + agent.getAgentId() + " checked succesfully");
 	        	
-	        	logger.info("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
-	        	System.out.println("postAction method with monitor param for agent " + agentId + " OK response: " + agent);
+	        	logger.info("postAction method with check param for agent " + agentId + " OK response: " + agent);
+	        	System.out.println("postAction method with check param for agent " + agentId + " OK response: " + agent);
 	          	
 	        	return Response.ok().entity(agent).build();
             }
@@ -593,13 +627,55 @@ public class AgentApiServiceImpl extends AgentApiService {
 	            }
 	    	}
     		
+    	}else if (actionId.equals(Dictionary.SUT_ACTION_UNCHECKED)){
+    		//verify that agent exists in database and it is monitored
+    		AgentFull agent = agentDb.getAgentByAgentId(agentId);
+	    	if (agent == null) {
+	    		//agent not exists in db
+	    		logger.error("No exists any agent in the system with agentId " + agentId);
+	    		return Response.status(Response.Status.NOT_FOUND).entity("No exists any agent in the system with agentId " + agentId).build();
+	    	}
+	    	else if (agent != null && !agent.isCkecked()) {
+	    		logger.error("Agent " + agentId + " is not checked");
+	    		return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Agent " + agentId + " is not checked").build();
+	    	}
+	    	else {
+	    		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+	        	String executionDate = sdf.format(timestamp);
+	    		int status = 0;
+	    		BeatsTemplateManager beatsTemplateManager = new BeatsTemplateManager(agent, executionDate, Dictionary.REMOVE_CONTROL, getAnsibleCfgFilePathForAgent(agent));	            
+	            status = beatsTemplateManager.execute();
+	            if (status == 0) {
+	            	logger.info("Successful execution for the delete script generated to agent " + agent.getAgentId());
+	            	
+	            	//delete agent configuration
+	            	boolean cfgDeleted = agentCfgDb.deleteAgentCfg(agentId);
+	            	if (cfgDeleted) {
+	            		//set the agent in db as not monitored
+		        		AgentFull agentNotChecked = agentDb.setChecked(agentId, false);
+		        		if (agentNotChecked == null) {
+		        			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " cannot be setted as not monitored in database, check logs please")).build();
+		        		}
+		        		else {
+		        			logger.info("deleteAction method with unchecked param for agent " + agentId + " OK response: " + agentNotChecked);
+				        	System.out.println("deleteAction method with unchecked param for agent " + agentId + " OK response: " + agentNotChecked);
+
+		        			return Response.ok().entity(agentNotChecked).build();
+		        		}
+	            	}
+	            	else {
+	            		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Agent " + agentId + " configuration cannot be deleted in database, check logs please")).build();
+	            	}
+	            }
+	            else {	            	
+	            	logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
+	            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
+	            }
+	    	}
+    		
     	}
     	else {
     		return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "This method will execute the action " + actionId +  "!")).build();
     	}    	
-
-	}
-    
-
-	
+	}	
 }
