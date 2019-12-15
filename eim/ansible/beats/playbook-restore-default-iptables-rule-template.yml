@@ -18,7 +18,7 @@
   - debug: var=iptables_list_numbers
 
   - name: "Restore default iptables rules of SUT"
-    shell: sudo iptables {{ item }}
+    shell: sudo {{ item }}
     loop: 
       -  "##item##"
     register: results
