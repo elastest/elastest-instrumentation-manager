@@ -5,7 +5,7 @@
 
   tasks:
         - name: Install iptables command
-          shell: apt-get install iptables
+          shell: apt-get install iptables -y
    
         - name: Iptables rule command
           shell: ##command##
