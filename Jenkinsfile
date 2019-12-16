@@ -1,4 +1,4 @@
-enode('docker') {
+node('docker') {
     stage "Container Prep"
         echo("The node is up")
         def mycontainer = docker.image('elastest/ci-docker-compose-py-siblings:latest')
