@@ -19,10 +19,3 @@
 
   - name: "Restore default iptables rules of SUT"
     shell: sudo {{ item }}
-    loop: 
-      -  "##item##"
-    register: results
-    when: iptables_list_numbers>=0
-    until: results.rc == 1
-    retries: "{{ iptables_list_numbers|int -1 }}"
-    ignore_errors: yes
