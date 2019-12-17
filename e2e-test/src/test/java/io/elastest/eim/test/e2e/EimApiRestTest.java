@@ -179,7 +179,6 @@ public class EimApiRestTest {
 		
 		System.out.println("############ Response for Test 4: unchecked agent ############");
 		System.out.println(response);
-		TimeUnit.SECONDS.sleep(180);
 
 		Assertions.assertEquals(200, response.getStatusCode().value());
  
@@ -197,7 +196,6 @@ public class EimApiRestTest {
 		 String URL = server+agentId;
 		 		 
 		 HttpEntity<String> request = new HttpEntity<String>("", headers);
-		 //TimeUnit.SECONDS.sleep(500);
 
 		 ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
 		 
