@@ -69,7 +69,7 @@ public class AgentApiServiceImpl extends AgentApiService {
     	Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     	String executionDate = sdf.format(timestamp);
         if (agent != null){
-    		if (agent.isMonitored()) {
+    		if (agent.isMonitored() || agent.isCkecked()) {
     			//remove beats
     			status = -1;
 	    		//beats uninstallation
@@ -102,7 +102,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 	            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
 	            }
     		}
-    		else if(agent.isCkecked()) {
+    		/*else if(agent.isCkecked()) {
     			//remove beats
     			status = -1;
 	    		//beats uninstallation
@@ -134,7 +134,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 	            	logger.error("ERROR executing the beats script for agent " + agent.getAgentId() + ". Check logs please");
 	            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
 	            }
-    		}
+    		}*/
     		
     		//remove ssh key
     		if (status==0) {
@@ -289,7 +289,7 @@ public class AgentApiServiceImpl extends AgentApiService {
 	            	return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been: " + status + " " )).build();
 	            }		
 	    	}
-    	}
+	    }
     	
     	else {
     		
@@ -454,6 +454,7 @@ public class AgentApiServiceImpl extends AgentApiService {
     //return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Result of the execution has been failure " )).build();
     
     }
+    
     
     
     @Override
