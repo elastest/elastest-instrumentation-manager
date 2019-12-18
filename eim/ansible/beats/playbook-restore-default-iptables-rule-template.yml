@@ -18,4 +18,4 @@
   - debug: var=iptables_list_numbers
 
   - name: "Restore default iptables rules of SUT"
-    shell: sudo {{ item }}
+    shell: sudo ##item##
