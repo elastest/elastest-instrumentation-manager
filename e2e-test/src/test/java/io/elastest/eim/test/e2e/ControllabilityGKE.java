@@ -36,7 +36,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 
-public class EimApiRestTest {
+public class ControllabilityGKE {
 
 	//private String sut_address = System.getenv("ET_SUT_HOST");
 	private String sut_address = "35.240.45.54";
