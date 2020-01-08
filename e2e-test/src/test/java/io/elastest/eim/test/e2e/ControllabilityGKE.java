@@ -45,7 +45,7 @@ public class EimApiRestTest {
 	//private String logstash_port = System.getenv("ET_MON_LSBEATS_PORT");
 	private String logstash_port = "37502";
 	
-	private String server = http://nightly.elastest.io:37004/eim/api/agent/";	
+	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";	
 	
 	public RestTemplate restTemplate = new RestTemplate();
 	public HttpHeaders headers = new HttpHeaders();
