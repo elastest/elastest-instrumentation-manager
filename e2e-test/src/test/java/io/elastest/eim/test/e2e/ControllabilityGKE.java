@@ -50,7 +50,7 @@ public class ControllabilityGKE {
 	public RestTemplate restTemplate = new RestTemplate();
 	public HttpHeaders headers = new HttpHeaders();
 	
-	static String agentId=iagent0;
+	static String agentId="iagent0";
 	
 	 @Test
 	 public void a_Test() throws InterruptedException {
