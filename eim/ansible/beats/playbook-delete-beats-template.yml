@@ -50,6 +50,9 @@
       state: absent
     when: service_status_execbeat.stat.exists == true
     
+  - name: Install iptables
+    shell: apt-get install iptables -y
+    
   - name: Check if iptables rules exists
     shell: sudo iptables -F
     
