@@ -141,9 +141,10 @@ public class ControllabilityGKE {
 		Assertions.assertEquals(200, response.getStatusCode().value());
  
 	 }
-	 @Test
-	 public void d_Test() throws InterruptedException {
-		System.out.println("############ Running Test5: ############");
+	 
+         @Test
+	 public void e_Test() throws InterruptedException {
+		System.out.println("############ Running Test 6: ############");
 		String uri_unistall_agent = agentId+"/unmonitor"; 
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -166,25 +167,4 @@ public class ControllabilityGKE {
 		Assertions.assertEquals(200, responseCode);
 
 	 }
-	 
-	 @Test
-	 public void e_Test() throws InterruptedException {
-		 
-		 System.out.println("############ Running Test 6: delete agent ############");
-
-		 headers.setContentType(MediaType.APPLICATION_JSON);
-		 headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		 
-		 String URL = server+agentId;
-		 		 
-		 HttpEntity<String> request = new HttpEntity<String>("", headers);
-
-		 ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
-		 
-		 System.out.println("############ Response for Test 6 delete agent: ############");
-		 System.out.println(response);
-		 
-		 Assertions.assertEquals(200, response.getStatusCode().value());         
-	 }
-
 }
