@@ -54,7 +54,7 @@ public class ControllabilityGKE {
 	
 	 @Test
 	 public void a_Test() throws InterruptedException {
-		System.out.println("############ Running Test 2: PacketLoss feature (Execbeat) ############");
+		System.out.println("############ Running Test 1: PacketLoss feature (Execbeat) ############");
 		
 		String uri_packetloss_action = "controllability/"+agentId+"/packetloss";
 		String URL = server + uri_packetloss_action;
@@ -88,7 +88,7 @@ public class ControllabilityGKE {
 	 
 	 @Test
 	 public void b_Test() throws InterruptedException {
-		System.out.println("############ Running Test 3: Stress feature (Execbeat) ############");
+		System.out.println("############ Running Test 2: Stress feature (Execbeat) ############");
 		
 		String uri_packetloss_action = "controllability/"+agentId+"/stress";
 		String URL = server + uri_packetloss_action;
@@ -110,7 +110,7 @@ public class ControllabilityGKE {
 				obj.toString(), headers);
 				
 		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
-		System.out.println("############ Response for Test3: Stress feature (Execbeat) ############");
+		System.out.println("############ Response for Test 2: Stress feature (Execbeat) ############");
 		System.out.println(response);
 		
 		TimeUnit.SECONDS.sleep(120);
@@ -121,21 +121,18 @@ public class ControllabilityGKE {
 	 
 	 @Test
 	 public void c_Test() throws InterruptedException {
-		System.out.println("############ Running Test4: unchecked agent ############");
+		System.out.println("############ Running Test 3: unchecked agent ############");
 
 		String uri_unistall_agent = agentId+"/unchecked"; 
-
+		String URL = server +  uri_unistall_agent;
 		 
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		 
-		String URL = server +  uri_unistall_agent;
-
 		HttpEntity<String> request = new HttpEntity<String>("", headers);
-
 		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
 		
-		System.out.println("############ Response for Test 4: unchecked agent ############");
+		System.out.println("############ Response for Test 3: unchecked agent ############");
 		System.out.println(response);
 
 		Assertions.assertEquals(200, response.getStatusCode().value());
