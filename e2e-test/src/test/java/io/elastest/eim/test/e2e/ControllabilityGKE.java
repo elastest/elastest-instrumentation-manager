@@ -141,12 +141,36 @@ public class ControllabilityGKE {
 		Assertions.assertEquals(200, response.getStatusCode().value());
  
 	 }
-	
-	 
 	 @Test
 	 public void d_Test() throws InterruptedException {
+		System.out.println("############ Running Test5: ############");
+		String uri_unistall_agent = agentId+"/unmonitor"; 
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		String URL = server +  uri_unistall_agent;
+		int responseCode = -1;
+		
+		try {
+			HttpEntity<String> request = new HttpEntity<String>("", headers);
+			ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
+			System.out.println("############ Response for Test 5: ############");
+			System.out.println(response);
+			responseCode = response.getStatusCode().value();
+
+		}catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+			System.out.println(e.getCause());
+		}
+		
+		Assertions.assertEquals(200, responseCode);
+
+	 }
+	 
+	 @Test
+	 public void e_Test() throws InterruptedException {
 		 
-		 System.out.println("############ Running Test5: delete agent ############");
+		 System.out.println("############ Running Test 6: delete agent ############");
 
 		 headers.setContentType(MediaType.APPLICATION_JSON);
 		 headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -157,13 +181,10 @@ public class ControllabilityGKE {
 
 		 ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
 		 
-		 System.out.println("############ Response for Test5 delete agent: ############");
+		 System.out.println("############ Response for Test 6 delete agent: ############");
 		 System.out.println(response);
 		 
-		 Assertions.assertEquals(200, response.getStatusCode().value());
-         
-         agentId = "";
-         
+		 Assertions.assertEquals(200, response.getStatusCode().value());         
 	 }
 
 }
