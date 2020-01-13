@@ -143,7 +143,7 @@ public class ControllabilityGKE {
 	 }
 	 
          @Test
-	 public void e_Test() throws InterruptedException {
+	 public void d_Test() throws InterruptedException {
 		System.out.println("############ Running Test 6: ############");
 		String uri_unistall_agent = agentId+"/unmonitor"; 
 		headers.setContentType(MediaType.APPLICATION_JSON);
