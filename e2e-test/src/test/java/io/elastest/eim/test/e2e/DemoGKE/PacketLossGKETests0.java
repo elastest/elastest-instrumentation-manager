@@ -20,15 +20,16 @@ public class PacketLossGKETests0 {
 
 	//private String sut_address = System.getenv("ET_SUT_HOST");
 	private String sut_address = "35.240.45.54";
+	private String URL_API = "http://"+sut_address+":5000";
 	//private String logstash_ip = System.getenv("ET_MON_LSBEATS_HOST");
 	private String logstash_ip = "nightly.elastest.io";
 	//private String logstash_port = System.getenv("ET_MON_LSBEATS_PORT");
 	private String logstash_port = "37502";
-	
 	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";	
-	
 	public RestTemplate restTemplate = new RestTemplate();
 	public HttpHeaders headers = new HttpHeaders();
+	private Double latency = 150.0;
+	
 	
 	static String agentId="iagent0";
 	
