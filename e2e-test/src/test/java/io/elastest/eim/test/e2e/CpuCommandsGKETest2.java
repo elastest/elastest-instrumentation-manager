@@ -68,7 +68,7 @@ public class CpuCommandsGKETest2 {
 		obj.addProperty("exec", "EXECBEAT");
 		obj.addProperty("component", "EIM");
 		obj.addProperty("packetLoss", "");
-		obj.addProperty("stressNg", "100");
+		obj.addProperty("stressNg", "50");
 		obj.addProperty("dockerized", "yes");
 		obj.addProperty("cronExpression", "@every 60s");
 		

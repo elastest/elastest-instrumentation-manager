@@ -59,7 +59,7 @@ public class CpuCommandsGKETest1 {
 	
 	@Test
 	 public void b_Test() throws InterruptedException {
-		System.out.println("############ Running test 2: Cpu test stress with stressor=3 over 30 seconds : ############");
+		System.out.println("############ Running test 2: Cpu test stress with stressor=10 over 30 seconds : ############");
 
 		String uri_packetloss_action = "controllability/"+agentId+"/stress";
 		String URL = server + uri_packetloss_action;
@@ -68,7 +68,7 @@ public class CpuCommandsGKETest1 {
 		obj.addProperty("exec", "EXECBEAT");
 		obj.addProperty("component", "EIM");
 		obj.addProperty("packetLoss", "");
-		obj.addProperty("stressNg", "3");
+		obj.addProperty("stressNg", "10");
 		obj.addProperty("dockerized", "yes");
 		obj.addProperty("cronExpression", "@every 60s");
 		
@@ -101,7 +101,7 @@ public class CpuCommandsGKETest1 {
 	
 	@Test
 	public void c_Test() throws InterruptedException, IOException{
-		System.out.println("############ Running Test 3: Calculate SLO Latency after packetloss injection command: ############");
+		System.out.println("############ Running Test 3: Calculate SLO Latency after CPU injection command: ############");
 		long start = System.nanoTime();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -133,7 +133,7 @@ public class CpuCommandsGKETest1 {
 	
 	 @Test
 	 public void d_Test() throws InterruptedException {
-		System.out.println("############ Running test 4: SLO Max.timing is: "+latency+". 0% dropped packets (No Execbeat) ############");
+		System.out.println("############ Running test 4: SLO Max.timing is: "+latency+". ############");
 		long start = System.nanoTime();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
