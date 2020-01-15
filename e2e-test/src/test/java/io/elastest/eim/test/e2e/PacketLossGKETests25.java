@@ -18,44 +18,46 @@ import com.google.gson.JsonParser;
 
 public class PacketLossGKETests25 {
 
-	//private String sut_address = System.getenv("ET_SUT_HOST");
 	private String sut_address = "35.240.45.54";
 	private String URL_API = "http://"+sut_address+":5000";
-	//private String logstash_ip = System.getenv("ET_MON_LSBEATS_HOST");
-	private String logstash_ip = "nightly.elastest.io";
-	//private String logstash_port = System.getenv("ET_MON_LSBEATS_PORT");
-	private String logstash_port = "37502";
 	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";	
 	public RestTemplate restTemplate = new RestTemplate();
 	public HttpHeaders headers = new HttpHeaders();
-	private Double latency = 150.0;
+	private Double latency = 100.0;
+	
+	
 	static String agentId="iagent0";
+	
 	
 	@Test
 	public void a_Test() throws InterruptedException, IOException{
-		System.out.println("############ Running Test 1: No injection cpu commands : ############");
+		System.out.println("############ Running Test 1: Calculate Base SLO Latency: ############");
 		long start = System.nanoTime();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		int responseCode = -1;
 		double elapesedTimeInMiliSeconds = 0;
+		
 		try {
 			HttpEntity<String> request = new HttpEntity<String>("", headers);
 			ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
 			System.out.println(response);
 			long elapsedTime = System.nanoTime() - start ;
 			elapesedTimeInMiliSeconds = TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS);
-			System.out.println("SLO latency is <= "+latency+". Actual latency is: "+elapesedTimeInMiliSeconds+" ms");
 			responseCode= response.getStatusCode().value();
-
 			
+
 		}catch (Exception e) {
 			// TODO: handle exception
 			System.out.println(e.getMessage());
 			System.out.println(e.getCause());
 		}
 		
-		Assertions.assertEquals(200, responseCode);
+		Assertions.assertTrue(latency < elapesedTimeInMiliSeconds, 
+				"SLO latency is <= "+latency+". Actual latency is: "+elapesedTimeInMiliSeconds+" ms");
+		
+		latency = elapesedTimeInMiliSeconds;
+
 	}
 	
 	@Test
@@ -86,7 +88,6 @@ public class PacketLossGKETests25 {
 			ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
 			System.out.println("############ Response for Test 2: ############");
 			System.out.println(response);
-			TimeUnit.SECONDS.sleep(60);
 			responseCode = response.getStatusCode().value();
 
 			
@@ -100,34 +101,34 @@ public class PacketLossGKETests25 {
 			  	  
 	 }
 	
-	@Test
-	 public void c_Test() throws InterruptedException, IOException{
-			System.out.println("############ Running Test 3: Max.timing "+latency+" ms: ############");
-			long start = System.nanoTime();
-			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-			double elapesedTimeInMiliSeconds = 0;
+	 @Test
+	 public void c_Test() throws InterruptedException {
+		System.out.println("############ Running test 3: SLO Max.timing is: "+latency+"  Droping 0.0% packet (No Execbeat) ############");
+		long start = System.nanoTime();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		int responseCode = -1;
+		double elapesedTimeInMiliSeconds = 0;
+		
+		try {
+			HttpEntity<String> request = new HttpEntity<String>("", headers);
+			ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
+			System.out.println(response);
+			long elapsedTime = System.nanoTime() - start ;
+			elapesedTimeInMiliSeconds = TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS);
+			responseCode= response.getStatusCode().value();
 			
-			try {
-				HttpEntity<String> request = new HttpEntity<String>("", headers);
-				ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
-				System.out.println("############ Response for Test 3: ############");
-				System.out.println(response);
-				long elapsedTime = System.nanoTime() - start ;
-				System.out.println("Timing of http request nanoseconds:" + elapsedTime);
-				// 1 second  = 1_000ms
-				elapesedTimeInMiliSeconds = TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS);
-				System.out.println("SLO latency is <= "+latency+". Actual latency is: "+elapesedTimeInMiliSeconds+" ms");
-								
-			}catch (Exception e) {
-				// TODO: handle exception
-				elapesedTimeInMiliSeconds = 1_000_000;
-			}
-			
-			Assertions.assertTrue(elapesedTimeInMiliSeconds <= latency, 
-					"SLO latency is <= "+latency+" ms. Actual latency reported by user is: " +elapesedTimeInMiliSeconds+" ms" );
-			
+
+		}catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+			System.out.println(e.getCause());
 		}
+		
+		Assertions.assertTrue(latency < elapesedTimeInMiliSeconds, 
+				"SLO latency is <= "+latency+". Actual latency is: "+elapesedTimeInMiliSeconds+" ms");
+		
+	 }
 	
 	 @Test
 	 public void d_Test() throws InterruptedException {
