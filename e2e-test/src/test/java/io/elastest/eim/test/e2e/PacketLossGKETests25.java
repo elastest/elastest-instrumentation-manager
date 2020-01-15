@@ -23,7 +23,7 @@ public class PacketLossGKETests25 {
 	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";	
 	public RestTemplate restTemplate = new RestTemplate();
 	public HttpHeaders headers = new HttpHeaders();
-	public static Double latency = 100.0;
+	public static Long latency;
 	
 	
 	static String agentId="iagent0";
@@ -36,7 +36,7 @@ public class PacketLossGKETests25 {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		int responseCode = -1;
-		double elapesedTimeInMiliSeconds = 0;
+		long elapesedTimeInMiliSeconds = 0;
 		
 		try {
 			HttpEntity<String> request = new HttpEntity<String>("", headers);
@@ -108,7 +108,7 @@ public class PacketLossGKETests25 {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		int responseCode = -1;
-		double elapesedTimeInMiliSeconds = 0;
+		long elapesedTimeInMiliSeconds = 0;
 		
 		try {
 			HttpEntity<String> request = new HttpEntity<String>("", headers);
