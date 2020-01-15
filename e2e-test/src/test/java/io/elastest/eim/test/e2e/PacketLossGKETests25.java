@@ -36,7 +36,7 @@ public class PacketLossGKETests25 {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		int responseCode = -1;
-double elapesedTimeInMiliSeconds = 0;
+		double elapesedTimeInMiliSeconds = 0;
 		
 		try {
 			HttpEntity<String> request = new HttpEntity<String>("", headers);
@@ -52,7 +52,10 @@ double elapesedTimeInMiliSeconds = 0;
 			System.out.println(e.getMessage());
 			System.out.println(e.getCause());
 		}
+		
 		latency = elapesedTimeInMiliSeconds;
+		System.out.println("Base SLO Latency is: "+latency);
+		
 		Assertions.assertEquals(200, responseCode);
 
 	}

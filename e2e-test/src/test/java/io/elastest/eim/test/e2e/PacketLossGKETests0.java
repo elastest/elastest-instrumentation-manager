@@ -52,6 +52,8 @@ public class PacketLossGKETests0 {
 			System.out.println(e.getCause());
 		}
 		latency = elapesedTimeInMiliSeconds;
+		System.out.println("Base SLO Latency is: "+latency);
+		
 		Assertions.assertEquals(200, responseCode);
 		
 		
