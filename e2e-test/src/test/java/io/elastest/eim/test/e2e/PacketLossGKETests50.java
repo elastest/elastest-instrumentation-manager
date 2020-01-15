@@ -23,7 +23,7 @@ public class PacketLossGKETests50 {
 	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";	
 	public RestTemplate restTemplate = new RestTemplate();
 	public HttpHeaders headers = new HttpHeaders();
-	public static Long latency ;
+	public static Long latency;
 	
 	
 	static String agentId="iagent0";
@@ -53,14 +53,15 @@ public class PacketLossGKETests50 {
 			System.out.println(e.getCause());
 		}
 		latency = elapesedTimeInMiliSeconds;
-		System.out.println("Base SLO Latency is: "+latency);
+		System.out.println("Base SLO Latency before injection packetloss commands is: "+latency);
 		
 		Assertions.assertEquals(200, responseCode);
+		
 	}
 	
 	@Test
 	 public void b_Test() throws InterruptedException {
-		System.out.println("############ Running test 2: Droping 0.0% packet (No Execbeat) ############");
+		System.out.println("############ Running test 2: Droping 0.50% packet (No Execbeat) ############");
 
 		String uri_packetloss_action = "controllability/"+agentId+"/packetloss";
 		String URL = server + uri_packetloss_action;
@@ -99,9 +100,41 @@ public class PacketLossGKETests50 {
 			  	  
 	 }
 	
+	@Test
+	public void c_Test() throws InterruptedException, IOException{
+		System.out.println("############ Running Test 3: Calculate SLO Latency after packetloss injection command: ############");
+		long start = System.nanoTime();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		int responseCode = -1;
+		long elapesedTimeInMiliSeconds = 0;
+		
+		try {
+			HttpEntity<String> request = new HttpEntity<String>("", headers);
+			ResponseEntity<String> response = restTemplate.exchange(URL_API,  HttpMethod.GET, request, String.class);
+			System.out.println(response);
+			long elapsedTime = System.nanoTime() - start ;
+			elapesedTimeInMiliSeconds = TimeUnit.MILLISECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS);
+			responseCode= response.getStatusCode().value();
+			
+
+		}catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+			System.out.println(e.getCause());
+		}
+		latency = elapesedTimeInMiliSeconds;
+		System.out.println("SLO Latency after packetloss injection command is: "+latency);
+		
+		Assertions.assertEquals(200, responseCode);
+		
+		
+
+	}
+	
 	 @Test
-	 public void c_Test() throws InterruptedException {
-		System.out.println("############ Running test 3: SLO Max.timing is: "+latency+"  Droping 0.50% packet (No Execbeat) ############");
+	 public void d_Test() throws InterruptedException {
+		System.out.println("############ Running test 4: SLO Max.timing is: "+latency+". 50% packet dropped (No Execbeat) ############");
 		long start = System.nanoTime();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -130,7 +163,7 @@ public class PacketLossGKETests50 {
 	 }
 	
 	 @Test
-	 public void d_Test() throws InterruptedException {
+	 public void e_Test() throws InterruptedException {
 		System.out.println("############ Running Test 4: unchecked agent ############");
 
 		String uri_unistall_agent = agentId+"/unchecked"; 
@@ -148,5 +181,6 @@ public class PacketLossGKETests50 {
 		Assertions.assertEquals(200, response.getStatusCode().value());
  
 	 }
+
 
 }
