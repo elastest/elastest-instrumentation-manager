@@ -23,7 +23,7 @@ public class PacketLossGKETests50 {
 	private String server = "http://nightly.elastest.io:37004/eim/api/agent/";	
 	public RestTemplate restTemplate = new RestTemplate();
 	public HttpHeaders headers = new HttpHeaders();
-	private Double latency = 100.0;
+	public static Double latency = 100.0;
 	
 	
 	static String agentId="iagent0";
