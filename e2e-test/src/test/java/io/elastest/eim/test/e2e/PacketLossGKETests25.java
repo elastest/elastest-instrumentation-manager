@@ -36,7 +36,7 @@ public class PacketLossGKETests25 {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		int responseCode = -1;
-		double elapesedTimeInMiliSeconds = 0;
+double elapesedTimeInMiliSeconds = 0;
 		
 		try {
 			HttpEntity<String> request = new HttpEntity<String>("", headers);
@@ -52,11 +52,8 @@ public class PacketLossGKETests25 {
 			System.out.println(e.getMessage());
 			System.out.println(e.getCause());
 		}
-		
-		Assertions.assertTrue(latency < elapesedTimeInMiliSeconds, 
-				"SLO latency is <= "+latency+". Actual latency is: "+elapesedTimeInMiliSeconds+" ms");
-		
 		latency = elapesedTimeInMiliSeconds;
+		Assertions.assertEquals(200, responseCode);
 
 	}
 	

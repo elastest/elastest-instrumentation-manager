@@ -52,12 +52,8 @@ public class PacketLossGKETests75 {
 			System.out.println(e.getMessage());
 			System.out.println(e.getCause());
 		}
-		
-		Assertions.assertTrue(latency < elapesedTimeInMiliSeconds, 
-				"SLO latency is <= "+latency+". Actual latency is: "+elapesedTimeInMiliSeconds+" ms");
-		
 		latency = elapesedTimeInMiliSeconds;
-
+		Assertions.assertEquals(200, responseCode);
 	}
 	
 	@Test
