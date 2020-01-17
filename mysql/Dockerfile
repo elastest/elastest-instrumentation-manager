@@ -1,4 +1,4 @@
-FROM mysql:latest
+FROM mysql:5.7
 MAINTAINER  David Rojo <david.rojoa@atos.net>
 
 # Set Image Labels
