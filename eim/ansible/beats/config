@@ -1,0 +1,27 @@
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURDekNDQWZPZ0F3SUJBZ0lRR2YvOWpSMGw1cFFQREl5enJRWkhKekFOQmdrcWhraUc5dzBCQVFzRkFEQXYKTVMwd0t3WURWUVFERXlReU9UVmtNVEE1TUMwM05qbGpMVFF4WXpJdE9USXhZUzB6WkRJMk9UYzNNV016TWpBdwpIaGNOTWpBd01UQXpNRGcwTURVeVdoY05NalV3TVRBeE1EazBNRFV5V2pBdk1TMHdLd1lEVlFRREV5UXlPVFZrCk1UQTVNQzAzTmpsakxUUXhZekl0T1RJeFlTMHpaREkyT1RjM01XTXpNakF3Z2dFaU1BMEdDU3FHU0liM0RRRUIKQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUUR5ZjF1dFlxNVVwM1B3OWdsQmVCNzFGRDFSOFFMTFE0ZnFtYzA3N01DeQpaMFlSdll3czM2UWVGdS9aeGhsRVphZ2tsZ0Y5djZtSEt0ZDhNMzBXRnViYU92SjM1NUFPTUk1djkwSTBJOXZYCk9WTmV6aloxRk9Tcms0QXBFWC9jVmFnMzdQNEc2Um9wRm1uRkdObjlzM2thWG13K0lpb3BEMzJPWEx6NDduMncKRTFVQ2U2YXY3UjlpdzVCVS83cS91QVM0dlRiQUQyRmM5cE1OV0h6dEVIT2F0ZjVjQUY5US9JNjRnbHk4WU5CbwovTnI0UGw3QVZsYXd6ZmRlUjBTUDd5Y3Y5Kzh4Z3NtSXkybVZ5WHh6cDBha3IvMm5Kc1dmSFVVak1tT0xVOXkwCi9pY29WVFVYaG03dXJkM3NvamdGOGFQSndaN21WMVlDdHY0alZqbHBkbjBKQWdNQkFBR2pJekFoTUE0R0ExVWQKRHdFQi93UUVBd0lDQkRBUEJnTlZIUk1CQWY4RUJUQURBUUgvTUEwR0NTcUdTSWIzRFFFQkN3VUFBNElCQVFCbQpWaUFVdTZHVmc2blU3d3hNbEFrUUV0bEZ0WDNJdGVNRVNPMTJVNWV3NEdXL25jUVBBU05jc3dGSnpFN1NrS2U1CnU1N25mU0U0QkdxaGhybXNCRTVsdkhZcXo1bEE4MTlodVBuNGFQTkdPN3ZwWDFsVk14KzFrMTZrdjIyWXk4eTgKU2V3UXZTbXFYdEt3MHp0NW1rTjB3RjBzRG1WQWs2YUtVS3ZYVFpuREtCY2pGOWlnbjI4aVFOUTAvUVFzd0U0ZQpiNmt6dCttL3JpcFN0bFZrUjVzYWlnc2p1MzFwZGNSaW5VaUpXSm5OY0p2aS8zdisrZlVWK1ZRdGNLNTl0WXJtCkJZQTl0U3dic1h3RG9xM0c5SFczWFpLNkgvQ1lKYWVzSm8xb25lbzlyL1ptQjBnb3FTRWpERUtzNUNVVDRUemEKQzMyRTYyV1BmRnpsakZyVW1XTUwKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+    server: https://104.155.24.154
+  name: gke_vertical-kayak-263912_europe-west1-c_standard-cluster-1
+contexts:
+- context:
+    cluster: gke_vertical-kayak-263912_europe-west1-c_standard-cluster-1
+    user: gke_vertical-kayak-263912_europe-west1-c_standard-cluster-1
+  name: gke_vertical-kayak-263912_europe-west1-c_standard-cluster-1
+current-context: gke_vertical-kayak-263912_europe-west1-c_standard-cluster-1
+kind: Config
+preferences: {}
+users:
+- name: gke_vertical-kayak-263912_europe-west1-c_standard-cluster-1
+  user:
+    auth-provider:
+      config:
+        access-token: ya29.Iq8BugfLGeH6iK18qExoFJmE7g4zjCzGMNxB3aIQm0nwu_cgKVFAUqkQoT2yS_q0yXXmJz7T0oyUgzEIfrhTG5dZf88C7XfEEw2AnD2z6i2XbDbzweZDc9p7uoPu9DzhwVpOWna_5kNpbUP4OjltNbaTR-mAeeoAbZvAueWlhGQfGWtT85G0k-8euI3wHmSuseNQmn7_B5UEvtDDr9NsdrSlQJASEgVgnupD7zfvqtufhA
+        cmd-args: config config-helper --format=json
+        cmd-path: /google/google-cloud-sdk/bin/gcloud
+        expiry: "2020-01-21T11:40:58Z"
+        expiry-key: '{.credential.token_expiry}'
+        token-key: '{.credential.access_token}'
+      name: gcp
+

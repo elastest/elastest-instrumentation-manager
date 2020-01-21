@@ -2,7 +2,7 @@ version: "2"
 
 services:
     eim-mysql:
-        image: elastest/eim-mysql:latest
+        build: ./mysql
         hostname: eim-mysql
         stdin_open: true
         restart: always
@@ -24,12 +24,17 @@ services:
         stdin_open: true
         tty: true
         environment:
+            - KUBECONFIG=/tmp/ansible/beats/config
+            - GOOGLE_APPLICATION_CREDENTIALS=/tmp/ansible/beats/gcp.json
+            - LC_ALL=C.UTF-8
+            - LANG=C.UTF-8
             - ET_EDM_MYSQL_HOST=eim-mysql
             - ET_EDM_MYSQL_PORT=3306
             - WAIT_HOSTS=eim-mysql:3306
             - PASS=elastest
         expose:
             - 8080
+            - 80
         ports:
             - 8080:8080
         hostname: eim
@@ -37,6 +42,7 @@ services:
             - elastest
     sut:
         image: elastest/eim-sut:latest
+        user: root
         depends_on:
             - kibana
         stdin_open: true
@@ -45,7 +51,10 @@ services:
             - elastest
         cap_add:
             - ALL
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
     elasticsearch:
+        user: root
         #image: elastest/eim-elasticsearch:0.9.0
         image: elastest/eim-elasticsearch:latest
         ports:
@@ -56,9 +65,12 @@ services:
         hostname: elasticsearch
         networks:
                 - elastest
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
     logstash:
         #image: elastest/eim-logstash:0.9.0
         image: elastest/eim-logstash:latest
+        user: root
         ports:
                 - "5044:5044"
         depends_on: 
@@ -68,6 +80,8 @@ services:
         hostname: logstash
         networks:
                 - elastest
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
 
     kibana:
         #image: elastest/eim-kibana:0.9.0
