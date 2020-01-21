@@ -1,4 +1,4 @@
-FROM williamyeh/ansible:ubuntu14.04-onbuild
+FROM williamyeh/ansible:ubuntu16.04-onbuild
 MAINTAINER  David Rojo <david.rojoa@atos.net> & Fernando Mendez <fernando.mendez@atos.net>
 
 # Set Image Labels
@@ -11,6 +11,8 @@ LABEL commit_date=$COMMIT_DATE
 ARG VERSION=unspecified
 LABEL version=$VERSION
 
+
+
 # make sure the package repository is up to date
 RUN \
 	apt-get update && apt-get -y upgrade && \
@@ -18,6 +20,16 @@ RUN \
 	apt-get install -y wget && \
 	apt-get install -y unzip && \
 	apt-get install -y vim && \
+	apt-get install -y netcat && \
+	# Installation of ChaosToolkit && kubernetes dependencies
+	apt-get install -y python3 && \
+        update-alternatives --install /usr/bin/python python /usr/bin/python3 1 && \
+	apt install -y python3-pip && \
+    	pip3 install -U chaostoolkit && \
+    	pip3 install chaostoolkit-kubernetes && \
+        pip3 install -U chaostoolkit-google-cloud-platform && \
+        pip3 install --upgrade pip && \
+        pip3 install ansible && \
 	# install default jdk
 	apt-get -y install default-jdk && apt-get clean && \
 	update-alternatives --display java && \
@@ -54,6 +66,8 @@ RUN \
 	mkdir -p /root/.ssh/
 
 
+
+
 # open default tomcat port
 EXPOSE 8080
 
@@ -76,6 +90,17 @@ COPY ansible/beats/setup-files/packetbeat.yml /var/ansible/beats/setup-files
 COPY ansible/beats/playbook-install-beat-execbeat.yml /var/ansible/beats
 COPY ansible/beats/setup-files/execbeat.yml /var/ansible/beats/setup-files
 COPY ansible/beats/remove_iptables_rules.sh /var/ansible/beats
+
+# ChaosToolkit Configuration and experiments files
+COPY ansible/beats/playbook-chaos-template.yml /var/ansible/beats
+COPY ansible/beats/config /var/ansible/beats
+COPY ansible/beats/gcp.json /var/ansible/beats
+COPY ansible/beats/experiment_0.json /var/ansible/beats
+COPY ansible/beats/experiment_1.json /var/ansible/beats
+COPY ansible/beats/experiment_3.json /var/ansible/beats
+COPY ansible/beats/experiment_5.json /var/ansible/beats
+COPY ansible/beats/experiment_7.json /var/ansible/beats
+
 
 # restart tomcat server to refresh the value of the properties 
 COPY tomcat/restart_tomcat.sh /var/tomcat/restart_tomcat.sh

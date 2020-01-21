@@ -1,0 +1,15 @@
+---
+# file: playbook-chaos.yml
+
+- hosts: 127.0.0.1
+  connection: local
+  vars:
+    ID_EXPERIMENT: 1
+  become: yes
+  tasks:
+  
+  - name: "Running chaos experiment"
+    shell: chaos run experiment_{{ ID_EXPERIMENT }}.json
+
+
+

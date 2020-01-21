@@ -1,0 +1,21 @@
+{
+    "title": "Do we remain available in face of pod going down?",
+    "description": "We expect Kubernetes to handle the situation gracefully when a pod goes down",
+    "tags": ["kubernetes"],
+    "method": [
+        {
+          "type": "action",
+          "name": "scale-microservice",
+          "provider": {
+            "type": "python",
+            "arguments": {
+              "replicas": 0,
+              "name": "eim-sut-deploy-service"
+            },
+            "func": "scale_microservice",
+            "module": "chaosk8s.actions"
+          }
+        }
+    ]
+
+}
