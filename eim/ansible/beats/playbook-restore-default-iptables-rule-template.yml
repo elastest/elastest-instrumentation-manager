@@ -1,0 +1,21 @@
+---
+# file: playbook-restore-default-iptables-rule-template.yml
+
+- hosts: ##targethost##
+  vars:
+    AGENT_ID: ##targethost##
+  remote_user: ##user##
+  become: yes
+  tasks:
+
+  - name: "Get iptables list tam"
+    shell: sudo iptables --list --line-numbers | sed '/^num\|^$\|^Chain/d' | wc -l
+    register: iptables_list_numbers
+
+  - set_fact:
+      iptables_list_numbers="{{ iptables_list_numbers.stdout | int }}"
+
+  - debug: var=iptables_list_numbers
+
+  - name: "Restore default iptables rules of SUT"
+    shell: sudo ##item##

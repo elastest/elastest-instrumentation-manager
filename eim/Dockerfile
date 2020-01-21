@@ -88,8 +88,12 @@ COPY ansible/beats/setup-files/packetbeat.yml /var/ansible/beats/setup-files
 
 # beats - EXECBEAT
 COPY ansible/beats/playbook-install-beat-execbeat.yml /var/ansible/beats
+COPY ansible/beats/playbook-restore-default-iptables-rule-template.yml /var/ansible/beats
 COPY ansible/beats/setup-files/execbeat.yml /var/ansible/beats/setup-files
 COPY ansible/beats/remove_iptables_rules.sh /var/ansible/beats
+
+# it works with ssh instead of execbeat rule injection
+COPY ansible/beats/playbook-ssh-rule-iptables.yml /var/ansible/beats
 
 # ChaosToolkit Configuration and experiments files
 COPY ansible/beats/playbook-chaos-template.yml /var/ansible/beats
@@ -100,7 +104,6 @@ COPY ansible/beats/experiment_1.json /var/ansible/beats
 COPY ansible/beats/experiment_3.json /var/ansible/beats
 COPY ansible/beats/experiment_5.json /var/ansible/beats
 COPY ansible/beats/experiment_7.json /var/ansible/beats
-
 
 # restart tomcat server to refresh the value of the properties 
 COPY tomcat/restart_tomcat.sh /var/tomcat/restart_tomcat.sh

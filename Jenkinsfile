@@ -13,7 +13,7 @@ node('docker') {
 
                 stage "Build eim-rest-api"
                         echo ("Build eim-rest-api")
-                        sh 'cd ./eim/eim-rest-api; mvn clean package -DskipTests;'
+                        sh 'cd ./eim/eim-rest-api; mvn -U clean install package;'
 
                 stage "Build MySQL image - Package"
                        echo ("building MySQL..")

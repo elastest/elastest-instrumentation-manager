@@ -15,6 +15,7 @@ services:
             - "3306"
     eim:
         build:  ./eim
+        container_name: elastest_eim_1
         depends_on:
             - eim-mysql
             - sut

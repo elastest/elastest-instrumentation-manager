@@ -43,6 +43,9 @@ public class AgentFull   {
   @JsonProperty("monitored")
   private Boolean monitored = null;
   
+  @JsonProperty("ckecked")
+  private Boolean ckecked = null;
+  
   @JsonProperty("logstash_ip")
   private String logstashIp = null;
   
@@ -113,6 +116,21 @@ public class AgentFull   {
 
   public void setMonitored(Boolean monitored) {
     this.monitored = monitored;
+  }
+  
+  /**
+   * Get ckecked
+   * @return monitored
+   **/
+  @JsonProperty("ckecked")
+  @ApiModelProperty(example = "true", required = true, value = "")
+  @NotNull
+  public Boolean isCkecked() {
+    return ckecked;
+  }
+
+  public void setCkecked(Boolean ckecked) {
+    this.ckecked = ckecked;
   }
 
   /**

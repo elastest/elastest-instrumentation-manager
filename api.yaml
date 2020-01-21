@@ -5,8 +5,8 @@ info:
   description: RESTful API specification for the ElasTest Instrumentation Manager (EIM)
   termsOfService: TBD
   contact:
-    name: David Rojo (ATOS)
-    email: david.rojoa@atos.net
+    name: Fernando Mendez Requena - Research Software Engineer
+    email: fernando.mendez@atos.net
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
@@ -264,7 +264,7 @@ paths:
       tags:
         - Agent
       summary: Submit an action ti an agent
-      description: A client submit an action to an agent
+      description: A client submit an action to an agent. In order to non use **Execbeat** execution, the field called *cronExpression* must be empty.
       operationId: postActionPacketloss
       consumes:
         - application/json
@@ -306,7 +306,43 @@ paths:
           description: Agent not found
           schema:
             $ref: '#/definitions/AgentFull'
-  
+  '/agent/controllability/{agentId}/unchecked':
+    delete:
+      tags:
+        - Agent
+      summary: Uncheck an agent
+      description: A client uncheck the agent for not to be controllable
+      operationId: deleteControllability
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: agentId
+          in: path
+          description: Id of agent to uncheck
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Agent unchecked successfully
+          schema:
+            $ref: '#/definitions/AgentUnchecked'
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          schema:
+            type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Network not found
+          schema:
+            type: string
+
   /agentconfiguration:
     get:
       tags:
@@ -569,6 +605,15 @@ definitions:
         type: string
         example: true
     description: This entity defines an agent deleted.
+  AgentUnchecked:
+    type: object
+    required:
+      - agentId
+    properties:
+      agentId:
+        type: string
+        example: iagent1
+    description: This entity defines an agent unchecked.
   AgentConfigurationDatabase:
     type: object
     required:

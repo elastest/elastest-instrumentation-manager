@@ -63,7 +63,7 @@ public class TemplateUtils {
 				return "";
 			}			
 		}
-		else if (action.equalsIgnoreCase(Dictionary.REMOVE)) {
+		else if (action.equalsIgnoreCase(Dictionary.REMOVE) || action.equalsIgnoreCase(Dictionary.REMOVE_CONTROL)) {
 			
 			String playbookTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
 					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_REMOVE_PLAYBOOK);
@@ -186,7 +186,7 @@ public class TemplateUtils {
 			}		
 			
 		}
-		else if (action.equalsIgnoreCase(Dictionary.REMOVE)) {
+		else if (action.equalsIgnoreCase(Dictionary.REMOVE) || action.equalsIgnoreCase(Dictionary.REMOVE_CONTROL)) {
 			
 			String playbookTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_PLAYBOOKPATH) + 
 					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_REMOVE_PLAYBOOK);
@@ -218,7 +218,8 @@ public class TemplateUtils {
 	}
 	
 	public static String generatesBeatsPlaybookPacketLossCommand(String executionDate, AgentFull agent, String action, AgentConfigurationControl agentCfg) {
-		if (action.equalsIgnoreCase(Dictionary.SUT_ACTION_PACKETLOSS)){
+		
+		if (action.equalsIgnoreCase(Dictionary.SUT_ACTION_PACKETLOSS) && !agentCfg.getCronExpression().isEmpty()){
 
 			String playbookTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_PLAYBOOKPATH) + 
 					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_INSTALL_PLAYBOOK_EXECBEAT);
@@ -237,7 +238,6 @@ public class TemplateUtils {
 			String jokerCommandExecbeat = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_EXECBEAT);
 			String jokerArgsExecbeat = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_ARGS_EXECBEAT);
 			String jokerCronExpressionExecbeat=Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_CRONEXPRESSION_EXECBEAT);
-
 			
 			try {
 				//Generate the execution playbook
@@ -268,6 +268,40 @@ public class TemplateUtils {
 			}catch (IOException e) {
 				// TODO: handle exception
 				logger.error("ERROR while triying to generate beats installation playbook for agent " + agent.getAgentId() + " with execution date: " + executionDate);
+				e.printStackTrace();
+				return "";
+			}
+		}
+		else if(action.equalsIgnoreCase(Dictionary.SUT_ACTION_PACKETLOSS) && 
+				(agentCfg.getCronExpression().isEmpty() || agentCfg.getCronExpression() =="")) {
+			
+			String playbookTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_PLAYBOOKPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_PLAYBOOK_IPTABLES_RULE);
+			
+			String playbookToExecutePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_PLAYBOOKPATH) + 
+					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_INSTALL_EXECUTION_PLAYBOOK_PREFIX_IPTABLES_RULE) + agent.getAgentId() + 
+					"-" + executionDate + ".yml";
+
+			String jokerTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_PLAYBOOK_JOKER);
+			String jokerUser = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_USER_JOKER);
+			String jokerCommandExecbeat = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_JOKER_STREAM_EXECBEAT);
+			
+			try {
+				//Generate the execution playbook
+				FileTextUtils.copyFile(playbookTemplatePath, playbookToExecutePath);
+				logger.info("Generated successfully the SSH playbook for agent" + agent.getAgentId() + ": " + playbookToExecutePath);
+				//Fill the playbook with the agentId of the agent
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerTemplates, agent.getAgentId());
+				//Fill the playbook with the user of the new host
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerUser, agent.getUser());
+				logger.info("Modified successfully the generated SSH playbook for agent " + agent.getAgentId() + ". Ready to execute!");
+				FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerCommandExecbeat, "sudo iptables "+agentCfg.getPacketLoss());
+				
+				return playbookToExecutePath;
+			}
+			catch (IOException e) {
+				// TODO: handle exception
+				logger.error("ERROR while triying to generate ssh template to send iptables rule for agent " + agent.getAgentId() + " with execution date: " + executionDate);
 				e.printStackTrace();
 				return "";
 			}
@@ -372,7 +406,7 @@ public class TemplateUtils {
 			}				
 			
 		}
-		else if (action.equalsIgnoreCase(Dictionary.REMOVE)) {
+		else if (action.equalsIgnoreCase(Dictionary.REMOVE) || action.equalsIgnoreCase(Dictionary.REMOVE_CONTROL)) {
 			
 			String scriptTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_EXECUTIONPATH) + 
 					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_SSH_REMOVE_LAUNCHER);
@@ -474,6 +508,46 @@ public class TemplateUtils {
 	}
 	
 	
+	public static String generateBeatsPlaybookRemoveRestoreIptableCommands(String executionDate, AgentFull agent, String action, 
+			List<String> packetloss, AgentConfiguration agentCfg){
+		
+		String playbookTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_PLAYBOOKPATH) + 
+				Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_RESTORE_IPTABLES_RULES_PLAYBOOK);
+		String playbookToExecutePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_PLAYBOOKPATH) + 
+				Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_REMOVE_EXECUTION_PLAYBOOK_PREFIX) + agent.getAgentId() + 
+				"-" + executionDate + ".yml";
+		String jokerTemplates = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_PLAYBOOK_JOKER);
+		String jokerUser = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_USER_JOKER);
+		
+		String jokerItemIptablesRules = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_ITEM_ANSIBLE);
+			
+		try {
+			//Generate the execution playbook
+			FileTextUtils.copyFile(playbookTemplatePath, playbookToExecutePath);
+			logger.info("Generated successfully the beats remove playbook for agent" + agent.getAgentId() + ": " + playbookToExecutePath);
+			//Fill the playbook with the agentId of the agent
+			FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerTemplates, agent.getAgentId());
+			//Fill the playbook with the user of the current host
+			FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerUser, agent.getUser());
+			
+			String iptables_rules ="";
+			
+			for(String e: packetloss) {
+			    iptables_rules+=
+			    		" "+e+ "\n";
+			}
+			logger.info("All iptables rules: "+iptables_rules);
+			FileTextUtils.replaceTextInFile(playbookToExecutePath, jokerItemIptablesRules, iptables_rules);
+			
+			logger.info("Modified successfully the generated beats remove playbook for agent " + agent.getAgentId() + ". Ready to execute!");
+			return playbookToExecutePath;				
+		} catch (IOException e) {
+			logger.error("ERROR while triying to generate beats remove playbook for agent " + agent.getAgentId() + " with execution date: " + executionDate);
+			e.printStackTrace();
+			return "";
+		}	
+	}
+	
 	
 	public static String generateBeatsScript(String executionDate, AgentFull agent, String playbookPath, String ansibleCfgFilePath, String action) {
 		if (action.equalsIgnoreCase(Dictionary.INSTALL)) {
@@ -506,7 +580,7 @@ public class TemplateUtils {
 			}	
 			
 		}
-		else if (action.equalsIgnoreCase(Dictionary.REMOVE)) {
+		else if (action.equalsIgnoreCase(Dictionary.REMOVE) || action.equalsIgnoreCase(Dictionary.REMOVE_CONTROL)) {
 
 			String scriptTemplatePath = Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_EXECUTIONPATH) + 
 					Properties.getValue(Dictionary.PROPERTY_TEMPLATES_BEATS_REMOVE_LAUNCHER);

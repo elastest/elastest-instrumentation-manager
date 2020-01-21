@@ -50,7 +50,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 public class EimTJobE2eTest extends EimBaseTest {
 	
 	private String sutName = "EIMe2eSut";
-	final int timeOut  = 1300;
+	final int timeOut  = 7000;
 	
 
 	final Logger log = getLogger(lookup().lookupClass());

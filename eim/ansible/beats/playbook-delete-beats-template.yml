@@ -7,92 +7,69 @@
   remote_user: ##user##
   become: yes
   tasks:
-
+  
   - name: Check if Service Exists packebeat
     stat: path=/etc/init.d/packetbeat
     register: service_status
-
+    
   - name: Stop service packetbeat
     service: name=packetbeat state=stopped
     when: service_status.stat.exists
     register: service_stopped
-
+    
   - name: Check if Service Exists metricbeat
     stat: path=/etc/init.d/metricbeat
     register: service_status
-
+    
   - name: Stop service metricbeats
     service: name=metricbeat state=stopped
     when: service_status.stat.exists
     register: service_stopped
-
+    
   - name: Check if Service Exists filebeat
     stat: path=/etc/init.d/filebeat
     register: service_status
-
+    
   - name: Stop service filebeat
     service: name=filebeat state=stopped
     when: service_status.stat.exists
     register: service_stopped
-
+    
   - name: Check if Service Exists execbeat
     stat: path=/etc/init.d/execbeat
     register: service_status_execbeat
-
+    
   - name: Stop service execbeat
     service: name=execbeat state=stopped
     when: service_status_execbeat.stat.exists == true
     register: service_execbeat
-
+    
   - name: "Remove execbeat dependencies"
     file:
       path: /etc/execbeat/
       state: absent
     when: service_status_execbeat.stat.exists == true
-  
-  - name: "Get iptables list tam"
-    shell: sudo iptables --list --line-numbers | sed '/^num\|^$\|^Chain/d' | wc -l
-    register: iptables_list_numbers
-
+    
+  - name: Install iptables
+    shell: apt-get install iptables -y
+    
   - name: Check if iptables rules exists
-    shell: sudo iptables -C {{ item }}
-    loop:
-      - "##item##"
-    when: iptables_list_numbers!= "0"
-    register: iptables_lists_exists
-    ignore_errors: yes
-
-  - set_fact:
-      iptables_list_numbers="{{ iptables_list_numbers.stdout | int }}"
-
-  - debug: var=iptables_list_numbers
-
-  - name: "Restore default iptables rules of SUT"
-    shell: sudo iptables -D {{ item }}
-    loop: 
-      -  "##item##"
-    register: results
-    when: iptables_list_numbers>=0
-    until: results.rc == 1
-    retries: "{{ iptables_list_numbers|int -1 }}"
-    ignore_errors: yes
-
+    shell: sudo iptables -F
+    
   - name: remove packetbeat
     apt:
       name: packetbeat
       state: absent
     when: service_status.stat.exists
-
+    
   - name: remove metricbeat
     apt:
       name: metricbeat
       state: absent
     when: service_status.stat.exists
-
+    
   - name: remove filebeat
     apt:
       name: filebeat
       state: absent
     when: service_status.stat.exists
-
-# pending to delete also folder and conf files of each beat located in /etc/<beat_name>

@@ -53,7 +53,7 @@ public class EimApiRestTest {
 	@Test
 	public void a_Test() throws InterruptedException, IOException {
 		
-		System.out.println("############ Running Test1: ############");
+		System.out.println("############ Running Test 1: Register agent ############");
 		
 		String privateKey = "-----BEGIN RSA PRIVATE KEY-----\nMIIEpgIBAAKCAQEArZI1xoUduNlXUKA9CprHQ4R+so53rfMyNoURWO4IIbfE/FY6\n7Cr4rLE8iimqvveoN7qdyMwzYAldYoMY284vanolVOpncrd+7yLMiGPhuXIfwgbe\nngVLy0H4HHeOIoYd0oDDxqc3wOKOOSAiZ1VGnuODNdUwRce4tDFUi3V+a2Kxl0MH\nLQEoKB6lk2Wxv/zrPBxxuqSBRxZXQTxjMoYbUsssPuSOXBtpoNv2YH3uxOO+PyWg\n5EH507EaVaEelCQnDL64VtWbMI39ppIVCeM/Yb9riMkc2fWlLlN9jEiGGTxzLP6D\nATPn7I8OE+MqIcVX+0IIFZbU2cknSRe9Ar1/IQIDAQABAoIBAQCeMbsnY13Sguxs\nxI694pGofNLIxMZZWWUzgZZs+g2ZRZeY8LKlWwjoxGTL++vuP2Qm3sQ+JbbRWdeu\nGJQIieR3ZDowKa/9QzbCl3HZAUfSsCw3t/EgDu2kpEyRDXoTBy+ZEtjcbr2G5DYB\n5MLWcUd7Oxr0boifoMc8HBXVQVHmZj31wioJgqaEc1bniNaARAbpVaypYbCQoOqY\nGUJznZcip2lSvFgt9CEgk1/QGwQ2ochEltngWfnvj6ZyMwxag+gRGe02bfQqlhjT\npzX7s00M8x7S5XqURSnJs4WrlTNOxWi9d0yfHte9bgRcfWoAJ7F4ub30Ko/E+QC3\nZcEyCkMBAoGBANVnhG6BmKYc2k1D+TFbE4pdsVAVybanRUDBs4yVVCHx8yBG+ZOJ\ng/6rKnW1/iIdQavyhu/wUqjGKIW91eKU41+WOJUO+xiHP8SpKsqdUV3UCUVtrk3j\n3dymf4X2eJI1L07eWnk1Mj9jZExwQCOkSjNLhqp3JXxssu6C7xI1olxRAoGBANA3\nTeVMWUWEsxCd1uTktK7GqeKkKcJUacV+tT3zk7THBXOUOJw9ke55KR/KSLdGKMgN\nqf/qQyFNMqGfZ0s2vcHbZYIPuZVtSgrH0jvNEc2HYoPfULxTzggYVojwwC5eFZ8T\nqZ9Vc+UTtqYCnxoG7SDADk/OUFgqq2J4PVBkMtHRAoGBAJwtB/Q/j9FxqCmHp2UB\nfEl0zAEKEPdFbx83Iwmtd0boZL+ocZoRt7G23noK2JNqydbmxO3v+O5fJuTJyy/p\nOoWH0Jz1u7l1sathCloBy7xZIvfWjwudyY5jo0wM1qxZk+eqPpgZ4E4XlR2DwMzU\nvSDRExrJ23s1qbV3yTKQYeQhAoGBAMw48lYtBIKDHX720YfAKtgiUw7RJYRNd1EW\nbn5NIlr1ugsbHktguHnGrOdZaOkaD3XosQ0poJ5RMZAE4TOMhaJWpsFi2wwNHcpl\nI3c0NHn6iE4AAxg0uqiF9ppqSJUyAtL8XirBjeLp6wP5HkRQ9tRgi6kLGxLfByqV\n9M2c+ZuBAoGBANGNGzm3740XNYUpLkrYlkSBIb975CRA+xT+QKV3470+Z6X7x+ZM\nVKQYQWs3AcxO0wPRvuR3BYFL0tWdLK6e+VQSssw56OYaNiD28sRLeYQIOb/vMMkc\nlX00YAGV3FosCgJMQuXHQ8oOCaVtQfDA7e5mibLrqnL4JaatjicxLfAx\n-----END RSA PRIVATE KEY-----";
 
@@ -86,7 +86,7 @@ public class EimApiRestTest {
 		agentId = json.get("agentId").getAsString();
 		
 		
-		System.out.println("############ Response for Test1: ############");
+		System.out.println("############ Response for Test 1: Register Agent ############");
 		System.out.println(response);
 		
 		Assertions.assertEquals(200, response.getStatusCode().value());
@@ -96,7 +96,7 @@ public class EimApiRestTest {
 
 	 @Test
 	 public void b_Test() throws InterruptedException {
-		System.out.println("############ Running Test2: ############");
+		System.out.println("############ Running Test 2: PacketLoss feature (Execbeat) ############");
 		
 		String uri_packetloss_action = "controllability/"+agentId+"/packetloss";
 		String URL = server + uri_packetloss_action;
@@ -119,7 +119,7 @@ public class EimApiRestTest {
 				obj.toString(), headers);
 		
 		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
-		System.out.println("############ Response for Test2: ############");
+		System.out.println("############ Response for Test 2: PacketLoss feature (Execbeat) ############");
 		System.out.println(response);
 		
 		TimeUnit.SECONDS.sleep(120);;
@@ -130,7 +130,7 @@ public class EimApiRestTest {
 	 
 	 @Test
 	 public void c_Test() throws InterruptedException {
-		System.out.println("############ Running Test3: ############");
+		System.out.println("############ Running Test 3: Stress feature (Execbeat) ############");
 		
 		String uri_packetloss_action = "controllability/"+agentId+"/stress";
 		String URL = server + uri_packetloss_action;
@@ -152,7 +152,7 @@ public class EimApiRestTest {
 				obj.toString(), headers);
 				
 		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.POST, request, String.class);
-		System.out.println("############ Response for Test3: ############");
+		System.out.println("############ Response for Test3: Stress feature (Execbeat) ############");
 		System.out.println(response);
 		
 		TimeUnit.SECONDS.sleep(120);
@@ -160,12 +160,12 @@ public class EimApiRestTest {
 		Assertions.assertEquals(200, response.getStatusCode().value());
 	  
 	 }
-	
+	 
 	 @Test
 	 public void d_Test() throws InterruptedException {
-		System.out.println("############ Running Test4: ############");
+		System.out.println("############ Running Test4: unchecked agent ############");
 
-		String uri_unistall_agent = agentId+"/unmonitor"; 
+		String uri_unistall_agent = agentId+"/unchecked"; 
 
 		 
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -177,18 +177,18 @@ public class EimApiRestTest {
 
 		ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
 		
-		System.out.println("############ Response for Test4: ############");
+		System.out.println("############ Response for Test 4: unchecked agent ############");
 		System.out.println(response);
-		TimeUnit.SECONDS.sleep(180);
 
 		Assertions.assertEquals(200, response.getStatusCode().value());
  
 	 }
+	
 	 
 	 @Test
 	 public void e_Test() throws InterruptedException {
 		 
-		 System.out.println("############ Running Test5: ############");
+		 System.out.println("############ Running Test5: delete agent ############");
 
 		 headers.setContentType(MediaType.APPLICATION_JSON);
 		 headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -196,11 +196,10 @@ public class EimApiRestTest {
 		 String URL = server+agentId;
 		 		 
 		 HttpEntity<String> request = new HttpEntity<String>("", headers);
-		 //TimeUnit.SECONDS.sleep(500);
 
 		 ResponseEntity<String> response = restTemplate.exchange(URL,  HttpMethod.DELETE, request, String.class);
 		 
-		 System.out.println("############ Response for Test5: ############");
+		 System.out.println("############ Response for Test5 delete agent: ############");
 		 System.out.println(response);
 		 
 		 Assertions.assertEquals(200, response.getStatusCode().value());

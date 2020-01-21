@@ -1,0 +1,11 @@
+---
+- name: ssh
+  hosts: ##targethost## 
+  remote_user: ##user##
+
+  tasks:
+        - name: Install iptables command
+          shell: sudo apt-get install iptables -y
+   
+        - name: Iptables rule command
+          shell: ##command##
