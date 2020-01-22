@@ -24,7 +24,7 @@ public class CpuCommandsGKETest2 {
 	public static Long latency;
 	
 	
-	static String agentId="iagent0";
+	static String agentId="iagent3";
 	
 	
 	@Test
