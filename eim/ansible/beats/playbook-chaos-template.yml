@@ -9,7 +9,11 @@
   tasks:
   
   - name: "Running chaos experiment"
+<<<<<<< HEAD
     raw: chaos run experiment_{{ ID_EXPERIMENT }}.json
 
 
 
+=======
+    shell: chaos run experiment_{{ ID_EXPERIMENT }}.json
+>>>>>>> 9960ed0ae22fc02c2b7a24f84927173f55d58bb4
