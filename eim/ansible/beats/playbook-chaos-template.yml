@@ -4,12 +4,12 @@
 - hosts: 127.0.0.1
   connection: local
   vars:
-    ID_EXPERIMENT: 1
+    ID_EXPERIMENT: ##REPLICA##
   become: yes
   tasks:
   
   - name: "Running chaos experiment"
-    shell: chaos run experiment_{{ ID_EXPERIMENT }}.json
+    raw: chaos run experiment_{{ ID_EXPERIMENT }}.json
 
 
 

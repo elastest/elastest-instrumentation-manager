@@ -104,6 +104,7 @@ COPY ansible/beats/experiment_1.json /var/ansible/beats
 COPY ansible/beats/experiment_3.json /var/ansible/beats
 COPY ansible/beats/experiment_5.json /var/ansible/beats
 COPY ansible/beats/experiment_7.json /var/ansible/beats
+COPY ansible/beats/run-chaos.sh /var/ansible/beats
 
 # restart tomcat server to refresh the value of the properties 
 COPY tomcat/restart_tomcat.sh /var/tomcat/restart_tomcat.sh
